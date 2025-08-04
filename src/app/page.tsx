@@ -1,103 +1,238 @@
-import Image from "next/image";
+'use client';
+
+import { useState, useEffect, useRef } from 'react';
+import { Box, LinearProgress } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import Hero from '@/components/landing/Hero';
+import TalentParadox from '@/components/landing/TalentParadox';
+import Framework from '@/components/landing/Framework';
+import ROICalculator from '@/components/landing/ROICalculator';
+import Partners from '@/components/landing/Partners';
+
+const PageWrapper = styled(Box)(({ theme }) => ({
+  position: 'relative',
+  minHeight: '100vh',
+}));
+
+const ProgressIndicator = styled(Box)(({ theme }) => ({
+  position: 'fixed',
+  top: 80,
+  left: '50%',
+  transform: 'translateX(-50%)',
+  width: '100%',
+  maxWidth: 1200,
+  zIndex: 100,
+  padding: '0 16px',
+  [theme.breakpoints.down('sm')]: {
+    top: 70,
+  },
+}));
+
+const ProgressBar = styled(LinearProgress)(({ theme }) => ({
+  height: 3,
+  backgroundColor: 'rgba(167, 218, 219, 0.1)',
+  borderRadius: theme.spacing(0.5),
+  '& .MuiLinearProgress-bar': {
+    backgroundColor: theme.palette.primary.main,
+    borderRadius: theme.spacing(0.5),
+  },
+}));
+
+const SectionWrapper = styled(Box)(({ theme }) => ({
+  opacity: 0,
+  transform: 'translateY(30px)',
+  transition: 'all 0.8s cubic-bezier(0.22, 1, 0.36, 1)',
+  '&.visible': {
+    opacity: 1,
+    transform: 'translateY(0)',
+  },
+}));
+
+const NavigationDots = styled(Box)(({ theme }) => ({
+  position: 'fixed',
+  right: theme.spacing(4),
+  top: '50%',
+  transform: 'translateY(-50%)',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(2),
+  zIndex: 100,
+  [theme.breakpoints.down('md')]: {
+    display: 'none',
+  },
+}));
+
+const Dot = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'active'
+})<{ active: boolean }>(({ theme, active }) => ({
+  width: 12,
+  height: 12,
+  borderRadius: '50%',
+  backgroundColor: active ? theme.palette.primary.main : 'transparent',
+  border: `2px solid ${active ? theme.palette.primary.main : 'rgba(167, 218, 219, 0.3)'}`,
+  cursor: 'pointer',
+  transition: 'all 0.3s ease',
+  position: 'relative',
+  '&:hover': {
+    backgroundColor: active ? theme.palette.primary.main : 'rgba(167, 218, 219, 0.2)',
+    transform: 'scale(1.2)',
+  },
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 24,
+    height: 24,
+    borderRadius: '50%',
+  },
+}));
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [revealedSections, setRevealedSections] = useState({
+    paradox: false,
+    framework: false,
+    roi: false,
+    partners: false,
+  });
+  
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [currentSection, setCurrentSection] = useState(0);
+  const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+  // Track scroll progress
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (scrollTop / docHeight) * 100;
+      setScrollProgress(progress);
+
+      // Determine current section
+      const sections = sectionsRef.current;
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        if (section) {
+          const rect = section.getBoundingClientRect();
+          if (rect.top <= window.innerHeight / 2) {
+            setCurrentSection(i);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [revealedSections]);
+
+  const revealNext = (section: keyof typeof revealedSections) => {
+    setRevealedSections(prev => ({ ...prev, [section]: true }));
+    
+    // Smooth scroll to the revealed section
+    setTimeout(() => {
+      const sectionElement = document.getElementById(section);
+      if (sectionElement) {
+        const headerHeight = 100;
+        const elementTop = sectionElement.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = elementTop - headerHeight;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth',
+        });
+      }
+    }, 100);
+  };
+
+  const scrollToSection = (index: number) => {
+    const sections = ['hero', 'paradox', 'framework', 'roi', 'partners'];
+    const sectionId = sections[index];
+    const element = document.getElementById(sectionId);
+    
+    if (element) {
+      const headerHeight = 100;
+      const elementTop = element.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementTop - headerHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const sections = [
+    { id: 'hero', label: 'Introduction' },
+    { id: 'paradox', label: 'The Paradox' },
+    { id: 'framework', label: 'Our Solution' },
+    { id: 'roi', label: 'ROI Calculator' },
+    { id: 'partners', label: 'Partners' },
+  ];
+
+  return (
+    <PageWrapper>
+      <ProgressIndicator>
+        <ProgressBar variant="determinate" value={scrollProgress} />
+      </ProgressIndicator>
+
+      <NavigationDots>
+        {sections.map((section, index) => (
+          <Dot
+            key={section.id}
+            active={currentSection === index}
+            onClick={() => scrollToSection(index)}
+            title={section.label}
+            aria-label={`Navigate to ${section.label}`}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        ))}
+      </NavigationDots>
+
+      <Box id="hero" ref={el => sectionsRef.current[0] = el}>
+        <Hero onRevealNext={() => revealNext('paradox')} />
+      </Box>
+      
+      {revealedSections.paradox && (
+        <SectionWrapper 
+          id="paradox" 
+          className="visible"
+          ref={el => sectionsRef.current[1] = el}
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          <TalentParadox onRevealNext={() => revealNext('framework')} />
+        </SectionWrapper>
+      )}
+      
+      {revealedSections.framework && (
+        <SectionWrapper 
+          id="framework" 
+          className="visible"
+          ref={el => sectionsRef.current[2] = el}
         >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          <Framework onRevealNext={() => revealNext('roi')} />
+        </SectionWrapper>
+      )}
+      
+      {revealedSections.roi && (
+        <SectionWrapper 
+          id="roi" 
+          className="visible"
+          ref={el => sectionsRef.current[3] = el}
+        >
+          <ROICalculator onRevealNext={() => revealNext('partners')} />
+        </SectionWrapper>
+      )}
+      
+      {revealedSections.partners && (
+        <SectionWrapper 
+          id="partners" 
+          className="visible"
+          ref={el => sectionsRef.current[4] = el}
+        >
+          <Partners />
+        </SectionWrapper>
+      )}
+    </PageWrapper>
   );
 }
