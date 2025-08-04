@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import GetStartedModal from "@/components/auth/GetStartedModal";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -64,6 +65,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <GetStartedModal />
         </ThemeProvider>
       </body>
     </html>

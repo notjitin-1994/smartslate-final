@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
+import { useGetStartedModal } from '@/hooks/useGetStartedModal';
 
 const HeaderWrapper = styled('header', {
   shouldForwardProp: (prop) => prop !== 'hide'
@@ -205,6 +206,7 @@ const MobileCTAButton = styled(Button)(({ theme }) => ({
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { openModal } = useGetStartedModal();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -256,7 +258,7 @@ export default function Header() {
               ))}
             </DesktopNav>
 
-            <CTAButton variant="contained">
+            <CTAButton variant="contained" onClick={openModal}>
               Get Started
             </CTAButton>
 
@@ -306,7 +308,10 @@ export default function Header() {
           ))}
         </MobileNav>
 
-        <MobileCTAButton variant="contained">
+        <MobileCTAButton variant="contained" onClick={() => {
+          setMobileMenuOpen(false);
+          openModal();
+        }}>
           Get Started
         </MobileCTAButton>
       </MobileMenuPanel>
