@@ -19,6 +19,7 @@ import MessageIcon from '@mui/icons-material/Message';
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 import Link from 'next/link';
 import CourseWaitlistModal from '@/components/courses/CourseWaitlistModal';
+import StandardHero from '@/components/ui/StandardHero';
 import { useCourseWaitlistModal } from '@/hooks/useCourseWaitlistModal';
 import {
   aiCourseData, animatedStats, personas, curriculum, valuePropositions
@@ -107,40 +108,33 @@ export default function AIFoundationsPage() {
         {/* Hero Section */}
         <SectionWrapper>
           <Container maxWidth="lg">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 text-primary">
-                Master the Language of the Future
-              </h1>
-              <p className="text-xl text-secondary max-w-3xl">
-                Our "AI Foundations" course is the definitive journey from theoretical concepts to practical
-                application. Go from being curious about AI to confidently leveraging it for professional
-                growth.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 mt-8">
-                <button
-                  onClick={() => openModal(courseInfo)}
-                  className="px-6 py-4 bg-secondary-accent text-white rounded-lg hover:bg-secondary-accent-dark 
-                           transition-colors duration-200 font-semibold flex items-center justify-center gap-2
-                           min-h-[48px] text-base"
-                >
-                  Join Waitlist & Save {discountPercentage}%
-                  <ArrowForwardIcon className="w-5 h-5" />
-                </button>
-                <Link
-                  href="/collaborate"
-                  className="px-6 py-4 border border-primary-accent/30 text-primary-accent rounded-lg
-                           hover:bg-primary-accent/10 transition-colors duration-200 font-semibold 
-                           flex items-center justify-center gap-2 min-h-[48px] text-base"
-                >
-                  Request a Demo for Your Team
-                  <ArrowForwardIcon className="w-5 h-5" />
-                </Link>
-              </div>
-            </motion.div>
+            <StandardHero
+              title="Master the Language of the Future"
+              subtitle="Our 'AI Foundations' course is the definitive journey from theoretical concepts to practical application. Go from being curious about AI to confidently leveraging it for professional growth."
+              description="Transform your career with cutting-edge AI knowledge and practical skills that will set you apart in the digital economy."
+              accentWords={['Future', 'AI Foundations', 'professional growth']}
+              showScrollIndicator={false}
+            />
+            <div className="flex flex-col sm:flex-row gap-4 mt-8">
+              <button
+                onClick={() => openModal(courseInfo)}
+                className="px-6 py-4 bg-secondary-accent text-white rounded-lg hover:bg-secondary-accent-dark 
+                         transition-colors duration-200 font-semibold flex items-center justify-center gap-2
+                         min-h-[48px] text-base"
+              >
+                Join Waitlist & Save {discountPercentage}%
+                <ArrowForwardIcon className="w-5 h-5" />
+              </button>
+              <Link
+                href="/collaborate"
+                className="px-6 py-4 border border-primary-accent/30 text-primary-accent rounded-lg
+                         hover:bg-primary-accent/10 transition-colors duration-200 font-semibold 
+                         flex items-center justify-center gap-2 min-h-[48px] text-base"
+              >
+                Request a Demo for Your Team
+                <ArrowForwardIcon className="w-5 h-5" />
+              </Link>
+            </div>
           </Container>
         </SectionWrapper>
 

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Box, Container, Typography, Button, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ContactModal from '@/components/collaborate/ContactModal';
+import StandardHero from '@/components/ui/StandardHero';
 import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 // Styled components
@@ -18,50 +19,7 @@ const PageWrapper = styled(Box)(({ theme }) => ({
   },
 }));
 
-const HeaderSection = styled(Box)(({ theme }) => ({
-  marginBottom: theme.spacing(8),
-  textAlign: 'left',
-  position: 'relative',
-  [theme.breakpoints.down('md')]: {
-    marginBottom: theme.spacing(6),
-  },
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    bottom: -theme.spacing(4),
-    left: 0,
-    width: '100px',
-    height: '4px',
-    background: `linear-gradient(90deg, ${theme.palette.primary.main}, transparent)`,
-    borderRadius: theme.spacing(0.5),
-  },
-}));
 
-const MainHeading = styled(Typography)(({ theme }) => ({
-  fontSize: '3.5rem',
-  fontWeight: 700,
-  background: `linear-gradient(135deg, ${theme.palette.text.primary} 0%, ${theme.palette.primary.main} 100%)`,
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
-  backgroundClip: 'text',
-  marginBottom: theme.spacing(2),
-  [theme.breakpoints.down('md')]: {
-    fontSize: '2.5rem',
-  },
-  [theme.breakpoints.down('sm')]: {
-    fontSize: '2rem',
-  },
-}));
-
-const SubHeading = styled(Typography)(({ theme }) => ({
-  fontSize: '1.25rem',
-  color: theme.palette.text.secondary,
-  lineHeight: 1.8,
-  maxWidth: '70ch',
-  [theme.breakpoints.down('md')]: {
-    fontSize: '1.125rem',
-  },
-}));
 
 const PartnershipSection = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'isVisible' && prop !== 'delay'
@@ -240,17 +198,15 @@ export default function CollaborateClient() {
 
   return (
     <PageWrapper>
+      <StandardHero
+        title="Let's Shape the Future of Learning, Together."
+        subtitle="The AI revolution in education requires a symphony of diverse talents and visionary partners. We believe in the power of collaboration to build something truly transformative. Find your role in our journey."
+        description="Join us in revolutionizing education through AI-driven learning solutions and strategic partnerships."
+        accentWords={['Future', 'Learning', 'AI revolution', 'collaboration']}
+        showScrollIndicator={false}
+      />
+      
       <Container maxWidth="lg">
-        <HeaderSection>
-          <MainHeading>
-            Let's Shape the Future of Learning, Together.
-          </MainHeading>
-          <SubHeading>
-            The AI revolution in education requires a symphony of diverse talents and visionary partners. 
-            We believe in the power of collaboration to build something truly transformative. Find your role 
-            in our journey.
-          </SubHeading>
-        </HeaderSection>
 
         <Box>
           {partnershipOpportunities.map((opportunity, index) => (

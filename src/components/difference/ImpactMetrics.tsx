@@ -9,7 +9,7 @@ interface Metric {
   suffix: string;
   label: string;
   description: string;
-  icon: JSX.Element;
+  icon: React.ReactElement;
 }
 
 const metrics: Metric[] = [
@@ -84,7 +84,7 @@ function AnimatedCounter({ value, suffix, inView }: { value: number; suffix: str
   }, [value, inView]);
 
   return (
-    <span className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-accent to-secondary-accent bg-clip-text text-transparent">
+    <span className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary-accent to-secondary-accent bg-clip-text text-transparent">
       {suffix === 'x' ? count.toFixed(1) : count}
       {suffix}
     </span>
@@ -105,16 +105,16 @@ export default function ImpactMetrics() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="text-left mb-16"
       >
-        <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 leading-tight text-left">
-          The <span className="bg-gradient-to-r from-primary-accent to-secondary-accent bg-clip-text text-transparent">Impact</span> We Create
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 leading-[1.2] text-left">
+          The <span className="text-primary-accent font-bold">Impact</span> We Create
         </h2>
-        <p className="text-lg md:text-xl lg:text-2xl text-primary-accent max-w-4xl leading-relaxed text-left">
+        <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-primary-accent max-w-4xl leading-[1.5] sm:leading-relaxed text-left">
           Real results from organizations that chose SmartSlate for their learning transformation
         </p>
       </motion.div>
 
-      {/* Metrics Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto mb-16">
+      {/* Mobile-optimized Metrics Grid */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 max-w-7xl mx-auto mb-12 sm:mb-16">
         {metrics.map((metric, index) => (
           <motion.div
             key={metric.label}
@@ -124,22 +124,22 @@ export default function ImpactMetrics() {
             whileHover={{ y: -3 }}
             className="relative group"
           >
-            <div className="glass-effect-strong p-6 md:p-8 rounded-2xl text-center h-full border border-primary-accent/10 hover:border-primary-accent/30 transition-all duration-300">
-              {/* Icon */}
-              <div className="w-12 h-12 bg-gradient-to-br from-primary-accent/20 to-secondary-accent/20 rounded-xl flex items-center justify-center text-primary-accent mx-auto mb-4">
+            <div className="glass-effect-strong p-4 sm:p-5 md:p-6 lg:p-8 rounded-xl sm:rounded-2xl text-center h-full border border-primary-accent/10 hover:border-primary-accent/30 transition-all duration-300">
+              {/* Icon - smaller on mobile */}
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-primary-accent/20 to-secondary-accent/20 rounded-lg sm:rounded-xl flex items-center justify-center text-primary-accent mx-auto mb-3 sm:mb-4">
                 {metric.icon}
               </div>
 
               {/* Counter */}
-              <div className="mb-3">
+              <div className="mb-2 sm:mb-3">
                 <AnimatedCounter value={metric.value} suffix={metric.suffix} inView={inView} />
               </div>
 
               {/* Label */}
-              <h3 className="text-lg font-bold mb-2 text-primary">{metric.label}</h3>
+              <h3 className="text-sm sm:text-base lg:text-lg font-bold mb-2 text-primary leading-tight">{metric.label}</h3>
               
-              {/* Progress Bar */}
-              <div className="relative h-2 bg-border-color/30 rounded-full overflow-hidden mb-3">
+              {/* Progress Bar - only on larger screens */}
+              <div className="relative h-1.5 sm:h-2 bg-border-color/30 rounded-full overflow-hidden mb-2 sm:mb-3 hidden sm:block">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={inView ? { width: `${metric.suffix === 'x' ? (metric.value / 4) * 100 : metric.value}%` } : { width: 0 }}
@@ -148,8 +148,8 @@ export default function ImpactMetrics() {
                 />
               </div>
 
-              {/* Description */}
-              <p className="text-primary-accent/80 text-sm leading-relaxed text-left">{metric.description}</p>
+              {/* Description - hide on very small screens */}
+              <p className="text-primary text-xs sm:text-sm leading-[1.4] sm:leading-relaxed text-center hidden xs:block">{metric.description}</p>
             </div>
           </motion.div>
         ))}
@@ -162,7 +162,7 @@ export default function ImpactMetrics() {
         transition={{ duration: 0.6, delay: 0.4 }}
         className="max-w-4xl mx-auto"
       >
-        <div className="glass-effect-strong p-8 md:p-12 rounded-2xl relative overflow-hidden">
+        <div className="glass-effect-strong p-6 sm:p-8 md:p-12 rounded-xl sm:rounded-2xl relative overflow-hidden">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-5">
             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-primary-accent to-secondary-accent rounded-full blur-3xl" />
@@ -176,8 +176,8 @@ export default function ImpactMetrics() {
             </svg>
 
             {/* Testimonial Content */}
-            <blockquote className="mb-6">
-              <p className="text-lg md:text-xl text-primary-accent italic leading-relaxed mb-6 text-left">
+            <blockquote className="mb-4 sm:mb-6">
+              <p className="text-base sm:text-lg md:text-xl text-primary italic leading-[1.6] sm:leading-relaxed mb-4 sm:mb-6 text-left">
                 &quot;SmartSlate didn&apos;t just train our team—they transformed how we think about learning and development. 
                 The results speak for themselves: improved performance, higher engagement, and measurable business impact.&quot;
               </p>
@@ -185,7 +185,7 @@ export default function ImpactMetrics() {
                 <div className="w-12 h-12 bg-gradient-to-br from-primary-accent/20 to-secondary-accent/20 rounded-full"></div>
                 <div>
                   <cite className="text-primary-accent font-semibold not-italic">Sarah Chen</cite>
-                  <p className="text-primary-accent/70 text-sm">Chief Learning Officer, TechCorp Global</p>
+                  <p className="text-primary text-sm">Chief Learning Officer, TechCorp Global</p>
                 </div>
               </footer>
             </blockquote>
@@ -201,27 +201,33 @@ export default function ImpactMetrics() {
         className="mt-12"
       >
         <div className="glass-effect p-6 md:p-8 rounded-2xl">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+          <div className="grid grid-cols-3 gap-4 sm:gap-6 text-center">
             <motion.div
               whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.2 }}
+              className="cursor-pointer"
             >
-              <div className="text-2xl md:text-3xl font-bold text-primary-accent mb-1">50K+</div>
-              <p className="text-primary-accent text-sm md:text-base">Professionals Transformed</p>
+              <div className="text-xl sm:text-2xl md:text-3xl font-bold text-primary-accent mb-0.5 sm:mb-1">50K+</div>
+              <p className="text-primary text-xs sm:text-sm md:text-base leading-tight">Professionals<br className="sm:hidden"/> Transformed</p>
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.2 }}
+              className="cursor-pointer"
             >
-              <div className="text-2xl md:text-3xl font-bold text-secondary-accent mb-1">200+</div>
-              <p className="text-primary-accent text-sm md:text-base">Enterprise Clients</p>
+              <div className="text-xl sm:text-2xl md:text-3xl font-bold text-secondary-accent mb-0.5 sm:mb-1">200+</div>
+              <p className="text-primary text-xs sm:text-sm md:text-base leading-tight">Enterprise<br className="sm:hidden"/> Clients</p>
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               transition={{ duration: 0.2 }}
+              className="cursor-pointer"
             >
-              <div className="text-2xl md:text-3xl font-bold text-primary-accent mb-1">15+</div>
-              <p className="text-primary-accent text-sm md:text-base">Industry Verticals</p>
+              <div className="text-xl sm:text-2xl md:text-3xl font-bold text-primary-accent mb-0.5 sm:mb-1">15+</div>
+              <p className="text-primary text-xs sm:text-sm md:text-base leading-tight">Industry<br className="sm:hidden"/> Verticals</p>
             </motion.div>
           </div>
         </div>

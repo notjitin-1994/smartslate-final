@@ -68,9 +68,9 @@ export default function TransformationJourney() {
         className="text-left mb-16"
       >
         <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 leading-tight text-left">
-          Your Transformation <span className="bg-gradient-to-r from-primary-accent to-secondary-accent bg-clip-text text-transparent">Journey</span>
+          Your Transformation <span className="text-primary-accent font-bold">Journey</span>
         </h2>
-        <p className="text-lg md:text-xl lg:text-2xl text-primary-accent max-w-4xl leading-relaxed text-left">
+        <p className="text-lg md:text-xl lg:text-2xl text-primary max-w-4xl leading-relaxed text-left">
           From initial consultation to continuous improvement, we&apos;re with you every step of the way
         </p>
       </motion.div>
@@ -121,7 +121,7 @@ export default function TransformationJourney() {
                     </div>
                   </div>
                   <h3 className="text-xl md:text-2xl font-bold mb-3 text-primary text-left">{step.title}</h3>
-                  <p className="text-primary-accent text-base md:text-lg leading-relaxed text-left">{step.description}</p>
+                  <p className="text-primary text-base md:text-lg leading-relaxed text-left">{step.description}</p>
                 </motion.div>
               </div>
 
@@ -139,21 +139,23 @@ export default function TransformationJourney() {
         transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
         className="text-center mt-20"
       >
-        <div className="glass-effect-strong p-8 md:p-10 rounded-2xl max-w-2xl mx-auto border border-primary-accent/20">
-          <p className="text-lg md:text-xl text-primary-accent mb-6 leading-relaxed text-left">
+        <div className="glass-effect-strong p-6 sm:p-8 md:p-10 rounded-xl sm:rounded-2xl max-w-2xl mx-auto border border-primary-accent/20">
+          <p className="text-base sm:text-lg md:text-xl text-primary mb-4 sm:mb-6 leading-[1.5] sm:leading-relaxed text-center">
             Ready to begin your transformation journey?
           </p>
-          <motion.button
-            whileHover={{ scale: 1.02, y: -2 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ duration: 0.2 }}
-            className="inline-flex items-center gap-3 px-8 py-3 bg-gradient-to-r from-secondary-accent to-secondary-accent-dark text-white font-bold text-base md:text-lg rounded-xl shadow-lg hover:shadow-xl hover:shadow-secondary-accent/20 transition-all duration-300"
-          >
-            Start Your Journey
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-            </svg>
-          </motion.button>
+          <div className="flex justify-center">
+            <motion.button
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.2 }}
+              className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-2.5 sm:py-3 bg-gradient-to-r from-[#4F46E5] to-[#3730A3] text-white font-bold text-sm sm:text-base md:text-lg rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl hover:shadow-[#4F46E5]/20 transition-all duration-300"
+            >
+              Start Your Journey
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </motion.button>
+          </div>
         </div>
       </motion.div>
     </div>

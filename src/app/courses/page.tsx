@@ -11,6 +11,7 @@ import { courseData } from '@/types/course';
 import CourseCard from '@/components/courses/CourseCard';
 import CourseWaitlistModal from '@/components/courses/CourseWaitlistModal';
 import Pagination from '@/components/ui/Pagination';
+import StandardHero from '@/components/ui/StandardHero';
 import { useCourseWaitlistModal } from '@/hooks/useCourseWaitlistModal';
 
 const PageWrapper = styled(Box)(({ theme }) => ({
@@ -98,22 +99,13 @@ export default function CoursesPage() {
         {/* Hero Section */}
         <SectionWrapper>
           <Container maxWidth="lg">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-left"
-            >
-              <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                Ignite your <span className="text-primary-accent">Growth</span>
-              </h1>
-              <p className="text-xl text-secondary max-w-4xl">
-                <span className="text-primary-accent font-semibold">Ignite the future.</span> The Ignite Series is the official blueprint
-                for the <span className="text-primary-accent font-semibold">next generation of work</span>—a definitive collection of
-                courses designed to equip the <span className="text-primary-accent font-semibold">architects of our world</span>—digital
-                and physical.
-              </p>
-            </motion.div>
+            <StandardHero
+              title="Ignite your Growth"
+              subtitle="Ignite the future. The Ignite Series is the official blueprint for the next generation of work—a definitive collection of courses designed to equip the architects of our world—digital and physical."
+              description="Discover cutting-edge courses that bridge the gap between traditional education and the skills needed for tomorrow's workforce."
+              accentWords={['Growth', 'Ignite', 'next generation', 'architects']}
+              showScrollIndicator={false}
+            />
           </Container>
         </SectionWrapper>
 

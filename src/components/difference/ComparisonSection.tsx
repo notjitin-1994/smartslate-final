@@ -101,10 +101,10 @@ export default function ComparisonSection() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="text-left mb-16"
       >
-        <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 leading-tight text-left">
-          Traditional Training vs. <span className="bg-gradient-to-r from-primary-accent to-secondary-accent bg-clip-text text-transparent">SmartSlate Learning</span>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 leading-[1.2] text-left">
+          Traditional Training vs. <span className="text-primary-accent font-bold">SmartSlate Learning</span>
         </h2>
-        <p className="text-lg md:text-xl lg:text-2xl text-primary-accent max-w-4xl leading-relaxed text-left">
+        <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-primary max-w-4xl leading-[1.5] sm:leading-relaxed text-left">
           See why forward-thinking organizations choose SmartSlate over conventional training approaches
         </p>
       </motion.div>
@@ -122,56 +122,73 @@ export default function ComparisonSection() {
             variants={itemVariants}
             className="relative"
           >
-            {/* Comparison Card */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
-              {/* Traditional Side */}
-              <motion.div
-                whileHover={{ scale: 0.98 }}
-                transition={{ duration: 0.2 }}
-                className="glass-effect p-6 rounded-2xl border border-red-400/20 relative overflow-hidden group"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative z-10">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 bg-red-400/10 rounded-lg flex items-center justify-center text-red-400">
-                      {iconMap[item.icon]}
-                    </div>
-                    <span className="text-red-400 text-sm font-medium uppercase tracking-wide">Traditional</span>
-                  </div>
-                  <p className="text-primary-accent text-base md:text-lg">{item.traditional}</p>
+            {/* Mobile-optimized comparison layout */}
+            <div className="relative">
+              {/* Icon header for mobile */}
+              <div className="flex items-center gap-3 mb-4 md:hidden">
+                <div className="w-12 h-12 bg-gradient-to-br from-primary-accent/20 to-secondary-accent/20 rounded-xl flex items-center justify-center text-primary-accent">
+                  {iconMap[item.icon]}
                 </div>
-              </motion.div>
-
-              {/* SmartSlate Side */}
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-                className="glass-effect-strong p-6 rounded-2xl border border-primary-accent/30 relative overflow-hidden group"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-primary-accent/10 to-secondary-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative z-10">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-primary-accent/20 to-secondary-accent/20 rounded-lg flex items-center justify-center text-primary-accent">
-                      {iconMap[item.icon]}
+                <span className="text-primary-accent font-medium text-sm sm:text-base">
+                  {item.icon === 'content' && 'Content'}
+                  {item.icon === 'materials' && 'Materials'}
+                  {item.icon === 'application' && 'Application'}
+                  {item.icon === 'skills' && 'Skills'}
+                  {item.icon === 'certification' && 'Certification'}
+                </span>
+              </div>
+              
+              {/* Comparison Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 items-stretch">
+                {/* Traditional Side */}
+                <motion.div
+                  whileHover={{ scale: 0.98 }}
+                  transition={{ duration: 0.2 }}
+                  className="glass-effect p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-red-400/20 relative overflow-hidden group order-1 md:order-1"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-red-400/10 rounded-lg flex items-center justify-center text-red-400 hidden md:flex">
+                        {iconMap[item.icon]}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-red-400 rounded-full md:hidden" />
+                        <span className="text-red-400 text-xs sm:text-sm font-medium uppercase tracking-wide">Traditional</span>
+                      </div>
                     </div>
-                    <span className="text-primary-accent text-sm font-medium uppercase tracking-wide">SmartSlate</span>
+                    <p className="text-primary text-sm sm:text-base md:text-lg leading-[1.5]">{item.traditional}</p>
                   </div>
-                  <p className="text-primary font-medium text-base md:text-lg">{item.smartslate}</p>
-                </div>
-              </motion.div>
-            </div>
+                </motion.div>
 
-            {/* Mobile-friendly connector */}
-            <div className="flex justify-center -mt-2 -mb-2 relative z-20 md:hidden">
-              <motion.div 
-                animate={{ y: [0, 3, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                className="w-8 h-8 bg-gradient-to-r from-primary-accent to-secondary-accent rounded-full flex items-center justify-center shadow-lg shadow-primary-accent/20"
-              >
-                <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
-                </svg>
-              </motion.div>
+                {/* Mobile VS indicator - positioned between cards */}
+                <div className="flex items-center justify-center my-2 md:hidden order-2">
+                  <div className="glass-effect px-3 py-1 rounded-full border border-primary-accent/20">
+                    <span className="text-xs font-bold text-primary-accent">VS</span>
+                  </div>
+                </div>
+
+                {/* SmartSlate Side */}
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                  className="glass-effect-strong p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-primary-accent/30 relative overflow-hidden group order-3 md:order-2"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary-accent/10 to-secondary-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-primary-accent/20 to-secondary-accent/20 rounded-lg flex items-center justify-center text-primary-accent hidden md:flex">
+                        {iconMap[item.icon]}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-primary-accent rounded-full md:hidden" />
+                        <span className="text-primary-accent text-xs sm:text-sm font-medium uppercase tracking-wide">SmartSlate</span>
+                      </div>
+                    </div>
+                    <p className="text-primary font-medium text-sm sm:text-base md:text-lg leading-[1.5]">{item.smartslate}</p>
+                  </div>
+                </motion.div>
+              </div>
             </div>
           </motion.div>
         ))}
@@ -183,13 +200,20 @@ export default function ComparisonSection() {
         initial={{ opacity: 0, y: 20 }}
         animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.6, delay: 0.8 }}
-        className="mt-16 text-left"
+        className="mt-10 sm:mt-12 md:mt-16 text-left"
       >
-        <div className="glass-effect-strong p-8 rounded-2xl max-w-3xl border border-primary-accent/20">
-          <p className="text-lg md:text-xl text-primary-accent leading-relaxed text-left">
-            The choice is clear: <span className="text-primary-accent font-semibold">SmartSlate</span> transforms 
-            learning from a checkbox exercise into a strategic advantage that drives measurable business outcomes.
-          </p>
+        <div className="glass-effect-strong p-6 sm:p-8 rounded-xl sm:rounded-2xl max-w-3xl border border-primary-accent/20">
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary-accent/20 to-secondary-accent/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <svg className="w-5 h-5 text-primary-accent" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <p className="text-base sm:text-lg md:text-xl text-primary leading-[1.6] sm:leading-relaxed text-left">
+              The choice is clear: <span className="text-primary-accent font-semibold">SmartSlate</span> transforms 
+              learning from a checkbox exercise into a strategic advantage that drives measurable business outcomes.
+            </p>
+          </div>
         </div>
       </motion.div>
     </div>

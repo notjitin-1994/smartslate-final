@@ -8,7 +8,7 @@ interface Differentiator {
   id: string;
   title: string;
   description: string;
-  icon: JSX.Element;
+  icon: React.ReactElement;
   details: string[];
   color: string;
 }
@@ -108,15 +108,15 @@ export default function KeyDifferentiators() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="text-left mb-16"
       >
-        <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 leading-tight text-left">
-          What Sets Us <span className="bg-gradient-to-r from-primary-accent to-secondary-accent bg-clip-text text-transparent">Apart</span>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 leading-[1.2] text-left">
+          What Sets Us <span className="text-primary-accent font-bold">Apart</span>
         </h2>
-        <p className="text-lg md:text-xl lg:text-2xl text-primary-accent max-w-4xl leading-relaxed text-left">
+        <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-primary max-w-4xl leading-[1.5] sm:leading-relaxed text-left">
           Four pillars that make SmartSlate the choice for transformative learning
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8 max-w-6xl mx-auto">
         {differentiators.map((item, index) => {
           const isActive = activeId === item.id;
           
@@ -129,12 +129,13 @@ export default function KeyDifferentiators() {
               onClick={() => isMobile && setActiveId(isActive ? null : item.id)}
               onMouseEnter={() => !isMobile && setActiveId(item.id)}
               onMouseLeave={() => !isMobile && setActiveId(null)}
-              className="relative group"
+              className="relative group cursor-pointer"
             >
               <motion.div 
                 whileHover={!isMobile ? { y: -4 } : {}}
+                whileTap={isMobile ? { scale: 0.98 } : {}}
                 transition={{ duration: 0.2 }}
-                className={`glass-effect-strong p-8 rounded-2xl h-full border transition-all duration-300 ${
+                className={`glass-effect-strong p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl h-full border transition-all duration-300 ${
                   isActive ? 'border-primary-accent/50 shadow-lg shadow-primary-accent/10' : 'border-border-color/30'
                 }`}
               >
@@ -166,8 +167,8 @@ export default function KeyDifferentiators() {
                   </motion.div>
                 </div>
 
-                <h3 className="text-xl md:text-2xl font-bold mb-3 text-primary text-left">{item.title}</h3>
-                <p className="text-primary-accent text-base md:text-lg mb-4 leading-relaxed text-left">{item.description}</p>
+                                 <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 text-primary text-left">{item.title}</h3>
+                <p className="text-primary text-sm sm:text-base md:text-lg mb-3 sm:mb-4 leading-[1.5] sm:leading-relaxed text-left">{item.description}</p>
 
                 {/* Mobile-optimized expandable details */}
                 <div className={`overflow-hidden transition-all duration-300 ${
@@ -187,27 +188,40 @@ export default function KeyDifferentiators() {
                           className="flex items-start gap-3"
                         >
                           <div className="w-1.5 h-1.5 bg-gradient-to-r from-primary-accent to-secondary-accent rounded-full flex-shrink-0 mt-2"></div>
-                          <span className="text-primary-accent/80 text-sm md:text-base">{detail}</span>
+                                                     <span className="text-primary text-sm md:text-base">{detail}</span>
                         </motion.li>
                       ))}
                     </ul>
                   </div>
                 </div>
 
-                {/* Mobile tap indicator / Desktop hover indicator */}
-                <div className="flex justify-between items-center mt-4">
-                  <span className="text-xs text-primary-accent/60">
-                    {isMobile ? 'Tap to explore' : 'Hover to explore'}
-                  </span>
+                {/* Enhanced mobile tap indicator / Desktop hover indicator */}
+                <div className="flex justify-between items-center mt-3 sm:mt-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-primary-accent/80">
+                      {isMobile ? 'Tap to explore' : 'Hover to explore'}
+                    </span>
+                    {isMobile && !isActive && (
+                      <motion.div
+                        animate={{ x: [0, 5, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                        className="w-4 h-4"
+                      >
+                        <svg className="w-4 h-4 text-primary-accent/60" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                      </motion.div>
+                    )}
+                  </div>
                   <motion.div
                     animate={{ 
                       opacity: isActive ? 1 : 0.5,
-                      rotate: isActive ? 90 : 0
+                      rotate: isActive ? 45 : 0
                     }}
                     transition={{ duration: 0.2 }}
-                    className="w-6 h-6 bg-primary-accent/10 rounded-full flex items-center justify-center"
+                    className="w-8 h-8 sm:w-6 sm:h-6 bg-primary-accent/10 rounded-full flex items-center justify-center"
                   >
-                    <svg className="w-3 h-3 text-primary-accent" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                    <svg className="w-4 h-4 sm:w-3 sm:h-3 text-primary-accent" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
                     </svg>
                   </motion.div>
