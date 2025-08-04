@@ -8,7 +8,9 @@ import Link from 'next/link';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 
-const HeaderWrapper = styled('header')(({ theme }) => ({
+const HeaderWrapper = styled('header', {
+  shouldForwardProp: (prop) => prop !== 'hide'
+})<{ hide?: boolean }>(({ theme, hide }) => ({
   position: 'fixed',
   top: theme.spacing(2),
   left: '50%',
@@ -16,6 +18,9 @@ const HeaderWrapper = styled('header')(({ theme }) => ({
   zIndex: 1000,
   width: 'calc(100% - 32px)',
   maxWidth: theme.breakpoints.values.lg, // Use theme breakpoint for lg (1280px)
+  opacity: hide ? 0 : 1,
+  visibility: hide ? 'hidden' : 'visible',
+  transition: 'opacity 0.3s ease, visibility 0.3s ease',
   [theme.breakpoints.down('sm')]: {
     width: 'calc(100% - 16px)',
     top: theme.spacing(1),
@@ -139,7 +144,7 @@ const MobileMenuBackdrop = styled(Box, {
   opacity: open ? 1 : 0,
   visibility: open ? 'visible' : 'hidden',
   transition: 'all 0.3s ease',
-  zIndex: 998,
+  zIndex: 1100,
 }));
 
 const MobileMenuPanel = styled(Box, {
@@ -153,7 +158,7 @@ const MobileMenuPanel = styled(Box, {
   height: '100%',
   backgroundColor: 'rgba(13, 27, 42, 0.95)',
   backdropFilter: 'blur(20px)',
-  zIndex: 999,
+  zIndex: 1101,
   padding: theme.spacing(4),
   transform: open ? 'translateX(0)' : 'translateX(100%)',
   transition: 'transform 0.3s ease',
@@ -229,7 +234,7 @@ export default function Header() {
 
   return (
     <>
-      <HeaderWrapper>
+      <HeaderWrapper hide={mobileMenuOpen}>
         <HeaderBackground />
         <HeaderContent maxWidth="lg">
           <LogoLink href="/">
@@ -271,7 +276,13 @@ export default function Header() {
       />
 
       <MobileMenuPanel open={mobileMenuOpen}>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+          <Image
+            src="/logo.png"
+            alt="SmartSlate Logo"
+            width={120}
+            height={28}
+          />
           <IconButton
             onClick={() => setMobileMenuOpen(false)}
             aria-label="Close menu"
@@ -281,14 +292,7 @@ export default function Header() {
           </IconButton>
         </Box>
 
-        <Box sx={{ mb: 4 }}>
-          <Image
-            src="/logo.png"
-            alt="SmartSlate Logo"
-            width={140}
-            height={32}
-          />
-        </Box>
+        {/* Logo removed - header logo remains visible */}
 
         <MobileNav>
           {navItems.map((item) => (

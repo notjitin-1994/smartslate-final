@@ -168,7 +168,7 @@ export default function ComparisonSection() {
                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 className="w-8 h-8 bg-gradient-to-r from-primary-accent to-secondary-accent rounded-full flex items-center justify-center shadow-lg shadow-primary-accent/20"
               >
-                <svg className="w-4 h-4 text-background-dark" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor">
+                <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
                 </svg>
               </motion.div>

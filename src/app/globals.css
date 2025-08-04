@@ -139,6 +139,13 @@ button {
   border: 1px solid var(--border-color);
 }
 
+/* Ensure proper contrast for glass effects */
+.glass-effect-strong .text-primary-accent,
+.glass-effect .text-primary-accent {
+  color: var(--primary-accent);
+  opacity: 1;
+}
+
 .glow-effect {
   box-shadow: var(--shadow-glow);
 }
@@ -373,6 +380,17 @@ button {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Main content spacing to account for fixed header */
+.main-content {
+  padding-top: 100px; /* Header height (60px) + top spacing (16px) + buffer */
+}
+
+@media (max-width: 640px) {
+  .main-content {
+    padding-top: 80px; /* Smaller header on mobile */
   }
 }
 

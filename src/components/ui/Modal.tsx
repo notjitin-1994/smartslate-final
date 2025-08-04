@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -9,6 +9,7 @@ interface ModalProps {
   children: ReactNode;
   maxWidth?: 'sm' | 'md' | 'lg';
   showCloseButton?: boolean;
+  title?: string;
 }
 
 export default function Modal({ 
@@ -16,29 +17,71 @@ export default function Modal({
   onClose, 
   children, 
   maxWidth = 'md',
-  showCloseButton = true 
+  showCloseButton = true,
+  title 
 }: ModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const previouslyFocusedElement = useRef<HTMLElement | null>(null);
   // Lock body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
+      // Store the currently focused element
+      previouslyFocusedElement.current = document.activeElement as HTMLElement;
       document.body.style.overflow = 'hidden';
+      
+      // Focus the modal after a short delay to ensure it's rendered
+      setTimeout(() => {
+        if (modalRef.current) {
+          modalRef.current.focus();
+        }
+      }, 100);
     } else {
       document.body.style.overflow = 'unset';
+      
+      // Return focus to the previously focused element
+      if (previouslyFocusedElement.current) {
+        previouslyFocusedElement.current.focus();
+      }
     }
     return () => {
       document.body.style.overflow = 'unset';
     };
   }, [isOpen]);
 
-  // Handle escape key
+  // Handle escape key and focus trap
   useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isOpen) return;
+      
+      if (e.key === 'Escape') {
         onClose();
+        return;
+      }
+      
+      // Focus trap
+      if (e.key === 'Tab' && modalRef.current) {
+        const focusableElements = modalRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const focusableArray = Array.from(focusableElements) as HTMLElement[];
+        
+        if (focusableArray.length === 0) return;
+        
+        const firstElement = focusableArray[0];
+        const lastElement = focusableArray[focusableArray.length - 1];
+        
+        if (e.shiftKey && document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement.focus();
+        } else if (!e.shiftKey && document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement.focus();
+        }
       }
     };
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
   const maxWidthClass = {
@@ -57,12 +100,12 @@ export default function Modal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[1100]"
             aria-hidden="true"
           />
 
           {/* Modal Container */}
-          <div className="fixed inset-0 flex items-center justify-center z-50 p-4 sm:p-6 overflow-y-auto">
+          <div className="fixed inset-0 flex items-center justify-center z-[1100] p-4 sm:p-6 overflow-y-auto">
             {/* Modal */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -75,9 +118,12 @@ export default function Modal({
                 stiffness: 300
               }}
               onClick={(e) => e.stopPropagation()}
+              ref={modalRef}
               className={`relative w-full ${maxWidthClass} max-h-[90vh] my-auto modal-content flex flex-col`}
               role="dialog"
               aria-modal="true"
+              aria-label={title || "Modal dialog"}
+              tabIndex={-1}
             >
               {/* Close Button */}
               {showCloseButton && (

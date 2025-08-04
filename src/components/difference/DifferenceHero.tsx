@@ -6,14 +6,13 @@ import { styled } from '@mui/material/styles';
 
 const HeroSection = styled(Box)(({ theme }) => ({
   position: 'relative',
-  minHeight: 'calc(100vh - 200px)',
+  minHeight: 'calc(100vh - 100px)', // Account for header space
   display: 'flex',
   alignItems: 'center',
   padding: `${theme.spacing(8)} 0`,
   overflow: 'hidden',
   backgroundColor: theme.palette.background.default,
-  [theme.breakpoints.down('md')]: {
-    minHeight: 'calc(100vh - 150px)',
+  [theme.breakpoints.down('sm')]: {
     padding: `${theme.spacing(6)} 0`,
   },
   '&::before': {
