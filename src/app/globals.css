@@ -416,6 +416,39 @@ button {
   }
 }
 
+/* Safari/iPad specific fixes */
+@supports (-webkit-appearance: none) {
+  /* Force hardware acceleration for better Safari performance */
+  .blur-3xl {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  
+  /* Improve radial-gradient rendering on Safari */
+  [style*="radial-gradient"] {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  
+  /* Better blur support for Safari */
+  .backdrop-blur-sm {
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+  
+  .backdrop-blur-md {
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+  
+  .backdrop-blur-lg {
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+  }
+}
+
 /* Improved focus styles for better accessibility */
 button:focus-visible,
 a:focus-visible,
