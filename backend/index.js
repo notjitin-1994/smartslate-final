@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const jwt = require('jsonwebtoken');
@@ -9,6 +10,10 @@ const { Pool } = require('pg');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(cors({
+  origin: ['http://localhost:3001', 'http://localhost:3002', 'https://www.smartslate.io'],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
@@ -76,22 +81,21 @@ app.get('/auth/google/callback',
   (req, res) => {
     try {
       const token = generateJWT(req.user);
-      res.json({
-        success: true,
-        message: 'Google authentication successful',
-        token: token,
-        user: {
-          id: req.user.id,
-          full_name: req.user.full_name,
-          email: req.user.email
-        }
-      });
+      const userData = {
+        id: req.user.id,
+        full_name: req.user.full_name,
+        email: req.user.email
+      };
+      
+      const frontendUrl = process.env.FRONTEND_URL || (process.env.NODE_ENV === 'production' ? 'https://www.smartslate.io' : 'http://localhost:3001');
+      const redirectUrl = `${frontendUrl}/auth/callback?token=${encodeURIComponent(token)}&user=${encodeURIComponent(JSON.stringify(userData))}`;
+      
+      res.redirect(redirectUrl);
     } catch (error) {
-      res.status(500).json({
-        success: false,
-        message: 'Error generating token',
-        error: error.message
-      });
+      console.error('Google OAuth callback error:', error);
+      const frontendUrl = process.env.FRONTEND_URL || (process.env.NODE_ENV === 'production' ? 'https://www.smartslate.io' : 'http://localhost:3001');
+      const errorUrl = `${frontendUrl}/auth/callback?error=${encodeURIComponent('Authentication failed')}`;
+      res.redirect(errorUrl);
     }
   }
 );

@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface FormFieldProps {
   label: string;
   name: string;
-  type?: 'text' | 'email' | 'tel' | 'url' | 'select' | 'textarea' | 'radio-group';
+  type?: 'text' | 'email' | 'tel' | 'url' | 'select' | 'textarea' | 'radio-group' | 'password';
   value: string;
   onChange: (value: string) => void;
   required?: boolean;

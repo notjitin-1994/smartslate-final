@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { AuthProvider } from "@/contexts/AuthContext";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import GetStartedModal from "@/components/auth/GetStartedModal";
@@ -60,12 +61,14 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ThemeProvider>
-          <Header />
-          <main className="main-content">
-            {children}
-          </main>
-          <Footer />
-          <GetStartedModal />
+          <AuthProvider>
+            <Header />
+            <main className="main-content">
+              {children}
+            </main>
+            <Footer />
+            <GetStartedModal />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
