@@ -1,13 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Box, Button, IconButton, Container } from '@mui/material';
+import { Box, Button, IconButton, Container, Menu, MenuItem } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 import Link from 'next/link';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useGetStartedModal } from '@/hooks/useGetStartedModal';
+import { useAuth } from '@/contexts/AuthContext';
 
 const HeaderWrapper = styled('header', {
   shouldForwardProp: (prop) => prop !== 'hide'
@@ -206,7 +208,9 @@ const MobileCTAButton = styled(Button)(({ theme }) => ({
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [userMenuAnchor, setUserMenuAnchor] = useState<null | HTMLElement>(null);
   const { openModal } = useGetStartedModal();
+  const { isAuthenticated, user, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -258,9 +262,19 @@ export default function Header() {
               ))}
             </DesktopNav>
 
-            <CTAButton variant="contained" onClick={openModal}>
-              Get Started
-            </CTAButton>
+            {isAuthenticated ? (
+              <CTAButton 
+                variant="contained" 
+                onClick={(e) => setUserMenuAnchor(e.currentTarget)}
+                startIcon={<AccountCircleIcon />}
+              >
+                {user?.full_name?.split(' ')[0] || 'Profile'}
+              </CTAButton>
+            ) : (
+              <CTAButton variant="contained" onClick={openModal}>
+                Get Started
+              </CTAButton>
+            )}
 
             <MobileMenuButton
               onClick={() => setMobileMenuOpen(true)}
@@ -308,13 +322,48 @@ export default function Header() {
           ))}
         </MobileNav>
 
-        <MobileCTAButton variant="contained" onClick={() => {
-          setMobileMenuOpen(false);
-          openModal();
-        }}>
-          Get Started
-        </MobileCTAButton>
+        {isAuthenticated ? (
+          <MobileCTAButton variant="contained" onClick={() => {
+            setMobileMenuOpen(false);
+            logout();
+          }}>
+            Logout
+          </MobileCTAButton>
+        ) : (
+          <MobileCTAButton variant="contained" onClick={() => {
+            setMobileMenuOpen(false);
+            openModal();
+          }}>
+            Get Started
+          </MobileCTAButton>
+        )}
       </MobileMenuPanel>
+
+      {/* User Menu */}
+      <Menu
+        anchorEl={userMenuAnchor}
+        open={Boolean(userMenuAnchor)}
+        onClose={() => setUserMenuAnchor(null)}
+        PaperProps={{
+          sx: {
+            backgroundColor: 'rgba(13, 27, 42, 0.95)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(42, 58, 74, 0.5)',
+            borderRadius: 2,
+            mt: 1,
+          }
+        }}
+      >
+        <MenuItem 
+          onClick={() => {
+            setUserMenuAnchor(null);
+            logout();
+          }}
+          sx={{ color: 'text.primary' }}
+        >
+          Logout
+        </MenuItem>
+      </Menu>
     </>
   );
 }
