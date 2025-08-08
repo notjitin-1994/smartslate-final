@@ -173,6 +173,28 @@ const partnershipOpportunities = [
     }
   }
 ];
+function PartnershipCard({ opportunity, delay, onClick }: { opportunity: typeof partnershipOpportunities[number]; delay: number; onClick: () => void }) {
+  const { ref, isVisible } = useFadeInOnScroll();
+  return (
+    <PartnershipSection
+      ref={ref as unknown as React.RefObject<HTMLDivElement>}
+      isVisible={isVisible}
+      delay={delay}
+    >
+      <SectionHeading>{opportunity.title}</SectionHeading>
+      <SectionDescription>{opportunity.description}</SectionDescription>
+      <CTAButton
+        variant="contained"
+        onClick={onClick}
+      >
+        {opportunity.buttonText}
+      </CTAButton>
+    </PartnershipSection>
+  );
+}
+
+
+
 
 export default function CollaborateClient() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -190,11 +212,6 @@ export default function CollaborateClient() {
     setModalOpen(false);
   };
 
-  // Create refs for each section
-  const sectionRefs = partnershipOpportunities.map(() => {
-    const { ref, isVisible } = useFadeInOnScroll();
-    return { ref, isVisible };
-  });
 
   return (
     <PageWrapper>
@@ -211,20 +228,11 @@ export default function CollaborateClient() {
         <Box>
           {partnershipOpportunities.map((opportunity, index) => (
             <React.Fragment key={opportunity.id}>
-              <PartnershipSection
-                ref={sectionRefs[index].ref}
-                isVisible={sectionRefs[index].isVisible}
+              <PartnershipCard
+                opportunity={opportunity}
                 delay={index * 150}
-              >
-                <SectionHeading>{opportunity.title}</SectionHeading>
-                <SectionDescription>{opportunity.description}</SectionDescription>
-                <CTAButton
-                  variant="contained"
-                  onClick={() => openModal(opportunity.modalConfig)}
-                >
-                  {opportunity.buttonText}
-                </CTAButton>
-              </PartnershipSection>
+                onClick={() => openModal(opportunity.modalConfig)}
+              />
               {index < partnershipOpportunities.length - 1 && (
                 <StyledDivider />
               )}
