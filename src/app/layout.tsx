@@ -4,6 +4,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import GetStartedModal from "@/components/auth/GetStartedModal";
+import TrackClient from "@/components/providers/TrackClient";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -62,6 +63,7 @@ export default function RootLayout({
             </main>
             <Footer />
             <GetStartedModal />
+            <TrackClient />
           </AuthProvider>
         </ThemeProvider>
       </body>
