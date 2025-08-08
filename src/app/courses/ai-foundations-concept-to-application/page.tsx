@@ -501,9 +501,7 @@ export default function AIFoundationsPage() {
 
                   <Link
                     href="/collaborate"
-                    className="w-full py-4 border border-primary-accent/30 text-primary-accent rounded-lg
-                             hover:bg-primary-accent/10 transition-colors duration-200 font-semibold 
-                             flex items-center justify-center gap-2"
+                    className="btn btn-tertiary w-full"
                   >
                     Request a Demo
                     <ArrowForwardIcon className="w-5 h-5" />
