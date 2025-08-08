@@ -16,6 +16,7 @@ import {
   Extension,
   CheckCircle,
   TrendingUp,
+  School,
 } from '@mui/icons-material';
 
 const FrameworkSection = styled(Box)(({ theme }) => ({
@@ -299,6 +300,11 @@ const frameworkSteps = [
 
 export default function Framework({ onRevealNext }: FrameworkProps) {
   const [activeStep, setActiveStep] = useState<StepId>('ignite');
+  const stepEndIcons = {
+    ignite: <School aria-hidden="true" className="icon-anim icon-float" />,
+    architecture: <Hub aria-hidden="true" className="icon-anim icon-wiggle" />,
+    solara: <AutoAwesome aria-hidden="true" className="icon-anim icon-pulse" />,
+  } as const;
   const [animateTransform, setAnimateTransform] = useState(false);
   const [showFeatures, setShowFeatures] = useState(false);
   
@@ -430,7 +436,7 @@ export default function Framework({ onRevealNext }: FrameworkProps) {
                       <Button
                         variant="contained"
                         size="large"
-                        endIcon={<ArrowForward />}
+                        endIcon={stepEndIcons[activeStep]}
                         fullWidth
                         sx={{
                           backgroundColor: 'secondary.main',
@@ -497,7 +503,7 @@ export default function Framework({ onRevealNext }: FrameworkProps) {
             variant="contained"
             size="large"
             onClick={onRevealNext}
-            endIcon={<CurrencyRupee />}
+            endIcon={<CurrencyRupee aria-hidden="true" className="icon-anim icon-pulse" />}
             sx={{
               backgroundColor: 'secondary.main',
               color: '#ffffff',

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Box, Container, Button } from '@mui/material';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import { styled } from '@mui/material/styles';
 import CaseStudyModal from '@/components/landing/CaseStudyModal';
@@ -114,14 +114,14 @@ export default function Hero({ onRevealNext }: HeroProps) {
               variant="contained"
               size="large"
               onClick={onRevealNext}
-              endIcon={<ArrowForwardIcon />}
+              endIcon={<KeyboardDoubleArrowDownIcon aria-hidden="true" className="icon-anim icon-bounce-y" />}
             >
               Uncover the Crisis
             </PrimaryButton>
             <SecondaryButton
               variant="outlined"
               size="large"
-              startIcon={<AutoGraphIcon />}
+              startIcon={<AutoGraphIcon aria-hidden="true" className="icon-anim icon-float" />}
               onClick={openModal}
             >
               View Case Studies
