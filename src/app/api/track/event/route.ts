@@ -1,3 +1,6 @@
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { randomUUID } from 'crypto';
@@ -5,6 +8,10 @@ import prisma from '../../../../lib/prisma';
 
 const COOKIE_NAME = 'anon_id';
 const ONE_YEAR = 60 * 60 * 24 * 365;
+
+export async function GET() {
+  return NextResponse.json({ ok: true });
+}
 
 export async function POST(req: NextRequest) {
   const cookieStore = cookies() as any;
