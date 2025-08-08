@@ -108,7 +108,14 @@ export default function CourseWaitlistModal({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} maxWidth="md">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      maxWidth="md"
+      labelledById="course-modal-title"
+      describedById="course-modal-subtitle"
+      initialFocusSelector="#name"
+    >
       <div className="flex flex-col h-full max-h-[85vh]">
         {/* Header - Fixed */}
         <div className="text-center p-4 sm:p-6 pb-4">
@@ -122,10 +129,10 @@ export default function CourseWaitlistModal({
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
             </svg>
           </motion.div>
-          <h2 className="text-2xl md:text-3xl font-bold mb-2">
+          <h2 id="course-modal-title" className="text-2xl md:text-3xl font-bold mb-2">
             Join the {courseName} Waitlist
           </h2>
-          <p className="text-secondary mb-2">
+          <p id="course-modal-subtitle" className="text-secondary mb-2">
             Be among the first to experience our revolutionary learning approach
           </p>
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/20 text-green-400 rounded-full text-sm font-medium">

@@ -43,10 +43,9 @@ export default function GetStartedModal() {
     }
   };
 
-  const validateForm = (): boolean => {
+  const validateForm = (): Partial<FormData> => {
     const newErrors: Partial<FormData> = {};
 
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email) {
       newErrors.email = 'Email is required';
@@ -54,14 +53,12 @@ export default function GetStartedModal() {
       newErrors.email = 'Please enter a valid email';
     }
 
-    // Password validation
     if (!formData.password) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 8) {
       newErrors.password = 'Password must be at least 8 characters';
     }
 
-    // Sign up specific validations
     if (authMode === 'signup') {
       if (!formData.firstName) {
         newErrors.firstName = 'First name is required';
@@ -77,13 +74,19 @@ export default function GetStartedModal() {
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return newErrors;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!validateForm()) {
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      const firstKey = Object.keys(validationErrors)[0] as keyof FormData | undefined;
+      if (firstKey) {
+        const el = document.getElementById(firstKey);
+        if (el) el.focus();
+      }
       return;
     }
 
@@ -136,13 +139,13 @@ export default function GetStartedModal() {
         company: '',
       });
       closeModal();
-    } catch (error: any) {
-      console.error('Authentication error:', error);
+    } catch (err: unknown) {
+      console.error('Authentication error:', err);
       
-      if (error.response?.data?.message) {
-        setError(error.response.data.message);
-      } else if (error.message) {
-        setError(error.message);
+      if (axios.isAxiosError(err) && err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else if (err instanceof Error) {
+        setError(err.message);
       } else {
         setError('Something went wrong. Please try again.');
       }
@@ -169,6 +172,9 @@ export default function GetStartedModal() {
       onClose={closeModal}
       maxWidth="sm"
       title={authMode === 'signin' ? 'Welcome Back' : 'Get Started'}
+      labelledById="auth-modal-title"
+      describedById={error ? 'auth-modal-error' : undefined}
+      initialFocusSelector="#email"
     >
       <div className="max-w-md mx-auto">
         {/* Logo and Heading */}
@@ -181,7 +187,7 @@ export default function GetStartedModal() {
               </svg>
             </div>
           </div>
-          <h2 className="text-2xl font-bold text-primary mb-2">
+          <h2 id="auth-modal-title" className="text-2xl font-bold text-primary mb-2">
             {authMode === 'signin' ? 'Sign in to your account' : 'Create your account'}
           </h2>
           <p className="text-secondary text-sm">
@@ -299,7 +305,7 @@ export default function GetStartedModal() {
 
           {/* Error Display */}
           {error && (
-            <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20">
+            <div id="auth-modal-error" className="p-3 rounded-lg bg-red-500/10 border border-red-500/20" aria-live="polite">
               <p className="text-sm text-red-400">{error}</p>
             </div>
           )}
@@ -308,14 +314,7 @@ export default function GetStartedModal() {
           <button
             type="submit"
             disabled={isLoading}
-            className={`
-              w-full py-3 px-4 rounded-lg font-semibold text-white
-              bg-gradient-to-r from-secondary-accent to-secondary-accent-dark
-              hover:from-secondary-accent-dark hover:to-secondary-accent
-              transition-all duration-300 transform hover:scale-[1.02]
-              disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
-              focus:outline-none focus:ring-2 focus:ring-secondary-accent focus:ring-offset-2 focus:ring-offset-background-dark
-            `}
+            className="btn btn-primary w-full"
           >
             {isLoading ? (
               <span className="flex items-center justify-center gap-2">

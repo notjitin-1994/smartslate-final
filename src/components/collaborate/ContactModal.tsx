@@ -7,11 +7,9 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  Button,
   Box,
   Typography,
   IconButton,
-  CircularProgress,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
@@ -100,25 +98,6 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
-const SubmitButton = styled(Button)(({ theme }) => ({
-  backgroundColor: theme.palette.secondary.main,
-  color: '#ffffff',
-  padding: `${theme.spacing(1.5)} ${theme.spacing(4)}`,
-  borderRadius: theme.spacing(1),
-  textTransform: 'none',
-  fontWeight: 600,
-  fontSize: '1rem',
-  transition: 'all 0.3s ease',
-  '&:hover': {
-    backgroundColor: theme.palette.secondary.dark,
-    transform: 'translateY(-2px)',
-    boxShadow: '0 8px 20px rgba(79, 70, 229, 0.3)',
-  },
-  '&:disabled': {
-    backgroundColor: theme.palette.action.disabled,
-    color: theme.palette.text.disabled,
-  },
-}));
 
 export default function ContactModal({
   open,
@@ -167,6 +146,7 @@ export default function ContactModal({
       open={open} 
       onClose={handleClose}
       aria-labelledby="contact-dialog-title"
+      aria-describedby="contact-form-status"
     >
       <StyledDialogTitle id="contact-dialog-title">
         <Typography variant="h5" component="h2" sx={{ fontWeight: 600 }}>
@@ -188,6 +168,9 @@ export default function ContactModal({
           paddingTop: { xs: 2, sm: 3 },
           paddingBottom: { xs: 1, sm: 3 }
         }}>
+          <Box component="div" id="contact-form-status" role="status" aria-live="polite" sx={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0 0 0 0)' }}>
+            {loading ? 'Submitting your request...' : ''}
+          </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 2.5, sm: 3 } }}>
             {formFields.map((field) => (
               <StyledTextField
@@ -210,18 +193,23 @@ export default function ContactModal({
           padding: { xs: 2, sm: 3 }, 
           paddingTop: { xs: 1, sm: 0 }
         }}>
-          <SubmitButton
+          <button
             type="submit"
-            fullWidth
             disabled={loading}
-            startIcon={loading ? <CircularProgress size={20} /> : null}
-            sx={{
-              minHeight: { xs: '48px', sm: '44px' }, // Larger touch target on mobile
-              fontSize: { xs: '16px', sm: '1rem' }, // Prevent zoom on iOS
-            }}
+            className="btn btn-primary w-full"
           >
-            {loading ? 'Submitting...' : 'Submit'}
-          </SubmitButton>
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+                Submitting...
+              </span>
+            ) : (
+              'Submit'
+            )}
+          </button>
         </DialogActions>
       </form>
     </StyledDialog>
