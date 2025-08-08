@@ -10,6 +10,10 @@ interface ModalProps {
   maxWidth?: 'sm' | 'md' | 'lg';
   showCloseButton?: boolean;
   title?: string;
+  labelledById?: string;
+  describedById?: string;
+  initialFocusSelector?: string;
+  closeOnOverlayClick?: boolean;
 }
 
 export default function Modal({ 
@@ -18,27 +22,38 @@ export default function Modal({
   children, 
   maxWidth = 'md',
   showCloseButton = true,
-  title 
+  title,
+  labelledById,
+  describedById,
+  initialFocusSelector,
+  closeOnOverlayClick = true
 }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const previouslyFocusedElement = useRef<HTMLElement | null>(null);
   // Lock body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
-      // Store the currently focused element
       previouslyFocusedElement.current = document.activeElement as HTMLElement;
       document.body.style.overflow = 'hidden';
       
-      // Focus the modal after a short delay to ensure it's rendered
       setTimeout(() => {
         if (modalRef.current) {
-          modalRef.current.focus();
+          const root = modalRef.current;
+          let target: HTMLElement | null = null;
+          if (initialFocusSelector) {
+            target = root.querySelector(initialFocusSelector) as HTMLElement | null;
+          }
+          if (!target) {
+            const focusables = root.querySelectorAll<HTMLElement>(
+              'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
+            target = focusables[0] || root;
+          }
+          target.focus();
         }
       }, 100);
     } else {
       document.body.style.overflow = 'unset';
-      
-      // Return focus to the previously focused element
       if (previouslyFocusedElement.current) {
         previouslyFocusedElement.current.focus();
       }
@@ -46,7 +61,7 @@ export default function Modal({
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [isOpen]);
+  }, [isOpen, initialFocusSelector]);
 
   // Handle escape key and focus trap
   useEffect(() => {
@@ -99,7 +114,7 @@ export default function Modal({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
+            onClick={closeOnOverlayClick ? onClose : undefined}
             className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[1100]"
             aria-hidden="true"
           />
@@ -123,6 +138,8 @@ export default function Modal({
               role="dialog"
               aria-modal="true"
               aria-label={title || "Modal dialog"}
+              aria-labelledby={labelledById}
+              aria-describedby={describedById}
               tabIndex={-1}
             >
               {/* Close Button */}
