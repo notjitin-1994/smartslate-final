@@ -118,18 +118,14 @@ export default function AIFoundationsPage() {
             <div className="flex flex-col sm:flex-row gap-4 mt-8">
               <button
                 onClick={() => openModal(courseInfo)}
-                className="px-6 py-4 bg-secondary-accent text-white rounded-lg hover:bg-secondary-accent-dark 
-                         transition-colors duration-200 font-semibold flex items-center justify-center gap-2
-                         min-h-[48px] text-base"
+                className="btn btn-primary w-full sm:w-auto"
               >
                 Join Waitlist & Save {discountPercentage}%
                 <ArrowForwardIcon className="w-5 h-5" />
               </button>
               <Link
                 href="/collaborate"
-                className="px-6 py-4 border border-primary-accent/30 text-primary-accent rounded-lg
-                         hover:bg-primary-accent/10 transition-colors duration-200 font-semibold 
-                         flex items-center justify-center gap-2 min-h-[48px] text-base"
+                className="btn btn-tertiary w-full sm:w-auto"
               >
                 Request a Demo for Your Team
                 <ArrowForwardIcon className="w-5 h-5" />
@@ -352,8 +348,7 @@ export default function AIFoundationsPage() {
               </p>
               <button
                 onClick={() => openModal(courseInfo)}
-                className="px-8 py-4 bg-secondary-accent text-white rounded-lg hover:bg-secondary-accent-dark 
-                         transition-colors duration-200 font-semibold flex items-center gap-2"
+                className="btn btn-primary"
               >
                 Secure Your Founding Member Spot
                 <ArrowForwardIcon className="w-5 h-5" />
@@ -470,8 +465,7 @@ export default function AIFoundationsPage() {
 
                   <button
                     onClick={() => openModal(courseInfo)}
-                    className="w-full py-4 bg-secondary-accent text-white rounded-lg hover:bg-secondary-accent-dark 
-                             transition-colors duration-200 font-semibold flex items-center justify-center gap-2"
+                    className="btn btn-primary w-full"
                   >
                     Join & Secure {discountPercentage}% Off
                     <ArrowForwardIcon className="w-5 h-5" />
@@ -535,8 +529,7 @@ export default function AIFoundationsPage() {
               </div>
               <button
                 onClick={() => openModal(courseInfo)}
-                className="px-6 py-3 bg-secondary-accent text-white rounded-lg hover:bg-secondary-accent-dark 
-                         transition-colors duration-200 font-semibold flex items-center gap-2 whitespace-nowrap"
+                className="btn btn-primary whitespace-nowrap"
               >
                 Join & Save {discountPercentage}%
                 <ArrowForwardIcon className="w-4 h-4" />
