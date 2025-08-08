@@ -138,11 +138,16 @@ function Beams({ features, reduced }: { features: { angle: number }[]; reduced: 
 
 function Starfield() {
   const reduced = useReducedMotion();
+  // Deterministic pseudo-random generator to avoid SSR/client mismatches
+  const pseudoRandom = (seed: number) => {
+    const x = Math.sin(seed * 12.9898) * 43758.5453;
+    return x - Math.floor(x);
+  };
   const stars = Array.from({ length: 14 }).map((_, i) => ({
     id: i,
-    left: `${Math.random() * 100}%`,
-    top: `${Math.random() * 100}%`,
-    delay: i * 0.2
+    left: `${pseudoRandom(i + 1) * 100}%`,
+    top: `${pseudoRandom(i + 101) * 100}%`,
+    delay: i * 0.2,
   }));
 
   return (

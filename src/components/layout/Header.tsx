@@ -19,13 +19,14 @@ const HeaderWrapper = styled('header', {
   left: '50%',
   transform: 'translateX(-50%)',
   zIndex: 1000,
-  width: 'calc(100% - 32px)',
+  // Anchor width to the viewport to avoid body overflow affecting header width
+  width: 'calc(100vw - 32px)',
   maxWidth: theme.breakpoints.values.lg, // Use theme breakpoint for lg (1280px)
   opacity: hide ? 0 : 1,
   visibility: hide ? 'hidden' : 'visible',
   transition: 'opacity 0.3s ease, visibility 0.3s ease',
   [theme.breakpoints.down('sm')]: {
-    width: 'calc(100% - 16px)',
+    width: 'calc(100vw - 16px)',
     top: theme.spacing(1),
   },
 }));

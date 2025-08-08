@@ -119,13 +119,21 @@ function CornerCallout({ pos, delay, iconColor }: { pos: 'tl' | 'tr' | 'bl' | 'b
 function Particle({ delay }: { delay: number }) {
   const reduced = useReducedMotion();
   if (reduced) return null;
+  // Use deterministic offsets to avoid hydration mismatches
+  const pseudoRandom = (seed: number) => {
+    const x = Math.sin(seed * 12.9898) * 43758.5453;
+    return x - Math.floor(x);
+  };
+  const seed = Math.round(delay * 1000);
+  const offsetX = (pseudoRandom(seed) * 140) - 70;
+  const offsetY = (pseudoRandom(seed + 17) * 140) - 70;
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{
         opacity: [0, 1, 0],
-        x: [0, Math.random() * 140 - 70],
-        y: [0, Math.random() * 140 - 70],
+        x: [0, offsetX],
+        y: [0, offsetY],
         scale: [0.8, 1, 0.8],
       }}
       transition={{ duration: 3, delay, repeat: Infinity, repeatDelay: 1.2 }}
