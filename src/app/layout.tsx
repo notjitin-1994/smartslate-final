@@ -6,6 +6,8 @@ import Footer from "@/components/layout/Footer";
 import GetStartedModal from "@/components/auth/GetStartedModal";
 import TrackClient from "@/components/providers/TrackClient";
 import "./globals.css";
+import { Suspense } from "react";
+
 
 export const metadata: Metadata = {
   title: "SmartSlate - Build Your Future-Ready Workforce",
@@ -63,7 +65,9 @@ export default function RootLayout({
             </main>
             <Footer />
             <GetStartedModal />
-            <TrackClient />
+            <Suspense fallback={null}>
+              <TrackClient />
+            </Suspense>
           </AuthProvider>
         </ThemeProvider>
       </body>

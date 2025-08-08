@@ -16,49 +16,56 @@ export async function POST(req: NextRequest) {
 
   if (!anonId) {
     anonId = randomUUID();
-    await prisma.anonymousUserActivity.upsert({
-      where: { anonymousId: anonId },
-      create: {
-        id: randomUUID(),
-        anonymousId: anonId,
-        pageViews: [],
-        interactions: [],
-        courseViews: [],
-        updatedAt: new Date(),
-      },
-      update: { updatedAt: new Date() },
-    });
   }
+
+  const now = new Date();
+  const nowIso = now.toISOString();
 
   const record = await prisma.anonymousUserActivity.findUnique({
     where: { anonymousId: anonId },
     select: { pageViews: true, interactions: true },
   });
 
-  const nowIso = new Date().toISOString();
-
   if (type === 'pageview') {
-    const pageViews = Array.isArray(record?.pageViews) ? (record?.pageViews as any[]) : [];
-    pageViews.push({ ...data, ts: nowIso });
-
-    await prisma.anonymousUserActivity.update({
-      where: { anonymousId: anonId },
-      data: {
-        pageViews,
-        updatedAt: new Date(),
-      },
-    });
+    if (record) {
+      const pageViews = Array.isArray(record.pageViews) ? (record.pageViews as any[]) : [];
+      pageViews.push({ ...data, ts: nowIso });
+      await prisma.anonymousUserActivity.update({
+        where: { anonymousId: anonId },
+        data: { pageViews, updatedAt: now },
+      });
+    } else {
+      await prisma.anonymousUserActivity.create({
+        data: {
+          id: randomUUID(),
+          anonymousId: anonId,
+          pageViews: [{ ...data, ts: nowIso }],
+          interactions: [],
+          courseViews: [],
+          updatedAt: now,
+        },
+      });
+    }
   } else if (type === 'interaction') {
-    const interactions = Array.isArray(record?.interactions) ? (record?.interactions as any[]) : [];
-    interactions.push({ ...data, ts: nowIso });
-
-    await prisma.anonymousUserActivity.update({
-      where: { anonymousId: anonId },
-      data: {
-        interactions,
-        updatedAt: new Date(),
-      },
-    });
+    if (record) {
+      const interactions = Array.isArray(record.interactions) ? (record.interactions as any[]) : [];
+      interactions.push({ ...data, ts: nowIso });
+      await prisma.anonymousUserActivity.update({
+        where: { anonymousId: anonId },
+        data: { interactions, updatedAt: now },
+      });
+    } else {
+      await prisma.anonymousUserActivity.create({
+        data: {
+          id: randomUUID(),
+          anonymousId: anonId,
+          pageViews: [],
+          interactions: [{ ...data, ts: nowIso }],
+          courseViews: [],
+          updatedAt: now,
+        },
+      });
+    }
   } else {
     return NextResponse.json({ ok: false, error: 'Invalid type' }, { status: 400 });
   }
