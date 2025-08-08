@@ -24,6 +24,7 @@ export default function Pagination({
   return (
     <div className="flex justify-center items-center gap-4 py-8 select-none">
       <button
+        aria-label="Previous page"
         className="px-6 py-2 bg-gray-700 text-gray-50 border border-gray-600 rounded-md 
                    hover:bg-gray-600 transition-colors duration-200 disabled:opacity-50 
                    disabled:cursor-not-allowed flex items-center gap-2"
@@ -39,6 +40,7 @@ export default function Pagination({
       </span>
 
       <button
+        aria-label="Next page"
         className="px-6 py-2 bg-gray-700 text-gray-50 border border-gray-600 rounded-md 
                    hover:bg-gray-600 transition-colors duration-200 disabled:opacity-50 
                    disabled:cursor-not-allowed flex items-center gap-2"

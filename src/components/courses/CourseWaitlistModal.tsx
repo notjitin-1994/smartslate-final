@@ -325,7 +325,7 @@ export default function CourseWaitlistModal({
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 py-3 min-h-[48px] bg-gradient-to-r from-primary-accent to-secondary-accent hover:from-primary-accent-dark hover:to-secondary-accent-dark text-background-dark font-semibold rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5 text-base"
+                  className="btn btn-primary w-full sm:flex-1"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center justify-center gap-2">
@@ -342,7 +342,7 @@ export default function CourseWaitlistModal({
                 <button
                   type="button"
                   onClick={onClose}
-                  className="px-6 py-3 min-h-[48px] text-secondary hover:text-primary transition-colors text-base sm:w-auto w-full"
+                  className="btn btn-tertiary w-full sm:w-auto"
                 >
                   Maybe Later
                 </button>

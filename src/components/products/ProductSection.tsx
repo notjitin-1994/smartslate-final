@@ -134,7 +134,7 @@ export default function ProductSection({ product, reverse = false, children }: P
           {product.cta.link ? (
             <Link
               href={product.cta.link}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-secondary-accent text-white font-semibold rounded-lg hover:bg-secondary-accent-dark transform hover:-translate-y-0.5 transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="btn btn-primary"
             >
               {product.cta.text}
               {product.cta.icon}
@@ -142,7 +142,7 @@ export default function ProductSection({ product, reverse = false, children }: P
           ) : (
             <button
               onClick={handleCtaClick}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-secondary-accent text-white font-semibold rounded-lg hover:bg-secondary-accent-dark transform hover:-translate-y-0.5 transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="btn btn-primary"
             >
               {product.cta.text}
               {product.cta.icon}
@@ -152,7 +152,7 @@ export default function ProductSection({ product, reverse = false, children }: P
           {product.secondaryCta && (
             <Link
               href={product.secondaryCta.link}
-              className="inline-flex items-center justify-center px-6 py-3 border-2 border-primary-accent text-primary-accent font-semibold rounded-lg hover:bg-primary-accent/10 transition-all duration-300"
+              className="btn btn-tertiary"
             >
               {product.secondaryCta.text}
             </Link>

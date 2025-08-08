@@ -188,6 +188,15 @@ const theme = createTheme({
           padding: '10px 24px',
           fontSize: '1rem',
           transition: designTokens.transitions.fast,
+          '&:focus-visible': {
+            outline: '3px solid #a7dadb',
+            outlineOffset: '2px',
+          },
+          '&.Mui-disabled': {
+            opacity: 0.5,
+            cursor: 'not-allowed',
+            pointerEvents: 'none',
+          },
         },
         containedPrimary: {
           backgroundColor: '#4F46E5',
