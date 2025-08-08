@@ -245,7 +245,7 @@ type SectionId = 'economic' | 'employability' | 'skills' | 'opportunity';
 interface DataPoint {
   label: string;
   value: string;
-  icon: any;
+  icon: React.ElementType;
   trend?: 'up' | 'down';
 }
 
@@ -345,7 +345,7 @@ export default function TalentParadox({ onRevealNext }: TalentParadoxProps) {
                   lineHeight: 1.2 
                 }}
               >
-                India's <AccentText>Talent Paradox</AccentText>: Bridging the{' '}
+                India&apos;s <AccentText>Talent Paradox</AccentText>: Bridging the{' '}
                 <AccentText>Billion-Person Opportunity Gap</AccentText>
               </Typography>
               <Typography 
@@ -356,9 +356,9 @@ export default function TalentParadox({ onRevealNext }: TalentParadoxProps) {
                   lineHeight: 1.8
                 }}
               >
-                India's potential is a force of nature. But this immense human capital is facing a
-                widening chasm between aspiration and reality. This isn't just a challenge; it's a
-                multi-trillion-dollar crisis of scale. Let's break it down.
+                India&apos;s potential is a force of nature. But this immense human capital is facing a
+                widening chasm between aspiration and reality. This isn&apos;t just a challenge; it&apos;s a
+                multi-trillion-dollar crisis of scale. Let&apos;s break it down.
               </Typography>
             </Box>
 

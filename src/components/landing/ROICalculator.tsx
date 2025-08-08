@@ -508,7 +508,7 @@ export default function ROICalculator({ onRevealNext }: ROICalculatorProps) {
                               Potential annual gain by equipping your team with strategic AI skills.
                             </Typography>
                             <Typography variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
-                              Modeled on McKinsey & Accenture reports on AI adoption and revenue growth.
+                              Modeled on McKinsey &amp; Accenture reports on AI adoption and revenue growth.
                             </Typography>
                           </MetricCard>
                         </Grow>
@@ -599,7 +599,7 @@ export default function ROICalculator({ onRevealNext }: ROICalculatorProps) {
                     <>
                       <Box>
                         <Typography variant="h6" sx={{ mb: 3, fontWeight: 600 }}>
-                          What's your current monthly salary?
+                          What&apos;s your current monthly salary?
                         </Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                           <StyledSlider

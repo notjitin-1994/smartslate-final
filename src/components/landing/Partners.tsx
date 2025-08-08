@@ -341,7 +341,7 @@ const RatingStars = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(1),
 }));
 
-interface PartnersProps {}
+type PartnersProps = Record<string, never>
 
 type PartnerType = 'institutions' | 'businesses';
 
@@ -464,7 +464,7 @@ export default function Partners({}: PartnersProps) {
                 <TestimonialCard>
                   <QuoteIcon />
                   <Typography variant="body1" sx={{ fontSize: '1.125rem', lineHeight: 1.8, mb: 2 }}>
-                    "{content.institutions.testimonial.text}"
+                    {'\u201C'}{content.institutions.testimonial.text}{'\u201D'}
                   </Typography>
                   <TestimonialAuthor>
                     <Avatar sx={{ bgcolor: 'primary.main' }}>
@@ -511,7 +511,7 @@ export default function Partners({}: PartnersProps) {
                 
                 <CTAWrapper>
                   <Link href="/courses" passHref>
-                    <PrimaryCTAButton endIcon={<ArrowForward />} component="a">
+                    <PrimaryCTAButton endIcon={<ArrowForward />}>
                       {content.institutions.cta}
                     </PrimaryCTAButton>
                   </Link>
@@ -551,7 +551,7 @@ export default function Partners({}: PartnersProps) {
                 <TestimonialCard>
                   <QuoteIcon />
                   <Typography variant="body1" sx={{ fontSize: '1.125rem', lineHeight: 1.8, mb: 2 }}>
-                    "{content.businesses.testimonial.text}"
+                    {'\u201C'}{content.businesses.testimonial.text}{'\u201D'}
                   </Typography>
                   <TestimonialAuthor>
                     <Avatar sx={{ bgcolor: 'secondary.main' }}>

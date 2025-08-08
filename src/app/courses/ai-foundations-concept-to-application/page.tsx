@@ -18,6 +18,7 @@ import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import MessageIcon from '@mui/icons-material/Message';
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 import Link from 'next/link';
+import type { ElementType } from 'react';
 import CourseWaitlistModal from '@/components/courses/CourseWaitlistModal';
 import StandardHero from '@/components/ui/StandardHero';
 import { useCourseWaitlistModal } from '@/hooks/useCourseWaitlistModal';
@@ -40,7 +41,7 @@ const SectionWrapper = styled(Box)(({ theme }) => ({
 }));
 
 // Icon mapping
-const iconMap: { [key: string]: any } = {
+const iconMap: Record<string, ElementType> = {
   BarChart: BarChartIcon,
   Briefcase: BusinessCenterIcon,
   Sparkles: AutoAwesomeIcon,
@@ -120,7 +121,7 @@ export default function AIFoundationsPage() {
                 onClick={() => openModal(courseInfo)}
                 className="btn btn-primary w-full sm:w-auto"
               >
-                Join Waitlist & Save {discountPercentage}%
+                Join Waitlist &amp; Save {discountPercentage}%
                 <ArrowForwardIcon className="w-5 h-5" />
               </button>
               <Link
@@ -144,13 +145,13 @@ export default function AIFoundationsPage() {
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
                 <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                  The AI Revolution Isn't Coming. It's Here.
+                  The AI Revolution Isn&apos;t Coming. It&apos;s Here.
                 </h2>
                 <p className="text-lg text-secondary leading-relaxed">
-                  Artificial Intelligence is no longer a futuristic concept; it's a fundamental driver of
+                  Artificial Intelligence is no longer a futuristic concept; it&apos;s a fundamental driver of
                   modern business and innovation. AI literacy has become a non-negotiable career skill,
                   separating those who will shape the future from those who will be shaped by it. Acting
-                  now is not just an opportunity—it's a necessity for relevance and growth.
+                  now is not just an opportunity—it&apos;s a necessity for relevance and growth.
                 </p>
               </motion.div>
 
@@ -194,7 +195,7 @@ export default function AIFoundationsPage() {
                 From Theory to Tangible Transformation
               </h2>
               <p className="text-lg text-secondary max-w-3xl">
-                This course is designed to create a clear "before and after" in your professional life.
+                This course is designed to create a clear &quot;before and after&quot; in your professional life.
                 Select your profile to see the specific impact you can expect.
               </p>
             </motion.div>
@@ -340,10 +341,10 @@ export default function AIFoundationsPage() {
                 An Exclusive Invitation: Join Our Founding Cohort
               </h2>
               <p className="text-lg text-secondary max-w-3xl mb-8">
-                As a new course in our "Ignite Series," this is a unique opportunity. By joining now,
-                you're not just a student; you're a founding member. You'll not only master AI but also
+                As a new course in our &quot;Ignite Series,&quot; this is a unique opportunity. By joining now,
+                you&apos;re not just a student; you&apos;re a founding member. You&apos;ll not only master AI but also
                 help shape the future of this course with direct feedback opportunities. Be part of the
-                very first group to gain this expertise and receive a special 'Founding Member'
+                very first group to gain this expertise and receive a special &apos;Founding Member&apos;
                 designation on your certificate of completion.
               </p>
               <button
@@ -370,7 +371,7 @@ export default function AIFoundationsPage() {
                 Unlock Your Potential Today
               </h2>
               <p className="text-lg text-secondary max-w-3xl">
-                This is more than a course; it's an investment in your future. Secure your spot in the
+                This is more than a course; it&apos;s an investment in your future. Secure your spot in the
                 founding cohort and gain a career-defining skill set.
               </p>
             </motion.div>
@@ -390,7 +391,7 @@ export default function AIFoundationsPage() {
                       }
                     `}
                   >
-                    {tab === 'receive' ? 'What You\'ll Receive' : tab === 'individual' ? 'Individual' : 'For Teams'}
+                    {tab === 'receive' ? 'What You\u2019ll Receive' : tab === 'individual' ? 'Individual' : 'For Teams'}
                   </button>
                 ))}
               </div>
@@ -407,7 +408,7 @@ export default function AIFoundationsPage() {
                   className={`${!isDesktop ? 'lg:col-span-1' : 'row-span-2'} 
                             p-8 bg-[var(--container-bg)] rounded-lg border border-[var(--border-color)]`}
                 >
-                  <h3 className="text-2xl font-bold mb-8">What You'll Receive</h3>
+                  <h3 className="text-2xl font-bold mb-8">What You&apos;ll Receive</h3>
                   <div className="space-y-6">
                     {valuePropositions.map((item, index) => {
                       const Icon = iconMap[item.icon];
@@ -467,7 +468,7 @@ export default function AIFoundationsPage() {
                     onClick={() => openModal(courseInfo)}
                     className="btn btn-primary w-full"
                   >
-                    Join & Secure {discountPercentage}% Off
+                    Join &amp; Secure {discountPercentage}% Off
                     <ArrowForwardIcon className="w-5 h-5" />
                   </button>
                 </motion.div>
@@ -482,7 +483,7 @@ export default function AIFoundationsPage() {
                   className="p-8 bg-gradient-to-br from-gray-800/50 to-gray-900/50 rounded-lg border border-[var(--border-color)]
                            hover:border-primary-accent/50 transition-all duration-300"
                 >
-                  <h3 className="text-2xl font-bold mb-6 text-center">For Teams & Enterprise</h3>
+                  <h3 className="text-2xl font-bold mb-6 text-center">For Teams &amp; Enterprise</h3>
                   
                   <div className="space-y-4 mb-8">
                     {[
@@ -529,7 +530,7 @@ export default function AIFoundationsPage() {
                 onClick={() => openModal(courseInfo)}
                 className="btn btn-primary whitespace-nowrap"
               >
-                Join & Save {discountPercentage}%
+                Join &amp; Save {discountPercentage}%
                 <ArrowForwardIcon className="w-4 h-4" />
               </button>
             </div>
