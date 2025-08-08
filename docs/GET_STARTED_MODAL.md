@@ -51,13 +51,8 @@ import { useGetStartedModal } from '@/hooks/useGetStartedModal';
 const { isOpen, openModal, closeModal } = useGetStartedModal();
 ```
 
-### Backend Integration
-Currently, the form submission is simulated with a timeout. To connect to your backend:
-
-1. Replace the mock API call in `handleSubmit` function
-2. Add your authentication endpoints
-3. Handle successful authentication (e.g., store tokens, redirect)
-4. Implement proper error handling
+### Notes
+This project is frontend-only. The modal simulates submission and does not talk to a backend.
 
 ## Component Structure
 

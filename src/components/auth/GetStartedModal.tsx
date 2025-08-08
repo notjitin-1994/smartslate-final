@@ -1,12 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import Modal from '@/components/ui/Modal';
 import FormField from '@/components/ui/FormField';
 import { useGetStartedModal } from '@/hooks/useGetStartedModal';
-import { useAuth } from '@/contexts/AuthContext';
 
 type AuthMode = 'signin' | 'signup';
 
@@ -21,7 +19,6 @@ interface FormData {
 
 export default function GetStartedModal() {
   const { isOpen, closeModal } = useGetStartedModal();
-  const { login } = useAuth();
   const [authMode, setAuthMode] = useState<AuthMode>('signin');
   const [error, setError] = useState<string>('');
   const [formData, setFormData] = useState<FormData>({
@@ -92,66 +89,21 @@ export default function GetStartedModal() {
 
     setIsLoading(true);
     setError('');
-    
-    try {
-      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-      
-      if (authMode === 'signup') {
-        const registrationData = {
-          full_name: `${formData.firstName} ${formData.lastName}`.trim(),
-          email: formData.email,
-          phone_number: '', // Optional field
-          password: formData.password,
-        };
 
-        const response = await axios.post(`${apiBaseUrl}/auth/register`, registrationData);
-        
-        if (response.data.success) {
-          const loginResponse = await axios.post(`${apiBaseUrl}/auth/login`, {
-            email: formData.email,
-            password: formData.password,
-          });
-          
-          if (loginResponse.data.success) {
-            login(loginResponse.data.token, loginResponse.data.user);
-          }
-        }
-      } else {
-        const loginData = {
-          email: formData.email,
-          password: formData.password,
-        };
+    // No backend: simulate submission and close the modal
+    await new Promise((resolve) => setTimeout(resolve, 1200));
 
-        const response = await axios.post(`${apiBaseUrl}/auth/login`, loginData);
-        
-        if (response.data.success) {
-          login(response.data.token, response.data.user);
-        }
-      }
-      
-      // Reset form and close modal
-      setFormData({
-        email: '',
-        password: '',
-        confirmPassword: '',
-        firstName: '',
-        lastName: '',
-        company: '',
-      });
-      closeModal();
-    } catch (err: unknown) {
-      console.error('Authentication error:', err);
-      
-      if (axios.isAxiosError(err) && err.response?.data?.message) {
-        setError(err.response.data.message);
-      } else if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Something went wrong. Please try again.');
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    setFormData({
+      email: '',
+      password: '',
+      confirmPassword: '',
+      firstName: '',
+      lastName: '',
+      company: '',
+    });
+
+    setIsLoading(false);
+    closeModal();
   };
 
   const toggleAuthMode = () => {
@@ -345,11 +297,8 @@ export default function GetStartedModal() {
           <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
-              onClick={() => {
-                const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-                window.location.href = `${apiBaseUrl}/auth/google`;
-              }}
-              className="relative flex items-center justify-center gap-2 py-2.5 px-4 border border-white/10 rounded-lg hover:bg-white/5 transition-colors"
+              disabled
+              className="relative flex items-center justify-center gap-2 py-2.5 px-4 border border-white/10 rounded-lg hover:bg-white/5 transition-colors opacity-75 cursor-not-allowed"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -358,6 +307,7 @@ export default function GetStartedModal() {
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
               </svg>
               <span className="text-sm font-medium text-primary">Google</span>
+              <span className="absolute -top-2 -right-2 bg-primary-accent/20 text-primary-accent text-[10px] font-semibold px-1.5 py-0.5 rounded-full">Soon</span>
             </button>
             <button
               type="button"
