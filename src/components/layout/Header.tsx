@@ -46,10 +46,10 @@ const HeaderContent = styled(Container)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: `${theme.spacing(2)} ${theme.spacing(3)}`,
+  padding: `${theme.spacing(1)} ${theme.spacing(3)}`,
   width: '100%',
   [theme.breakpoints.down('sm')]: {
-    padding: `${theme.spacing(1.5)} ${theme.spacing(2)}`,
+    padding: `${theme.spacing(0.75)} ${theme.spacing(2)}`,
   },
 }));
 
@@ -57,13 +57,13 @@ const LogoLink = styled(Link)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   textDecoration: 'none',
-  height: 28,
+  height: 32,
   transition: 'transform 0.2s ease',
   '&:hover': {
     transform: 'scale(1.05)',
   },
   [theme.breakpoints.down('sm')]: {
-    height: 24,
+    height: 28,
   },
 }));
 
@@ -247,8 +247,8 @@ export default function Header() {
             <Image
               src="/logo.png"
               alt="SmartSlate Logo"
-              width={120}
-              height={28}
+              width={140}
+              height={32}
               priority
             />
           </LogoLink>
@@ -296,8 +296,8 @@ export default function Header() {
           <Image
             src="/logo.png"
             alt="SmartSlate Logo"
-            width={120}
-            height={28}
+            width={140}
+            height={32}
           />
           <IconButton
             onClick={() => setMobileMenuOpen(false)}
