@@ -532,3 +532,46 @@ a:focus-visible,
   padding: 6px 16px;
   font-size: 0.875rem;
 }
+/* CTA Icon Animations */
+@keyframes icon-bounce-y {
+  0%, 100% { transform: translateY(0) }
+  50% { transform: translateY(-3px) }
+}
+@keyframes icon-float {
+  0%, 100% { transform: translateY(0) }
+  50% { transform: translateY(-2px) }
+}
+@keyframes icon-pulse {
+  0% { transform: scale(1); opacity: 1 }
+  50% { transform: scale(1.05); opacity: 0.95 }
+  100% { transform: scale(1); opacity: 1 }
+}
+@keyframes icon-wiggle {
+  0%, 100% { transform: rotate(0deg) }
+  50% { transform: rotate(-6deg) }
+}
+.icon-anim {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-float { animation: icon-float 2.4s ease-in-out infinite }
+.icon-pulse { animation: icon-pulse 2.2s ease-in-out infinite }
+.icon-bounce-y { animation: icon-bounce-y 1.8s ease-in-out infinite }
+.icon-wiggle { animation: icon-wiggle 2.6s ease-in-out infinite }
+
+.btn:hover .icon-float,
+.btn:hover .icon-pulse,
+.btn:hover .icon-bounce-y,
+.btn:hover .icon-wiggle {
+  animation-duration: 1.4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon-float,
+  .icon-pulse,
+  .icon-bounce-y,
+  .icon-wiggle {
+    animation: none !important;
+  }
+}

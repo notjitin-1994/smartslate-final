@@ -18,6 +18,9 @@ import {
   FormatQuote,
   Star,
   AutoAwesome,
+  EventAvailable,
+  Description,
+  AutoGraph,
 } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -511,11 +514,11 @@ export default function Partners({}: PartnersProps) {
                 
                 <CTAWrapper>
                   <Link href="/courses" passHref>
-                    <PrimaryCTAButton endIcon={<ArrowForward />}>
+                    <PrimaryCTAButton endIcon={<School aria-hidden="true" className="icon-anim icon-float" />}>
                       {content.institutions.cta}
                     </PrimaryCTAButton>
                   </Link>
-                  <SecondaryCTAButton>
+                  <SecondaryCTAButton endIcon={<Description aria-hidden="true" className="icon-anim icon-float" />}>
                     Download Brochure
                   </SecondaryCTAButton>
                 </CTAWrapper>
@@ -597,10 +600,10 @@ export default function Partners({}: PartnersProps) {
                 </BenefitsList>
                 
                 <CTAWrapper>
-                  <PrimaryCTAButton endIcon={<ArrowForward />}>
+                  <PrimaryCTAButton endIcon={<EventAvailable aria-hidden="true" className="icon-anim icon-float" />}>
                     {content.businesses.cta}
                   </PrimaryCTAButton>
-                  <SecondaryCTAButton>
+                  <SecondaryCTAButton startIcon={<AutoGraph aria-hidden="true" className="icon-anim icon-float" />}>
                     View Case Studies
                   </SecondaryCTAButton>
                 </CTAWrapper>

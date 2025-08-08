@@ -9,6 +9,7 @@ import {
   Extension,
   TrendingUp,
   ArrowForward,
+  Hub,
   Group,
   School,
   Work,
@@ -509,7 +510,7 @@ export default function TalentParadox({ onRevealNext }: TalentParadoxProps) {
             variant="contained"
             size="large"
             onClick={onRevealNext}
-            endIcon={<ArrowForward />}
+            endIcon={<Hub aria-hidden="true" className="icon-anim icon-float" />}
             sx={{
               backgroundColor: 'secondary.main',
               color: '#ffffff',

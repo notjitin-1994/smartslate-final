@@ -715,7 +715,7 @@ export default function ROICalculator({ onRevealNext }: ROICalculatorProps) {
             variant="contained"
             size="large"
             onClick={onRevealNext}
-            endIcon={<ArrowForward />}
+            endIcon={<Handshake aria-hidden="true" className="icon-anim icon-float" />}
             sx={{
               backgroundColor: 'secondary.main',
               color: '#ffffff',
@@ -745,9 +745,8 @@ export default function ROICalculator({ onRevealNext }: ROICalculatorProps) {
                   left: '100%',
                 },
               },
-            }}
-          >
-            Meet Our Partners
+            }}>
+            Who we Partner with
           </Button>
         </Box>
       </Container>
