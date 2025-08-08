@@ -1,36 +1,34 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 
 export default function IgniteInfographic() {
+  const reduced = useReducedMotion();
   return (
     <div className="relative w-full h-full min-h-[400px] flex items-center justify-center">
       {/* Central Hub */}
       <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
+        initial={reduced ? false : { scale: 0.9, opacity: 0 }}
+        animate={reduced ? { opacity: 1 } : { scale: 1, opacity: 1 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
         className="relative"
       >
-        <div className="w-32 h-32 md:w-40 md:h-40 bg-gradient-to-br from-primary-accent to-primary-accent-dark rounded-full flex items-center justify-center shadow-lg shadow-primary-accent/20">
+        <div className="w-32 h-32 md:w-40 md:h-40 rounded-full flex items-center justify-center"
+             style={{ background: 'radial-gradient(60% 60% at 50% 50%, var(--primary-accent) 0%, var(--primary-accent-dark) 100%)', boxShadow: '0 6px 24px rgba(79,70,229,0.25)' }}>
           <svg className="w-16 h-16 md:w-20 md:h-20 text-background-dark" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
           </svg>
         </div>
         
         {/* Pulsing effect */}
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.5, 0, 0.5],
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute inset-0 bg-primary-accent rounded-full"
-        />
+        {!reduced && (
+          <motion.div
+            animate={{ scale: [1, 1.15, 1], opacity: [0.25, 0.05, 0.25] }}
+            transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute inset-0 rounded-full"
+            style={{ background: 'radial-gradient(60% 60% at 50% 50%, var(--primary-accent) 0%, transparent 65%)' }}
+          />
+        )}
       </motion.div>
 
       {/* Orbiting Elements */}
@@ -97,23 +95,23 @@ export default function IgniteInfographic() {
       {/* Connecting Lines */}
       <svg className="absolute inset-0 w-full h-full" style={{ zIndex: -1 }}>
         <motion.line
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
+          initial={reduced ? false : { pathLength: 0 }}
+          animate={reduced ? { opacity: 0.3 } : { pathLength: 1 }}
           transition={{ duration: 1, delay: 0.5 }}
           x1="15%" y1="50%" x2="35%" y2="50%"
           stroke="url(#gradient1)"
-          strokeWidth="2"
-          strokeDasharray="5 5"
+          strokeWidth="1.5"
+          strokeDasharray="3 4"
           opacity="0.3"
         />
         <motion.line
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
+          initial={reduced ? false : { pathLength: 0 }}
+          animate={reduced ? { opacity: 0.3 } : { pathLength: 1 }}
           transition={{ duration: 1, delay: 0.7 }}
           x1="65%" y1="50%" x2="85%" y2="50%"
           stroke="url(#gradient1)"
-          strokeWidth="2"
-          strokeDasharray="5 5"
+          strokeWidth="1.5"
+          strokeDasharray="3 4"
           opacity="0.3"
         />
         <defs>
@@ -123,6 +121,26 @@ export default function IgniteInfographic() {
           </linearGradient>
         </defs>
       </svg>
+        <motion.line
+          initial={reduced ? false : { pathLength: 0 }}
+          animate={reduced ? { opacity: 0.3 } : { pathLength: 1 }}
+          transition={{ duration: 1.1, delay: 0.9 }}
+          x1="50%" y1="18%" x2="50%" y2="35%"
+          stroke="url(#gradient1)"
+          strokeWidth="1.5"
+          strokeDasharray="3 4"
+          opacity="0.3"
+        />
+        <motion.line
+          initial={reduced ? false : { pathLength: 0 }}
+          animate={reduced ? { opacity: 0.3 } : { pathLength: 1 }}
+          transition={{ duration: 1.1, delay: 1.1 }}
+          x1="50%" y1="65%" x2="50%" y2="82%"
+          stroke="url(#gradient1)"
+          strokeWidth="1.5"
+          strokeDasharray="3 4"
+          opacity="0.3"
+        />
     </div>
   );
 }

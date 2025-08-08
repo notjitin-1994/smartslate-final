@@ -149,14 +149,6 @@ export default function ProductSection({ product, reverse = false, children }: P
             </button>
           )}
 
-          {product.secondaryCta && (
-            <Link
-              href={product.secondaryCta.link}
-              className="btn btn-tertiary"
-            >
-              {product.secondaryCta.text}
-            </Link>
-          )}
         </motion.div>
       </div>
 
