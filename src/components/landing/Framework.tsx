@@ -240,11 +240,11 @@ interface FrameworkProps {
 
 type StepId = 'ignite' | 'architecture' | 'solara';
 
-interface FeatureItem {
-  icon: any;
+type FeatureItem = {
+  icon: React.ElementType;
   title: string;
   description: string;
-}
+};
 
 const frameworkSteps = [
   {
@@ -336,8 +336,8 @@ export default function Framework({ onRevealNext }: FrameworkProps) {
             maxWidth: '65ch',
             lineHeight: 1.8
           }}>
-            We don't just train; we <AnimateText animate={animateTransform}>transform</AnimateText>. Our integrated
-            ecosystem bridges the critical gap between education and industry, creating a workforce that's ready for tomorrow.
+            We don&apos;t just train; we <AnimateText animate={animateTransform}>transform</AnimateText>. Our integrated
+            ecosystem bridges the critical gap between education and industry, creating a workforce that&apos;s ready for tomorrow.
           </Typography>
         </SectionHeader>
 

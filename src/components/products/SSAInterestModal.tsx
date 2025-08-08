@@ -111,7 +111,14 @@ export default function SSAInterestModal() {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={closeModal} maxWidth="lg">
+    <Modal
+      isOpen={isOpen}
+      onClose={closeModal}
+      maxWidth="lg"
+      labelledById="ssa-modal-title"
+      describedById="ssa-modal-subtitle"
+      initialFocusSelector="#name"
+    >
       <div className="flex flex-col h-full max-h-[85vh]">
         {/* Header - Fixed */}
         <div className="text-center p-4 sm:p-6 pb-4">
@@ -126,11 +133,11 @@ export default function SSAInterestModal() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
           </motion.div>
-          <h2 className="text-xl md:text-2xl font-bold mb-2">
+          <h2 id="ssa-modal-title" className="text-xl md:text-2xl font-bold mb-2">
             Strategic Skills Architecture
           </h2>
-          <p className="text-secondary text-sm max-w-md mx-auto">
-            Let's understand your unique needs to build a custom learning solution that drives real business impact
+          <p id="ssa-modal-subtitle" className="text-secondary text-sm max-w-md mx-auto">
+            Let&apos;s understand your unique needs to build a custom learning solution that drives real business impact
           </p>
         </div>
 

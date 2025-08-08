@@ -104,7 +104,14 @@ export default function SolaraInterestModal() {
   ];
 
   return (
-    <Modal isOpen={isOpen} onClose={closeModal} maxWidth="lg">
+    <Modal
+      isOpen={isOpen}
+      onClose={closeModal}
+      maxWidth="lg"
+      labelledById="solara-modal-title"
+      describedById="solara-modal-subtitle"
+      initialFocusSelector="#name"
+    >
       <div className="flex flex-col h-full max-h-[85vh]">
         {/* Header - Fixed */}
         <div className="text-center p-4 sm:p-6 pb-4">
@@ -123,10 +130,10 @@ export default function SolaraInterestModal() {
               AI
             </motion.span>
           </motion.div>
-          <h2 className="text-xl md:text-2xl font-bold mb-2">
+          <h2 id="solara-modal-title" className="text-xl md:text-2xl font-bold mb-2">
             Join the Solara Waitlist
           </h2>
-          <p className="text-secondary text-sm max-w-md mx-auto">
+          <p id="solara-modal-subtitle" className="text-secondary text-sm max-w-md mx-auto">
             Get early access to the AI-powered learning platform
           </p>
         </div>
@@ -148,9 +155,9 @@ export default function SolaraInterestModal() {
               </svg>
             </motion.div>
             <h3 className="text-xl font-semibold mb-2">Welcome to the Future!</h3>
-            <p className="text-secondary mb-1">You're officially on the Solara pioneer list.</p>
+            <p className="text-secondary mb-1">You&apos;re officially on the Solara pioneer list.</p>
             <p className="text-sm text-secondary/70">
-              We'll send you exclusive updates and early access opportunities.
+              We&apos;ll send you exclusive updates and early access opportunities.
             </p>
           </motion.div>
         ) : (
@@ -216,7 +223,7 @@ export default function SolaraInterestModal() {
                   name="role"
                   value={formData.role}
                   onChange={(value) => updateFormData('role', value)}
-                  placeholder="L&D Manager"
+                  placeholder="L&amp;D Manager"
                 />
               </div>
               <div className="mt-4">

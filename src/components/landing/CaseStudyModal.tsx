@@ -103,7 +103,14 @@ export default function CaseStudyModal({ isOpen, onClose }: CaseStudyModalProps)
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} maxWidth="md">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      maxWidth="md"
+      labelledById="case-modal-title"
+      describedById="case-modal-subtitle"
+      initialFocusSelector="#name"
+    >
       <div className="flex flex-col h-full max-h-[85vh]">
         {/* Header - Fixed */}
         <div className="text-center p-4 sm:p-6 pb-4">
@@ -117,10 +124,10 @@ export default function CaseStudyModal({ isOpen, onClose }: CaseStudyModalProps)
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </motion.div>
-          <h2 className="text-xl md:text-2xl font-bold mb-2">
+          <h2 id="case-modal-title" className="text-xl md:text-2xl font-bold mb-2">
             Explore Success Stories
           </h2>
-          <p className="text-secondary text-sm max-w-md mx-auto">
+          <p id="case-modal-subtitle" className="text-secondary text-sm max-w-md mx-auto">
             See how industry leaders transformed their workforce with SmartSlate
           </p>
         </div>
@@ -190,7 +197,7 @@ export default function CaseStudyModal({ isOpen, onClose }: CaseStudyModalProps)
                 name="role"
                 value={formData.role}
                 onChange={(value) => updateFormData('role', value)}
-                placeholder="Head of L&D"
+                placeholder="Head of L&amp;D"
               />
             </div>
 
