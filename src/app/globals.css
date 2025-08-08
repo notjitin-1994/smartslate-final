@@ -390,12 +390,12 @@ small { font-size: 0.875em; }
 
 /* Main content spacing to account for fixed header */
 .main-content {
-  padding-top: 100px; /* Header height (60px) + top spacing (16px) + buffer */
+  padding-top: 88px; /* Adjusted for reduced header height */
 }
 
 @media (max-width: 640px) {
   .main-content {
-    padding-top: 80px; /* Smaller header on mobile */
+    padding-top: 72px; /* Adjusted for reduced header height on mobile */
   }
 }
 

@@ -76,8 +76,8 @@ export default function Footer() {
           <Image
             src="/logo.png"
             alt="SmartSlate Logo"
-            width={100}
-            height={24}
+            width={140}
+            height={34}
             style={{ height: 'auto' }}
           />
         </LogoWrapper>
