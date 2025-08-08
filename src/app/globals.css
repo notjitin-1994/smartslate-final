@@ -113,6 +113,11 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Prevent horizontal overflow that can cause header bleed on mobile */
+html, body {
+  overflow-x: hidden;
+}
+
 /* Remove default button styles */
 button {
   font-family: inherit;

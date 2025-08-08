@@ -157,9 +157,9 @@ export default function ProductSection({ product, reverse = false, children }: P
         initial={{ opacity: 0, scale: 0.9 }}
         animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
         transition={{ duration: 0.8, delay: 0.3 }}
-        className={`relative ${reverse ? 'lg:col-start-1' : ''}`}
+        className={`relative overflow-hidden ${reverse ? 'lg:col-start-1' : ''}`}
       >
-        <div className="relative z-10 glass-effect-strong rounded-2xl p-8 lg:p-12 min-h-[400px] flex items-center justify-center">
+        <div className="relative z-10 glass-effect-strong rounded-2xl p-8 lg:p-12 min-h-[400px] flex items-center justify-center overflow-hidden">
           {children || (
             <div className="text-center">
               <span className="text-2xl font-bold text-primary-accent/30">
@@ -170,7 +170,7 @@ export default function ProductSection({ product, reverse = false, children }: P
         </div>
         
         {/* Decorative glow effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-accent/20 to-secondary-accent/20 rounded-2xl blur-2xl -z-10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-accent/20 to-secondary-accent/20 rounded-2xl blur-2xl -z-10 pointer-events-none" />
       </motion.div>
     </motion.section>
   );
