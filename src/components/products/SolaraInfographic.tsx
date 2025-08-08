@@ -16,6 +16,7 @@ export default function SolaraInfographic() {
     <div className="relative w-full h-full min-h-[420px] flex items-center justify-center">
       <Starfield />
       <Constellations />
+      <Nebula reduced={!!reduced} />
 
       <motion.div
         initial={reduced ? false : { scale: 0.9, opacity: 0 }}
@@ -43,9 +44,10 @@ export default function SolaraInfographic() {
               transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
             />
           )}
-          <span className="text-2xl md:text-3xl font-bold text-white">AI</span>
         </div>
       </motion.div>
+
+      <Orbits reduced={!!reduced} />
 
       <div className="absolute inset-0 z-10">
         {features.map((feature, index) => (
@@ -85,31 +87,6 @@ function OrbitingNode({ feature, index, reduced }: { feature: { name: string; ic
         </div>
       </motion.div>
 
-      <svg
-        className="absolute inset-0 w-full h-full pointer-events-none"
-        style={{
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '200%',
-          height: '200%',
-        }}
-        aria-hidden
-      >
-        <motion.circle
-          initial={reduced ? { opacity: 0.18 } : { pathLength: 0 }}
-          animate={reduced ? { opacity: 0.18 } : { pathLength: 1 }}
-          transition={{ duration: 1.8, delay: 0.5 + index * 0.1 }}
-          cx="50%"
-          cy="50%"
-          r={mobileRadius}
-          fill="none"
-          stroke="url(#gradient-orbit-blue)"
-          strokeWidth="1"
-          strokeDasharray="2 4"
-          opacity="0.18"
-        />
-      </svg>
 
       <style jsx>{`
         @media (min-width: 768px) {
@@ -181,6 +158,7 @@ function Starfield() {
             width: '3px',
             height: '3px',
             left: s.left,
+
             top: s.top,
             background: 'radial-gradient(circle, rgba(255,255,255,0.9), rgba(255,255,255,0) 60%)'
           }}
@@ -207,6 +185,63 @@ function Starfield() {
         />
       ))}
     </>
+  );
+}
+
+function Orbits({ reduced }: { reduced: boolean }) {
+  const radii = [80, 115, 150];
+  return (
+    <svg className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden>
+      {radii.map((r, i) => (
+        <motion.circle
+          key={r}
+          cx="50%"
+          cy="50%"
+          r={r}
+          fill="none"
+          stroke="url(#gradient-orbit-blue)"
+          strokeWidth="1.2"
+          strokeDasharray="4 10"
+          opacity="0.18"
+          initial={reduced ? { opacity: 0.18 } : { strokeDashoffset: 0 }}
+          animate={reduced ? { opacity: 0.18 } : { strokeDashoffset: 56 }}
+          transition={{ duration: 14 + i * 2, repeat: reduced ? 0 : Infinity, ease: 'linear' }}
+        />
+      ))}
+    </svg>
+  );
+}
+
+function Nebula({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden>
+      <motion.div
+        className="rounded-full"
+        style={{
+          width: 380,
+          height: 380,
+          background: 'radial-gradient(45% 55% at 50% 50%, rgba(79,70,229,0.18) 0%, rgba(79,70,229,0.08) 35%, rgba(79,70,229,0) 70%)',
+          filter: 'blur(8px)',
+        }}
+        initial={{ opacity: 0.5, scale: 0.96 }}
+        animate={reduced ? { opacity: 0.5, scale: 0.96 } : { opacity: [0.45, 0.6, 0.45], scale: [0.96, 1.02, 0.96] }}
+        transition={{ duration: 9, repeat: reduced ? 0 : Infinity, ease: 'easeInOut' }}
+      />
+      {!reduced && (
+        <motion.div
+          className="absolute rounded-full"
+          style={{
+            width: 460,
+            height: 300,
+            background: 'radial-gradient(50% 60% at 50% 50%, rgba(79,70,229,0.15) 0%, rgba(79,70,229,0.06) 40%, rgba(79,70,229,0) 75%)',
+            filter: 'blur(10px)',
+          }}
+          initial={{ rotate: 0, opacity: 0.35 }}
+          animate={{ rotate: 360, opacity: [0.3, 0.45, 0.3] }}
+          transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
+        />
+      )}
+    </div>
   );
 }
 
