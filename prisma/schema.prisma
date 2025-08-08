@@ -122,3 +122,136 @@ model users {
   password_hash String?   @db.VarChar(255)
   created_at    DateTime? @default(now()) @db.Timestamp(6)
 }
+
+/// Stores submissions from the course waitlist modal
+model CourseWaitlistLead {
+  id                  String   @id @default(cuid())
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  anonymousId         String?
+
+  // Course context (not always backed by a Course record)
+  courseSlug          String?
+  courseName          String?
+
+  // Contact information
+  name                String
+  email               String
+  phone               String?
+
+  // Professional context
+  company             String?
+  role                String?
+  teamSize            String?
+
+  // Learning preferences
+  learningGoals       String
+  preferredStartDate  String?
+  learningFormat      String
+
+  // Additional
+  experience          String?
+  referralSource      String?
+  additionalInfo      String?
+
+  @@index([email])
+  @@index([courseSlug])
+}
+
+/// Stores submissions from the Solara interest modal (product waitlist)
+model SolaraWaitlistLead {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  anonymousId     String?
+
+  // Contact
+  name            String
+  email           String
+  phone           String?
+
+  // Professional
+  company         String?
+  role            String?
+  companySize     String?
+
+  // Interest
+  primaryInterest String
+  specificFeatures String[]
+  useCase         String?
+  timeline        String?
+
+  // Additional
+  additionalInfo  String?
+
+  @@index([email])
+}
+
+/// Stores submissions from the SSA (Strategic Skills Architecture) modal
+model SSAInquiry {
+  id                String   @id @default(cuid())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  anonymousId       String?
+
+  // Step 1: Basic Information
+  name              String
+  email             String
+  phone             String
+  company           String
+  role              String
+
+  // Step 2: Company Context
+  companySize       String
+  industry          String
+  currentChallenges String
+
+  // Step 3: Specific Needs
+  timeline          String
+  budget            String?
+  specificGoals     String
+  howDidYouHear     String?
+
+  @@index([email])
+}
+
+/// Stores submissions from the Case Study modal
+model CaseStudyRequest {
+  id                 String   @id @default(cuid())
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  anonymousId        String?
+
+  // Contact / Professional
+  name               String
+  email              String
+  phone              String?
+  company            String
+  role               String?
+  industry           String?
+
+  // Interest
+  caseStudyType      String
+  specificInterests  String[]
+  currentChallenges  String?
+  followUp           String?
+
+  @@index([email])
+}
+
+/// Generic capture for Partner/Collaborate modal with dynamic fields
+model PartnerInquiry {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  anonymousId String?
+
+  title       String
+  data        Json
+
+  contactEmail String?
+  contactName  String?
+
+  @@index([title])
+  @@index([contactEmail])
+}

@@ -74,8 +74,19 @@ export default function SSAInterestModal() {
 
     setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      const res = await fetch('/api/leads/ssa', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) throw new Error('Failed to submit');
+    } catch (err) {
+      setIsSubmitting(false);
+      alert('There was an error submitting your request. Please try again.');
+      return;
+    }
 
     setIsSubmitting(false);
     setIsSuccess(true);

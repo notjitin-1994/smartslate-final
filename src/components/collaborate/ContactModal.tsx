@@ -117,8 +117,13 @@ export default function ContactModal({
     setLoading(true);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const res = await fetch('/api/leads/partner', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ title, data: formData }),
+      });
+      if (!res.ok) throw new Error('Failed to submit');
       
       console.log('Form submitted:', { title, data: formData });
       alert(`Thank you for your interest! We have received your submission for "${title}".`);
