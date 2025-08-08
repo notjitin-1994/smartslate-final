@@ -413,7 +413,7 @@ export default function SSAInterestModal() {
                   <button
                     type="button"
                     onClick={handleBack}
-                    className="px-6 py-3 min-h-[48px] border-2 border-primary-accent text-primary-accent font-semibold rounded-lg hover:bg-primary-accent/10 transition-all duration-200 text-base"
+                    className="btn btn-tertiary"
                   >
                     Back
                   </button>
@@ -422,7 +422,7 @@ export default function SSAInterestModal() {
                   <button
                     type="button"
                     onClick={closeModal}
-                    className="px-6 py-3 min-h-[48px] text-secondary hover:text-primary transition-colors text-base"
+                    className="btn btn-tertiary"
                   >
                     Cancel
                   </button>
@@ -430,7 +430,7 @@ export default function SSAInterestModal() {
                     <button
                       type="button"
                       onClick={handleNext}
-                      className="px-8 py-3 min-h-[48px] bg-secondary-accent hover:bg-secondary-accent-dark text-white font-semibold rounded-lg transition-all duration-200 transform hover:-translate-y-0.5 text-base"
+                      className="btn btn-primary btn-lg"
                     >
                       Next
                     </button>
@@ -438,7 +438,7 @@ export default function SSAInterestModal() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="px-8 py-3 min-h-[48px] bg-gradient-to-r from-primary-accent to-primary-accent-dark hover:from-primary-accent-dark hover:to-primary-accent text-background-dark font-semibold rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5 text-base"
+                      className="btn btn-secondary btn-lg"
                     >
                       {isSubmitting ? (
                         <span className="flex items-center gap-2">

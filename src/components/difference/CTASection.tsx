@@ -60,7 +60,7 @@ export default function CTASection() {
               whileHover={{ scale: 1.03, y: -2 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.2 }}
-              className="group relative px-6 sm:px-8 md:px-10 py-2.5 sm:py-3 md:py-4 bg-gradient-to-r from-[#4F46E5] to-[#3730A3] text-white font-bold text-sm sm:text-base md:text-lg rounded-lg sm:rounded-xl shadow-lg hover:shadow-2xl hover:shadow-[#4F46E5]/30 transition-all duration-300 overflow-hidden w-full sm:w-auto"
+              className="btn btn-primary w-full sm:w-auto"
             >
               <span className="relative z-10">Schedule a Consultation</span>
               <div className="absolute inset-0 bg-gradient-to-r from-[#3730A3] to-[#4F46E5] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -72,7 +72,7 @@ export default function CTASection() {
               whileHover={{ scale: 1.03, y: -2 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.2 }}
-              className="group relative px-6 sm:px-8 md:px-10 py-2.5 sm:py-3 md:py-4 border-2 border-primary-accent text-primary-accent font-bold text-sm sm:text-base md:text-lg rounded-lg sm:rounded-xl hover:bg-primary-accent/10 hover:border-primary-accent/80 transition-all duration-300 w-full sm:w-auto"
+              className="btn btn-tertiary w-full sm:w-auto"
             >
               <span className="relative z-10">Explore Our Solutions</span>
             </motion.button>

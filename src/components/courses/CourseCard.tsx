@@ -98,17 +98,13 @@ export default function CourseCard({ course, index, onWaitlistClick }: CourseCar
           <div className="flex flex-col sm:flex-row gap-3 mt-auto">
             <Link
               href={`/courses/${course.slug}`}
-              className="flex-1 text-center px-4 py-3 border border-primary-accent/30 text-primary-accent
-                       rounded-md hover:bg-primary-accent/10 transition-colors duration-200 
-                       min-h-[44px] flex items-center justify-center"
+              className="btn btn-tertiary flex-1 text-center"
             >
               Learn More
             </Link>
             <button
               onClick={onWaitlistClick}
-              className="flex-1 px-4 py-3 bg-secondary-accent text-white rounded-md
-                       hover:bg-secondary-accent-dark transition-colors duration-200 font-semibold
-                       min-h-[44px] flex items-center justify-center"
+              className="btn btn-primary flex-1"
             >
               Join Waitlist
             </button>
