@@ -47,7 +47,8 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   icons: {
     icon: [{ url: "/logo-swirl.png" }],
-    apple: [{ url: "/logo-swirl.png" }]
+    apple: [{ url: "/logo-swirl.png" }],
+    shortcut: [{ url: "/logo-swirl.png" }]
   }
 };
 
