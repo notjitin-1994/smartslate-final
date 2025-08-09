@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { StackProvider, StackTheme } from "@stackframe/stack";
+import { stackServerApp } from "../stack";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Header from "@/components/layout/Header";
@@ -56,7 +58,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body><StackProvider app={stackServerApp}><StackTheme>
         <ThemeProvider>
           <AuthProvider>
             <Header />
@@ -70,7 +72,7 @@ export default function RootLayout({
             </Suspense>
           </AuthProvider>
         </ThemeProvider>
-      </body>
+      </StackTheme></StackProvider></body>
     </html>
   );
 }

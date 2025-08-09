@@ -1,5 +1,6 @@
 export type RoleName =
   | 'owner'
+  | 'learner'
   | 'smartslateCourse'
   | 'smartslateSales'
   | 'smartslateSupport'
@@ -71,6 +72,10 @@ export const ROLE_DEFINITIONS: Record<RoleName, RoleDefinition> = {
       'api:access',
       'emergency:override',
     ],
+  },
+  learner: {
+    description: 'Default role for all users. Can browse and read courses.',
+    permissions: ['course:read'],
   },
   smartslateCourse: {
     description: 'Course Manager',

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Modal from '@/components/ui/Modal';
 import FormField from '@/components/ui/FormField';
 import { useGetStartedModal } from '@/hooks/useGetStartedModal';
+import { useAuth } from '@/contexts/AuthContext';
 
 type AuthMode = 'signin' | 'signup';
 
@@ -19,6 +20,7 @@ interface FormData {
 
 export default function GetStartedModal() {
   const { isOpen, closeModal } = useGetStartedModal();
+  const { login } = useAuth();
   const [authMode, setAuthMode] = useState<AuthMode>('signin');
   const [error, setError] = useState<string>('');
   const [formData, setFormData] = useState<FormData>({
@@ -90,8 +92,53 @@ export default function GetStartedModal() {
     setIsLoading(true);
     setError('');
 
-    // No backend: simulate submission and close the modal
-    await new Promise((resolve) => setTimeout(resolve, 1200));
+    try {
+      if (authMode === 'signup') {
+        const res = await fetch('/api/auth/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password,
+            confirmPassword: formData.confirmPassword,
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            company: formData.company,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error || 'Failed to create account');
+        }
+
+        // Client-only session: synthesize a short-lived JWT-like token so the UI updates immediately.
+        const header = { alg: 'none', typ: 'JWT' };
+        const payload = {
+          email: formData.email,
+          exp: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60, // 7 days
+        };
+        const toBase64 = (obj: unknown) =>
+          btoa(JSON.stringify(obj))
+            .replace(/=/g, '')
+            .replace(/\+/g, '-')
+            .replace(/\//g, '_');
+        const token = `${toBase64(header)}.${toBase64(payload)}.`;
+
+        const fullName = `${formData.firstName || ''} ${formData.lastName || ''}`.trim();
+        login(token, {
+          id: Date.now(),
+          full_name: fullName || (formData.email.split('@')[0] ?? 'User'),
+          email: formData.email,
+        });
+      } else {
+        // Placeholder for sign-in integration
+        await new Promise((resolve) => setTimeout(resolve, 600));
+      }
+    } catch (err: any) {
+      setIsLoading(false);
+      setError(err?.message || 'Something went wrong');
+      return;
+    }
 
     setFormData({
       email: '',

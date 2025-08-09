@@ -49,10 +49,10 @@ export async function ensureDefaultRolesForUser(userId: string, email: string | 
     return getUserRoleIds(userId);
   }
 
-  // If user has no roles, assign default support role
+  // If user has no roles, assign default learner role
   const existing = await getUserRoleIds(userId);
   if (existing.length === 0) {
-    await assignRoleToUser(userId, 'smartslateSupport');
+    await assignRoleToUser(userId, 'learner');
   }
   return getUserRoleIds(userId);
 }

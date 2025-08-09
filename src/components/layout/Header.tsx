@@ -1,15 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Box, Button, IconButton, Container, Menu, MenuItem } from '@mui/material';
+import { Box, Button, IconButton, Container, Menu, MenuItem, Avatar } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 import Link from 'next/link';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useGetStartedModal } from '@/hooks/useGetStartedModal';
 import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 
 const HeaderWrapper = styled('header', {
   shouldForwardProp: (prop) => prop !== 'hide'
@@ -212,6 +214,15 @@ export default function Header() {
   const [userMenuAnchor, setUserMenuAnchor] = useState<null | HTMLElement>(null);
   const { openModal } = useGetStartedModal();
   const { isAuthenticated, user, logout } = useAuth();
+  const router = useRouter();
+
+  const userInitials = (name?: string) => {
+    if (!name) return 'U';
+    const parts = name.trim().split(/\s+/);
+    const first = parts[0]?.[0] || '';
+    const second = parts.length > 1 ? parts[1][0] : '';
+    return (first + second).toUpperCase();
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -264,15 +275,33 @@ export default function Header() {
             </DesktopNav>
 
             {isAuthenticated ? (
-              <CTAButton 
-                variant="contained" 
+              <Button
+                variant="outlined"
                 onClick={(e) => setUserMenuAnchor(e.currentTarget)}
-                startIcon={<AccountCircleIcon />}
+                sx={{
+                  borderColor: 'rgba(42,58,74,0.6)',
+                  color: 'text.primary',
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  borderRadius: 2,
+                  px: 1.25,
+                  py: 0.5,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                  '&:hover': { borderColor: 'primary.main', background: 'rgba(255,255,255,0.04)' },
+                }}
               >
-                {user?.full_name?.split(' ')[0] || 'Profile'}
-              </CTAButton>
+                <Avatar sx={{ width: 28, height: 28, bgcolor: 'primary.main' }}>
+                  {userInitials(user?.full_name)}
+                </Avatar>
+                <Box component="span" sx={{ display: { xs: 'none', md: 'inline' } }}>
+                  {user?.full_name?.split(' ')[0] || 'Account'}
+                </Box>
+                <KeyboardArrowDownIcon fontSize="small" />
+              </Button>
             ) : (
-              <CTAButton variant="contained" onClick={openModal}>
+              <CTAButton variant="contained" onClick={() => (window.location.href = '/handler/sign-up')}>
                 Get Started
               </CTAButton>
             )}
@@ -355,6 +384,29 @@ export default function Header() {
           }
         }}
       >
+        <Box sx={{ px: 2, py: 1.5, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          <Avatar sx={{ width: 28, height: 28, bgcolor: 'primary.main' }}>
+            {userInitials(user?.full_name)}
+          </Avatar>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Box component="span" sx={{ fontSize: 14, fontWeight: 600, color: 'text.primary' }}>
+              {user?.full_name || 'User'}
+            </Box>
+            <Box component="span" sx={{ fontSize: 12, color: 'text.secondary' }}>
+              {user?.email}
+            </Box>
+          </Box>
+        </Box>
+        <Box sx={{ height: 1, bgcolor: 'rgba(255,255,255,0.06)', mx: 1 }} />
+        <MenuItem 
+          onClick={() => {
+            setUserMenuAnchor(null);
+            router.push('/courses');
+          }}
+          sx={{ color: 'text.primary' }}
+        >
+          My Courses
+        </MenuItem>
         <MenuItem 
           onClick={() => {
             setUserMenuAnchor(null);
