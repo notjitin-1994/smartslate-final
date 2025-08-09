@@ -114,6 +114,7 @@ export default function GetStartedModal() {
         // Client-only session: synthesize a short-lived JWT-like token so the UI updates immediately.
         const header = { alg: 'none', typ: 'JWT' };
         const payload = {
+          sub: formData.email, // Add subject claim
           email: formData.email,
           exp: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60, // 7 days
         };

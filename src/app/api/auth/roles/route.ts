@@ -25,11 +25,21 @@ export const POST = withAuth(async (req: NextRequest) => {
   const auth = await getAuthContextFromRequest(req);
   if (!auth.sub) return NextResponse.json({ ok: false }, { status: 401 });
 
-  const dbUser = await (await import('@/lib/rbac-db')).getUserByEmail(auth.email || '');
-  if (!dbUser) return NextResponse.json({ ok: true, roles: [] });
+  try {
+    const dbUser = await (await import('@/lib/rbac-db')).getUserByEmail(auth.email || '');
+    if (!dbUser) return NextResponse.json({ ok: true, roles: [] });
 
-  const roles = await ensureDefaultRolesForUser(dbUser.id, auth.email);
-  return NextResponse.json({ ok: true, roles });
+    const roles = await ensureDefaultRolesForUser(dbUser.id, auth.email);
+    return NextResponse.json({ ok: true, roles });
+  } catch (error: any) {
+    // If database is unavailable, use dev override
+    if (error.code === 'P1001' || error.message?.includes('Can\'t reach database server')) {
+      console.error('Database unavailable, using dev override for roles');
+      const devOverride = await import('./dev-override');
+      return devOverride.POST(req);
+    }
+    throw error;
+  }
 });
 
 

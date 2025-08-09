@@ -3,60 +3,58 @@ export const dynamic = 'force-dynamic';
 
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { getUserRoleIds } from '@/lib/rbac-db';
+import { ensureDefaultRolesForUser } from '@/lib/rbac-db';
+import { randomUUID } from 'crypto';
 
-export const GET = async (req: NextRequest) => {
+/**
+ * Verifies if a user exists in the database and creates them if they don't.
+ * This is used to sync Stack Auth users with our database.
+ */
+export const POST = async (req: NextRequest) => {
   try {
-    const { searchParams } = new URL(req.url);
-    const email = searchParams.get('email');
+    const { email, name, company } = await req.json();
 
     if (!email) {
-      return NextResponse.json({ error: 'Email parameter required' }, { status: 400 });
+      return NextResponse.json({ ok: false, error: 'Email is required' }, { status: 400 });
     }
 
-    // Check if user exists in database
-    const user = await prisma.user.findUnique({ 
-      where: { email },
-      include: {
-        UserRole: {
-          include: {
-            Role: true
-          }
-        }
-      }
-    });
-
+    // Check if user already exists
+    let user = await prisma.user.findUnique({ where: { email } });
+    
     if (!user) {
-      return NextResponse.json({ 
-        exists: false, 
-        message: 'User not found in database' 
+      // Create new user
+      console.log(`Creating new user for ${email} in database...`);
+      user = await prisma.user.create({
+        data: {
+          id: randomUUID(),
+          email,
+          name: name || null,
+          company: company || null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       });
+      console.log(`User created with ID: ${user.id}`);
+
+      // Assign default role
+      const roles = await ensureDefaultRolesForUser(user.id, email);
+      console.log(`Roles assigned: ${roles.join(', ')}`);
+    } else {
+      console.log(`User ${email} already exists in database`);
     }
 
-    // Get user roles
-    const roleIds = await getUserRoleIds(user.id);
-
-    return NextResponse.json({
-      exists: true,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        company: user.company,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt
-      },
-      roles: user.UserRole.map(ur => ({
-        id: ur.Role.id,
-        description: ur.Role.description
-      })),
-      hasLearnerRole: roleIds.includes('learner')
-    });
-
-  } catch (error) {
-    console.error('Verify user API error:', error);
     return NextResponse.json({ 
-      error: error instanceof Error ? error.message : 'Unexpected error' 
+      ok: true, 
+      userId: user.id,
+      email: user.email,
+      name: user.name,
+      isNew: !user
+    });
+  } catch (error) {
+    console.error('Error in verify-user:', error);
+    return NextResponse.json({ 
+      ok: false, 
+      error: error instanceof Error ? error.message : 'Unknown error' 
     }, { status: 500 });
   }
 };

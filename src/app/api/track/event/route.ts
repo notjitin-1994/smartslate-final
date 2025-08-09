@@ -14,7 +14,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const cookieStore = cookies() as any;
+  const cookieStore = await cookies();
   let anonId = cookieStore.get(COOKIE_NAME)?.value as string | undefined;
 
   const body = await req.json().catch(() => ({} as any));

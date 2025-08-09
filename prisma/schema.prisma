@@ -126,34 +126,24 @@ model users {
 
 /// Stores submissions from the course waitlist modal
 model CourseWaitlistLead {
-  id                  String   @id @default(cuid())
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-  anonymousId         String?
-
-  // Course context (not always backed by a Course record)
-  courseSlug          String?
-  courseName          String?
-
-  // Contact information
-  name                String
-  email               String
-  phone               String?
-
-  // Professional context
-  company             String?
-  role                String?
-  teamSize            String?
-
-  // Learning preferences
-  learningGoals       String
-  preferredStartDate  String?
-  learningFormat      String
-
-  // Additional
-  experience          String?
-  referralSource      String?
-  additionalInfo      String?
+  id                 String   @id @default(cuid())
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  anonymousId        String?
+  courseSlug         String?
+  courseName         String?
+  name               String
+  email              String
+  phone              String?
+  company            String?
+  role               String?
+  teamSize           String?
+  learningGoals      String
+  preferredStartDate String?
+  learningFormat     String
+  experience         String?
+  referralSource     String?
+  additionalInfo     String?
 
   @@index([email])
   @@index([courseSlug])
@@ -161,29 +151,21 @@ model CourseWaitlistLead {
 
 /// Stores submissions from the Solara interest modal (product waitlist)
 model SolaraWaitlistLead {
-  id              String   @id @default(cuid())
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  anonymousId     String?
-
-  // Contact
-  name            String
-  email           String
-  phone           String?
-
-  // Professional
-  company         String?
-  role            String?
-  companySize     String?
-
-  // Interest
-  primaryInterest String
+  id               String   @id @default(cuid())
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  anonymousId      String?
+  name             String
+  email            String
+  phone            String?
+  company          String?
+  role             String?
+  companySize      String?
+  primaryInterest  String
   specificFeatures String[]
-  useCase         String?
-  timeline        String?
-
-  // Additional
-  additionalInfo  String?
+  useCase          String?
+  timeline         String?
+  additionalInfo   String?
 
   @@index([email])
 }
@@ -194,20 +176,14 @@ model SSAInquiry {
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   anonymousId       String?
-
-  // Step 1: Basic Information
   name              String
   email             String
   phone             String
   company           String
   role              String
-
-  // Step 2: Company Context
   companySize       String
   industry          String
   currentChallenges String
-
-  // Step 3: Specific Needs
   timeline          String
   budget            String?
   specificGoals     String
@@ -218,38 +194,32 @@ model SSAInquiry {
 
 /// Stores submissions from the Case Study modal
 model CaseStudyRequest {
-  id                 String   @id @default(cuid())
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  anonymousId        String?
-
-  // Contact / Professional
-  name               String
-  email              String
-  phone              String?
-  company            String
-  role               String?
-  industry           String?
-
-  // Interest
-  caseStudyType      String
-  specificInterests  String[]
-  currentChallenges  String?
-  followUp           String?
+  id                String   @id @default(cuid())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  anonymousId       String?
+  name              String
+  email             String
+  phone             String?
+  company           String
+  role              String?
+  industry          String?
+  caseStudyType     String
+  specificInterests String[]
+  currentChallenges String?
+  followUp          String?
 
   @@index([email])
 }
 
 /// Generic capture for Partner/Collaborate modal with dynamic fields
 model PartnerInquiry {
-  id          String   @id @default(cuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  anonymousId String?
-
-  title       String
-  data        Json
-
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  anonymousId  String?
+  title        String
+  data         Json
   contactEmail String?
   contactName  String?
 
@@ -268,13 +238,12 @@ model Role {
 
 /// RBAC: Many-to-many mapping of Users to Roles
 model UserRole {
-  id        String   @id @default(cuid())
-  userId    String
-  roleId    String
+  id         String   @id @default(cuid())
+  userId     String
+  roleId     String
   assignedAt DateTime @default(now())
-
-  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  Role       Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  User       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, roleId])
   @@index([userId])

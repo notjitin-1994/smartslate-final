@@ -10,6 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
+import { useUserRoles } from '@/hooks/useUserRoles';
 
 const HeaderWrapper = styled('header', {
   shouldForwardProp: (prop) => prop !== 'hide'
@@ -210,6 +211,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [userMenuAnchor, setUserMenuAnchor] = useState<null | HTMLElement>(null);
   const { isAuthenticated, user, logout } = useAuth();
+  const { isOwner } = useUserRoles();
   const router = useRouter();
 
   const userInitials = (name?: string) => {
@@ -349,6 +351,26 @@ export default function Header() {
 
         {isAuthenticated ? (
           <>
+            {isOwner && (
+              <MobileCTAButton 
+                variant="outlined" 
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  router.push('/admin');
+                }}
+                sx={{ 
+                  mb: 2,
+                  borderColor: 'secondary.main',
+                  color: 'secondary.main',
+                  '&:hover': {
+                    borderColor: 'secondary.light',
+                    backgroundColor: 'rgba(79, 70, 229, 0.1)'
+                  }
+                }}
+              >
+                Admin Dashboard
+              </MobileCTAButton>
+            )}
             <MobileCTAButton 
               variant="outlined" 
               onClick={() => {
@@ -422,6 +444,17 @@ export default function Header() {
           </Box>
         </Box>
         <Box sx={{ height: 1, bgcolor: 'rgba(255,255,255,0.06)', mx: 1 }} />
+        {isOwner && (
+          <MenuItem 
+            onClick={() => {
+              setUserMenuAnchor(null);
+              router.push('/admin');
+            }}
+            sx={{ color: 'text.primary' }}
+          >
+            Admin Dashboard
+          </MenuItem>
+        )}
         <MenuItem 
           onClick={() => {
             setUserMenuAnchor(null);

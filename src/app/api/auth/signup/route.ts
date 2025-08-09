@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic';
 
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { seedRoles, assignRoleToUser } from '@/lib/rbac-db';
+import { seedRoles, assignRoleToUser, ensureDefaultRolesForUser } from '@/lib/rbac-db';
 import { createAuthUser } from '@/lib/stack-auth';
 import { randomUUID } from 'crypto';
 
@@ -74,11 +74,10 @@ export const POST = async (req: NextRequest) => {
       }
     }
 
-    // Ensure roles exist and assign default learner role
-    console.log('Seeding roles and assigning learner role...');
-    await seedRoles();
-    await assignRoleToUser(user.id, 'learner');
-    console.log('Learner role assigned to user:', user.id);
+    // Ensure roles exist and assign appropriate role (owner for jitin@smartslate.io, learner for others)
+    console.log('Ensuring default roles for user...');
+    const roles = await ensureDefaultRolesForUser(user.id, email);
+    console.log('Roles assigned to user:', user.id, 'roles:', roles);
 
     // Try to create user in Neon Auth (Stack Auth) as well, if configured
     const authResult = await createAuthUser({ email, name });

@@ -153,11 +153,19 @@ export default function AuthPageClient() {
         });
         
         if (!res.ok) {
-          const errorText = await res.text();
-          console.error('Failed to create user in database:', errorText);
-          // Don't fail the whole signup if database sync fails
-          // The StackAuthSync will handle it on next page load
+          const errorData = await res.json().catch(() => ({ error: 'Failed to parse error response' }));
+          console.error('Failed to create user in database:', errorData);
+          // Show error to user but don't prevent Stack Auth signup
+          setError(`Account created but database sync failed: ${errorData.error || 'Unknown error'}. Please try logging in.`);
+          // Still redirect after a delay to allow user to see the error
+          setTimeout(() => {
+            router.push('/profile');
+          }, 3000);
+          return;
         }
+        
+        const userData = await res.json();
+        console.log('User successfully created in database:', userData);
         
         // User is automatically signed in after signup with Stack Auth
         // Wait a moment for the auth state to update

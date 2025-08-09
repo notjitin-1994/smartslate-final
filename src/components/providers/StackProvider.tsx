@@ -15,19 +15,26 @@ function StackAuthSyncInner({ children }: { children: React.ReactNode }) {
       const syncUserToDatabase = async () => {
         try {
           const nameParts = stackUser.displayName?.split(' ') || [];
-          const response = await fetch('/api/auth/signup', {
+          const response = await fetch('/api/auth/verify-user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               email: stackUser.primaryEmail,
-              firstName: nameParts[0] || null,
-              lastName: nameParts.slice(1).join(' ') || null,
+              name: stackUser.displayName || null,
               company: null, // Stack Auth doesn't provide company info
             }),
           });
           
           if (!response.ok) {
-            console.error('Failed to sync user to database:', await response.text());
+            const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+            console.error('Failed to sync user to database:', errorData);
+            // Alert user that there's a sync issue
+            if (typeof window !== 'undefined') {
+              console.error(`Database sync failed for ${stackUser.primaryEmail}. Please contact support if issues persist.`);
+            }
+          } else {
+            const userData = await response.json();
+            console.log('User verified/synced in database:', userData);
           }
         } catch (error) {
           console.error('Error syncing user to database:', error);
@@ -42,6 +49,7 @@ function StackAuthSyncInner({ children }: { children: React.ReactNode }) {
         alg: 'none',
         typ: 'JWT'
       })) + '.' + btoa(JSON.stringify({
+        sub: stackUser.primaryEmail || '', // Add subject claim
         email: stackUser.primaryEmail || '',
         exp: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60, // 7 days
       })) + '.';
@@ -69,9 +77,18 @@ function StackAuthSync({ children }: { children: React.ReactNode }) {
 }
 
 export default function AuthStackProvider({ children }: { children: React.ReactNode }) {
+  // Check if Stack environment variables are available
+  const projectId = process.env.NEXT_PUBLIC_STACK_PROJECT_ID;
+  const publishableKey = process.env.NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY;
+
+  if (!projectId || !publishableKey) {
+    console.warn('Stack Auth environment variables not found. Stack Auth features will be disabled.');
+    return <>{children}</>;
+  }
+
   const app = new StackClientApp({
-    projectId: process.env.NEXT_PUBLIC_STACK_PROJECT_ID!,
-    publishableClientKey: process.env.NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY!,
+    projectId,
+    publishableClientKey: publishableKey,
     redirectMethod: 'nextjs',
     tokenStore: 'nextjs-cookie',
     signInUrl: '/handler/sign-in',
