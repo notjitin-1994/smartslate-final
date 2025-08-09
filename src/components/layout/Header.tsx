@@ -7,8 +7,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
@@ -19,14 +17,13 @@ const HeaderWrapper = styled('header', {
   position: 'fixed',
   top: theme.spacing(2),
   left: '50%',
-  transform: 'translateX(-50%)',
+  transform: hide ? 'translateX(-50%) translateY(-8px)' : 'translateX(-50%)',
   zIndex: 1000,
-  // Anchor width to the viewport to avoid body overflow affecting header width
   width: 'calc(100vw - 32px)',
-  maxWidth: theme.breakpoints.values.lg, // Use theme breakpoint for lg (1280px)
+  maxWidth: theme.breakpoints.values.lg,
   opacity: hide ? 0 : 1,
   visibility: hide ? 'hidden' : 'visible',
-  transition: 'opacity 0.3s ease, visibility 0.3s ease',
+  transition: 'opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease',
   [theme.breakpoints.down('sm')]: {
     width: 'calc(100vw - 16px)',
     top: theme.spacing(1),
@@ -39,7 +36,7 @@ const HeaderBackground = styled(Box)(({ theme }) => ({
   backgroundColor: 'rgba(9, 21, 33, 0.25)',
   backdropFilter: 'blur(12px)',
   WebkitBackdropFilter: 'blur(12px)',
-  border: '1px solid rgba(42, 58, 74, 0.5)',
+  border: '0.25px solid var(--primary-accent)',
   borderRadius: theme.spacing(2),
   boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
 }));
@@ -274,31 +271,24 @@ export default function Header() {
             </DesktopNav>
 
             {isAuthenticated ? (
-              <Button
-                variant="outlined"
+              <IconButton
                 onClick={(e) => setUserMenuAnchor(e.currentTarget)}
+                aria-label="Account menu"
                 sx={{
-                  borderColor: 'rgba(42,58,74,0.6)',
-                  color: 'text.primary',
-                  textTransform: 'none',
-                  fontWeight: 600,
-                  borderRadius: 2,
-                  px: 1.25,
-                  py: 0.5,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1,
-                  '&:hover': { borderColor: 'primary.main', background: 'rgba(255,255,255,0.04)' },
+                  display: { xs: 'none', md: 'flex' },
+                  width: 40,
+                  height: 40,
+                  borderRadius: '50%',
+                  p: 0,
+                  border: '1px solid rgba(42,58,74,0.6)',
+                  transition: 'transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease',
+                  '&:hover': { borderColor: 'primary.main', backgroundColor: 'rgba(255,255,255,0.04)' },
                 }}
               >
-                <Avatar sx={{ width: 28, height: 28, bgcolor: 'primary.main' }}>
+                <Avatar sx={{ width: 36, height: 36, bgcolor: 'primary.main' }}>
                   {userInitials(user?.full_name)}
                 </Avatar>
-                <Box component="span" sx={{ display: { xs: 'none', md: 'inline' } }}>
-                  {user?.full_name?.split(' ')[0] || 'Account'}
-                </Box>
-                <KeyboardArrowDownIcon fontSize="small" />
-              </Button>
+              </IconButton>
             ) : (
               <CTAButton variant="contained" onClick={() => (window.location.href = '/handler/sign-up')}>
                 Get Started
@@ -308,6 +298,12 @@ export default function Header() {
             <MobileMenuButton
               onClick={() => setMobileMenuOpen(true)}
               aria-label="Open menu"
+              aria-expanded={mobileMenuOpen ? 'true' : 'false'}
+              sx={{
+                display: { xs: 'flex', md: 'none' },
+                transition: 'transform 0.3s ease',
+                transform: mobileMenuOpen ? 'rotate(90deg)' : 'none',
+              }}
             >
               <MenuIcon />
             </MobileMenuButton>
@@ -331,7 +327,7 @@ export default function Header() {
           <IconButton
             onClick={() => setMobileMenuOpen(false)}
             aria-label="Close menu"
-            sx={{ color: 'text.primary' }}
+            sx={{ color: 'text.primary', transition: 'transform 0.3s ease', transform: mobileMenuOpen ? 'rotate(-90deg)' : 'none' }}
           >
             <CloseIcon />
           </IconButton>
