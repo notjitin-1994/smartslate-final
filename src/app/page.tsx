@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Box, LinearProgress } from '@mui/material';
+import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Hero from '@/components/landing/Hero';
 import TalentParadox from '@/components/landing/TalentParadox';
@@ -14,29 +14,7 @@ const PageWrapper = styled(Box)(({ theme }) => ({
   minHeight: '100vh',
 }));
 
-const ProgressIndicator = styled(Box)(({ theme }) => ({
-  position: 'fixed',
-  top: 80,
-  left: '50%',
-  transform: 'translateX(-50%)',
-  width: '100%',
-  maxWidth: 1200,
-  zIndex: 100,
-  padding: '0 16px',
-  [theme.breakpoints.down('sm')]: {
-    top: 70,
-  },
-}));
 
-const ProgressBar = styled(LinearProgress)(({ theme }) => ({
-  height: 3,
-  backgroundColor: 'rgba(167, 218, 219, 0.1)',
-  borderRadius: theme.spacing(0.5),
-  '& .MuiLinearProgress-bar': {
-    backgroundColor: theme.palette.primary.main,
-    borderRadius: theme.spacing(0.5),
-  },
-}));
 
 const SectionWrapper = styled(Box)(({ theme }) => ({
   opacity: 0,
@@ -97,18 +75,13 @@ export default function Home() {
     partners: false,
   });
   
-  const [scrollProgress, setScrollProgress] = useState(0);
+
   const [currentSection, setCurrentSection] = useState(0);
   const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  // Track scroll progress
+  // Track current section for navigation dots
   useEffect(() => {
     const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (scrollTop / docHeight) * 100;
-      setScrollProgress(progress);
-
       // Determine current section
       const sections = sectionsRef.current;
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -174,9 +147,7 @@ export default function Home() {
 
   return (
     <PageWrapper>
-      <ProgressIndicator>
-        <ProgressBar variant="determinate" value={scrollProgress} />
-      </ProgressIndicator>
+
 
       <NavigationDots>
         {sections.map((section, index) => (

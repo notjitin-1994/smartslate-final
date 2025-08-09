@@ -8,7 +8,6 @@ import Footer from "@/components/layout/Footer";
 
 import TrackClient from "@/components/providers/TrackClient";
 import PWAClient from "@/components/providers/PWAClient";
-import PWAInstallPrompt from "@/components/providers/PWAInstallPrompt";
 import "./globals.css";
 import { Suspense } from "react";
 
@@ -84,7 +83,6 @@ export default function RootLayout({
           <AuthStackProvider>
             <StackTheme>
               <ThemeProvider>
-                <PWAInstallPrompt />
                 <Header />
                 <main className="main-content">
                   {children}
@@ -93,7 +91,6 @@ export default function RootLayout({
                 <Suspense fallback={null}>
                   <TrackClient />
                   <PWAClient />
-                  <PWAInstallPrompt />
                 </Suspense>
               </ThemeProvider>
             </StackTheme>
