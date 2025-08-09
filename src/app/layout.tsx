@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { StackProvider, StackTheme } from "@stackframe/stack";
-import { stackServerApp } from "../stack";
+import { StackTheme } from "@stackframe/stack";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { AuthProvider } from "@/contexts/AuthContext";
+import AuthStackProvider from "@/components/providers/StackProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import GetStartedModal from "@/components/auth/GetStartedModal";
+
 import TrackClient from "@/components/providers/TrackClient";
 import "./globals.css";
 import { Suspense } from "react";
@@ -58,21 +58,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body><StackProvider app={stackServerApp}><StackTheme>
-        <ThemeProvider>
-          <AuthProvider>
-            <Header />
-            <main className="main-content">
-              {children}
-            </main>
-            <Footer />
-            <GetStartedModal />
-            <Suspense fallback={null}>
-              <TrackClient />
-            </Suspense>
-          </AuthProvider>
-        </ThemeProvider>
-      </StackTheme></StackProvider></body>
+      <body>
+        <AuthProvider>
+          <AuthStackProvider>
+            <StackTheme>
+              <ThemeProvider>
+                <Header />
+                <main className="main-content">
+                  {children}
+                </main>
+                <Footer />
+                <Suspense fallback={null}>
+                  <TrackClient />
+                </Suspense>
+              </ThemeProvider>
+            </StackTheme>
+          </AuthStackProvider>
+        </AuthProvider>
+      </body>
     </html>
   );
 }

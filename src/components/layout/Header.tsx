@@ -9,7 +9,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { useGetStartedModal } from '@/hooks/useGetStartedModal';
+
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 
@@ -212,7 +212,6 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [userMenuAnchor, setUserMenuAnchor] = useState<null | HTMLElement>(null);
-  const { openModal } = useGetStartedModal();
   const { isAuthenticated, user, logout } = useAuth();
   const router = useRouter();
 
@@ -353,16 +352,45 @@ export default function Header() {
         </MobileNav>
 
         {isAuthenticated ? (
-          <MobileCTAButton variant="contained" onClick={() => {
-            setMobileMenuOpen(false);
-            logout();
-          }}>
-            Logout
-          </MobileCTAButton>
+          <>
+            <MobileCTAButton 
+              variant="outlined" 
+              onClick={() => {
+                setMobileMenuOpen(false);
+                router.push('/profile');
+              }}
+              sx={{ 
+                mb: 2,
+                borderColor: 'primary.main',
+                color: 'primary.main',
+                '&:hover': {
+                  borderColor: 'primary.light',
+                  backgroundColor: 'rgba(167, 218, 219, 0.1)'
+                }
+              }}
+            >
+              Profile
+            </MobileCTAButton>
+            <MobileCTAButton 
+              variant="contained" 
+              onClick={() => {
+                setMobileMenuOpen(false);
+                window.location.href = '/handler/sign-out';
+              }}
+              sx={{
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                '&:hover': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.15)'
+                }
+              }}
+            >
+              Sign Out
+            </MobileCTAButton>
+          </>
         ) : (
           <MobileCTAButton variant="contained" onClick={() => {
             setMobileMenuOpen(false);
-            openModal();
+            window.location.href = '/handler/sign-up';
           }}>
             Get Started
           </MobileCTAButton>
@@ -401,20 +429,30 @@ export default function Header() {
         <MenuItem 
           onClick={() => {
             setUserMenuAnchor(null);
+            router.push('/profile');
+          }}
+          sx={{ color: 'text.primary' }}
+        >
+          Profile
+        </MenuItem>
+        <MenuItem 
+          onClick={() => {
+            setUserMenuAnchor(null);
             router.push('/courses');
           }}
           sx={{ color: 'text.primary' }}
         >
           My Courses
         </MenuItem>
+        <Box sx={{ height: 1, bgcolor: 'rgba(255,255,255,0.06)', mx: 1, my: 0.5 }} />
         <MenuItem 
           onClick={() => {
             setUserMenuAnchor(null);
-            logout();
+            window.location.href = '/handler/sign-out';
           }}
           sx={{ color: 'text.primary' }}
         >
-          Logout
+          Sign Out
         </MenuItem>
       </Menu>
     </>

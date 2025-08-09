@@ -1,0 +1,363 @@
+/* SmartSlate Custom Styling for Stack Auth Pages */
+
+/* Override Stack Auth default styles to match SmartSlate brand */
+.stack-auth-page {
+  --stack-primary-color: #a7dadb !important;
+  --stack-primary-hover: #7bc5c7 !important;
+  --stack-secondary-color: #4F46E5 !important;
+  --stack-secondary-hover: #3730A3 !important;
+  --stack-background: #020C1B !important;
+  --stack-surface: rgba(13, 27, 42, 0.5) !important;
+  --stack-border: rgba(42, 58, 74, 0.5) !important;
+  --stack-text-primary: #e0e0e0 !important;
+  --stack-text-secondary: #b0c5c6 !important;
+  --stack-error: #ef4444 !important;
+  --stack-success: #10b981 !important;
+}
+
+/* Apply glassmorphism to the main auth container */
+.stack-auth-container,
+[data-stack-auth-container],
+.st-auth-container,
+.auth-container {
+  background: rgba(13, 27, 42, 0.5) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(42, 58, 74, 0.5) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+  padding: 48px !important;
+  max-width: 480px !important;
+  margin: 0 auto !important;
+}
+
+/* Style the background */
+body[data-stack-auth],
+body.stack-auth-body,
+.stack-auth-wrapper {
+  background: #020C1B !important;
+  min-height: 100vh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 16px !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+/* Add gradient background effects */
+body[data-stack-auth]::before,
+body.stack-auth-body::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 20% 50%, rgba(167, 218, 219, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(79, 70, 229, 0.1) 0%, transparent 50%);
+  animation: gradient-shift 20s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); }
+}
+
+/* Typography */
+h1, h2, h3, 
+.stack-auth-title,
+[data-stack-auth-title] {
+  font-family: 'Quicksand', sans-serif !important;
+  font-weight: 700 !important;
+  color: #e0e0e0 !important;
+  margin-bottom: 8px !important;
+}
+
+.stack-auth-subtitle,
+[data-stack-auth-subtitle],
+.auth-subtitle {
+  color: #b0c5c6 !important;
+  font-family: 'Lato', sans-serif !important;
+  font-size: 14px !important;
+  margin-bottom: 32px !important;
+}
+
+/* Form inputs with glassmorphism */
+input[type="email"],
+input[type="password"],
+input[type="text"],
+.stack-auth-input,
+[data-stack-auth-input] {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
+  color: #e0e0e0 !important;
+  padding: 12px 16px !important;
+  font-size: 16px !important;
+  font-family: 'Lato', sans-serif !important;
+  transition: all 0.3s ease !important;
+  width: 100% !important;
+  margin-bottom: 16px !important;
+}
+
+input:focus,
+.stack-auth-input:focus {
+  outline: none !important;
+  border-color: #a7dadb !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 0 0 3px rgba(167, 218, 219, 0.2) !important;
+}
+
+/* Labels */
+label,
+.stack-auth-label,
+[data-stack-auth-label] {
+  color: #b0c5c6 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  margin-bottom: 6px !important;
+  display: block !important;
+  font-family: 'Lato', sans-serif !important;
+}
+
+/* Primary button styling */
+button[type="submit"],
+.stack-auth-button-primary,
+[data-stack-auth-button="primary"],
+.auth-button-primary {
+  background-color: #4F46E5 !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 12px 32px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  font-family: 'Lato', sans-serif !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  width: 100% !important;
+  margin-top: 8px !important;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3) !important;
+}
+
+button[type="submit"]:hover,
+.stack-auth-button-primary:hover {
+  background-color: #3730A3 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4) !important;
+}
+
+button[type="submit"]:disabled,
+.stack-auth-button-primary:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+/* Secondary/link buttons */
+.stack-auth-link,
+[data-stack-auth-link],
+.auth-link,
+a {
+  color: #a7dadb !important;
+  text-decoration: none !important;
+  font-weight: 600 !important;
+  transition: color 0.2s ease !important;
+  font-family: 'Lato', sans-serif !important;
+}
+
+.stack-auth-link:hover,
+a:hover {
+  color: #d0edf0 !important;
+  text-decoration: underline !important;
+}
+
+/* Social login buttons */
+.stack-auth-social-button,
+[data-stack-auth-social],
+.social-button {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #e0e0e0 !important;
+  padding: 10px 20px !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  margin-bottom: 12px !important;
+}
+
+.stack-auth-social-button:hover,
+.social-button:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Divider */
+.stack-auth-divider,
+[data-stack-auth-divider],
+.auth-divider {
+  position: relative !important;
+  text-align: center !important;
+  margin: 24px 0 !important;
+  color: #7a8a8b !important;
+  font-size: 14px !important;
+}
+
+.stack-auth-divider::before,
+.auth-divider::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 1px !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.stack-auth-divider span,
+.auth-divider span {
+  background: rgba(13, 27, 42, 0.95) !important;
+  padding: 0 16px !important;
+  position: relative !important;
+}
+
+/* Error messages */
+.stack-auth-error,
+[data-stack-auth-error],
+.error-message {
+  background: rgba(239, 68, 68, 0.1) !important;
+  border: 1px solid rgba(239, 68, 68, 0.2) !important;
+  color: #f87171 !important;
+  padding: 12px 16px !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+  margin-bottom: 16px !important;
+  font-family: 'Lato', sans-serif !important;
+}
+
+/* Success messages */
+.stack-auth-success,
+[data-stack-auth-success],
+.success-message {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+  color: #34d399 !important;
+  padding: 12px 16px !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+  margin-bottom: 16px !important;
+  font-family: 'Lato', sans-serif !important;
+}
+
+/* Logo styling */
+.stack-auth-logo,
+[data-stack-auth-logo],
+.auth-logo {
+  margin-bottom: 32px !important;
+  text-align: center !important;
+}
+
+.stack-auth-logo img,
+.auth-logo img {
+  height: 40px !important;
+  width: auto !important;
+}
+
+/* Form group spacing */
+.stack-auth-form-group,
+[data-stack-auth-form-group],
+.form-group {
+  margin-bottom: 20px !important;
+}
+
+/* Checkbox styling */
+input[type="checkbox"] {
+  accent-color: #a7dadb !important;
+  width: 18px !important;
+  height: 18px !important;
+  margin-right: 8px !important;
+}
+
+/* Loading spinner */
+.stack-auth-spinner,
+[data-stack-auth-spinner],
+.spinner {
+  border: 2px solid rgba(255, 255, 255, 0.1) !important;
+  border-top-color: #a7dadb !important;
+  border-radius: 50% !important;
+  width: 20px !important;
+  height: 20px !important;
+  animation: spin 0.8s linear infinite !important;
+  display: inline-block !important;
+  margin-right: 8px !important;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  .stack-auth-container,
+  [data-stack-auth-container],
+  .auth-container {
+    padding: 32px 24px !important;
+    margin: 16px !important;
+    width: calc(100% - 32px) !important;
+  }
+  
+  h1, h2, .stack-auth-title {
+    font-size: 24px !important;
+  }
+  
+  input, button {
+    font-size: 16px !important; /* Prevent zoom on iOS */
+  }
+}
+
+/* Focus styles for accessibility */
+*:focus-visible {
+  outline: 3px solid #a7dadb !important;
+  outline-offset: 2px !important;
+}
+
+/* Additional Stack Auth specific overrides */
+.st-card,
+.st-container {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.st-typography-h1,
+.st-typography-h2,
+.st-typography-h3 {
+  font-family: 'Quicksand', sans-serif !important;
+  color: #e0e0e0 !important;
+}
+
+.st-button {
+  text-transform: none !important;
+}
+
+.st-link {
+  color: #a7dadb !important;
+}
+
+.st-link:hover {
+  color: #d0edf0 !important;
+}
+
+/* Make sure everything inside auth pages follows our theme */
+.stack-page *,
+[data-stack-page] * {
+  font-family: 'Lato', sans-serif !important;
+}

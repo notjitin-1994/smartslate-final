@@ -1,12 +1,8 @@
-import { StackHandler, StackServerApp } from '@stackframe/stack';
-
-const app = new StackServerApp({
-  projectId: process.env.NEXT_PUBLIC_STACK_PROJECT_ID!,
-  secretServerKey: process.env.STACK_SECRET_SERVER_KEY!,
-});
+import { StackHandler } from '@stackframe/stack';
+import { stackServerApp } from '@/stack';
 
 export default function Handler(props: any) {
-  return <StackHandler fullPage app={app} routeProps={props} />;
+  return <StackHandler fullPage app={stackServerApp} routeProps={props} />;
 }
 
 
