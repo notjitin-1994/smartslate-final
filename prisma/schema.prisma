@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -88,6 +87,7 @@ model User {
   Account       Account[]
   Session       Session[]
   UserCourse    UserCourse[]
+  UserRole      UserRole[]
 }
 
 model UserCourse {
@@ -254,4 +254,28 @@ model PartnerInquiry {
 
   @@index([title])
   @@index([contactEmail])
+}
+
+/// RBAC: Roles available in the application (config-driven permissions)
+model Role {
+  id          String     @id @db.VarChar(64)
+  description String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  UserRole    UserRole[]
+}
+
+/// RBAC: Many-to-many mapping of Users to Roles
+model UserRole {
+  id        String   @id @default(cuid())
+  userId    String
+  roleId    String
+  assignedAt DateTime @default(now())
+
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@index([userId])
+  @@index([roleId])
 }
