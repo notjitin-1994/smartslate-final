@@ -7,6 +7,8 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 import TrackClient from "@/components/providers/TrackClient";
+import PWAClient from "@/components/providers/PWAClient";
+import PWAInstallPrompt from "@/components/providers/PWAInstallPrompt";
 import "./globals.css";
 import { Suspense } from "react";
 
@@ -45,10 +47,28 @@ export const metadata: Metadata = {
   },
   themeColor: "#091521",
   manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'Smartslate',
+  },
+  other: {
+    'msapplication-TileColor': '#091521',
+    'msapplication-TileImage': '/images/courses/swirl.png?v=favicon4',
+  },
   icons: {
-    icon: [{ url: "/images/courses/swirl.png", type: "image/png" }],
-    apple: [{ url: "/images/courses/swirl.png" }],
-    shortcut: [{ url: "/images/courses/swirl.png" }]
+    icon: [
+      { url: "/images/courses/swirl.png?v=favicon4", type: "image/png", sizes: "16x16" },
+      { url: "/images/courses/swirl.png?v=favicon4", type: "image/png", sizes: "32x32" },
+      { url: "/images/courses/swirl.png?v=favicon4", type: "image/png", sizes: "192x192" },
+      { url: "/images/courses/swirl.png?v=favicon4", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [
+      { url: "/images/courses/swirl.png?v=favicon4" }
+    ],
+    shortcut: [
+      { url: "/images/courses/swirl.png?v=favicon4" }
+    ]
   }
 };
 
@@ -64,6 +84,7 @@ export default function RootLayout({
           <AuthStackProvider>
             <StackTheme>
               <ThemeProvider>
+                <PWAInstallPrompt />
                 <Header />
                 <main className="main-content">
                   {children}
@@ -71,6 +92,8 @@ export default function RootLayout({
                 <Footer />
                 <Suspense fallback={null}>
                   <TrackClient />
+                  <PWAClient />
+                  <PWAInstallPrompt />
                 </Suspense>
               </ThemeProvider>
             </StackTheme>
