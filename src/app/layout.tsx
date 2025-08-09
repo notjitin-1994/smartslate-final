@@ -44,11 +44,11 @@ export const metadata: Metadata = {
     maximumScale: 1
   },
   themeColor: "#091521",
-  manifest: "/manifest.json",
+  manifest: "/manifest.webmanifest",
   icons: {
-    icon: [{ url: "/logo-swirl.png" }],
-    apple: [{ url: "/logo-swirl.png" }],
-    shortcut: [{ url: "/logo-swirl.png" }]
+    icon: [{ url: "/logo-swirl.png?v=3", type: "image/png" }],
+    apple: [{ url: "/logo-swirl.png?v=3" }],
+    shortcut: [{ url: "/logo-swirl.png?v=3" }]
   }
 };
 

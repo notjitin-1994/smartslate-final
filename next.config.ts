@@ -11,6 +11,23 @@ const nextConfig: NextConfig = {
     // your project has type errors.
     ignoreBuildErrors: true,
   },
+  async rewrites() {
+    return [
+      {
+        source: "/favicon.ico",
+        destination: "/logo-swirl.png?v=2",
+      },
+    ];
+  },
+  async redirects() {
+    return [
+      {
+        source: "/favicon.ico",
+        destination: "/logo-swirl.png?v=3",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

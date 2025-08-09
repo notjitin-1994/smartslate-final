@@ -9,8 +9,8 @@ export default function manifest(): MetadataRoute.Manifest {
     background_color: '#091521',
     theme_color: '#091521',
     icons: [
-      { src: '/logo-swirl.png', sizes: '192x192', type: 'image/png' },
-      { src: '/logo-swirl.png', sizes: '512x512', type: 'image/png' }
+      { src: '/logo-swirl.png?v=3', sizes: '192x192', type: 'image/png' },
+      { src: '/logo-swirl.png?v=3', sizes: '512x512', type: 'image/png' }
     ],
   };
 }
