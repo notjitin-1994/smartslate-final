@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import CollaborateClient from './CollaborateClient';
 
 export const metadata: Metadata = {
-  title: 'Partner & Collaborate | SmartSlate',
+  title: 'Smartslate',
   description: 'Explore partnership opportunities with SmartSlate. Shape the future of learning together, whether you\'re an expert, organization, investor, or technologist.',
   openGraph: {
     title: 'Partner & Collaborate with SmartSlate',

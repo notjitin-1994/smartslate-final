@@ -82,6 +82,7 @@ model User {
   emailVerified DateTime?
   name          String?
   image         String?
+  company       String?      // Added company field
   createdAt     DateTime     @default(now())
   updatedAt     DateTime
   Account       Account[]

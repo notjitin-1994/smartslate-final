@@ -12,7 +12,7 @@ import { Suspense } from "react";
 
 
 export const metadata: Metadata = {
-  title: "SmartSlate - Build Your Future-Ready Workforce",
+  title: "Smartslate",
   description: "Revolutionizing the way the World learns. Bridge the skills gap with SmartSlate's innovative learning solutions.",
   keywords: "learning, workforce development, skills training, AI education, LMS, corporate training",
   authors: [{ name: "SmartSlate Team" }],
@@ -46,9 +46,9 @@ export const metadata: Metadata = {
   themeColor: "#091521",
   manifest: "/manifest.webmanifest",
   icons: {
-    icon: [{ url: "/logo-swirl.png?v=3", type: "image/png" }],
-    apple: [{ url: "/logo-swirl.png?v=3" }],
-    shortcut: [{ url: "/logo-swirl.png?v=3" }]
+    icon: [{ url: "/images/courses/swirl.png", type: "image/png" }],
+    apple: [{ url: "/images/courses/swirl.png" }],
+    shortcut: [{ url: "/images/courses/swirl.png" }]
   }
 };
 

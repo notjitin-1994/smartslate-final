@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/favicon.ico",
-        destination: "/logo-swirl.png?v=2",
+        destination: "/images/courses/swirl.png",
       },
     ];
   },
@@ -23,7 +23,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/favicon.ico",
-        destination: "/logo-swirl.png?v=3",
+        destination: "/images/courses/swirl.png",
         permanent: false,
       },
     ];

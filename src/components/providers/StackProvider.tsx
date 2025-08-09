@@ -11,6 +11,32 @@ function StackAuthSyncInner({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Only sync if there's a mismatch between Stack Auth and our AuthContext
     if (stackUser && (!user || user.email !== stackUser.primaryEmail)) {
+      // Ensure user exists in our database
+      const syncUserToDatabase = async () => {
+        try {
+          const nameParts = stackUser.displayName?.split(' ') || [];
+          const response = await fetch('/api/auth/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: stackUser.primaryEmail,
+              firstName: nameParts[0] || null,
+              lastName: nameParts.slice(1).join(' ') || null,
+              company: null, // Stack Auth doesn't provide company info
+            }),
+          });
+          
+          if (!response.ok) {
+            console.error('Failed to sync user to database:', await response.text());
+          }
+        } catch (error) {
+          console.error('Error syncing user to database:', error);
+        }
+      };
+
+      // Sync to database first, then update auth context
+      syncUserToDatabase();
+
       // Sync Stack Auth user with our AuthContext
       const mockToken = btoa(JSON.stringify({
         alg: 'none',
@@ -48,6 +74,8 @@ export default function AuthStackProvider({ children }: { children: React.ReactN
     publishableClientKey: process.env.NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY!,
     redirectMethod: 'nextjs',
     tokenStore: 'nextjs-cookie',
+    signInUrl: '/handler/sign-in',
+    signUpUrl: '/handler/sign-up',
   });
 
   return (
