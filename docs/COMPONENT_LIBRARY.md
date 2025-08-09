@@ -9,7 +9,7 @@ This document catalogs all reusable components in the SmartSlate design system, 
 ### Header
 **Location**: `src/components/layout/Header.tsx`
 
-**Description**: Fixed floating header with glassmorphism effect, responsive navigation, and mobile menu.
+**Description**: Fixed floating header with glassmorphism effect, responsive navigation, mobile menu, and integrated "Get Started" modal trigger.
 
 **Usage**:
 ```tsx

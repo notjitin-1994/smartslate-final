@@ -52,7 +52,7 @@ const { isOpen, openModal, closeModal } = useGetStartedModal();
 ```
 
 ### Notes
-This project is frontend-only. The modal simulates submission and does not talk to a backend.
+Sign up calls the backend endpoint `/api/auth/signup` to upsert a local user and optionally provision in Neon Auth if configured via env. A short-lived client token is synthesized to update UI state immediately.
 
 ## Component Structure
 
