@@ -34,6 +34,30 @@ export default function AuthPageClient() {
   });
   const [errors, setErrors] = useState<Partial<FormData>>({});
 
+  // Set auth mode based on the current path
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const path = window.location.pathname;
+      if (path.includes('sign-in')) {
+        setAuthMode('signin');
+      } else if (path.includes('sign-up')) {
+        setAuthMode('signup');
+      }
+    }
+  }, []);
+
+  // Set auth mode based on the current path
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const path = window.location.pathname;
+      if (path.includes('sign-in')) {
+        setAuthMode('signin');
+      } else if (path.includes('sign-up')) {
+        setAuthMode('signup');
+      }
+    }
+  }, []);
+
   // Redirect if already authenticated
   useEffect(() => {
     if (user) {
@@ -55,14 +79,6 @@ export default function AuthPageClient() {
     return null;
   }
 
-  // Set auth mode based on the current path
-  useEffect(() => {
-    if (window.location.pathname.includes('sign-in')) {
-      setAuthMode('signin');
-    } else if (window.location.pathname.includes('sign-up')) {
-      setAuthMode('signup');
-    }
-  }, []);
 
   const handleInputChange = (field: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({ ...prev, [field]: e.target.value }));
@@ -196,10 +212,13 @@ export default function AuthPageClient() {
           router.push('/profile');
         }, 100);
       }
-    } catch (err: any) {
-      // Improve error messages for common cases
-      let errorMessage = err?.message || 'Something went wrong';
-      
+    } catch (err: unknown) {
+      let errorMessage = 'Something went wrong';
+      if (err instanceof Error) {
+        errorMessage = err.message || errorMessage;
+      } else if (typeof err === 'string') {
+        errorMessage = err;
+      }
       if (errorMessage.includes('Invalid email or password')) {
         errorMessage = 'Invalid email or password. Please check your credentials and try again.';
       } else if (errorMessage.includes('Network') || errorMessage.includes('Failed to fetch')) {
@@ -207,7 +226,6 @@ export default function AuthPageClient() {
       } else if (errorMessage.includes('too many attempts')) {
         errorMessage = 'Too many failed attempts. Please try again later.';
       }
-      
       setError(errorMessage);
       setIsLoading(false);
     }
@@ -316,9 +334,11 @@ export default function AuthPageClient() {
                         onChange={handleInputChange('firstName')}
                         className={`form-input ${errors.firstName ? 'border-red-500' : ''}`}
                         placeholder="John"
+                        aria-invalid={errors.firstName ? true : false}
+                        aria-describedby={errors.firstName ? 'firstName-error' : undefined}
                       />
                       {errors.firstName && (
-                        <p className="form-error">{errors.firstName}</p>
+                        <p id="firstName-error" className="form-error">{errors.firstName}</p>
                       )}
                     </div>
                     <div className="form-group">
@@ -332,9 +352,11 @@ export default function AuthPageClient() {
                         onChange={handleInputChange('lastName')}
                         className={`form-input ${errors.lastName ? 'border-red-500' : ''}`}
                         placeholder="Doe"
+                        aria-invalid={errors.lastName ? true : false}
+                        aria-describedby={errors.lastName ? 'lastName-error' : undefined}
                       />
                       {errors.lastName && (
-                        <p className="form-error">{errors.lastName}</p>
+                        <p id="lastName-error" className="form-error">{errors.lastName}</p>
                       )}
                     </div>
                   </div>
@@ -349,6 +371,7 @@ export default function AuthPageClient() {
                       onChange={handleInputChange('company')}
                       className="form-input"
                       placeholder="Your company name"
+                      aria-invalid={false}
                     />
                   </div>
                 </motion.div>
@@ -367,9 +390,12 @@ export default function AuthPageClient() {
                 className={`form-input ${errors.email ? 'border-red-500' : ''}`}
                 placeholder="you@example.com"
                 autoComplete="email"
+                autoFocus
+                aria-invalid={errors.email ? true : false}
+                aria-describedby={errors.email ? 'email-error' : undefined}
               />
               {errors.email && (
-                <p className="form-error">{errors.email}</p>
+                <p id="email-error" className="form-error">{errors.email}</p>
               )}
             </div>
 
@@ -385,12 +411,16 @@ export default function AuthPageClient() {
                 className={`form-input ${errors.password ? 'border-red-500' : ''}`}
                 placeholder={authMode === 'signin' ? 'Enter your password' : 'Create a password'}
                 autoComplete={authMode === 'signin' ? 'current-password' : 'new-password'}
+                aria-invalid={errors.password ? true : false}
+                aria-describedby={
+                  errors.password ? 'password-error' : (authMode === 'signup' ? 'password-help' : undefined)
+                }
               />
               {errors.password && (
-                <p className="form-error">{errors.password}</p>
+                <p id="password-error" className="form-error">{errors.password}</p>
               )}
               {authMode === 'signup' && (
-                <p className="form-help">Must be at least 8 characters</p>
+                <p id="password-help" className="form-help">Must be at least 8 characters</p>
               )}
             </div>
 
@@ -414,9 +444,11 @@ export default function AuthPageClient() {
                       className={`form-input ${errors.confirmPassword ? 'border-red-500' : ''}`}
                       placeholder="Confirm your password"
                       autoComplete="new-password"
+                      aria-invalid={errors.confirmPassword ? true : false}
+                      aria-describedby={errors.confirmPassword ? 'confirmPassword-error' : undefined}
                     />
                     {errors.confirmPassword && (
-                      <p className="form-error">{errors.confirmPassword}</p>
+                      <p id="confirmPassword-error" className="form-error">{errors.confirmPassword}</p>
                     )}
                   </div>
                 </motion.div>
@@ -442,6 +474,8 @@ export default function AuthPageClient() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="p-4 rounded-lg bg-red-500/10 border border-red-500/20"
+                role="alert"
+                aria-live="polite"
               >
                 <p className="text-sm text-red-400">{error}</p>
               </motion.div>
@@ -484,6 +518,8 @@ export default function AuthPageClient() {
             <button
               type="button"
               disabled
+              aria-disabled="true"
+              title="Coming soon"
               className="relative flex items-center justify-center gap-2 py-3 px-4 border border-white/10 rounded-lg hover:bg-white/5 transition-all opacity-50 cursor-not-allowed"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -493,22 +529,18 @@ export default function AuthPageClient() {
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
               </svg>
               <span className="text-sm font-medium text-primary">Google</span>
-              <span className="absolute -top-2 -right-2 bg-primary-accent/20 text-primary-accent text-[10px] font-semibold px-1.5 py-0.5 rounded-full">
-                Soon
-              </span>
             </button>
             <button
               type="button"
               disabled
+              aria-disabled="true"
+              title="Coming soon"
               className="relative flex items-center justify-center gap-2 py-3 px-4 border border-white/10 rounded-lg hover:bg-white/5 transition-all opacity-50 cursor-not-allowed"
             >
               <svg className="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
               </svg>
               <span className="text-sm font-medium text-primary">LinkedIn</span>
-              <span className="absolute -top-2 -right-2 bg-primary-accent/20 text-primary-accent text-[10px] font-semibold px-1.5 py-0.5 rounded-full">
-                Soon
-              </span>
             </button>
           </div>
 

@@ -1,6 +1,8 @@
 # Get Started Modal Documentation
 
 ## Overview
+DEPRECATION NOTICE: This legacy Get Started auth modal is no longer used. Authentication has moved to dedicated handler pages under /handler/sign-in and /handler/sign-up powered by Stack Auth. Header and mobile CTAs now route to these handler pages. The data-collection modals for waitlists and interest capture remain unchanged.
+
 The Get Started modal is a beautiful authentication overlay that allows users to sign in or create an account on SmartSlate. It features a glassmorphic design that matches the site's aesthetic and provides a seamless user experience.
 
 ## Features
@@ -40,6 +42,8 @@ The Get Started modal is a beautiful authentication overlay that allows users to
 ## Usage
 
 ### Opening the Modal
+DEPRECATION NOTICE: This Get Started modal flow is no longer used. Authentication has moved to dedicated handler pages under /handler/sign-in and /handler/sign-up powered by Stack Auth. Header and mobile CTAs now route to these handler pages. The data-collection modals for waitlists and interest capture remain unchanged.
+
 The modal can be triggered by clicking the "Get Started" button in the header (both desktop and mobile versions).
 
 ### State Management

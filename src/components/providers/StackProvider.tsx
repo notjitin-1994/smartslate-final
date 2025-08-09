@@ -74,8 +74,6 @@ export default function AuthStackProvider({ children }: { children: React.ReactN
     publishableClientKey: process.env.NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY!,
     redirectMethod: 'nextjs',
     tokenStore: 'nextjs-cookie',
-    signInUrl: '/handler/sign-in',
-    signUpUrl: '/handler/sign-up',
   });
 
   return (
