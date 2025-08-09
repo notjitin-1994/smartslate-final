@@ -1,6 +1,8 @@
 import './stack-auth-custom.css';
 import './stack-auth-animations.css';
 import { Metadata } from 'next';
+import React from 'react';
+import AuthLayoutClient from './AuthLayoutClient';
 
 export const metadata: Metadata = {
   title: 'SmartSlate - Sign In',
@@ -14,7 +16,7 @@ export default function HandlerLayout({
 }) {
   return (
     <div className="stack-auth-page" data-stack-auth>
-      {children}
+      <AuthLayoutClient>{children}</AuthLayoutClient>
     </div>
   );
 }
