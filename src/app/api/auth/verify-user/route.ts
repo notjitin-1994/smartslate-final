@@ -6,24 +6,22 @@ import prisma from '@/lib/prisma';
 import { ensureDefaultRolesForUser } from '@/lib/rbac-db';
 import { randomUUID } from 'crypto';
 
-/**
- * Verifies if a user exists in the database and creates them if they don't.
- * This is used to sync Stack Auth users with our database.
- */
 export const POST = async (req: NextRequest) => {
   try {
-    const { email, name, company } = await req.json();
+    const body = await req.json().catch(() => ({} as any));
+    const { email, name, company } = body as { email?: string; name?: string; company?: string };
+    console.log('[verify-user] payload', { email, hasName: !!name, hasCompany: !!company });
 
     if (!email) {
       return NextResponse.json({ ok: false, error: 'Email is required' }, { status: 400 });
     }
 
-    // Check if user already exists
     let user = await prisma.user.findUnique({ where: { email } });
-    
+    console.log('[verify-user] existing', !!user);
+
+    let isNew = false;
     if (!user) {
-      // Create new user
-      console.log(`Creating new user for ${email} in database...`);
+      console.log('[verify-user] creating user');
       user = await prisma.user.create({
         data: {
           id: randomUUID(),
@@ -34,27 +32,27 @@ export const POST = async (req: NextRequest) => {
           updatedAt: new Date(),
         },
       });
-      console.log(`User created with ID: ${user.id}`);
+      isNew = true;
+      console.log('[verify-user] created', { id: user.id, email: user.email });
 
-      // Assign default role
       const roles = await ensureDefaultRolesForUser(user.id, email);
-      console.log(`Roles assigned: ${roles.join(', ')}`);
+      console.log('[verify-user] roles', roles);
     } else {
-      console.log(`User ${email} already exists in database`);
+      console.log('[verify-user] user exists', { id: user.id, email: user.email });
     }
 
-    return NextResponse.json({ 
-      ok: true, 
+    return NextResponse.json({
+      ok: true,
       userId: user.id,
       email: user.email,
       name: user.name,
-      isNew: !user
+      isNew,
     });
   } catch (error) {
-    console.error('Error in verify-user:', error);
-    return NextResponse.json({ 
-      ok: false, 
-      error: error instanceof Error ? error.message : 'Unknown error' 
+    console.error('[verify-user] error', error);
+    return NextResponse.json({
+      ok: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
     }, { status: 500 });
   }
 };

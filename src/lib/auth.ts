@@ -48,7 +48,6 @@ export async function getAuthContextFromRequest(req: NextRequest): Promise<AuthC
   try {
     const payload = await verifyJwt(token);
 
-    // Neon Auth commonly uses standard claims. We expect custom claims for roles.
     const sub = (payload.sub as string) ?? null;
     const email = (payload.email as string) ?? null;
 
@@ -61,15 +60,25 @@ export async function getAuthContextFromRequest(req: NextRequest): Promise<AuthC
       roles = [roleClaim as RoleName];
     }
 
-    // Emergency override for owner via email match
     if (email === 'jitin@smartslate.io' && !roles.includes('owner')) {
       roles = ['owner', ...roles];
     }
 
     const { permissions } = computeEffectivePermissions(roles);
     return { sub, email, roles, permissions, raw: payload };
-  } catch {
-    // Fallback: decode token without verification (e.g. unsigned local dev token)
+  } catch (e: any) {
+    try {
+      const parts = token.split('.');
+      const header = parts[0] ? JSON.parse(Buffer.from(parts[0], 'base64url').toString('utf8')) : null;
+      const payload = parts[1] ? JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8')) : null;
+      console.error('[auth.verify] failed', {
+        message: e?.message,
+        jwks: !!process.env.NEON_AUTH_JWKS_URL,
+        alg: header?.alg,
+        iss: payload?.iss,
+        aud: payload?.aud,
+      });
+    } catch {}
     try {
       const [, payloadB64] = token.split('.');
       if (payloadB64) {
