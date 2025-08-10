@@ -28,7 +28,7 @@ export async function getUserRoleIds(userId: string): Promise<string[]> {
     where: { userId },
     select: { roleId: true },
   });
-  return roles.map((r) => r.roleId);
+  return roles.map((r: { roleId: string }) => r.roleId);
 }
 
 export async function assignRoleToUser(userId: string, roleId: RoleName): Promise<void> {

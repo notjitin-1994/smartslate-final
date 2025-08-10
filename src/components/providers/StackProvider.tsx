@@ -2,7 +2,7 @@
 
 import { StackProvider, StackClientApp, useUser } from '@stackframe/stack';
 import { useAuth } from '@/contexts/AuthContext';
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, Suspense } from 'react';
 
 function StackAuthSyncInner({ children }: { children: React.ReactNode }) {
   const stackUser = useUser();
@@ -14,7 +14,6 @@ function StackAuthSyncInner({ children }: { children: React.ReactNode }) {
       // Ensure user exists in our database
       const syncUserToDatabase = async () => {
         try {
-          const nameParts = stackUser.displayName?.split(' ') || [];
           const response = await fetch('/api/auth/verify-user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
