@@ -65,33 +65,28 @@ function StackAuthSyncInner({ children }: { children: React.ReactNode }) {
       syncUserToDatabase();
 
       // Obtain a real token from Stack (if available) and sync AuthContext
-      const getIdToken = async (): Promise<string | null> => {
+      const getAccessToken = async (): Promise<string | null> => {
         try {
-          console.log('🔑 Attempting to get Stack ID token...');
-          const su = stackUser as unknown as { getIdToken?: () => Promise<string> };
-          if (typeof su?.getIdToken === 'function') {
-            const token = await su.getIdToken();
-            console.log('✅ Stack ID token acquired:', token ? 'Token received' : 'Token is null/empty');
-            return typeof token === 'string' ? token : null;
-          } else {
-            console.warn('⚠️ getIdToken method not available on Stack user object');
-          }
+          console.log('🔑 Attempting to get Stack access token...');
+          const authData = await stackUser.getAuthJson();
+          console.log('✅ Stack auth data acquired:', authData.accessToken ? 'Access token received' : 'No access token');
+          return authData.accessToken;
         } catch (e) {
-          console.error('❌ Failed to get Stack ID token:', e);
+          console.error('❌ Failed to get Stack access token:', e);
         }
         return null;
       };
 
-      getIdToken().then((idToken) => {
-        if (idToken) {
-          console.log('🎯 Logging in to AuthContext with Stack token');
-          login(idToken, {
+      getAccessToken().then((accessToken) => {
+        if (accessToken) {
+          console.log('🎯 Logging in to AuthContext with Stack access token');
+          login(accessToken, {
             id: Date.now(),
             full_name: stackUser.displayName || stackUser.primaryEmail?.split('@')[0] || 'User',
             email: stackUser.primaryEmail || '',
           });
         } else {
-          console.warn('⚠️ No Stack ID token available; skipping local AuthContext login');
+          console.warn('⚠️ No Stack access token available; skipping local AuthContext login');
         }
       });
     } else if (!stackUser && user) {
