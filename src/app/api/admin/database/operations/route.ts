@@ -12,19 +12,32 @@ export const POST = withPermission('database:manage', async (req: NextRequest) =
 
     switch (action) {
       case 'export':
-        // Export database - return summary for now
+        // Export database - return all data
         const exportData = {
-          users: await prisma.user.count(),
-          courses: await prisma.course.count(),
+          metadata: {
+            exportDate: new Date().toISOString(),
+            version: '1.0'
+          },
+          users: await prisma.user.findMany(),
+          courses: await prisma.course.findMany(),
+          roles: await prisma.role.findMany(),
+          userRoles: await prisma.userRole.findMany(),
           leads: {
-            courseWaitlist: await prisma.courseWaitlistLead.count(),
-            solaraWaitlist: await prisma.solaraWaitlistLead.count(),
-            ssaInquiries: await prisma.ssaInquiry.count(),
-            caseStudies: await prisma.caseStudyRequest.count(),
-            partners: await prisma.partnerInquiry.count()
+            courseWaitlist: await prisma.courseWaitlistLead.findMany(),
+            solaraWaitlist: await prisma.solaraWaitlistLead.findMany(),
+            ssaInquiries: await prisma.ssaInquiry.findMany(),
+            caseStudies: await prisma.caseStudyRequest.findMany(),
+            partners: await prisma.partnerInquiry.findMany()
           }
         };
-        return NextResponse.json({ ok: true, message: 'Export ready', data: exportData });
+        
+        // In a real app, you'd create a downloadable file
+        // For now, we'll return the data with instructions
+        return NextResponse.json({ 
+          ok: true, 
+          message: 'Database exported successfully. Copy the data below to save it.',
+          data: exportData 
+        });
 
       case 'clear':
         // Clear test data (keep essential data)
@@ -66,6 +79,14 @@ export const POST = withPermission('database:manage', async (req: NextRequest) =
         }
 
         return NextResponse.json({ ok: true, message: 'Roles seeded successfully' });
+
+      case 'import':
+        // Import data functionality
+        // In a real app, you'd accept file upload and process it
+        return NextResponse.json({ 
+          ok: true, 
+          message: 'Import functionality is not yet implemented. In production, this would accept a JSON file upload.' 
+        });
 
       default:
         return NextResponse.json({ error: 'Invalid action' }, { status: 400 });

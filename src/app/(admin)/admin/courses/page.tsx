@@ -231,7 +231,7 @@ export default function AdminCoursesPage() {
                 id: editingCourse?.id || `course-${Date.now()}`,
                 title: formData.get('title') as string,
                 description: formData.get('description') as string,
-                slug: editingCourse?.slug || (formData.get('title') as string).toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+                slug: editingCourse?.slug || (formData.get('title') as string).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''),
                 imageUrl: formData.get('imageUrl') as string || null,
                 price: formData.get('price') ? parseFloat(formData.get('price') as string) : null,
                 duration: formData.get('duration') as string || null,
@@ -251,16 +251,17 @@ export default function AdminCoursesPage() {
                 });
                 
                 if (res.ok) {
-                  loadCourses();
+                  await loadCourses();
                   setShowModal(false);
                   setEditingCourse(null);
+                  alert(editingCourse ? 'Course updated successfully!' : 'Course created successfully!');
                 } else {
                   const error = await res.json();
                   alert(`Failed to save course: ${error.error || 'Unknown error'}`);
                 }
               } catch (e) {
                 console.error('Failed to save course:', e);
-                alert('Failed to save course');
+                alert('Failed to save course. Please check your permissions.');
               }
             }}>
               <div className="space-y-4">

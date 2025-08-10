@@ -27,6 +27,7 @@ export default function AdminDatabasePage() {
   const [isExecuting, setIsExecuting] = useState(false);
   const [tables, setTables] = useState<TableInfo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sqlQuery, setSqlQuery] = useState('');
 
   useEffect(() => {
     loadDatabaseStats();
@@ -101,13 +102,29 @@ export default function AdminDatabasePage() {
       if (data.ok) {
         setQueryResult({
           type: 'success',
-          message: data.message
+          message: data.message,
+          data: data.data
         });
         // Reload stats after operation
         loadDatabaseStats();
         
         // Show alert for successful operations
-        alert(data.message);
+        if (action === 'export' && data.data) {
+          // For export, show the data in a modal or downloadable format
+          const jsonStr = JSON.stringify(data.data, null, 2);
+          const blob = new Blob([jsonStr], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `smartslate-backup-${new Date().toISOString().split('T')[0]}.json`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          alert('Database exported successfully! Check your downloads.');
+        } else {
+          alert(data.message);
+        }
       } else {
         throw new Error(data.error || 'Operation failed');
       }
@@ -117,6 +134,53 @@ export default function AdminDatabasePage() {
         message: e.message || 'Operation failed'
       });
       alert(`Error: ${e.message || 'Operation failed'}`);
+    } finally {
+      setIsExecuting(false);
+    }
+  };
+
+  const executeQuery = async () => {
+    if (!sqlQuery.trim()) {
+      alert('Please enter a SQL query');
+      return;
+    }
+
+    setIsExecuting(true);
+    setQueryResult(null);
+
+    try {
+      const token = localStorage.getItem('auth_token');
+      const res = await fetch('/api/admin/database/query', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({ query: sqlQuery })
+      });
+      
+      const data = await res.json();
+      
+      if (res.ok) {
+        setQueryResult({
+          type: 'success',
+          message: data.message,
+          result: data.result,
+          rowCount: data.rowCount
+        });
+      } else {
+        setQueryResult({
+          type: 'error',
+          message: data.error,
+          details: data.details
+        });
+      }
+    } catch (error: any) {
+      setQueryResult({
+        type: 'error',
+        message: 'Failed to execute query',
+        error: error.message
+      });
     } finally {
       setIsExecuting(false);
     }
@@ -211,7 +275,6 @@ export default function AdminDatabasePage() {
                   <tr className="border-b border-border-color bg-white/5">
                     <th className="px-4 py-3 text-left text-sm font-semibold text-text-primary">Table Name</th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-text-primary">Records</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-text-primary">Records</th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-text-primary">Last Modified</th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-text-primary">Actions</th>
                   </tr>
@@ -225,7 +288,6 @@ export default function AdminDatabasePage() {
                           <span className="text-sm font-medium text-text-primary">{table.name}</span>
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-sm text-text-secondary">{table.records.toLocaleString()}</td>
                       <td className="px-4 py-3 text-sm text-text-secondary">{table.records.toLocaleString()}</td>
                       <td className="px-4 py-3 text-sm text-text-secondary">{new Date(table.lastModified).toLocaleDateString()}</td>
                       <td className="px-4 py-3">
@@ -251,17 +313,19 @@ export default function AdminDatabasePage() {
             </div>
             <div className="space-y-4">
               <textarea
-                placeholder="Enter your SQL query here..."
+                placeholder="Enter your SQL query here... (Only SELECT queries are allowed)"
+                value={sqlQuery}
+                onChange={(e) => setSqlQuery(e.target.value)}
                 className="w-full h-48 px-4 py-3 bg-input-bg border border-border-color rounded-lg text-text-primary placeholder-text-secondary font-mono text-sm focus:outline-none focus:border-primary-accent transition-colors resize-none"
               />
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-sm text-yellow-400">
                   <Warning className="w-4 h-4" />
-                  <span>Use with caution - queries run directly on production database</span>
+                  <span>Only SELECT queries are allowed for safety</span>
                 </div>
                 <button
-                  onClick={() => setQueryResult({ message: 'Query execution simulated' })}
-                  disabled={isExecuting}
+                  onClick={executeQuery}
+                  disabled={isExecuting || !sqlQuery.trim()}
                   className="flex items-center gap-2 px-4 py-2 bg-secondary-accent text-white rounded-lg hover:bg-secondary-accent-dark transition-colors disabled:opacity-50"
                 >
                   <PlayArrow className="w-4 h-4" />
@@ -273,10 +337,56 @@ export default function AdminDatabasePage() {
 
           {queryResult && (
             <div className="glass-effect-strong rounded-xl p-6 border border-border-color">
-              <h3 className="text-lg font-semibold text-text-primary mb-4">Query Result</h3>
-              <pre className="bg-black/30 p-4 rounded-lg overflow-x-auto">
-                <code className="text-sm text-green-400">{JSON.stringify(queryResult, null, 2)}</code>
-              </pre>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-text-primary">Query Result</h3>
+                {queryResult.rowCount !== undefined && (
+                  <span className="text-sm text-text-secondary">
+                    {queryResult.rowCount} row{queryResult.rowCount !== 1 ? 's' : ''} returned
+                  </span>
+                )}
+              </div>
+              
+              {queryResult.type === 'error' ? (
+                <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+                  <p className="text-red-400">{queryResult.message}</p>
+                  {queryResult.details && (
+                    <pre className="mt-2 text-xs text-red-300">
+                      {JSON.stringify(queryResult.details, null, 2)}
+                    </pre>
+                  )}
+                </div>
+              ) : queryResult.result && Array.isArray(queryResult.result) ? (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-border-color bg-white/5">
+                        {queryResult.result.length > 0 && 
+                          Object.keys(queryResult.result[0]).map((key) => (
+                            <th key={key} className="px-4 py-2 text-left text-sm font-semibold text-text-primary">
+                              {key}
+                            </th>
+                          ))
+                        }
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border-color">
+                      {queryResult.result.map((row: any, idx: number) => (
+                        <tr key={idx} className="hover:bg-white/5">
+                          {Object.values(row).map((value: any, colIdx: number) => (
+                            <td key={colIdx} className="px-4 py-2 text-sm text-text-secondary">
+                              {value === null ? 'NULL' : String(value)}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <pre className="bg-black/30 p-4 rounded-lg overflow-x-auto">
+                  <code className="text-sm text-green-400">{JSON.stringify(queryResult, null, 2)}</code>
+                </pre>
+              )}
             </div>
           )}
         </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   CloudSync,
   Refresh,
@@ -25,6 +25,7 @@ interface SyncJob {
 }
 
 export default function AdminSyncPage() {
+  const [loading, setLoading] = useState(true);
   const [syncJobs, setSyncJobs] = useState<SyncJob[]>([
     {
       id: 'roles',
@@ -76,26 +77,105 @@ export default function AdminSyncPage() {
     }
   ]);
 
-  const [runningJobs, setRunningJobs] = useState<Set<string>>(new Set(['leads']));
+  const [runningJobs, setRunningJobs] = useState<Set<string>>(new Set());
   const [showLogs, setShowLogs] = useState<string | null>(null);
+
+  useEffect(() => {
+    loadSyncJobs();
+  }, []);
+
+  async function loadSyncJobs() {
+    try {
+      const token = localStorage.getItem('auth_token');
+      const res = await fetch('/api/admin/sync', {
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setSyncJobs(data.jobs);
+      }
+    } catch (error) {
+      console.error('Failed to load sync jobs:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const runSync = async (jobId: string) => {
     setRunningJobs(new Set([...runningJobs, jobId]));
     
-    // Simulate sync execution
-    setTimeout(() => {
+    try {
+      const token = localStorage.getItem('auth_token');
+      const res = await fetch('/api/admin/sync', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({ jobId })
+      });
+      
+      const data = await res.json();
+      
+      if (res.ok) {
+        setSyncJobs(prev => prev.map(job => 
+          job.id === jobId 
+            ? { ...job, status: 'success', lastRun: new Date().toISOString(), duration: data.duration }
+            : job
+        ));
+        alert(`${data.message} (Duration: ${data.duration})`);
+      } else {
+        setSyncJobs(prev => prev.map(job => 
+          job.id === jobId 
+            ? { ...job, status: 'failed' }
+            : job
+        ));
+        alert(`Sync failed: ${data.error || 'Unknown error'}`);
+      }
+    } catch (error) {
+      console.error('Failed to run sync:', error);
+      setSyncJobs(prev => prev.map(job => 
+        job.id === jobId 
+          ? { ...job, status: 'failed' }
+          : job
+      ));
+      alert('Failed to run sync job');
+    } finally {
       setRunningJobs(prev => {
         const newSet = new Set(prev);
         newSet.delete(jobId);
         return newSet;
       });
+    }
+  };
+
+  const runAllSync = async () => {
+    const confirmRun = confirm('Are you sure you want to run all sync jobs? This may take a while.');
+    if (!confirmRun) return;
+    
+    try {
+      const token = localStorage.getItem('auth_token');
+      const res = await fetch('/api/admin/sync', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({ jobId: 'all' })
+      });
       
-      setSyncJobs(prev => prev.map(job => 
-        job.id === jobId 
-          ? { ...job, status: 'success', lastRun: new Date().toISOString() }
-          : job
-      ));
-    }, 3000);
+      const data = await res.json();
+      
+      if (res.ok) {
+        await loadSyncJobs();
+        alert(`${data.message} (Duration: ${data.duration})`);
+      } else {
+        alert(`Failed to run all sync jobs: ${data.error || 'Unknown error'}`);
+      }
+    } catch (error) {
+      console.error('Failed to run all sync:', error);
+      alert('Failed to run all sync jobs');
+    }
   };
 
   const getStatusIcon = (status: string) => {
@@ -125,6 +205,7 @@ export default function AdminSyncPage() {
           <p className="text-text-secondary mt-1">Manage data synchronization and seeding tasks</p>
         </div>
         <button
+          onClick={runAllSync}
           className="flex items-center gap-2 px-4 py-2 bg-secondary-accent text-white rounded-lg hover:bg-secondary-accent-dark transition-colors duration-200"
         >
           <Refresh className="w-5 h-5" />

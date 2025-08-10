@@ -33,6 +33,7 @@ interface Permission {
 }
 
 export default function AdminRolesPage() {
+  const [loading, setLoading] = useState(true);
   const [roles, setRoles] = useState<Role[]>([
     {
       id: 'owner',
@@ -62,6 +63,79 @@ export default function AdminRolesPage() {
 
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [editingRole, setEditingRole] = useState<Role | null>(null);
+
+  useEffect(() => {
+    loadRoles();
+  }, []);
+
+  async function loadRoles() {
+    try {
+      const token = localStorage.getItem('auth_token');
+      const res = await fetch('/api/admin/roles', {
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setRoles(data.roles);
+      }
+    } catch (error) {
+      console.error('Failed to load roles:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function saveRole(roleData: Partial<Role>) {
+    try {
+      const token = localStorage.getItem('auth_token');
+      const method = editingRole ? 'PATCH' : 'POST';
+      const res = await fetch('/api/admin/roles', {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify(roleData)
+      });
+      
+      if (res.ok) {
+        await loadRoles();
+        setShowModal(false);
+        setEditingRole(null);
+        alert(editingRole ? 'Role updated successfully!' : 'Role created successfully!');
+      } else {
+        const error = await res.json();
+        alert(`Failed to save role: ${error.error || 'Unknown error'}`);
+      }
+    } catch (error) {
+      console.error('Failed to save role:', error);
+      alert('Failed to save role');
+    }
+  }
+
+  async function deleteRole(roleId: string) {
+    if (!confirm('Are you sure you want to delete this role?')) return;
+    
+    try {
+      const token = localStorage.getItem('auth_token');
+      const res = await fetch(`/api/admin/roles?id=${roleId}`, {
+        method: 'DELETE',
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined
+      });
+      
+      if (res.ok) {
+        await loadRoles();
+        alert('Role deleted successfully!');
+      } else {
+        const error = await res.json();
+        alert(`Failed to delete role: ${error.error || 'Unknown error'}`);
+      }
+    } catch (error) {
+      console.error('Failed to delete role:', error);
+      alert('Failed to delete role');
+    }
+  }
 
   const allPermissions: Permission[] = [
     // Lead Permissions
@@ -161,7 +235,7 @@ export default function AdminRolesPage() {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        // Handle delete
+                        deleteRole(role.id);
                       }}
                       className="opacity-0 group-hover:opacity-100 transition-opacity p-1 text-red-400 hover:bg-red-500/20 rounded"
                     >
@@ -188,13 +262,16 @@ export default function AdminRolesPage() {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    setSelectedRole(role);
-                    setShowModal(true);
+                    if (!role.isSystem) {
+                      setEditingRole(role);
+                      setShowModal(true);
+                    }
                   }}
                   className="mt-4 w-full px-3 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-sm font-medium text-text-primary transition-colors flex items-center justify-center gap-2"
+                  disabled={role.isSystem}
                 >
                   <Edit className="w-4 h-4" />
-                  <span>Edit Role</span>
+                  <span>{role.isSystem ? 'System Role' : 'Edit Role'}</span>
                 </button>
               </div>
             </div>
@@ -311,6 +388,108 @@ export default function AdminRolesPage() {
                 )}
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Create/Edit Role Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="glass-effect-strong rounded-xl p-6 border border-border-color max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <h2 className="text-xl font-bold text-text-primary mb-4">
+              {editingRole ? 'Edit Role' : 'Create New Role'}
+            </h2>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              const selectedPermissions = allPermissions
+                .filter(p => formData.get(`perm_${p.id}`) === 'on')
+                .map(p => p.id);
+              
+              const roleData = {
+                id: editingRole?.id,
+                name: formData.get('name') as string,
+                description: formData.get('description') as string,
+                permissions: selectedPermissions
+              };
+              
+              saveRole(roleData);
+            }}>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-text-secondary mb-1">Role Name *</label>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    defaultValue={editingRole?.name}
+                    className="w-full px-4 py-2 bg-input-bg border border-border-color rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:border-primary-accent transition-colors"
+                    placeholder="e.g., Content Manager"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-text-secondary mb-1">Description *</label>
+                  <textarea
+                    name="description"
+                    required
+                    defaultValue={editingRole?.description}
+                    rows={3}
+                    className="w-full px-4 py-2 bg-input-bg border border-border-color rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:border-primary-accent transition-colors resize-none"
+                    placeholder="Brief description of this role's purpose..."
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-text-secondary mb-3">Permissions</label>
+                  <div className="space-y-4">
+                    {permissionCategories.map((category) => (
+                      <div key={category}>
+                        <h4 className="text-sm font-semibold text-text-primary mb-2">{category}</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                          {allPermissions
+                            .filter(p => p.category === category)
+                            .map((permission) => (
+                              <label key={permission.id} className="flex items-start gap-3 p-3 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10">
+                                <input
+                                  type="checkbox"
+                                  name={`perm_${permission.id}`}
+                                  defaultChecked={editingRole?.permissions.includes(permission.id)}
+                                  className="w-4 h-4 mt-0.5 text-primary-accent bg-input-bg border-border-color rounded focus:ring-primary-accent"
+                                />
+                                <div className="flex-1">
+                                  <span className="text-text-primary block text-sm">{permission.name}</span>
+                                  <span className="text-xs text-text-secondary">{permission.description}</span>
+                                </div>
+                              </label>
+                            ))
+                          }
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex gap-3 mt-6">
+                <button
+                  type="submit"
+                  className="flex-1 px-4 py-2 bg-secondary-accent text-white rounded-lg hover:bg-secondary-accent-dark transition-colors"
+                >
+                  {editingRole ? 'Update Role' : 'Create Role'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowModal(false);
+                    setEditingRole(null);
+                  }}
+                  className="flex-1 px-4 py-2 bg-white/10 text-text-primary rounded-lg hover:bg-white/20 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

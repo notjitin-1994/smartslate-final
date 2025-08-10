@@ -106,8 +106,9 @@ export default function AdminUsersPage() {
         body: JSON.stringify({ roles })
       });
       if (res.ok) {
-        loadUsers();
+        await loadUsers();
         setSelectedUser(null);
+        alert('User roles updated successfully!');
       } else {
         const error = await res.json();
         alert(`Failed to update roles: ${error.error || 'Unknown error'}`);
@@ -432,12 +433,17 @@ export default function AdminUsersPage() {
             </div>
             <div className="flex gap-3 mt-6">
               <button
-                onClick={() => {
+                onClick={async () => {
                   if (selectedUser.email === 'jitin@smartslate.io' && !selectedUser.roles?.includes('owner')) {
                     alert('Cannot remove Owner role from jitin@smartslate.io');
                     return;
                   }
-                  updateUserRoles(selectedUser.id, selectedUser.roles || []);
+                  // Ensure at least one role is selected
+                  if (!selectedUser.roles || selectedUser.roles.length === 0) {
+                    alert('Please select at least one role for the user');
+                    return;
+                  }
+                  await updateUserRoles(selectedUser.id, selectedUser.roles || []);
                 }}
                 className="flex-1 px-4 py-2 bg-secondary-accent text-white rounded-lg hover:bg-secondary-accent-dark transition-colors"
               >

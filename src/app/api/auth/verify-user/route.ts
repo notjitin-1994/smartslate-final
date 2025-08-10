@@ -54,17 +54,27 @@ export const POST = async (req: NextRequest) => {
         stackAuthId: user.stackAuthId
       });
     } else if (stackAuthId && user.stackAuthId !== stackAuthId) {
-      // Update existing user with Stack Auth ID if not already set
-      console.log(`📝 Updating user ${user.id} with Stack Auth ID: ${stackAuthId}`);
-      user = await prisma.user.update({
-        where: { id: user.id },
-        data: { stackAuthId, updatedAt: new Date() }
+      // Check if another user already has this stackAuthId
+      const existingUserWithStackId = await prisma.user.findUnique({
+        where: { stackAuthId }
       });
-      console.log(`✅ User updated with Stack Auth ID:`, {
-        id: user.id,
-        email: user.email,
-        stackAuthId: user.stackAuthId
-      });
+      
+      if (existingUserWithStackId && existingUserWithStackId.id !== user.id) {
+        console.log(`⚠️ Stack Auth ID ${stackAuthId} already assigned to user ${existingUserWithStackId.id}`);
+        // Don't update, just continue with existing user
+      } else {
+        // Update existing user with Stack Auth ID if not already set
+        console.log(`📝 Updating user ${user.id} with Stack Auth ID: ${stackAuthId}`);
+        user = await prisma.user.update({
+          where: { id: user.id },
+          data: { stackAuthId, updatedAt: new Date() }
+        });
+        console.log(`✅ User updated with Stack Auth ID:`, {
+          id: user.id,
+          email: user.email,
+          stackAuthId: user.stackAuthId
+        });
+      }
     } else {
       console.log(`✅ User ${email} already exists in database - no creation needed`);
     }

@@ -17,8 +17,9 @@ import { LineChart, Line, AreaChart, Area, BarChart as RechartsBarChart, Bar, Pi
 export default function AdminAnalyticsPage() {
   const [timeRange, setTimeRange] = useState('7d');
   const [loading, setLoading] = useState(true);
+  const [analyticsData, setAnalyticsData] = useState<any>(null);
 
-  // Mock data - replace with real API calls
+  // Mock data - will be replaced by API data
   const mockData = {
     leadsOverTime: [
       { date: 'Mon', leads: 12 },
@@ -51,9 +52,27 @@ export default function AdminAnalyticsPage() {
   };
 
   useEffect(() => {
-    // Simulate loading
-    setTimeout(() => setLoading(false), 1000);
-  }, []);
+    loadAnalytics();
+  }, [timeRange]);
+
+  async function loadAnalytics() {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem('auth_token');
+      const res = await fetch(`/api/admin/analytics?timeRange=${timeRange}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      });
+      
+      if (res.ok) {
+        const data = await res.json();
+        setAnalyticsData(data.analytics);
+      }
+    } catch (error) {
+      console.error('Failed to load analytics:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const MetricCard = ({ title, value, change, trend, icon: Icon, prefix = '' }: any) => (
     <div className="glass-effect rounded-xl p-6 border border-border-color hover:border-primary-accent/50 transition-all duration-300">
@@ -108,31 +127,31 @@ export default function AdminAnalyticsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <MetricCard
           title="Total Leads"
-          value={mockData.metrics.totalLeads.value}
-          change={mockData.metrics.totalLeads.change}
-          trend={mockData.metrics.totalLeads.trend}
+          value={(analyticsData || mockData).metrics.totalLeads.value}
+          change={(analyticsData || mockData).metrics.totalLeads.change}
+          trend={(analyticsData || mockData).metrics.totalLeads.trend}
           icon={Group}
         />
         <MetricCard
           title="Conversion Rate"
-          value={`${mockData.metrics.conversionRate.value}%`}
-          change={mockData.metrics.conversionRate.change}
-          trend={mockData.metrics.conversionRate.trend}
+          value={`${(analyticsData || mockData).metrics.conversionRate.value}%`}
+          change={(analyticsData || mockData).metrics.conversionRate.change}
+          trend={(analyticsData || mockData).metrics.conversionRate.trend}
           icon={TrendingUp}
         />
         <MetricCard
           title="Avg Deal Size"
-          value={mockData.metrics.avgDealSize.value}
-          change={mockData.metrics.avgDealSize.change}
-          trend={mockData.metrics.avgDealSize.trend}
+          value={(analyticsData || mockData).metrics.avgDealSize.value}
+          change={(analyticsData || mockData).metrics.avgDealSize.change}
+          trend={(analyticsData || mockData).metrics.avgDealSize.trend}
           icon={AttachMoney}
           prefix="$"
         />
         <MetricCard
           title="Active Users"
-          value={mockData.metrics.activeUsers.value}
-          change={mockData.metrics.activeUsers.change}
-          trend={mockData.metrics.activeUsers.trend}
+          value={(analyticsData || mockData).metrics.activeUsers.value}
+          change={(analyticsData || mockData).metrics.activeUsers.change}
+          trend={(analyticsData || mockData).metrics.activeUsers.trend}
           icon={School}
         />
       </div>
@@ -143,7 +162,7 @@ export default function AdminAnalyticsPage() {
         <div className="glass-effect-strong rounded-xl p-6 border border-border-color">
           <h2 className="text-xl font-bold text-text-primary mb-4">Lead Generation Trend</h2>
           <ResponsiveContainer width="100%" height={300}>
-            <AreaChart data={mockData.leadsOverTime}>
+            <AreaChart data={(analyticsData || mockData).leadsOverTime}>
               <defs>
                 <linearGradient id="colorLeads" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#a7dadb" stopOpacity={0.8}/>
@@ -168,7 +187,7 @@ export default function AdminAnalyticsPage() {
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
-                data={mockData.leadsBySource}
+                data={(analyticsData || mockData).leadsBySource}
                 cx="50%"
                 cy="50%"
                 innerRadius={60}
@@ -176,7 +195,7 @@ export default function AdminAnalyticsPage() {
                 paddingAngle={5}
                 dataKey="value"
               >
-                {mockData.leadsBySource.map((entry, index) => (
+                {(analyticsData || mockData).leadsBySource.map((entry: any, index: number) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Pie>
@@ -187,7 +206,7 @@ export default function AdminAnalyticsPage() {
             </PieChart>
           </ResponsiveContainer>
           <div className="flex flex-wrap gap-3 mt-4">
-            {mockData.leadsBySource.map((source) => (
+            {(analyticsData || mockData).leadsBySource.map((source: any) => (
               <div key={source.name} className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: source.color }} />
                 <span className="text-sm text-text-secondary">{source.name}</span>
@@ -201,7 +220,7 @@ export default function AdminAnalyticsPage() {
       <div className="glass-effect-strong rounded-xl p-6 border border-border-color">
         <h2 className="text-xl font-bold text-text-primary mb-4">Conversion Funnel</h2>
         <ResponsiveContainer width="100%" height={300}>
-          <RechartsBarChart data={mockData.conversionFunnel} layout="horizontal">
+          <RechartsBarChart data={(analyticsData || mockData).conversionFunnel} layout="horizontal">
             <CartesianGrid strokeDasharray="3 3" stroke="#2a3a4a" />
             <XAxis dataKey="stage" stroke="#b0c5c6" />
             <YAxis stroke="#b0c5c6" />

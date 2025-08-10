@@ -57,8 +57,16 @@ export async function ensureDefaultRolesForUser(userId: string, email: string | 
   await seedRoles();
   console.log('✅ Roles seeded successfully');
 
+  // If email is not provided, try to get it from the user record
+  let userEmail = email;
+  if (!userEmail) {
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    userEmail = user?.email || null;
+    console.log('📧 Email from user record:', userEmail);
+  }
+
   // Owner mapping for specific email
-  if (email === 'jitin@smartslate.io') {
+  if (userEmail === 'jitin@smartslate.io' || userId === 'jitin-owner-user') {
     console.log('🔑 Assigning OWNER role to jitin@smartslate.io');
     await assignRoleToUser(userId, 'owner');
     const roles = await getUserRoleIds(userId);

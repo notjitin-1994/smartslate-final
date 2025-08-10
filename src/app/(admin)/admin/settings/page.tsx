@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Settings,
   Save,
@@ -35,6 +35,7 @@ interface SettingField {
 export default function AdminSettingsPage() {
   const [activeSection, setActiveSection] = useState('general');
   const [saved, setSaved] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [settings, setSettings] = useState({
     siteName: 'SmartSlate',
     siteUrl: 'https://smartslate.io',
@@ -64,6 +65,28 @@ export default function AdminSettingsPage() {
     primaryColor: '#a7dadb',
     logoUrl: '/logo.png'
   });
+
+  useEffect(() => {
+    async function loadSettings() {
+      try {
+        const token = localStorage.getItem('auth_token');
+        const res = await fetch('/api/admin/settings', {
+          headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.settings) {
+            setSettings(data.settings);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load settings:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadSettings();
+  }, []);
 
   const sections: SettingSection[] = [
     {
@@ -198,9 +221,29 @@ export default function AdminSettingsPage() {
     }
   ];
 
-  const handleSave = () => {
-    setSaved(true);
-    setTimeout(() => setSaved(false), 3000);
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem('auth_token');
+      const res = await fetch('/api/admin/settings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify(settings)
+      });
+
+      if (res.ok) {
+        setSaved(true);
+        setTimeout(() => setSaved(false), 3000);
+      } else {
+        const error = await res.json();
+        alert(`Failed to save settings: ${error.error || 'Unknown error'}`);
+      }
+    } catch (error) {
+      console.error('Failed to save settings:', error);
+      alert('Failed to save settings');
+    }
   };
 
   const currentSection = sections.find(s => s.id === activeSection)!;
