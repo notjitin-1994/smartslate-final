@@ -8,9 +8,13 @@ import type { ReactNode } from 'react';
 function AdminLayoutContent({ children }: { children: ReactNode }) {
   return (
     <AdminAuthGuard>
-      <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+      <div className="flex min-h-screen bg-background-dark text-text-primary">
         <AdminSidebar />
-        <main className="flex-1 overflow-y-auto p-6">{children}</main>
+        <main className="flex-1 overflow-y-auto">
+          <div className="p-8 max-w-[1600px] mx-auto">
+            {children}
+          </div>
+        </main>
       </div>
     </AdminAuthGuard>
   );
@@ -19,10 +23,10 @@ function AdminLayoutContent({ children }: { children: ReactNode }) {
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
     <Suspense fallback={
-      <div className="flex items-center justify-center min-h-screen text-gray-500">
+      <div className="flex items-center justify-center min-h-screen bg-background-dark">
         <div className="text-center">
-          <div className="mb-4">Loading Admin Panel...</div>
-          <div className="text-sm text-gray-400">Please wait</div>
+          <div className="mb-4 text-primary-accent text-lg font-semibold">Loading Admin Portal...</div>
+          <div className="text-sm text-text-secondary">Initializing secure connection</div>
         </div>
       </div>
     }>
