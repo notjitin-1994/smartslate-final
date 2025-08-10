@@ -100,8 +100,10 @@ export default function AuthStackProvider({ children }: { children: React.ReactN
     publishableClientKey: publishableKey,
     redirectMethod: 'nextjs',
     tokenStore: 'nextjs-cookie',
-    signInUrl: '/handler/sign-in',
-    signUpUrl: '/handler/sign-up',
+    urls: {
+      signIn: '/handler/sign-in',
+      signUp: '/handler/sign-up',
+    },
   });
 
   return (
