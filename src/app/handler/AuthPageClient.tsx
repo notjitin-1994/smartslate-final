@@ -141,6 +141,7 @@ export default function AuthPageClient() {
         }
         
         // After successful Stack Auth signup, create user in our database
+        console.log('📝 Creating user in database after Stack Auth signup...');
         const res = await fetch('/api/auth/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -152,9 +153,15 @@ export default function AuthPageClient() {
           }),
         });
         
+        console.log('📡 Signup API response:', {
+          status: res.status,
+          ok: res.ok,
+          statusText: res.statusText
+        });
+        
         if (!res.ok) {
           const errorData = await res.json().catch(() => ({ error: 'Failed to parse error response' }));
-          console.error('Failed to create user in database:', errorData);
+          console.error('❌ Database user creation failed:', errorData);
           // Show error to user but don't prevent Stack Auth signup
           setError(`Account created but database sync failed: ${errorData.error || 'Unknown error'}. Please try logging in.`);
           // Still redirect after a delay to allow user to see the error
@@ -165,7 +172,7 @@ export default function AuthPageClient() {
         }
         
         const userData = await res.json();
-        console.log('User successfully created in database:', userData);
+        console.log('✅ User successfully created in database:', userData);
         
         // User is automatically signed in after signup with Stack Auth
         // Wait a moment for the auth state to update
@@ -184,6 +191,7 @@ export default function AuthPageClient() {
         }
         
         // Create/update user in our database after successful sign in
+        console.log('📝 Syncing user to database after Stack Auth signin...');
         const res = await fetch('/api/auth/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -192,11 +200,19 @@ export default function AuthPageClient() {
           }),
         });
         
+        console.log('📡 Signin sync API response:', {
+          status: res.status,
+          ok: res.ok,
+          statusText: res.statusText
+        });
+        
         if (!res.ok) {
           const errorText = await res.text();
-          console.error('Failed to sync user in database:', errorText);
+          console.error('❌ Failed to sync user in database during signin:', errorText);
           // Don't fail the whole signin if database sync fails
           // The StackAuthSync will handle it on next page load
+        } else {
+          console.log('✅ User successfully synced to database during signin');
         }
         
         // Wait a moment for the auth state to update

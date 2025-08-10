@@ -22,10 +22,12 @@ export const POST = async (req: NextRequest) => {
       company?: string;
     };
 
-    console.log('Signup API called with:', { email, firstName, lastName, company });
+    console.log('=== SIGNUP API START ===');
+    console.log('Request body:', { email, firstName, lastName, company });
+    console.log('Timestamp:', new Date().toISOString());
 
     if (!email || !isValidEmail(email)) {
-      console.error('Invalid email provided:', email);
+      console.error('❌ SIGNUP FAILED - Invalid email:', email);
       return NextResponse.json({ ok: false, error: 'Invalid email' }, { status: 400 });
     }
 
@@ -33,10 +35,10 @@ export const POST = async (req: NextRequest) => {
 
     // Upsert User record in RBAC User table
     let user = await prisma.user.findUnique({ where: { email } });
-    console.log('Existing user found:', !!user);
+    console.log('🔍 User lookup result:', user ? `Found existing user ${user.id}` : 'User not found');
     
     if (!user) {
-      console.log('Creating new user in database...');
+      console.log('📝 Creating new user in database...');
       user = await prisma.user.create({
         data: {
           id: randomUUID(),
@@ -46,7 +48,12 @@ export const POST = async (req: NextRequest) => {
           updatedAt: new Date(),
         },
       });
-      console.log('User created with ID:', user.id, 'name:', name, 'company:', company);
+      console.log('✅ User created successfully:', { 
+        id: user.id, 
+        email: user.email, 
+        name: user.name, 
+        company: user.company 
+      });
     } else {
       // Update user data if new information is provided
       const updateData: any = { updatedAt: new Date() };
@@ -65,23 +72,43 @@ export const POST = async (req: NextRequest) => {
       }
 
       if (shouldUpdate) {
-        console.log('Updating existing user with:', updateData);
+        console.log('📝 Updating existing user with:', updateData);
         user = await prisma.user.update({ 
           where: { id: user.id }, 
           data: updateData 
         });
-        console.log('User updated successfully');
+        console.log('✅ User updated successfully:', {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          company: user.company
+        });
+      } else {
+        console.log('✅ No updates needed for existing user');
       }
     }
 
     // Ensure roles exist and assign appropriate role (owner for jitin@smartslate.io, learner for others)
-    console.log('Ensuring default roles for user...');
+    console.log('🔑 Ensuring default roles for user...');
     const roles = await ensureDefaultRolesForUser(user.id, email);
-    console.log('Roles assigned to user:', user.id, 'roles:', roles);
+    console.log('✅ Roles assigned to user:', { userId: user.id, email, roles });
 
     // Try to create user in Neon Auth (Stack Auth) as well, if configured
+    console.log('🌐 Creating user in Neon Auth...');
     const authResult = await createAuthUser({ email, name });
-    console.log('Neon Auth result:', authResult);
+    console.log('📡 Neon Auth result:', {
+      ok: authResult.ok,
+      status: authResult.status,
+      id: authResult.id,
+      error: authResult.error
+    });
+
+    console.log('=== SIGNUP API SUCCESS ===');
+    console.log('Final result:', { 
+      userId: user.id, 
+      email: user.email,
+      neonAuthSuccess: authResult.ok 
+    });
 
     return NextResponse.json({ 
       ok: true, 
@@ -89,7 +116,11 @@ export const POST = async (req: NextRequest) => {
       external: { neonAuth: authResult.ok } 
     });
   } catch (error) {
-    console.error('Signup API error:', error);
+    console.error('❌ SIGNUP API ERROR:', {
+      error: error instanceof Error ? error.message : 'Unexpected error',
+      stack: error instanceof Error ? error.stack : undefined,
+      timestamp: new Date().toISOString()
+    });
     return NextResponse.json({ 
       ok: false, 
       error: error instanceof Error ? error.message : 'Unexpected error' 

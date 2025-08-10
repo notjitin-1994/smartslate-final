@@ -14,6 +14,13 @@ function StackAuthSyncInner({ children }: { children: React.ReactNode }) {
       // Ensure user exists in our database
       const syncUserToDatabase = async () => {
         try {
+          console.log('=== STACK SYNC START ===');
+          console.log('Syncing user to database:', {
+            email: stackUser.primaryEmail,
+            name: stackUser.displayName,
+            timestamp: new Date().toISOString()
+          });
+
           const response = await fetch('/api/auth/verify-user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -24,19 +31,33 @@ function StackAuthSyncInner({ children }: { children: React.ReactNode }) {
             }),
           });
           
+          console.log('📡 Verify-user API response:', {
+            status: response.status,
+            ok: response.ok,
+            statusText: response.statusText
+          });
+
           if (!response.ok) {
             const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-            console.error('Failed to sync user to database:', errorData);
+            console.error('❌ STACK SYNC FAILED - Database sync failed:', {
+              status: response.status,
+              error: errorData,
+              email: stackUser.primaryEmail
+            });
             // Alert user that there's a sync issue
             if (typeof window !== 'undefined') {
               console.error(`Database sync failed for ${stackUser.primaryEmail}. Please contact support if issues persist.`);
             }
           } else {
             const userData = await response.json();
-            console.log('User verified/synced in database:', userData);
+            console.log('✅ STACK SYNC SUCCESS - User verified/synced in database:', userData);
           }
         } catch (error) {
-          console.error('Error syncing user to database:', error);
+          console.error('❌ STACK SYNC ERROR - Error syncing user to database:', {
+            error: error instanceof Error ? error.message : 'Unknown error',
+            email: stackUser.primaryEmail,
+            timestamp: new Date().toISOString()
+          });
         }
       };
 
@@ -46,26 +67,31 @@ function StackAuthSyncInner({ children }: { children: React.ReactNode }) {
       // Obtain a real token from Stack (if available) and sync AuthContext
       const getIdToken = async (): Promise<string | null> => {
         try {
+          console.log('🔑 Attempting to get Stack ID token...');
           const su = stackUser as unknown as { getIdToken?: () => Promise<string> };
           if (typeof su?.getIdToken === 'function') {
             const token = await su.getIdToken();
+            console.log('✅ Stack ID token acquired:', token ? 'Token received' : 'Token is null/empty');
             return typeof token === 'string' ? token : null;
+          } else {
+            console.warn('⚠️ getIdToken method not available on Stack user object');
           }
         } catch (e) {
-          console.error('Failed to get Stack ID token', e);
+          console.error('❌ Failed to get Stack ID token:', e);
         }
         return null;
       };
 
       getIdToken().then((idToken) => {
         if (idToken) {
+          console.log('🎯 Logging in to AuthContext with Stack token');
           login(idToken, {
             id: Date.now(),
             full_name: stackUser.displayName || stackUser.primaryEmail?.split('@')[0] || 'User',
             email: stackUser.primaryEmail || '',
           });
         } else {
-          console.warn('No Stack ID token available; skipping local AuthContext login');
+          console.warn('⚠️ No Stack ID token available; skipping local AuthContext login');
         }
       });
     } else if (!stackUser && user) {
