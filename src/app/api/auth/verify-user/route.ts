@@ -14,16 +14,22 @@ export const POST = async (req: NextRequest) => {
   try {
     const { email, name, company } = await req.json();
 
+    console.log('=== VERIFY-USER API START ===');
+    console.log('Request body:', { email, name, company });
+    console.log('Timestamp:', new Date().toISOString());
+
     if (!email) {
+      console.error('❌ VERIFY-USER FAILED - No email provided');
       return NextResponse.json({ ok: false, error: 'Email is required' }, { status: 400 });
     }
 
     // Check if user already exists
     let user = await prisma.user.findUnique({ where: { email } });
+    console.log('🔍 User lookup result:', user ? `Found user ${user.id}` : 'User not found');
     
     if (!user) {
       // Create new user
-      console.log(`Creating new user for ${email} in database...`);
+      console.log(`📝 Creating new user for ${email} in database...`);
       user = await prisma.user.create({
         data: {
           id: randomUUID(),
@@ -34,14 +40,28 @@ export const POST = async (req: NextRequest) => {
           updatedAt: new Date(),
         },
       });
-      console.log(`User created with ID: ${user.id}`);
+      console.log(`✅ User created successfully:`, {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        company: user.company
+      });
 
       // Assign default role
+      console.log('🔑 Assigning default roles...');
       const roles = await ensureDefaultRolesForUser(user.id, email);
-      console.log(`Roles assigned: ${roles.join(', ')}`);
+      console.log(`✅ Roles assigned:`, { userId: user.id, email, roles });
     } else {
-      console.log(`User ${email} already exists in database`);
+      console.log(`✅ User ${email} already exists in database - no creation needed`);
     }
+
+    console.log('=== VERIFY-USER API SUCCESS ===');
+    console.log('Final result:', {
+      userId: user.id,
+      email: user.email,
+      name: user.name,
+      isNew: !user
+    });
 
     return NextResponse.json({ 
       ok: true, 
@@ -51,7 +71,11 @@ export const POST = async (req: NextRequest) => {
       isNew: !user
     });
   } catch (error) {
-    console.error('Error in verify-user:', error);
+    console.error('❌ VERIFY-USER API ERROR:', {
+      error: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      timestamp: new Date().toISOString()
+    });
     return NextResponse.json({ 
       ok: false, 
       error: error instanceof Error ? error.message : 'Unknown error' 

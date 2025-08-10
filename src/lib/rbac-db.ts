@@ -40,21 +40,36 @@ export async function assignRoleToUser(userId: string, roleId: RoleName): Promis
 }
 
 export async function ensureDefaultRolesForUser(userId: string, email: string | null): Promise<string[]> {
+  console.log('=== ROLE ASSIGNMENT START ===');
+  console.log('Ensuring roles for user:', { userId, email });
+  
   // Seed roles if missing
   await seedRoles();
+  console.log('✅ Roles seeded successfully');
 
   // Owner mapping for specific email
   if (email === 'jitin@smartslate.io') {
+    console.log('🔑 Assigning OWNER role to jitin@smartslate.io');
     await assignRoleToUser(userId, 'owner');
-    return getUserRoleIds(userId);
+    const roles = await getUserRoleIds(userId);
+    console.log('✅ Owner roles assigned:', roles);
+    return roles;
   }
 
   // If user has no roles, assign default learner role
   const existing = await getUserRoleIds(userId);
+  console.log('🔍 Existing roles for user:', existing);
+  
   if (existing.length === 0) {
+    console.log('📚 Assigning default LEARNER role');
     await assignRoleToUser(userId, 'learner');
+    const finalRoles = await getUserRoleIds(userId);
+    console.log('✅ Learner role assigned, final roles:', finalRoles);
+    return finalRoles;
   }
-  return getUserRoleIds(userId);
+  
+  console.log('✅ User already has roles, no assignment needed');
+  return existing;
 }
 
 
