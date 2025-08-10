@@ -47,9 +47,9 @@ function StackAuthSyncInner({ children }: { children: React.ReactNode }) {
       // Obtain a real token from Stack (if available) and sync AuthContext
       const getIdToken = async (): Promise<string | null> => {
         try {
-          const maybeGetIdToken = (stackUser as any)?.getIdToken;
-          if (typeof maybeGetIdToken === 'function') {
-            const token = await maybeGetIdToken.call(stackUser);
+          const su = stackUser as unknown as { getIdToken?: () => Promise<string> };
+          if (typeof su?.getIdToken === 'function') {
+            const token = await su.getIdToken();
             return typeof token === 'string' ? token : null;
           }
         } catch (e) {
