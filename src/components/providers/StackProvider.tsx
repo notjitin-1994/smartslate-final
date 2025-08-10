@@ -2,7 +2,7 @@
 
 import { StackProvider, StackClientApp, useUser } from '@stackframe/stack';
 import { useAuth } from '@/contexts/AuthContext';
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, Suspense } from 'react';
 
 function StackAuthSyncInner({ children }: { children: React.ReactNode }) {
   const stackUser = useUser();
@@ -14,7 +14,6 @@ function StackAuthSyncInner({ children }: { children: React.ReactNode }) {
       // Ensure user exists in our database
       const syncUserToDatabase = async () => {
         try {
-          const nameParts = stackUser.displayName?.split(' ') || [];
           const response = await fetch('/api/auth/verify-user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -44,20 +43,30 @@ function StackAuthSyncInner({ children }: { children: React.ReactNode }) {
       // Sync to database first, then update auth context
       syncUserToDatabase();
 
-      // Sync Stack Auth user with our AuthContext
-      const mockToken = btoa(JSON.stringify({
-        alg: 'none',
-        typ: 'JWT'
-      })) + '.' + btoa(JSON.stringify({
-        sub: stackUser.primaryEmail || '', // Add subject claim
-        email: stackUser.primaryEmail || '',
-        exp: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60, // 7 days
-      })) + '.';
+      // Obtain a real token from Stack (if available) and sync AuthContext
+      const getIdToken = async (): Promise<string | null> => {
+        try {
+          const su = stackUser as unknown as { getIdToken?: () => Promise<string> };
+          if (typeof su?.getIdToken === 'function') {
+            const token = await su.getIdToken();
+            return typeof token === 'string' ? token : null;
+          }
+        } catch (e) {
+          console.error('Failed to get Stack ID token', e);
+        }
+        return null;
+      };
 
-      login(mockToken, {
-        id: Date.now(),
-        full_name: stackUser.displayName || stackUser.primaryEmail?.split('@')[0] || 'User',
-        email: stackUser.primaryEmail || '',
+      getIdToken().then((idToken) => {
+        if (idToken) {
+          login(idToken, {
+            id: Date.now(),
+            full_name: stackUser.displayName || stackUser.primaryEmail?.split('@')[0] || 'User',
+            email: stackUser.primaryEmail || '',
+          });
+        } else {
+          console.warn('No Stack ID token available; skipping local AuthContext login');
+        }
       });
     } else if (!stackUser && user) {
       // User logged out from Stack Auth, sync with our context
@@ -91,8 +100,10 @@ export default function AuthStackProvider({ children }: { children: React.ReactN
     publishableClientKey: publishableKey,
     redirectMethod: 'nextjs',
     tokenStore: 'nextjs-cookie',
-    signInUrl: '/handler/sign-in',
-    signUpUrl: '/handler/sign-up',
+    urls: {
+      signIn: '/handler/sign-in',
+      signUp: '/handler/sign-up',
+    },
   });
 
   return (
