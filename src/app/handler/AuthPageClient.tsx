@@ -142,6 +142,17 @@ export default function AuthPageClient() {
         
         // After successful Stack Auth signup, create user in our database
         console.log('📝 Creating user in database after Stack Auth signup...');
+        
+        // Get the Stack Auth user ID from the current user state
+        // Note: user might not be immediately available after signup, so we'll sync later
+        let stackAuthId = null;
+        if (user && (user as any).id) {
+          stackAuthId = (user as any).id;
+          console.log('✅ Got Stack Auth user ID from current user:', stackAuthId);
+        } else {
+          console.log('⚠️ User not immediately available after signup, will sync later');
+        }
+        
         const res = await fetch('/api/auth/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -150,6 +161,7 @@ export default function AuthPageClient() {
             firstName: formData.firstName,
             lastName: formData.lastName,
             company: formData.company,
+            stackAuthId: stackAuthId,
           }),
         });
         
@@ -192,11 +204,22 @@ export default function AuthPageClient() {
         
         // Create/update user in our database after successful sign in
         console.log('📝 Syncing user to database after Stack Auth signin...');
+        
+        // Get the Stack Auth user ID from the current user state
+        let stackAuthId = null;
+        if (user && (user as any).id) {
+          stackAuthId = (user as any).id;
+          console.log('✅ Got Stack Auth user ID from current user:', stackAuthId);
+        } else {
+          console.log('⚠️ User not immediately available after signin, will sync later');
+        }
+        
         const res = await fetch('/api/auth/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             email: formData.email,
+            stackAuthId: stackAuthId,
           }),
         });
         

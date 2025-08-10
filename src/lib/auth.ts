@@ -61,9 +61,20 @@ export async function getAuthContextFromRequest(req: NextRequest): Promise<AuthC
       roles = [roleClaim as RoleName];
     }
 
-    // Emergency override for owner via email match
-    if (email === 'jitin@smartslate.io' && !roles.includes('owner')) {
-      roles = ['owner', ...roles];
+    // Emergency override for owner via database lookup using Stack user ID
+    if (sub && !roles.includes('owner')) {
+      try {
+        const { getUserByStackAuthId } = await import('./rbac-db');
+        const dbUser = await getUserByStackAuthId(sub);
+        if (dbUser && dbUser.email === 'jitin@smartslate.io' && !roles.includes('owner')) {
+          roles = ['owner', ...roles];
+        }
+      } catch (error) {
+        // If database lookup fails, fall back to email-based override for backward compatibility
+        if (email === 'jitin@smartslate.io' && !roles.includes('owner')) {
+          roles = ['owner', ...roles];
+        }
+      }
     }
 
     const { permissions } = computeEffectivePermissions(roles);
@@ -86,8 +97,20 @@ export async function getAuthContextFromRequest(req: NextRequest): Promise<AuthC
           roles = [roleClaim as RoleName];
         }
 
-        if (email === 'jitin@smartslate.io' && !roles.includes('owner')) {
-          roles = ['owner', ...roles];
+        // Emergency override for owner via database lookup using Stack user ID (fallback)
+        if (sub && !roles.includes('owner')) {
+          try {
+            const { getUserByStackAuthId } = await import('./rbac-db');
+            const dbUser = await getUserByStackAuthId(sub);
+            if (dbUser && dbUser.email === 'jitin@smartslate.io' && !roles.includes('owner')) {
+              roles = ['owner', ...roles];
+            }
+          } catch (error) {
+            // If database lookup fails, fall back to email-based override for backward compatibility
+            if (email === 'jitin@smartslate.io' && !roles.includes('owner')) {
+              roles = ['owner', ...roles];
+            }
+          }
         }
 
         const { permissions } = computeEffectivePermissions(roles);

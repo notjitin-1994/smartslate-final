@@ -13,29 +13,23 @@ function isValidEmail(email: string): boolean {
 
 export const POST = async (req: NextRequest) => {
   try {
-    const { email, firstName, lastName, company } = (await req.json()) as {
-      email?: string;
-      password?: string;
-      confirmPassword?: string;
-      firstName?: string;
-      lastName?: string;
-      company?: string;
-    };
+    const { email, name, company, stackAuthId } = await req.json();
 
     console.log('=== SIGNUP API START ===');
-    console.log('Request body:', { email, firstName, lastName, company });
+    console.log('Request body:', { email, name, company, stackAuthId });
     console.log('Timestamp:', new Date().toISOString());
 
-    if (!email || !isValidEmail(email)) {
-      console.error('❌ SIGNUP FAILED - Invalid email:', email);
-      return NextResponse.json({ ok: false, error: 'Invalid email' }, { status: 400 });
+    if (!email) {
+      console.error('❌ SIGNUP FAILED - No email provided');
+      return NextResponse.json({ ok: false, error: 'Email is required' }, { status: 400 });
     }
 
-    const name = [firstName, lastName].filter(Boolean).join(' ').trim() || null;
-
-    // Upsert User record in RBAC User table
+    // Check if user already exists by email or stackAuthId
     let user = await prisma.user.findUnique({ where: { email } });
-    console.log('🔍 User lookup result:', user ? `Found existing user ${user.id}` : 'User not found');
+    if (!user && stackAuthId) {
+      user = await prisma.user.findUnique({ where: { stackAuthId } });
+    }
+    console.log('🔍 User lookup result:', user ? `Found user ${user.id}` : 'User not found');
     
     if (!user) {
       console.log('📝 Creating new user in database...');
@@ -45,6 +39,7 @@ export const POST = async (req: NextRequest) => {
           email,
           name,
           company: company || null,
+          stackAuthId: stackAuthId || null,
           updatedAt: new Date(),
         },
       });
@@ -52,7 +47,22 @@ export const POST = async (req: NextRequest) => {
         id: user.id, 
         email: user.email, 
         name: user.name, 
-        company: user.company 
+        company: user.company,
+        stackAuthId: user.stackAuthId
+      });
+    } else if (stackAuthId && user.stackAuthId !== stackAuthId) {
+      // Update existing user with Stack Auth ID if not already set
+      console.log(`📝 Updating user ${user.id} with Stack Auth ID: ${stackAuthId}`);
+      user = await prisma.user.update({ 
+        where: { id: user.id }, 
+        data: { stackAuthId, updatedAt: new Date() } 
+      });
+      console.log('✅ User updated with Stack Auth ID:', {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        company: user.company,
+        stackAuthId: user.stackAuthId
       });
     } else {
       // Update user data if new information is provided
@@ -81,7 +91,8 @@ export const POST = async (req: NextRequest) => {
           id: user.id,
           email: user.email,
           name: user.name,
-          company: user.company
+          company: user.company,
+          stackAuthId: user.stackAuthId
         });
       } else {
         console.log('✅ No updates needed for existing user');

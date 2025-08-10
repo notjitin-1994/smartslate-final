@@ -2,9 +2,9 @@ import { StackHandler } from '@stackframe/stack';
 import { stackServerApp } from '@/stack';
 import { redirect } from 'next/navigation';
 
-export default function Handler(props: any) {
+export default async function Handler(props: any) {
   // Get the full path from the catch-all route
-  const segments = props.params?.stack || [];
+  const segments = (await props.params)?.stack || [];
   const path = segments.join('/').toLowerCase();
   
 

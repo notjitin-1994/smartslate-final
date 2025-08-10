@@ -11,6 +11,8 @@ function StackAuthSyncInner({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Only sync if there's a mismatch between Stack Auth and our AuthContext
     if (stackUser && (!user || user.email !== stackUser.primaryEmail)) {
+      console.log('🔄 Stack Auth sync triggered for:', stackUser.primaryEmail);
+      
       // Ensure user exists in our database
       const syncUserToDatabase = async () => {
         try {
@@ -18,8 +20,12 @@ function StackAuthSyncInner({ children }: { children: React.ReactNode }) {
           console.log('Syncing user to database:', {
             email: stackUser.primaryEmail,
             name: stackUser.displayName,
+            stackAuthId: stackUser.id,
             timestamp: new Date().toISOString()
           });
+
+          // Add a small delay to ensure Stack Auth is fully ready
+          await new Promise(resolve => setTimeout(resolve, 100));
 
           const response = await fetch('/api/auth/verify-user', {
             method: 'POST',
@@ -28,6 +34,7 @@ function StackAuthSyncInner({ children }: { children: React.ReactNode }) {
               email: stackUser.primaryEmail,
               name: stackUser.displayName || null,
               company: null, // Stack Auth doesn't provide company info
+              stackAuthId: stackUser.id, // Pass Stack Auth user ID
             }),
           });
           
@@ -44,10 +51,8 @@ function StackAuthSyncInner({ children }: { children: React.ReactNode }) {
               error: errorData,
               email: stackUser.primaryEmail
             });
-            // Alert user that there's a sync issue
-            if (typeof window !== 'undefined') {
-              console.error(`Database sync failed for ${stackUser.primaryEmail}. Please contact support if issues persist.`);
-            }
+            // Don't show error to user for now, just log it
+            console.warn(`Database sync failed for ${stackUser.primaryEmail}. This might be normal for new users.`);
           } else {
             const userData = await response.json();
             console.log('✅ STACK SYNC SUCCESS - User verified/synced in database:', userData);
@@ -58,6 +63,8 @@ function StackAuthSyncInner({ children }: { children: React.ReactNode }) {
             email: stackUser.primaryEmail,
             timestamp: new Date().toISOString()
           });
+          // Don't show error to user for now, just log it
+          console.warn(`Database sync error for ${stackUser.primaryEmail}. This might be normal for new users.`);
         }
       };
 

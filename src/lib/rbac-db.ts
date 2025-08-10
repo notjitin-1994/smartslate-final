@@ -23,6 +23,16 @@ export async function getUserByEmail(email: string) {
   return prisma.user.findUnique({ where: { email } });
 }
 
+export async function getUserByStackId(stackId: string) {
+  if (!stackId) return null;
+  return prisma.user.findUnique({ where: { id: stackId } });
+}
+
+export async function getUserByStackAuthId(stackAuthId: string) {
+  if (!stackAuthId) return null;
+  return prisma.user.findUnique({ where: { stackAuthId } });
+}
+
 export async function getUserRoleIds(userId: string): Promise<string[]> {
   const roles = await prisma.userRole.findMany({
     where: { userId },
