@@ -35,16 +35,30 @@ export default function AdminUsersPage() {
 
   async function loadUsers() {
     try {
-      const res = await fetch('/api/users');
+      const token = localStorage.getItem('auth_token');
+      const res = await fetch('/api/users', {
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      });
+      
+      if (!res.ok) {
+        throw new Error(`Failed to fetch users: ${res.status}`);
+      }
+      
       const data = await res.json();
-      // Mock role data for now
-      const usersWithRoles = (data || []).map((user: User) => ({
-        ...user,
-        roles: user.email === 'jitin@smartslate.io' ? ['owner', 'admin'] : ['user']
-      }));
-      setUsers(usersWithRoles);
+      
+      // Ensure data is an array
+      if (Array.isArray(data)) {
+        setUsers(data);
+      } else if (data && Array.isArray(data.users)) {
+        // Handle case where API returns {users: [...]}
+        setUsers(data.users);
+      } else {
+        console.error('Unexpected data format from API:', data);
+        setUsers([]);
+      }
     } catch (e) {
       console.error('Failed to load users:', e);
+      setUsers([]);
     } finally {
       setLoading(false);
     }
@@ -80,12 +94,53 @@ export default function AdminUsersPage() {
     return matchesSearch && matchesRole;
   });
 
+  async function updateUserRoles(userId: string, roles: string[]) {
+    try {
+      const token = localStorage.getItem('auth_token');
+      const res = await fetch(`/api/users/${userId}/roles`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({ roles })
+      });
+      if (res.ok) {
+        loadUsers();
+        setSelectedUser(null);
+      } else {
+        const error = await res.json();
+        alert(`Failed to update roles: ${error.error || 'Unknown error'}`);
+      }
+    } catch (e) {
+      console.error('Failed to update user roles:', e);
+      alert('Failed to update user roles');
+    }
+  }
+
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
       case 'owner': return 'bg-purple-500/20 text-purple-400 border-purple-500/50';
-      case 'admin': return 'bg-blue-500/20 text-blue-400 border-blue-500/50';
-      case 'user': return 'bg-green-500/20 text-green-400 border-green-500/50';
+      case 'learner': return 'bg-green-500/20 text-green-400 border-green-500/50';
+      case 'smartslateCourse': return 'bg-blue-500/20 text-blue-400 border-blue-500/50';
+      case 'smartslateSales': return 'bg-orange-500/20 text-orange-400 border-orange-500/50';
+      case 'smartslateSupport': return 'bg-cyan-500/20 text-cyan-400 border-cyan-500/50';
+      case 'smartslateAnalytics': return 'bg-indigo-500/20 text-indigo-400 border-indigo-500/50';
+      case 'smartslateAdmin': return 'bg-red-500/20 text-red-400 border-red-500/50';
       default: return 'bg-gray-500/20 text-gray-400 border-gray-500/50';
+    }
+  };
+
+  const getRoleDisplayName = (role: string) => {
+    switch (role) {
+      case 'owner': return 'Owner';
+      case 'learner': return 'Learner';
+      case 'smartslateCourse': return 'Course Manager';
+      case 'smartslateSales': return 'Sales Manager';
+      case 'smartslateSupport': return 'Support Agent';
+      case 'smartslateAnalytics': return 'Analyst';
+      case 'smartslateAdmin': return 'Platform Admin';
+      default: return role;
     }
   };
 
@@ -230,7 +285,7 @@ export default function AdminUsersPage() {
                             key={role}
                             className={`px-2 py-1 rounded-full text-xs font-semibold border ${getRoleBadgeColor(role)}`}
                           >
-                            {role}
+                            {getRoleDisplayName(role)}
                           </span>
                         ))}
                       </div>
@@ -330,22 +385,60 @@ export default function AdminUsersPage() {
             <h2 className="text-xl font-bold text-text-primary mb-4">Manage User Roles</h2>
             <div className="mb-4">
               <p className="text-text-secondary">User: {selectedUser.email}</p>
+              {selectedUser.email === 'jitin@smartslate.io' && (
+                <p className="text-xs text-yellow-400 mt-1">⚠️ This user must remain as Owner</p>
+              )}
             </div>
             <div className="space-y-2">
-              {['owner', 'admin', 'user'].map((role) => (
-                <label key={role} className="flex items-center gap-3 p-3 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10">
-                  <input
-                    type="checkbox"
-                    checked={selectedUser.roles?.includes(role)}
-                    onChange={() => {/* Handle role toggle */}}
-                    className="w-4 h-4 text-primary-accent bg-input-bg border-border-color rounded focus:ring-primary-accent"
-                  />
-                  <span className="text-text-primary capitalize">{role}</span>
-                </label>
-              ))}
+              {[
+                { id: 'owner', name: 'Owner', description: 'Full system access' },
+                { id: 'learner', name: 'Learner', description: 'Can browse and read courses' },
+                { id: 'smartslateCourse', name: 'Course Manager', description: 'Manage courses' },
+                { id: 'smartslateSales', name: 'Sales Manager', description: 'Access leads and CRM' },
+                { id: 'smartslateSupport', name: 'Support Agent', description: 'Handle support tickets' },
+                { id: 'smartslateAnalytics', name: 'Analyst', description: 'View metrics and reports' },
+                { id: 'smartslateAdmin', name: 'Platform Admin', description: 'Configure platform settings' }
+              ].map((role) => {
+                const isOwnerEmail = selectedUser.email === 'jitin@smartslate.io';
+                const isOwnerRole = role.id === 'owner';
+                const isDisabled = isOwnerEmail && isOwnerRole;
+                const tempRoles = [...(selectedUser.roles || [])];
+                
+                return (
+                  <label 
+                    key={role.id} 
+                    className={`flex items-start gap-3 p-3 bg-white/5 rounded-lg ${isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:bg-white/10'}`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={tempRoles.includes(role.id)}
+                      disabled={isDisabled}
+                      onChange={(e) => {
+                        if (isDisabled) return;
+                        const newRoles = e.target.checked 
+                          ? [...tempRoles, role.id]
+                          : tempRoles.filter(r => r !== role.id);
+                        setSelectedUser({ ...selectedUser, roles: newRoles });
+                      }}
+                      className="w-4 h-4 mt-0.5 text-primary-accent bg-input-bg border-border-color rounded focus:ring-primary-accent"
+                    />
+                    <div className="flex-1">
+                      <span className="text-text-primary block">{role.name}</span>
+                      <span className="text-xs text-text-secondary">{role.description}</span>
+                    </div>
+                  </label>
+                );
+              })}
             </div>
             <div className="flex gap-3 mt-6">
               <button
+                onClick={() => {
+                  if (selectedUser.email === 'jitin@smartslate.io' && !selectedUser.roles?.includes('owner')) {
+                    alert('Cannot remove Owner role from jitin@smartslate.io');
+                    return;
+                  }
+                  updateUserRoles(selectedUser.id, selectedUser.roles || []);
+                }}
                 className="flex-1 px-4 py-2 bg-secondary-accent text-white rounded-lg hover:bg-secondary-accent-dark transition-colors"
               >
                 Save Changes

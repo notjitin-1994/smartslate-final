@@ -21,6 +21,7 @@ export type Permission =
   // sales / CRM / leads
   | 'lead:read'
   | 'lead:export'
+  | 'lead:delete'
   | 'crm:access'
   | 'pipeline:access'
   // support
@@ -36,6 +37,7 @@ export type Permission =
   | 'content:moderate'
   | 'logs:access'
   | 'api:access'
+  | 'database:manage'
   | 'emergency:override';
 
 export interface RoleDefinition {
@@ -58,6 +60,7 @@ export const ROLE_DEFINITIONS: Record<RoleName, RoleDefinition> = {
       'course:read',
       'lead:read',
       'lead:export',
+      'lead:delete',
       'crm:access',
       'pipeline:access',
       'ticket:read',
@@ -70,6 +73,7 @@ export const ROLE_DEFINITIONS: Record<RoleName, RoleDefinition> = {
       'content:moderate',
       'logs:access',
       'api:access',
+      'database:manage',
       'emergency:override',
     ],
   },
@@ -89,7 +93,7 @@ export const ROLE_DEFINITIONS: Record<RoleName, RoleDefinition> = {
   },
   smartslateSales: {
     description: 'Sales Manager',
-    permissions: ['lead:read', 'lead:export', 'crm:access', 'pipeline:access'],
+    permissions: ['lead:read', 'lead:export', 'lead:delete', 'crm:access', 'pipeline:access'],
   },
   smartslateSupport: {
     description: 'Support Agent',

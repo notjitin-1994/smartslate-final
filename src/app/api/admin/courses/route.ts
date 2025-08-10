@@ -44,17 +44,25 @@ export const PATCH = withPermission('course:publish', async (req: NextRequest) =
   const body = await req.json();
   const course = await prisma.course.update({
     where: { slug: body.slug },
-    data: { published: !!body.published, updatedAt: new Date() },
+    data: { published: body.published }
   });
   return NextResponse.json({ ok: true, course });
 });
 
-// Delete (requires course:delete)
+// Delete course (requires course:delete)
 export const DELETE = withPermission('course:delete', async (req: NextRequest) => {
   const { searchParams } = new URL(req.url);
-  const slug = searchParams.get('slug') as string;
-  await prisma.course.delete({ where: { slug } });
-  return NextResponse.json({ ok: true });
+  const slug = searchParams.get('slug');
+  
+  if (!slug) {
+    return NextResponse.json({ error: 'Slug parameter is required' }, { status: 400 });
+  }
+
+  await prisma.course.delete({
+    where: { slug }
+  });
+  
+  return NextResponse.json({ ok: true, message: 'Course deleted successfully' });
 });
 
 

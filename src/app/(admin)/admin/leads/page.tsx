@@ -12,7 +12,11 @@ import {
   Science,
   Handshake,
   Description,
-  Group
+  Group,
+  Delete,
+  CheckBox,
+  CheckBoxOutlineBlank,
+  IndeterminateCheckBox
 } from '@mui/icons-material';
 
 interface LeadsResponse {
@@ -38,6 +42,7 @@ export default function AdminLeadsPage() {
   const [activeTab, setActiveTab] = useState('waitlist');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedLeads, setSelectedLeads] = useState<Set<string>>(new Set());
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -58,6 +63,71 @@ export default function AdminLeadsPage() {
     }
     load();
   }, []);
+
+  async function deleteLead(leadType: string, leadId: string) {
+    try {
+      const token = localStorage.getItem('auth_token');
+      const res = await fetch(`/api/admin/leads/${leadType}/${leadId}`, {
+        method: 'DELETE',
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      });
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error || 'Failed to delete lead');
+      }
+      return true;
+    } catch (e: any) {
+      console.error('Failed to delete lead:', e);
+      alert(`Failed to delete lead: ${e.message}`);
+      return false;
+    }
+  }
+
+  async function deleteSelectedLeads() {
+    if (selectedLeads.size === 0) return;
+    
+    const confirmMsg = `Are you sure you want to delete ${selectedLeads.size} lead${selectedLeads.size > 1 ? 's' : ''}?`;
+    if (!confirm(confirmMsg)) return;
+
+    setIsDeleting(true);
+    const deletePromises = Array.from(selectedLeads).map(leadId => 
+      deleteLead(activeTab, leadId)
+    );
+    
+    const results = await Promise.all(deletePromises);
+    const successCount = results.filter(r => r).length;
+    
+    if (successCount > 0) {
+      await load();
+      setSelectedLeads(new Set());
+    }
+    
+    setIsDeleting(false);
+    
+    if (successCount === selectedLeads.size) {
+      alert(`Successfully deleted ${successCount} lead${successCount > 1 ? 's' : ''}`);
+    } else {
+      alert(`Deleted ${successCount} out of ${selectedLeads.size} leads. Some deletions failed.`);
+    }
+  }
+
+  const toggleLeadSelection = (leadId: string) => {
+    const newSelection = new Set(selectedLeads);
+    if (newSelection.has(leadId)) {
+      newSelection.delete(leadId);
+    } else {
+      newSelection.add(leadId);
+    }
+    setSelectedLeads(newSelection);
+  };
+
+  const toggleAllSelection = () => {
+    if (selectedLeads.size === filteredLeads.length) {
+      setSelectedLeads(new Set());
+    } else {
+      setSelectedLeads(new Set(filteredLeads.map(lead => lead.id)));
+    }
+  };
 
   const current = data?.[activeTab as keyof LeadsResponse] as any[] || [];
   const filteredLeads = current.filter(lead => {
@@ -119,6 +189,16 @@ export default function AdminLeadsPage() {
           <Download className="w-5 h-5" />
           <span>Export CSV</span>
         </button>
+        {selectedLeads.size > 0 && (
+          <button
+            onClick={deleteSelectedLeads}
+            disabled={isDeleting}
+            className="flex items-center gap-2 px-4 py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Delete className="w-5 h-5" />
+            <span>{isDeleting ? 'Deleting...' : `Delete (${selectedLeads.size})`}</span>
+          </button>
+        )}
       </div>
 
       {/* Tabs */}
@@ -189,6 +269,21 @@ export default function AdminLeadsPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-border-color bg-white/5">
+                  <th className="px-4 py-3 w-12">
+                    <button
+                      onClick={toggleAllSelection}
+                      className="p-1 hover:bg-white/10 rounded transition-colors"
+                      title={selectedLeads.size === filteredLeads.length ? 'Deselect all' : 'Select all'}
+                    >
+                      {selectedLeads.size === 0 ? (
+                        <CheckBoxOutlineBlank className="w-5 h-5 text-text-secondary" />
+                      ) : selectedLeads.size === filteredLeads.length ? (
+                        <CheckBox className="w-5 h-5 text-primary-accent" />
+                      ) : (
+                        <IndeterminateCheckBox className="w-5 h-5 text-primary-accent" />
+                      )}
+                    </button>
+                  </th>
                   {Object.keys(filteredLeads[0]).map((key) => (
                     <th key={key} className="px-4 py-3 text-left text-sm font-semibold text-text-primary">
                       {formatColumnName(key)}
@@ -199,6 +294,18 @@ export default function AdminLeadsPage() {
               <tbody className="divide-y divide-border-color">
                 {filteredLeads.map((lead, idx) => (
                   <tr key={lead.id || idx} className="hover:bg-white/5 transition-colors">
+                    <td className="px-4 py-3">
+                      <button
+                        onClick={() => toggleLeadSelection(lead.id)}
+                        className="p-1 hover:bg-white/10 rounded transition-colors"
+                      >
+                        {selectedLeads.has(lead.id) ? (
+                          <CheckBox className="w-5 h-5 text-primary-accent" />
+                        ) : (
+                          <CheckBoxOutlineBlank className="w-5 h-5 text-text-secondary" />
+                        )}
+                      </button>
+                    </td>
                     {Object.entries(lead).map(([key, value]) => (
                       <td key={key} className="px-4 py-3 text-sm text-text-secondary">
                         {formatCellValue(key, value)}

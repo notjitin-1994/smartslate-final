@@ -217,22 +217,162 @@ export default function AdminCoursesPage() {
         </div>
       )}
 
-      {/* Modal would go here - keeping it simple for now */}
+      {/* Course Creation/Edit Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="glass-effect-strong rounded-xl p-6 border border-border-color max-w-md w-full">
+          <div className="glass-effect-strong rounded-xl p-6 border border-border-color max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <h2 className="text-xl font-bold text-text-primary mb-4">
               {editingCourse ? 'Edit Course' : 'Create Course'}
             </h2>
-            <p className="text-text-secondary mb-4">
-              Course editor implementation pending...
-            </p>
-            <button
-              onClick={() => setShowModal(false)}
-              className="px-4 py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
-            >
-              Close
-            </button>
+            <form onSubmit={async (e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              const courseData = {
+                id: editingCourse?.id || `course-${Date.now()}`,
+                title: formData.get('title') as string,
+                description: formData.get('description') as string,
+                slug: editingCourse?.slug || (formData.get('title') as string).toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+                imageUrl: formData.get('imageUrl') as string || null,
+                price: formData.get('price') ? parseFloat(formData.get('price') as string) : null,
+                duration: formData.get('duration') as string || null,
+                level: formData.get('level') as string || null,
+                category: formData.get('category') as string || null,
+              };
+
+              try {
+                const token = localStorage.getItem('auth_token');
+                const res = await fetch('/api/admin/courses', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { Authorization: `Bearer ${token}` } : {})
+                  },
+                  body: JSON.stringify(courseData)
+                });
+                
+                if (res.ok) {
+                  loadCourses();
+                  setShowModal(false);
+                  setEditingCourse(null);
+                } else {
+                  const error = await res.json();
+                  alert(`Failed to save course: ${error.error || 'Unknown error'}`);
+                }
+              } catch (e) {
+                console.error('Failed to save course:', e);
+                alert('Failed to save course');
+              }
+            }}>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-text-secondary mb-1">Course Title *</label>
+                  <input
+                    type="text"
+                    name="title"
+                    required
+                    defaultValue={editingCourse?.title}
+                    className="w-full px-4 py-2 bg-input-bg border border-border-color rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:border-primary-accent transition-colors"
+                    placeholder="e.g., Advanced Full Stack Development"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-text-secondary mb-1">Description *</label>
+                  <textarea
+                    name="description"
+                    required
+                    defaultValue={editingCourse?.description}
+                    rows={4}
+                    className="w-full px-4 py-2 bg-input-bg border border-border-color rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:border-primary-accent transition-colors resize-none"
+                    placeholder="Comprehensive course description..."
+                  />
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-text-secondary mb-1">Image URL</label>
+                    <input
+                      type="url"
+                      name="imageUrl"
+                      defaultValue={editingCourse?.imageUrl || ''}
+                      className="w-full px-4 py-2 bg-input-bg border border-border-color rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:border-primary-accent transition-colors"
+                      placeholder="/images/courses/course-image.jpg"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-text-secondary mb-1">Price ($)</label>
+                    <input
+                      type="number"
+                      name="price"
+                      step="0.01"
+                      min="0"
+                      defaultValue={editingCourse?.price || ''}
+                      className="w-full px-4 py-2 bg-input-bg border border-border-color rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:border-primary-accent transition-colors"
+                      placeholder="999.99"
+                    />
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-text-secondary mb-1">Duration</label>
+                    <input
+                      type="text"
+                      name="duration"
+                      defaultValue={editingCourse?.duration || ''}
+                      className="w-full px-4 py-2 bg-input-bg border border-border-color rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:border-primary-accent transition-colors"
+                      placeholder="e.g., 12 weeks"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-text-secondary mb-1">Level</label>
+                    <select
+                      name="level"
+                      defaultValue={editingCourse?.level || ''}
+                      className="w-full px-4 py-2 bg-input-bg border border-border-color rounded-lg text-text-primary focus:outline-none focus:border-primary-accent transition-colors"
+                    >
+                      <option value="">Select level</option>
+                      <option value="Beginner">Beginner</option>
+                      <option value="Intermediate">Intermediate</option>
+                      <option value="Advanced">Advanced</option>
+                      <option value="Expert">Expert</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-text-secondary mb-1">Category</label>
+                    <input
+                      type="text"
+                      name="category"
+                      defaultValue={editingCourse?.category || ''}
+                      className="w-full px-4 py-2 bg-input-bg border border-border-color rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:border-primary-accent transition-colors"
+                      placeholder="e.g., Development"
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex gap-3 mt-6">
+                <button
+                  type="submit"
+                  className="flex-1 px-4 py-2 bg-secondary-accent text-white rounded-lg hover:bg-secondary-accent-dark transition-colors"
+                >
+                  {editingCourse ? 'Update Course' : 'Create Course'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowModal(false);
+                    setEditingCourse(null);
+                  }}
+                  className="flex-1 px-4 py-2 bg-white/10 text-text-primary rounded-lg hover:bg-white/20 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

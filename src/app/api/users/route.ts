@@ -14,11 +14,23 @@ export const GET = withPermission('user:read', async (_req: NextRequest) => {
         stackAuthId: true,
         createdAt: true,
         updatedAt: true,
+        UserRole: {
+          select: {
+            roleId: true
+          }
+        }
       },
       orderBy: { createdAt: 'desc' },
     });
     
-    return NextResponse.json(users);
+    // Transform to include roles array
+    const usersWithRoles = users.map(user => ({
+      ...user,
+      roles: user.UserRole.map(ur => ur.roleId),
+      UserRole: undefined
+    }));
+    
+    return NextResponse.json(usersWithRoles);
   } catch (error) {
     console.error('Failed to fetch users:', error);
     return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 });

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Storage,
   CloudUpload,
@@ -15,20 +15,39 @@ import {
   Refresh
 } from '@mui/icons-material';
 
+interface TableInfo {
+  name: string;
+  records: number;
+  lastModified: string;
+}
+
 export default function AdminDatabasePage() {
   const [activeTab, setActiveTab] = useState('overview');
   const [queryResult, setQueryResult] = useState<any>(null);
   const [isExecuting, setIsExecuting] = useState(false);
+  const [tables, setTables] = useState<TableInfo[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const tables = [
-    { name: 'users', records: 342, size: '2.4 MB', lastModified: '2024-01-15' },
-    { name: 'courses', records: 12, size: '156 KB', lastModified: '2024-01-14' },
-    { name: 'course_waitlist_leads', records: 45, size: '340 KB', lastModified: '2024-01-15' },
-    { name: 'solara_waitlist_leads', records: 30, size: '220 KB', lastModified: '2024-01-15' },
-    { name: 'ssa_inquiries', records: 20, size: '180 KB', lastModified: '2024-01-14' },
-    { name: 'case_study_requests', records: 10, size: '90 KB', lastModified: '2024-01-13' },
-    { name: 'partner_inquiries', records: 15, size: '120 KB', lastModified: '2024-01-12' },
-  ];
+  useEffect(() => {
+    loadDatabaseStats();
+  }, []);
+
+  async function loadDatabaseStats() {
+    try {
+      const token = localStorage.getItem('auth_token');
+      const res = await fetch('/api/admin/database/stats', {
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setTables(data.tables);
+      }
+    } catch (e) {
+      console.error('Failed to load database stats:', e);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const quickActions = [
     {
@@ -62,15 +81,42 @@ export default function AdminDatabasePage() {
   ];
 
   const handleQuickAction = async (action: string) => {
-    if (action === 'clear' && !confirm('Are you sure you want to clear test data? This cannot be undone.')) {
+    if (action === 'clear' && !confirm('Are you sure you want to clear all test data? This will keep jitin@smartslate.io and essential data.')) {
       return;
     }
 
     setIsExecuting(true);
     try {
-      // Simulate action execution
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      console.log(`Executing action: ${action}`);
+      const token = localStorage.getItem('auth_token');
+      const res = await fetch('/api/admin/database/operations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({ action })
+      });
+      
+      const data = await res.json();
+      if (data.ok) {
+        setQueryResult({
+          type: 'success',
+          message: data.message
+        });
+        // Reload stats after operation
+        loadDatabaseStats();
+        
+        // Show alert for successful operations
+        alert(data.message);
+      } else {
+        throw new Error(data.error || 'Operation failed');
+      }
+    } catch (e: any) {
+      setQueryResult({
+        type: 'error',
+        message: e.message || 'Operation failed'
+      });
+      alert(`Error: ${e.message || 'Operation failed'}`);
     } finally {
       setIsExecuting(false);
     }
@@ -165,7 +211,7 @@ export default function AdminDatabasePage() {
                   <tr className="border-b border-border-color bg-white/5">
                     <th className="px-4 py-3 text-left text-sm font-semibold text-text-primary">Table Name</th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-text-primary">Records</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-text-primary">Size</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-text-primary">Records</th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-text-primary">Last Modified</th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-text-primary">Actions</th>
                   </tr>
@@ -180,8 +226,8 @@ export default function AdminDatabasePage() {
                         </div>
                       </td>
                       <td className="px-4 py-3 text-sm text-text-secondary">{table.records.toLocaleString()}</td>
-                      <td className="px-4 py-3 text-sm text-text-secondary">{table.size}</td>
-                      <td className="px-4 py-3 text-sm text-text-secondary">{table.lastModified}</td>
+                      <td className="px-4 py-3 text-sm text-text-secondary">{table.records.toLocaleString()}</td>
+                      <td className="px-4 py-3 text-sm text-text-secondary">{new Date(table.lastModified).toLocaleDateString()}</td>
                       <td className="px-4 py-3">
                         <button className="text-sm text-primary-accent hover:text-primary-accent-light transition-colors">
                           View
