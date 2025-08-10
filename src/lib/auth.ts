@@ -66,13 +66,13 @@ export async function getAuthContextFromRequest(req: NextRequest): Promise<AuthC
 
     const { permissions } = computeEffectivePermissions(roles);
     return { sub, email, roles, permissions, raw: payload };
-  } catch (e: any) {
+  } catch (e: unknown) {
     try {
       const parts = token.split('.');
       const header = parts[0] ? JSON.parse(Buffer.from(parts[0], 'base64url').toString('utf8')) : null;
       const payload = parts[1] ? JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8')) : null;
       console.error('[auth.verify] failed', {
-        message: e?.message,
+        message: (e as Error)?.message,
         jwks: !!process.env.NEON_AUTH_JWKS_URL,
         alg: header?.alg,
         iss: payload?.iss,

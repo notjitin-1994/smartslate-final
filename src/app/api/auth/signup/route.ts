@@ -48,7 +48,7 @@ export const POST = async (req: NextRequest) => {
       });
       console.log('[signup] created', { id: user.id, email: user.email });
     } else {
-      const updateData: any = { updatedAt: new Date() };
+      const updateData: Partial<{ name: string | null; company: string | null; updatedAt: Date }> = { updatedAt: new Date() };
       let shouldUpdate = false;
 
       if (name && (!user.name || user.name !== name)) {

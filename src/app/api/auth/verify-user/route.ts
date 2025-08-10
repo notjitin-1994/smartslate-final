@@ -8,7 +8,7 @@ import { randomUUID } from 'crypto';
 
 export const POST = async (req: NextRequest) => {
   try {
-    const body = await req.json().catch(() => ({} as any));
+    const body = (await req.json().catch(() => ({}))) as Record<string, unknown>;
     const { email, name, company } = body as { email?: string; name?: string; company?: string };
     console.log('[verify-user] payload', { email, hasName: !!name, hasCompany: !!company });
 
