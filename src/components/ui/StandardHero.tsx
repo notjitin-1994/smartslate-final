@@ -14,7 +14,7 @@ const HeroSection = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
   backgroundColor: theme.palette.background.default,
   [theme.breakpoints.down('sm')]: {
-    padding: `${theme.spacing(20)} 0`, // Increased top padding for header clearance
+    padding: `${theme.spacing(18)} 0`, // Increased top padding for header clearance
   },
   // Remove the problematic radial-gradient from ::before
   // and use individual positioned elements instead
