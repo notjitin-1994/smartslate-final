@@ -33,8 +33,8 @@ const CTAContainer = styled(Box)(({ theme }) => ({
 const PrimaryButton = styled(Button)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
   color: '#ffffff',
-  padding: `${theme.spacing(1.5)} ${theme.spacing(4)}`,
-  fontSize: '1.1rem',
+  padding: `${theme.spacing(1.5)} ${theme.spacing(3)}`,
+  fontSize: '1rem',
   fontWeight: 600,
   borderRadius: theme.spacing(1),
   textTransform: 'none',
@@ -60,14 +60,15 @@ const PrimaryButton = styled(Button)(({ theme }) => ({
     },
   },
   [theme.breakpoints.down('sm')]: {
-    width: '100%',
+    padding: `${theme.spacing(1.5)} ${theme.spacing(2.5)}`,
+    fontSize: '0.9rem',
   },
 }));
 
 const SecondaryButton = styled(Button)(({ theme }) => ({
   color: theme.palette.primary.main,
-  padding: `${theme.spacing(1.5)} ${theme.spacing(4)}`,
-  fontSize: '1.1rem',
+  padding: `${theme.spacing(1.5)} ${theme.spacing(3)}`,
+  fontSize: '1rem',
   fontWeight: 600,
   borderRadius: theme.spacing(1),
   textTransform: 'none',
@@ -80,7 +81,8 @@ const SecondaryButton = styled(Button)(({ theme }) => ({
     transform: 'translateY(-2px)',
   },
   [theme.breakpoints.down('sm')]: {
-    width: '100%',
+    padding: `${theme.spacing(1.5)} ${theme.spacing(2.5)}`,
+    fontSize: '0.9rem',
   },
 }));
 
@@ -106,8 +108,8 @@ export default function Hero({ onRevealNext }: HeroProps) {
         accentWords={['Future-Ready', 'skills gap', 'job-ready talent', 'silent crisis']}
         showScrollIndicator={true}
       >
-        <FadeInContent delay={3100} isVisible={isVisible}>
-          <CTAContainer>
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'nowrap' }}>
+          <FadeInContent delay={1000} isVisible={isVisible}>
             <PrimaryButton
               variant="contained"
               size="large"
@@ -116,6 +118,9 @@ export default function Hero({ onRevealNext }: HeroProps) {
             >
               Uncover the Crisis
             </PrimaryButton>
+          </FadeInContent>
+          
+          <FadeInContent delay={1200} isVisible={isVisible}>
             <SecondaryButton
               variant="outlined"
               size="large"
@@ -124,8 +129,8 @@ export default function Hero({ onRevealNext }: HeroProps) {
             >
               View Case Studies
             </SecondaryButton>
-          </CTAContainer>
-        </FadeInContent>
+          </FadeInContent>
+        </div>
       </StandardHero>
 
       <CaseStudyModal isOpen={isOpen} onClose={closeModal} />
