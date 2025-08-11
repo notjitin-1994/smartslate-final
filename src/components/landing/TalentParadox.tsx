@@ -343,7 +343,8 @@ export default function TalentParadox({ onRevealNext }: TalentParadoxProps) {
                 sx={{ 
                   mb: 3, 
                   fontSize: { xs: '2rem', md: '2.5rem', lg: '3rem' },
-                  lineHeight: 1.2 
+                  lineHeight: 1.2,
+                  color: 'white'
                 }}
               >
                 India&apos;s <AccentText>Talent Paradox</AccentText>: Bridging the{' '}
@@ -419,7 +420,7 @@ export default function TalentParadox({ onRevealNext }: TalentParadoxProps) {
                               <data.icon 
                                 sx={{ 
                                   fontSize: 40, 
-                                  color: data.trend === 'down' ? 'error.main' : 'primary.main',
+                                  color: 'primary.main',
                                   mb: 2 
                                 }} 
                               />
@@ -496,7 +497,6 @@ export default function TalentParadox({ onRevealNext }: TalentParadoxProps) {
             sx={{ 
               mb: 5, 
               color: 'text.secondary', 
-              maxWidth: '65ch',
               fontSize: '1.25rem',
               lineHeight: 1.8 
             }}
@@ -514,8 +514,8 @@ export default function TalentParadox({ onRevealNext }: TalentParadoxProps) {
             sx={{
               backgroundColor: 'secondary.main',
               color: '#ffffff',
-              padding: '12px 32px',
-              fontSize: '1.1rem',
+              padding: { xs: '12px 20px', sm: '12px 24px' },
+              fontSize: '1rem',
               fontWeight: 600,
               borderRadius: 1,
               textTransform: 'none',
