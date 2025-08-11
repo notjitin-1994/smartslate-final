@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Box, Container, Typography, Button, Chip, Grow, useTheme, useMediaQuery } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Link from 'next/link';
+import { motion, useInView } from 'framer-motion';
 import {
   ElectricBolt,
   Hub,
@@ -254,6 +255,17 @@ export default function Framework({ onRevealNext }: FrameworkProps) {
     solara: <AutoAwesome aria-hidden="true" className="icon-anim icon-pulse" />,
   } as const;
   const [animateTransform, setAnimateTransform] = useState(false);
+  
+  // Add refs and inView hooks for animations
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const productsRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
+  
+  const sectionInView = useInView(sectionRef, { once: true, amount: 0.1 });
+  const headerInView = useInView(headerRef, { once: true, amount: 0.3 });
+  const productsInView = useInView(productsRef, { once: true, amount: 0.2 });
+  const ctaInView = useInView(ctaRef, { once: true, amount: 0.3 });
 
   useEffect(() => {
     // Trigger animations
@@ -261,225 +273,276 @@ export default function Framework({ onRevealNext }: FrameworkProps) {
   }, []);
 
   return (
-    <FrameworkSection>
+    <FrameworkSection ref={sectionRef}>
       <Container maxWidth="lg">
-        <SectionHeader>
-          <Typography 
-            variant="h2" 
-            sx={{ 
-              mb: 3, 
-              fontSize: { xs: '2.5rem', md: '3rem', lg: '3.5rem' },
-              lineHeight: 1.2
-            }}
+        <SectionHeader ref={headerRef}>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={headerInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <span style={{ color: 'white' }}>The</span> <AnimateText animate={animateTransform}>SmartSlate</AnimateText> <span style={{ color: 'white' }}>Framework</span>
-          </Typography>
-          <Typography variant="body1" sx={{ 
-            fontSize: '1.25rem', 
-            color: 'text.secondary',
-            lineHeight: 1.8
-          }}>
-            We don&apos;t just train; we <AnimateText animate={animateTransform}>transform</AnimateText>. Our integrated
-            ecosystem bridges the critical gap between education and industry, creating a workforce that&apos;s ready for tomorrow. This is our complete framework for achieving our mission—and these are our flagship products.
-          </Typography>
+            <Typography 
+              variant="h2" 
+              sx={{ 
+                mb: 3, 
+                fontSize: { xs: '2.5rem', md: '3rem', lg: '3.5rem' },
+                lineHeight: 1.2
+              }}
+            >
+              <span style={{ color: 'white' }}>The</span> <AnimateText animate={animateTransform}>SmartSlate</AnimateText> <span style={{ color: 'white' }}>Framework</span>
+            </Typography>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={headerInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+          >
+            <Typography variant="body1" sx={{ 
+              fontSize: '1.25rem', 
+              color: 'text.secondary',
+              lineHeight: 1.8
+            }}>
+              We don&apos;t just train; we <AnimateText animate={animateTransform}>transform</AnimateText>. Our integrated
+              ecosystem bridges the critical gap between education and industry, creating a workforce that&apos;s ready for tomorrow. This is our complete framework for achieving our mission—and these are our flagship products.
+            </Typography>
+          </motion.div>
         </SectionHeader>
 
-        <InteractiveLayout>
+        <InteractiveLayout ref={productsRef}>
           <ProductShowcase>
-            {frameworkSteps.map((step) => (
-              <ProductCard
+            {frameworkSteps.map((step, index) => (
+              <motion.div
                 key={step.id}
-                active={activeStep === step.id}
-                onClick={() => setActiveStep(step.id)}
+                initial={{ opacity: 0, y: 40 }}
+                animate={productsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+                transition={{ 
+                  duration: 0.8, 
+                  ease: "easeOut", 
+                  delay: 0.3 + (index * 0.2) 
+                }}
               >
-                <ProductHeader>
-                  <ProductIcon>
-                    <step.icon />
-                  </ProductIcon>
-                  <ProductBadge>
-                    {step.badge}
-                  </ProductBadge>
-                </ProductHeader>
+                <ProductCard
+                  active={activeStep === step.id}
+                  onClick={() => setActiveStep(step.id)}
+                >
+                  <ProductHeader>
+                    <ProductIcon>
+                      <step.icon />
+                    </ProductIcon>
+                    <ProductBadge>
+                      {step.badge}
+                    </ProductBadge>
+                  </ProductHeader>
 
-                <ProductContent>
-                  <Typography variant="h4" sx={{ 
-                    mb: 2, 
-                    fontSize: { xs: '1.5rem', md: '1.75rem' },
-                    fontWeight: 700,
-                    color: 'white'
-                  }}>
-                    {step.title}
-                  </Typography>
-                  <Typography variant="body2" sx={{ 
-                    mb: 3, 
-                    color: 'text.secondary',
-                    fontSize: '1rem',
-                    lineHeight: 1.6
-                  }}>
-                    {step.subtitle}
-                  </Typography>
-                  <Typography variant="body1" sx={{ 
-                    mb: 3, 
-                    color: 'text.secondary',
-                    fontSize: '0.95rem',
-                    lineHeight: 1.7
-                  }}>
-                    {step.description}
-                  </Typography>
-                </ProductContent>
+                  <ProductContent>
+                    <Typography variant="h4" sx={{ 
+                      mb: 2, 
+                      fontSize: { xs: '1.5rem', md: '1.75rem' },
+                      fontWeight: 700,
+                      color: 'white'
+                    }}>
+                      {step.title}
+                    </Typography>
+                    <Typography variant="body2" sx={{ 
+                      mb: 3, 
+                      color: 'text.secondary',
+                      fontSize: '1rem',
+                      lineHeight: 1.6
+                    }}>
+                      {step.subtitle}
+                    </Typography>
+                    <Typography variant="body1" sx={{ 
+                      mb: 3, 
+                      color: 'text.secondary',
+                      fontSize: '0.95rem',
+                      lineHeight: 1.7
+                    }}>
+                      {step.description}
+                    </Typography>
+                  </ProductContent>
 
-                <FeatureList>
-                  {/* Mobile: Accordion */}
-                  <Box sx={{ display: { xs: 'block', md: 'none' } }}>
-                    <Accordion title={`${step.title === 'Ignite Series' ? 'Career Transformation Engine' : step.title === 'Strategic Skills Architecture' ? 'Enterprise Advantages' : 'AI-Powered Capabilities'}`} defaultExpanded={false}>
+                  <FeatureList>
+                    {/* Mobile: Accordion */}
+                    <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+                      <Accordion title={`${step.title === 'Ignite Series' ? 'Career Transformation Engine' : step.title === 'Strategic Skills Architecture' ? 'Enterprise Advantages' : 'AI-Powered Capabilities'}`} defaultExpanded={false}>
+                        {step.features.map((feature, index) => (
+                          <Box key={feature.title} sx={{ mb: 2, display: 'flex', gap: 2, alignItems: 'flex-start' }}>
+                            <Box sx={{ color: 'primary.main', mt: 0.5, flexShrink: 0 }}>
+                              <feature.icon />
+                            </Box>
+                            <Box>
+                              <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 0.5, color: 'white' }}>
+                                {feature.title}
+                              </Typography>
+                              <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.8rem' }}>
+                                {feature.description}
+                              </Typography>
+                            </Box>
+                          </Box>
+                        ))}
+                      </Accordion>
+                    </Box>
+                    
+                    {/* Desktop: Regular feature list */}
+                    <Box sx={{ display: { xs: 'none', md: 'block' } }}>
                       {step.features.map((feature, index) => (
-                        <Box key={feature.title} sx={{ mb: 2, display: 'flex', gap: 2, alignItems: 'flex-start' }}>
-                          <Box sx={{ color: 'primary.main', mt: 0.5, flexShrink: 0 }}>
+                        <motion.div
+                          key={feature.title}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={productsInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                          transition={{ 
+                            duration: 0.5, 
+                            ease: "easeOut", 
+                            delay: 0.5 + (index * 0.1) 
+                          }}
+                        >
+                          <FeatureItem>
                             <feature.icon />
-                          </Box>
-                          <Box>
-                            <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 0.5, color: 'white' }}>
-                              {feature.title}
-                            </Typography>
-                            <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.8rem' }}>
-                              {feature.description}
-                            </Typography>
-                          </Box>
-                        </Box>
+                            <Box>
+                              <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 0.5, color: 'white' }}>
+                                {feature.title}
+                              </Typography>
+                              <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.8rem' }}>
+                                {feature.description}
+                              </Typography>
+                            </Box>
+                          </FeatureItem>
+                        </motion.div>
                       ))}
-                    </Accordion>
-                  </Box>
-                  
-                  {/* Desktop: Regular feature list */}
-                  <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-                    {step.features.map((feature, index) => (
-                      <Grow 
-                        key={feature.title}
-                        in={true} 
-                        timeout={300 + (index * 100)}
-                      >
-                        <FeatureItem>
-                          <feature.icon />
-                          <Box>
-                            <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 0.5, color: 'white' }}>
-                              {feature.title}
-                            </Typography>
-                            <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.8rem' }}>
-                              {feature.description}
-                            </Typography>
-                          </Box>
-                        </FeatureItem>
-                      </Grow>
-                    ))}
-                  </Box>
-                </FeatureList>
+                    </Box>
+                  </FeatureList>
 
-                <Box sx={{ mt: 'auto' }}>
-                  <Link href={step.href} passHref>
-                    <Button
-                      variant="contained"
-                      size="large"
-                      endIcon={stepEndIcons[step.id]}
-                      fullWidth
-                      sx={{
-                        backgroundColor: 'secondary.main',
-                        color: '#ffffff',
-                        padding: { xs: '12px 20px', sm: '12px 24px' },
-                        fontSize: '1rem',
-                        fontWeight: 600,
-                        borderRadius: 1,
-                        textTransform: 'none',
-                        transition: 'all 0.3s ease',
-                        position: 'relative',
-                        overflow: 'hidden',
-                        '&::before': {
-                          content: '""',
-                          position: 'absolute',
-                          top: 0,
-                          left: -100,
-                          width: '100%',
-                          height: '100%',
-                          background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
-                          transition: 'left 0.5s ease',
-                        },
-                        '&:hover': {
-                          backgroundColor: 'secondary.dark',
-                          transform: 'translateY(-2px)',
-                          boxShadow: '0 8px 20px rgba(79, 70, 229, 0.3)',
+                  <Box sx={{ mt: 'auto' }}>
+                    <Link href={step.href} passHref>
+                      <Button
+                        variant="contained"
+                        size="large"
+                        endIcon={stepEndIcons[step.id]}
+                        fullWidth
+                        sx={{
+                          backgroundColor: 'secondary.main',
+                          color: '#ffffff',
+                          padding: { xs: '12px 20px', sm: '12px 24px' },
+                          fontSize: '1rem',
+                          fontWeight: 600,
+                          borderRadius: 1,
+                          textTransform: 'none',
+                          transition: 'all 0.3s ease',
+                          position: 'relative',
+                          overflow: 'hidden',
                           '&::before': {
-                            left: '100%',
+                            content: '""',
+                            position: 'absolute',
+                            top: 0,
+                            left: -100,
+                            width: '100%',
+                            height: '100%',
+                            background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
+                            transition: 'left 0.5s ease',
                           },
-                        },
-                      }}
-                    >
-                      {step.buttonText}
-                    </Button>
-                  </Link>
-                </Box>
-              </ProductCard>
+                          '&:hover': {
+                            backgroundColor: 'secondary.dark',
+                            transform: 'translateY(-2px)',
+                            boxShadow: '0 8px 20px rgba(79, 70, 229, 0.3)',
+                            '&::before': {
+                              left: '100%',
+                            },
+                          },
+                        }}
+                      >
+                        {step.buttonText}
+                      </Button>
+                    </Link>
+                  </Box>
+                </ProductCard>
+              </motion.div>
             ))}
           </ProductShowcase>
         </InteractiveLayout>
 
-        <Box sx={{ 
-          textAlign: 'left', 
-          mt: 10,
-          pt: 6,
-          borderTop: '1px solid rgba(167, 218, 219, 0.1)',
-        }}>
-          <Typography variant="h4" sx={{ mb: 3, fontSize: { xs: '1.75rem', md: '2.25rem' } }}>
-            Ready to see the <AccentText>numbers</AccentText>?
-          </Typography>
-          <Typography 
-            variant="body1" 
-            sx={{ 
-              mb: 4, 
-              color: 'text.secondary',
-              fontSize: '1.125rem'
-            }}
+        <Box 
+          ref={ctaRef}
+          sx={{ 
+            textAlign: 'left', 
+            mt: 10,
+            pt: 6,
+            borderTop: '1px solid rgba(167, 218, 219, 0.1)',
+          }}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={ctaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            Calculate your potential ROI and discover how SmartSlate can transform your workforce economics.
-          </Typography>
-          <Button
-            variant="contained"
-            size="large"
-            onClick={onRevealNext}
-            endIcon={<CurrencyRupee aria-hidden="true" className="icon-anim icon-float" />}
-            sx={{
-              backgroundColor: 'secondary.main',
-              color: '#ffffff',
-              padding: { xs: '12px 20px', sm: '12px 24px' },
-              fontSize: '1rem',
-              fontWeight: 600,
-              borderRadius: 1,
-              textTransform: 'none',
-              transition: 'all 0.3s ease',
-              position: 'relative',
-              overflow: 'hidden',
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                top: 0,
-                left: -100,
-                width: '100%',
-                height: '100%',
-                background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
-                transition: 'left 0.5s ease',
-              },
-              '&:hover': {
-                backgroundColor: 'secondary.dark',
-                transform: 'translateY(-2px)',
-                boxShadow: '0 8px 20px rgba(79, 70, 229, 0.3)',
+            <Typography variant="h4" sx={{ mb: 3, fontSize: { xs: '1.75rem', md: '2.25rem' } }}>
+              Ready to see the <AccentText>numbers</AccentText>?
+            </Typography>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={ctaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+          >
+            <Typography 
+              variant="body1" 
+              sx={{ 
+                mb: 4, 
+                color: 'text.secondary',
+                fontSize: '1.125rem'
+              }}
+            >
+              Calculate your potential ROI and discover how SmartSlate can transform your workforce economics.
+            </Typography>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={ctaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+          >
+            <Button
+              variant="contained"
+              size="large"
+              onClick={onRevealNext}
+              endIcon={<CurrencyRupee aria-hidden="true" className="icon-anim icon-float" />}
+              sx={{
+                backgroundColor: 'secondary.main',
+                color: '#ffffff',
+                padding: { xs: '12px 20px', sm: '12px 24px' },
+                fontSize: '1rem',
+                fontWeight: 600,
+                borderRadius: 1,
+                textTransform: 'none',
+                transition: 'all 0.3s ease',
+                position: 'relative',
+                overflow: 'hidden',
                 '&::before': {
-                  left: '100%',
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: -100,
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
+                  transition: 'left 0.5s ease',
                 },
-              },
-            }}
-          >
-            Calculate your ROI
-          </Button>
+                '&:hover': {
+                  backgroundColor: 'secondary.dark',
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 8px 20px rgba(79, 70, 229, 0.3)',
+                  '&::before': {
+                    left: '100%',
+                  },
+                },
+              }}
+            >
+              Calculate your ROI
+            </Button>
+          </motion.div>
         </Box>
       </Container>
-          </FrameworkSection>
-    );
-  }
+    </FrameworkSection>
+  );
+}

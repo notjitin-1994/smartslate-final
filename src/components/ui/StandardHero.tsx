@@ -159,7 +159,7 @@ export default function StandardHero({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-lg sm:text-xl md:text-2xl text-primary mb-3 sm:mb-4 leading-relaxed max-w-4xl font-light"
+                className="text-lg sm:text-xl md:text-2xl text-primary mb-3 sm:mb-4 leading-relaxed font-light"
               >
                 {subtitle}
               </motion.p>
@@ -171,7 +171,7 @@ export default function StandardHero({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="text-base sm:text-lg md:text-xl text-primary-accent leading-relaxed max-w-3xl mb-4"
+                className="text-base sm:text-lg md:text-xl text-primary-accent leading-relaxed mb-4"
               >
                 {description}
               </motion.p>

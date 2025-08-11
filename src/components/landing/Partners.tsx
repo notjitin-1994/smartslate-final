@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Box, Container, Typography, Button, Collapse, Grow, Avatar } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Link from 'next/link';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import {
   School,
   Business,
@@ -22,7 +23,6 @@ import {
   Description,
   AutoGraph,
 } from '@mui/icons-material';
-import { motion, AnimatePresence } from 'framer-motion';
 
 const PartnersSection = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -228,18 +228,20 @@ const TestimonialAuthor = styled(Box)(({ theme }) => ({
 }));
 
 const CTAWrapper = styled(Box)(({ theme }) => ({
-  marginTop: theme.spacing(4),
+  marginTop: theme.spacing(6),
   display: 'flex',
-  gap: theme.spacing(2),
+  gap: theme.spacing(3),
   flexWrap: 'wrap',
+  justifyContent: 'flex-start',
   [theme.breakpoints.down('sm')]: {
     flexDirection: 'column',
+    gap: theme.spacing(2),
   },
 }));
 
 const CTAButton = styled(Button)(({ theme }) => ({
-  padding: `${theme.spacing(1.5)} ${theme.spacing(4)}`,
-  fontSize: '1.1rem',
+  padding: `${theme.spacing(1.5)} ${theme.spacing(3.5)}`,
+  fontSize: '1rem',
   fontWeight: 600,
   borderRadius: theme.spacing(1),
   cursor: 'pointer',
@@ -268,8 +270,8 @@ const PrimaryCTAButton = styled(CTAButton)(({ theme }) => ({
     left: -100,
     width: '100%',
     height: '100%',
-    background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
-    transition: 'left 0.5s ease',
+    background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent)',
+    transition: 'left 0.6s ease',
   },
   '&:hover': {
     backgroundColor: theme.palette.secondary.dark,
@@ -279,6 +281,10 @@ const PrimaryCTAButton = styled(CTAButton)(({ theme }) => ({
     '&::before': {
       left: '100%',
     },
+    '& .MuiSvgIcon-root': {
+      transform: 'scale(1.1) rotate(5deg)',
+      filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.6))',
+    },
   },
 }));
 
@@ -286,10 +292,27 @@ const SecondaryCTAButton = styled(CTAButton)(({ theme }) => ({
   backgroundColor: 'transparent',
   color: theme.palette.primary.main,
   borderColor: 'rgba(167, 218, 219, 0.3)',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: -100,
+    width: '100%',
+    height: '100%',
+    background: 'linear-gradient(90deg, transparent, rgba(167, 218, 219, 0.05), transparent)',
+    transition: 'left 0.6s ease',
+  },
   '&:hover': {
     backgroundColor: 'rgba(167, 218, 219, 0.1)',
     borderColor: theme.palette.primary.main,
     transform: 'translateY(-2px)',
+    '&::before': {
+      left: '100%',
+    },
+    '& .MuiSvgIcon-root': {
+      transform: 'scale(1.1) rotate(5deg)',
+      filter: 'drop-shadow(0 0 20px rgba(167, 218, 219, 0.6))',
+    },
   },
 }));
 
@@ -389,6 +412,15 @@ export default function Partners({}: PartnersProps) {
   });
   const [animateLogos, setAnimateLogos] = useState(false);
 
+  // Add refs and inView hooks for animations
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const accordionRef = useRef<HTMLDivElement>(null);
+  
+  const sectionInView = useInView(sectionRef, { once: true, amount: 0.1 });
+  const headerInView = useInView(headerRef, { once: true, amount: 0.3 });
+  const accordionInView = useInView(accordionRef, { once: true, amount: 0.2 });
+
   useEffect(() => {
     setTimeout(() => setAnimateLogos(true), 500);
   }, []);
@@ -398,210 +430,228 @@ export default function Partners({}: PartnersProps) {
   };
 
   return (
-    <PartnersSection>
+    <PartnersSection ref={sectionRef}>
       <Container maxWidth="lg">
-        <SectionHeaderWrapper>
-          <Typography 
-            variant="h2" 
-            sx={{ 
-              mb: 3, 
-              fontSize: { xs: '2.5rem', md: '3rem', lg: '3.5rem' },
-              lineHeight: 1.2
-            }}
+        <SectionHeaderWrapper ref={headerRef}>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={headerInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            Who We <AccentText>Partner</AccentText> With
-          </Typography>
-          <Typography variant="body1" sx={{ 
-            fontSize: '1.25rem', 
-            color: 'text.secondary',
-            lineHeight: 1.8
-          }}>
-            We collaborate with forward-thinking organizations to build the future of education and
-            workforce development. Join the leaders who are already transforming their talent ecosystem.
-          </Typography>
+            <Typography 
+              variant="h2" 
+              sx={{ 
+                mb: 3, 
+                fontSize: { xs: '2.5rem', md: '3rem', lg: '3.5rem' },
+                lineHeight: 1.2
+              }}
+            >
+              Who We <AccentText>Partner</AccentText> With
+            </Typography>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={headerInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+          >
+            <Typography variant="body1" sx={{ 
+              fontSize: '1.25rem', 
+              color: 'text.secondary',
+              lineHeight: 1.8
+            }}>
+              We collaborate with forward-thinking organizations to build the future of education and
+              workforce development. Join the leaders who are already transforming their talent ecosystem.
+            </Typography>
+          </motion.div>
         </SectionHeaderWrapper>
 
-        <AccordionWrapper>
+        <AccordionWrapper ref={accordionRef}>
           {/* Institutions Section */}
-          <Subsection>
-            <SectionHeaderButton
-              revealed={revealed.institutions}
-              onClick={() => toggle('institutions')}
-            >
-              <HeaderContent>
-                <SectionIcon className="section-icon">
-                  <School />
-                </SectionIcon>
-                <Box>
-                  <Typography variant="h4" sx={{ mb: 1, fontSize: { xs: '1.5rem', md: '1.875rem' }, fontWeight: 700 }}>
-                    {content.institutions.title}
-                  </Typography>
-                  <Typography variant="body1" sx={{ color: 'text.secondary', fontSize: '1.125rem' }}>
-                    {content.institutions.pitch}
-                  </Typography>
-                </Box>
-              </HeaderContent>
-              <IconWrapper sx={{ transform: revealed.institutions ? 'rotate(45deg)' : 'rotate(0)' }}>
-                <AddCircle />
-              </IconWrapper>
-            </SectionHeaderButton>
-            <Collapse in={revealed.institutions} timeout={500}>
-              <ContentBody>
-
-
-                <BenefitsList>
-                  {content.institutions.benefits.map((benefit, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <BenefitItem>
-                        <benefit.icon className="benefit-icon" />
-                        <BenefitText>
-                          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                            {benefit.text}
-                          </Typography>
-                          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                            {benefit.description}
-                          </Typography>
-                        </BenefitText>
-                      </BenefitItem>
-                    </motion.div>
-                  ))}
-                </BenefitsList>
-                
-                <CTAWrapper>
-                  <Link href="/courses" passHref>
-                    <PrimaryCTAButton endIcon={<School aria-hidden="true" className="icon-anim icon-float" />}>
-                      {content.institutions.cta}
-                    </PrimaryCTAButton>
-                  </Link>
-                  <SecondaryCTAButton endIcon={<Description aria-hidden="true" className="icon-anim icon-float" />}>
-                    Download Brochure
-                  </SecondaryCTAButton>
-                </CTAWrapper>
-              </ContentBody>
-            </Collapse>
-          </Subsection>
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={accordionInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+          >
+            <Subsection>
+              <SectionHeaderButton
+                revealed={revealed.institutions}
+                onClick={() => toggle('institutions')}
+              >
+                <HeaderContent>
+                  <SectionIcon className="section-icon">
+                    <School />
+                  </SectionIcon>
+                  <Box>
+                    <Typography variant="h4" sx={{ mb: 1, fontSize: { xs: '1.5rem', md: '1.875rem' }, fontWeight: 700 }}>
+                      {content.institutions.title}
+                    </Typography>
+                    <Typography variant="body1" sx={{ color: 'text.secondary', fontSize: '1.125rem' }}>
+                      {content.institutions.pitch}
+                    </Typography>
+                  </Box>
+                </HeaderContent>
+                <IconWrapper sx={{ transform: revealed.institutions ? 'rotate(45deg)' : 'rotate(0)' }}>
+                  <AddCircle />
+                </IconWrapper>
+              </SectionHeaderButton>
+              <Collapse in={revealed.institutions} timeout={500}>
+                <ContentBody>
+                  <BenefitsList>
+                    {content.institutions.benefits.map((benefit, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={revealed.institutions ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                        transition={{ 
+                          duration: 0.5, 
+                          ease: "easeOut", 
+                          delay: 0.1 + (index * 0.1) 
+                        }}
+                      >
+                        <BenefitItem>
+                          <benefit.icon className="benefit-icon" />
+                          <BenefitText>
+                            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                              {benefit.text}
+                            </Typography>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                              {benefit.description}
+                            </Typography>
+                          </BenefitText>
+                        </BenefitItem>
+                      </motion.div>
+                    ))}
+                  </BenefitsList>
+                  
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={revealed.institutions ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    transition={{ duration: 0.6, ease: "easeOut", delay: 0.6 }}
+                  >
+                    <CTAWrapper>
+                      <Link href="/courses" passHref>
+                        <PrimaryCTAButton endIcon={<School aria-hidden="true" className="icon-anim icon-float" />}>
+                          {content.institutions.cta}
+                        </PrimaryCTAButton>
+                      </Link>
+                      <SecondaryCTAButton endIcon={<Description aria-hidden="true" className="icon-anim icon-float" />}>
+                        Download Brochure
+                      </SecondaryCTAButton>
+                    </CTAWrapper>
+                  </motion.div>
+                </ContentBody>
+              </Collapse>
+            </Subsection>
+          </motion.div>
 
           {/* Businesses Section */}
-          <Subsection>
-            <SectionHeaderButton
-              revealed={revealed.businesses}
-              onClick={() => toggle('businesses')}
-            >
-              <HeaderContent>
-                <SectionIcon className="section-icon">
-                  <Business />
-                </SectionIcon>
-                <Box>
-                  <Typography variant="h4" sx={{ mb: 1, fontSize: { xs: '1.5rem', md: '1.875rem' }, fontWeight: 700 }}>
-                    {content.businesses.title}
-                  </Typography>
-                  <Typography variant="body1" sx={{ color: 'text.secondary', fontSize: '1.125rem' }}>
-                    {content.businesses.pitch}
-                  </Typography>
-                </Box>
-              </HeaderContent>
-              <IconWrapper sx={{ transform: revealed.businesses ? 'rotate(45deg)' : 'rotate(0)' }}>
-                <AddCircle />
-              </IconWrapper>
-            </SectionHeaderButton>
-            <Collapse in={revealed.businesses} timeout={500}>
-              <ContentBody>
-                <TestimonialCard>
-                  <QuoteIcon />
-                  <Typography variant="body1" sx={{ fontSize: '1.125rem', lineHeight: 1.8, mb: 2 }}>
-                    {'\u201C'}{content.businesses.testimonial.text}{'\u201D'}
-                  </Typography>
-                  <TestimonialAuthor>
-                    <Avatar sx={{ bgcolor: 'secondary.main' }}>
-                      {content.businesses.testimonial.author.charAt(0)}
-                    </Avatar>
-                    <Box>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                        {content.businesses.testimonial.author}
-                      </Typography>
-                      <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                        {content.businesses.testimonial.role}
-                      </Typography>
-                      <RatingStars>
-                        {[...Array(content.businesses.testimonial.rating)].map((_, i) => (
-                          <Star key={i} sx={{ fontSize: 16 }} />
-                        ))}
-                      </RatingStars>
-                    </Box>
-                  </TestimonialAuthor>
-                </TestimonialCard>
-
-                <BenefitsList>
-                  {content.businesses.benefits.map((benefit, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <BenefitItem>
-                        <benefit.icon className="benefit-icon" />
-                        <BenefitText>
-                          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                            {benefit.text}
-                          </Typography>
-                          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                            {benefit.description}
-                          </Typography>
-                        </BenefitText>
-                      </BenefitItem>
-                    </motion.div>
-                  ))}
-                </BenefitsList>
-                
-                <CTAWrapper>
-                  <PrimaryCTAButton endIcon={<EventAvailable aria-hidden="true" className="icon-anim icon-float" />}>
-                    {content.businesses.cta}
-                  </PrimaryCTAButton>
-                  <SecondaryCTAButton startIcon={<AutoGraph aria-hidden="true" className="icon-anim icon-float" />}>
-                    View Case Studies
-                  </SecondaryCTAButton>
-                </CTAWrapper>
-              </ContentBody>
-            </Collapse>
-          </Subsection>
-        </AccordionWrapper>
-
-        <PartnerLogos>
-          <Typography 
-            variant="h6" 
-            sx={{ 
-              width: '100%', 
-              textAlign: 'left', 
-              mb: 3,
-              color: 'text.secondary' 
-            }}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={accordionInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
           >
-            Trusted by Leading Organizations
-          </Typography>
-          {partnerLogos.map((partner, index) => (
-            <AnimatePresence key={partner.name}>
-              {animateLogos && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.1, duration: 0.5 }}
-                >
-                  <PartnerLogo>
-                    <Typography variant="body1" sx={{ fontWeight: 600, color: 'text.secondary' }}>
-                      {partner.name}
+            <Subsection>
+              <SectionHeaderButton
+                revealed={revealed.businesses}
+                onClick={() => toggle('businesses')}
+              >
+                <HeaderContent>
+                  <SectionIcon className="section-icon">
+                    <Business />
+                  </SectionIcon>
+                  <Box>
+                    <Typography variant="h4" sx={{ mb: 1, fontSize: { xs: '1.5rem', md: '1.875rem' }, fontWeight: 700 }}>
+                      {content.businesses.title}
                     </Typography>
-                  </PartnerLogo>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          ))}
-        </PartnerLogos>
+                    <Typography variant="body1" sx={{ color: 'text.secondary', fontSize: '1.125rem' }}>
+                      {content.businesses.pitch}
+                    </Typography>
+                  </Box>
+                </HeaderContent>
+                <IconWrapper sx={{ transform: revealed.businesses ? 'rotate(45deg)' : 'rotate(0)' }}>
+                  <AddCircle />
+                </IconWrapper>
+              </SectionHeaderButton>
+              <Collapse in={revealed.businesses} timeout={500}>
+                <ContentBody>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={revealed.businesses ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+                  >
+                    <TestimonialCard>
+                      <QuoteIcon />
+                      <Typography variant="body1" sx={{ fontSize: '1.125rem', lineHeight: 1.8, mb: 2 }}>
+                        {'\u201C'}{content.businesses.testimonial.text}{'\u201D'}
+                      </Typography>
+                      <TestimonialAuthor>
+                        <Avatar sx={{ bgcolor: 'secondary.main' }}>
+                          {content.businesses.testimonial.author.charAt(0)}
+                        </Avatar>
+                        <Box>
+                          <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                            {content.businesses.testimonial.author}
+                          </Typography>
+                          <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                            {content.businesses.testimonial.role}
+                          </Typography>
+                          <RatingStars>
+                            {[...Array(content.businesses.testimonial.rating)].map((_, i) => (
+                              <Star key={i} sx={{ fontSize: 16 }} />
+                            ))}
+                          </RatingStars>
+                        </Box>
+                      </TestimonialAuthor>
+                    </TestimonialCard>
+                  </motion.div>
+
+                  <BenefitsList>
+                    {content.businesses.benefits.map((benefit, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={revealed.businesses ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                        transition={{ 
+                          duration: 0.5, 
+                          ease: "easeOut", 
+                          delay: 0.2 + (index * 0.1) 
+                        }}
+                      >
+                        <BenefitItem>
+                          <benefit.icon className="benefit-icon" />
+                          <BenefitText>
+                            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                              {benefit.text}
+                            </Typography>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                              {benefit.description}
+                            </Typography>
+                          </BenefitText>
+                        </BenefitItem>
+                      </motion.div>
+                    ))}
+                  </BenefitsList>
+                  
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={revealed.businesses ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    transition={{ duration: 0.6, ease: "easeOut", delay: 0.7 }}
+                  >
+                    <CTAWrapper>
+                      <PrimaryCTAButton endIcon={<EventAvailable aria-hidden="true" className="icon-anim icon-float" />}>
+                        {content.businesses.cta}
+                      </PrimaryCTAButton>
+                      <SecondaryCTAButton startIcon={<AutoGraph aria-hidden="true" className="icon-anim icon-float" />}>
+                        View Case Studies
+                      </SecondaryCTAButton>
+                    </CTAWrapper>
+                  </motion.div>
+                </ContentBody>
+              </Collapse>
+            </Subsection>
+          </motion.div>
+        </AccordionWrapper>
       </Container>
     </PartnersSection>
   );

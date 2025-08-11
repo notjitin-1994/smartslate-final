@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Box, Container, Typography, Button, Slider, Paper, Grow, Fade } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import {
   TrendingUp,
   EmojiEvents,
@@ -22,7 +23,6 @@ import {
   MonetizationOn,
   Timeline,
 } from '@mui/icons-material';
-import { motion, AnimatePresence } from 'framer-motion';
 
 const ROISection = styled(Box)(({ theme }) => ({
   padding: `${theme.spacing(10)} 0`,
@@ -317,6 +317,17 @@ export default function ROICalculator({ onRevealNext }: ROICalculatorProps) {
   const [studentCount, setStudentCount] = useState(500);
   const [currentSalary, setCurrentSalary] = useState(180000);
 
+  // Add refs and inView hooks for animations
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const calculatorRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
+  
+  const sectionInView = useInView(sectionRef, { once: true, amount: 0.1 });
+  const headerInView = useInView(headerRef, { once: true, amount: 0.3 });
+  const calculatorInView = useInView(calculatorRef, { once: true, amount: 0.2 });
+  const ctaInView = useInView(ctaRef, { once: true, amount: 0.3 });
+
   // Trigger animation when persona changes
   useEffect(() => {
     if (persona) {
@@ -361,38 +372,52 @@ export default function ROICalculator({ onRevealNext }: ROICalculatorProps) {
   };
 
   return (
-    <ROISection id="roi-calculator">
+    <ROISection id="roi-calculator" ref={sectionRef}>
       <Container maxWidth="lg">
-        <SectionHeader>
-          <Typography 
-            variant="h2" 
-            sx={{ 
-              mb: 3, 
-              fontSize: { xs: '2.5rem', md: '3rem', lg: '3.5rem' },
-              lineHeight: 1.2
-            }}
+        <SectionHeader ref={headerRef}>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={headerInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            Calculate Your <AccentText>ROI</AccentText>
-          </Typography>
-          <Typography variant="body1" sx={{ 
-            fontSize: '1.25rem', 
-            color: 'text.secondary',
-            lineHeight: 1.8
-          }}>
-            Your goals are <AccentText>unique</AccentText>. Your data should be too. Select the role
-            that best describes you to unlock a
-            <AccentText> personalized impact analysis</AccentText>.
-          </Typography>
+            <Typography 
+              variant="h2" 
+              sx={{ 
+                mb: 3, 
+                fontSize: { xs: '2.5rem', md: '3rem', lg: '3.5rem' },
+                lineHeight: 1.2
+              }}
+            >
+              Calculate Your <AccentText>ROI</AccentText>
+            </Typography>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={headerInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+          >
+            <Typography variant="body1" sx={{ 
+              fontSize: '1.25rem', 
+              color: 'text.secondary',
+              lineHeight: 1.8
+            }}>
+              Your goals are <AccentText>unique</AccentText>. Your data should be too. Select the role
+              that best describes you to unlock a
+              <AccentText> personalized impact analysis</AccentText>.
+            </Typography>
+          </motion.div>
         </SectionHeader>
 
-        <CalculatorWrapper elevation={0}>
+        <CalculatorWrapper elevation={0} ref={calculatorRef}>
           <AnimatePresence mode="wait">
             {!persona ? (
               <motion.div
                 key="selector"
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                animate={calculatorInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
               >
                 <PersonaSelector onSelect={setPersona} />
               </motion.div>
@@ -400,343 +425,444 @@ export default function ROICalculator({ onRevealNext }: ROICalculatorProps) {
               <motion.div
                 key="calculator"
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                animate={calculatorInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
               >
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 3, flexWrap: 'wrap' }}>
-                    <Typography 
-                      variant="h3" 
-                      sx={{ 
-                        fontSize: { xs: '1.75rem', md: '2.25rem', lg: '2.5rem' },
-                        flexGrow: 1,
-                        lineHeight: 1.3
-                      }}
-                      dangerouslySetInnerHTML={{ __html: headlines[persona] }}
-                    />
-                    <BackButton onClick={() => setPersona(null)}>
-                      <ArrowBack sx={{ fontSize: '1rem' }} />
-                      <span>Change Persona</span>
-                    </BackButton>
-                  </Box>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+                  >
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 3, flexWrap: 'wrap' }}>
+                      <Typography 
+                        variant="h3" 
+                        sx={{ 
+                          fontSize: { xs: '1.75rem', md: '2.25rem', lg: '2.5rem' },
+                          flexGrow: 1,
+                          lineHeight: 1.3
+                        }}
+                        dangerouslySetInnerHTML={{ __html: headlines[persona] }}
+                      />
+                      <BackButton onClick={() => setPersona(null)}>
+                        <ArrowBack sx={{ fontSize: '1rem' }} />
+                        <span>Change Persona</span>
+                      </BackButton>
+                    </Box>
+                  </motion.div>
 
                   {persona === 'businessman' && (
                     <>
-                      <Box>
-                        <Typography variant="h6" sx={{ mb: 3, fontWeight: 600 }}>
-                          How large is your team?
-                        </Typography>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                          <StyledSlider
-                            value={teamSize}
-                            onChange={(_, value) => setTeamSize(value as number)}
-                            min={10}
-                            max={1000}
-                            step={10}
-                            valueLabelDisplay="auto"
-                            sx={{ flexGrow: 1 }}
-                          />
-                          <Typography 
-                            variant="h4" 
-                            sx={{ 
-                              minWidth: 120, 
-                              textAlign: 'right', 
-                              fontWeight: 700,
-                              color: 'primary.main' 
-                            }}
-                          >
-                            {teamSize}
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+                      >
+                        <Box>
+                          <Typography variant="h6" sx={{ mb: 3, fontWeight: 600 }}>
+                            How large is your team?
                           </Typography>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                            <StyledSlider
+                              value={teamSize}
+                              onChange={(_, value) => setTeamSize(value as number)}
+                              min={10}
+                              max={1000}
+                              step={10}
+                              valueLabelDisplay="auto"
+                              sx={{ flexGrow: 1 }}
+                            />
+                            <Typography 
+                              variant="h4" 
+                              sx={{ 
+                                minWidth: 120, 
+                                textAlign: 'right', 
+                                fontWeight: 700,
+                                color: 'primary.main' 
+                              }}
+                            >
+                              {teamSize}
+                            </Typography>
+                          </Box>
                         </Box>
-                      </Box>
+                      </motion.div>
                       <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 3 }}>
-                        <Grow in={animateMetrics} timeout={600}>
-                          <MetricCard elevation={0}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                              <Savings className="metric-icon" sx={{ fontSize: 40, transition: 'all 0.3s ease' }} />
-                              <Typography variant="h6" sx={{ fontWeight: 600 }}>Turnover Costs Saved</Typography>
-                            </Box>
-                            <MetricValue>
-                              <AnimatedCounter value={retentionSavings} format={formatCurrency} />
-                            </MetricValue>
-                            <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
-                              Annually, by cutting attrition in half through targeted upskilling.
-                            </Typography>
-                            <Typography variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
-                              Based on Gallup and LinkedIn Learning data on employee replacement costs.
-                            </Typography>
-                          </MetricCard>
-                        </Grow>
-                        <Grow in={animateMetrics} timeout={800}>
-                          <MetricCard elevation={0}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                              <Speed className="metric-icon" sx={{ fontSize: 40, transition: 'all 0.3s ease' }} />
-                              <Typography variant="h6" sx={{ fontWeight: 600 }}>Productivity Hours Gained</Typography>
-                            </Box>
-                            <MetricValue>
-                              +<AnimatedCounter value={productivityBoost} />
-                            </MetricValue>
-                            <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
-                              Per year, from a more efficient and capable workforce.
-                            </Typography>
-                            <Typography variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
-                              Based on ATD findings on productivity increases from effective training.
-                            </Typography>
-                          </MetricCard>
-                        </Grow>
-                        <Grow in={animateMetrics} timeout={1000}>
-                          <MetricCard elevation={0}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                              <AutoGraph className="metric-icon" sx={{ fontSize: 40, transition: 'all 0.3s ease' }} />
-                              <Typography variant="h6" sx={{ fontWeight: 600 }}>AI-Driven Revenue Lift</Typography>
-                            </Box>
-                            <MetricValue>
-                              <AnimatedCounter value={aiRevenueLift} format={formatCurrency} />
-                            </MetricValue>
-                            <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
-                              Potential annual gain by equipping your team with strategic AI skills.
-                            </Typography>
-                            <Typography variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
-                              Modeled on McKinsey &amp; Accenture reports on AI adoption and revenue growth.
-                            </Typography>
-                          </MetricCard>
-                        </Grow>
+                        <motion.div
+                          initial={{ opacity: 0, y: 30 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+                        >
+                          <Grow in={animateMetrics} timeout={600}>
+                            <MetricCard elevation={0}>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                                <Savings className="metric-icon" sx={{ fontSize: 40, transition: 'all 0.3s ease' }} />
+                                <Typography variant="h6" sx={{ fontWeight: 600 }}>Turnover Costs Saved</Typography>
+                              </Box>
+                              <MetricValue>
+                                <AnimatedCounter value={retentionSavings} format={formatCurrency} />
+                              </MetricValue>
+                              <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
+                                Annually, by cutting attrition in half through targeted upskilling.
+                              </Typography>
+                              <Typography variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
+                                Based on Gallup and LinkedIn Learning data on employee replacement costs.
+                              </Typography>
+                            </MetricCard>
+                          </Grow>
+                        </motion.div>
+                        <motion.div
+                          initial={{ opacity: 0, y: 30 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+                        >
+                          <Grow in={animateMetrics} timeout={800}>
+                            <MetricCard elevation={0}>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                                <Speed className="metric-icon" sx={{ fontSize: 40, transition: 'all 0.3s ease' }} />
+                                <Typography variant="h6" sx={{ fontWeight: 600 }}>Productivity Hours Gained</Typography>
+                              </Box>
+                              <MetricValue>
+                                +<AnimatedCounter value={productivityBoost} />
+                              </MetricValue>
+                              <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
+                                Per year, from a more efficient and capable workforce.
+                              </Typography>
+                              <Typography variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
+                                Based on ATD findings on productivity increases from effective training.
+                              </Typography>
+                            </MetricCard>
+                          </Grow>
+                        </motion.div>
+                        <motion.div
+                          initial={{ opacity: 0, y: 30 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
+                        >
+                          <Grow in={animateMetrics} timeout={1000}>
+                            <MetricCard elevation={0}>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                                <AutoGraph className="metric-icon" sx={{ fontSize: 40, transition: 'all 0.3s ease' }} />
+                                <Typography variant="h6" sx={{ fontWeight: 600 }}>AI-Driven Revenue Lift</Typography>
+                              </Box>
+                              <MetricValue>
+                                <AnimatedCounter value={aiRevenueLift} format={formatCurrency} />
+                              </MetricValue>
+                              <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
+                                Potential annual gain by equipping your team with strategic AI skills.
+                              </Typography>
+                              <Typography variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
+                                Modeled on McKinsey &amp; Accenture reports on AI adoption and revenue growth.
+                              </Typography>
+                            </MetricCard>
+                          </Grow>
+                        </motion.div>
                       </Box>
                     </>
                   )}
 
                   {persona === 'educator' && (
                     <>
-                      <Box>
-                        <Typography variant="h6" sx={{ mb: 3, fontWeight: 600 }}>
-                          How many students do you serve?
-                        </Typography>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                          <StyledSlider
-                            value={studentCount}
-                            onChange={(_, value) => setStudentCount(value as number)}
-                            min={100}
-                            max={10000}
-                            step={100}
-                            valueLabelDisplay="auto"
-                            sx={{ flexGrow: 1 }}
-                          />
-                          <Typography 
-                            variant="h4" 
-                            sx={{ 
-                              minWidth: 120, 
-                              textAlign: 'right', 
-                              fontWeight: 700,
-                              color: 'primary.main' 
-                            }}
-                          >
-                            {studentCount}
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+                      >
+                        <Box>
+                          <Typography variant="h6" sx={{ mb: 3, fontWeight: 600 }}>
+                            How many students do you serve?
                           </Typography>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                            <StyledSlider
+                              value={studentCount}
+                              onChange={(_, value) => setStudentCount(value as number)}
+                              min={100}
+                              max={10000}
+                              step={100}
+                              valueLabelDisplay="auto"
+                              sx={{ flexGrow: 1 }}
+                            />
+                            <Typography 
+                              variant="h4" 
+                              sx={{ 
+                                minWidth: 120, 
+                                textAlign: 'right', 
+                                fontWeight: 700,
+                                color: 'primary.main' 
+                              }}
+                            >
+                              {studentCount}
+                            </Typography>
+                          </Box>
                         </Box>
-                      </Box>
+                      </motion.div>
                       <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 3 }}>
-                        <Grow in={animateMetrics} timeout={600}>
-                          <MetricCard elevation={0}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                              <WorkspacePremium className="metric-icon" sx={{ fontSize: 40, transition: 'all 0.3s ease' }} />
-                              <Typography variant="h6" sx={{ fontWeight: 600 }}>Employability Boost</Typography>
-                            </Box>
-                            <MetricValue>+{employabilityBoost}</MetricValue>
-                            <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
-                              More students placed in top-tier roles with targeted skills.
-                            </Typography>
-                            <Typography variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
-                              Based on NASSCOM data on skill-based hiring preferences.
-                            </Typography>
-                          </MetricCard>
-                        </Grow>
-                        <Grow in={animateMetrics} timeout={800}>
-                          <MetricCard elevation={0}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                              <AccessTime className="metric-icon" sx={{ fontSize: 40, transition: 'all 0.3s ease' }} />
-                              <Typography variant="h6" sx={{ fontWeight: 600 }}>Faster Time-to-Placement</Typography>
-                            </Box>
-                            <MetricValue>-{fasterPlacement} mo</MetricValue>
-                            <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
-                              Reduction in average job search duration.
-                            </Typography>
-                            <Typography variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
-                              Analysis of placement data from leading technical institutions.
-                            </Typography>
-                          </MetricCard>
-                        </Grow>
-                        <Grow in={animateMetrics} timeout={1000}>
-                          <MetricCard elevation={0}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                              <Handshake className="metric-icon" sx={{ fontSize: 40, transition: 'all 0.3s ease' }} />
-                              <Typography variant="h6" sx={{ fontWeight: 600 }}>Industry Partnerships</Typography>
-                            </Box>
-                            <MetricValue>+{industryPartnerships}</MetricValue>
-                            <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
-                              New corporate connections through skill-verified graduates.
-                            </Typography>
-                            <Typography variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
-                              Based on industry-academia collaboration trends.
-                            </Typography>
-                          </MetricCard>
-                        </Grow>
+                        <motion.div
+                          initial={{ opacity: 0, y: 30 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+                        >
+                          <Grow in={animateMetrics} timeout={600}>
+                            <MetricCard elevation={0}>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                                <WorkspacePremium className="metric-icon" sx={{ fontSize: 40, transition: 'all 0.3s ease' }} />
+                                <Typography variant="h6" sx={{ fontWeight: 600 }}>Employability Boost</Typography>
+                              </Box>
+                              <MetricValue>+{employabilityBoost}</MetricValue>
+                              <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
+                                More students placed in top-tier roles with targeted skills.
+                              </Typography>
+                              <Typography variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
+                                Based on NASSCOM data on skill-based hiring preferences.
+                              </Typography>
+                            </MetricCard>
+                          </Grow>
+                        </motion.div>
+                        <motion.div
+                          initial={{ opacity: 0, y: 30 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+                        >
+                          <Grow in={animateMetrics} timeout={800}>
+                            <MetricCard elevation={0}>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                                <AccessTime className="metric-icon" sx={{ fontSize: 40, transition: 'all 0.3s ease' }} />
+                                <Typography variant="h6" sx={{ fontWeight: 600 }}>Faster Time-to-Placement</Typography>
+                              </Box>
+                              <MetricValue>-{fasterPlacement} mo</MetricValue>
+                              <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
+                                Reduction in average job search duration.
+                              </Typography>
+                              <Typography variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
+                                Analysis of placement data from leading technical institutions.
+                              </Typography>
+                            </MetricCard>
+                          </Grow>
+                        </motion.div>
+                        <motion.div
+                          initial={{ opacity: 0, y: 30 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
+                        >
+                          <Grow in={animateMetrics} timeout={1000}>
+                            <MetricCard elevation={0}>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                                <Handshake className="metric-icon" sx={{ fontSize: 40, transition: 'all 0.3s ease' }} />
+                                <Typography variant="h6" sx={{ fontWeight: 600 }}>Industry Partnerships</Typography>
+                              </Box>
+                              <MetricValue>+{industryPartnerships}</MetricValue>
+                              <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
+                                New corporate connections through skill-verified graduates.
+                              </Typography>
+                              <Typography variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
+                                Based on industry-academia collaboration trends.
+                              </Typography>
+                            </MetricCard>
+                          </Grow>
+                        </motion.div>
                       </Box>
                     </>
                   )}
 
                   {persona === 'student' && (
                     <>
-                      <Box>
-                        <Typography variant="h6" sx={{ mb: 3, fontWeight: 600 }}>
-                          What&apos;s your current monthly salary?
-                        </Typography>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                          <StyledSlider
-                            value={currentSalary}
-                            onChange={(_, value) => setCurrentSalary(value as number)}
-                            min={15000}
-                            max={500000}
-                            step={5000}
-                            valueLabelDisplay="auto"
-                            valueLabelFormat={(value) => `₹${(value/1000).toFixed(0)}k`}
-                            sx={{ flexGrow: 1 }}
-                          />
-                          <Typography 
-                            variant="h4" 
-                            sx={{ 
-                              minWidth: 140, 
-                              textAlign: 'right', 
-                              fontWeight: 700,
-                              color: 'primary.main' 
-                            }}
-                          >
-                            {formatCurrency(currentSalary)}
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+                      >
+                        <Box>
+                          <Typography variant="h6" sx={{ mb: 3, fontWeight: 600 }}>
+                            What&apos;s your current monthly salary?
                           </Typography>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                            <StyledSlider
+                              value={currentSalary}
+                              onChange={(_, value) => setCurrentSalary(value as number)}
+                              min={15000}
+                              max={500000}
+                              step={5000}
+                              valueLabelDisplay="auto"
+                              valueLabelFormat={(value) => `₹${(value/1000).toFixed(0)}k`}
+                              sx={{ flexGrow: 1 }}
+                            />
+                            <Typography 
+                              variant="h4" 
+                              sx={{ 
+                                minWidth: 140, 
+                                textAlign: 'right', 
+                                fontWeight: 700,
+                                color: 'primary.main' 
+                              }}
+                            >
+                              {formatCurrency(currentSalary)}
+                            </Typography>
+                          </Box>
                         </Box>
-                      </Box>
+                      </motion.div>
                       <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 3 }}>
-                        <Grow in={animateMetrics} timeout={600}>
-                          <MetricCard elevation={0}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                              <MonetizationOn className="metric-icon" sx={{ fontSize: 40, transition: 'all 0.3s ease' }} />
-                              <Typography variant="h6" sx={{ fontWeight: 600 }}>Potential Salary Increase</Typography>
-                            </Box>
-                            <MetricValue>
-                              +<AnimatedCounter value={salaryIncrease} format={formatCurrency} />
-                            </MetricValue>
-                            <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
-                              Average increase with specialized skill certification.
-                            </Typography>
-                            <Typography variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
-                              Based on salary surveys from Glassdoor and LinkedIn.
-                            </Typography>
-                          </MetricCard>
-                        </Grow>
-                        <Grow in={animateMetrics} timeout={800}>
-                          <MetricCard elevation={0}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                              <Timeline className="metric-icon" sx={{ fontSize: 40, transition: 'all 0.3s ease' }} />
-                              <Typography variant="h6" sx={{ fontWeight: 600 }}>Faster Career Growth</Typography>
-                            </Box>
-                            <MetricValue>{fasterPromotion} mo</MetricValue>
-                            <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
-                              Earlier promotion compared to traditional career paths.
-                            </Typography>
-                            <Typography variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
-                              Analysis of tech career progression data.
-                            </Typography>
-                          </MetricCard>
-                        </Grow>
-                        <Grow in={animateMetrics} timeout={1000}>
-                          <MetricCard elevation={0}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                              <Groups className="metric-icon" sx={{ fontSize: 40, transition: 'all 0.3s ease' }} />
-                              <Typography variant="h6" sx={{ fontWeight: 600 }}>New Opportunities</Typography>
-                            </Box>
-                            <MetricValue>{jobOpportunities}x</MetricValue>
-                            <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
-                              More job opportunities with verified skills portfolio.
-                            </Typography>
-                            <Typography variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
-                              Based on hiring platform data for skilled professionals.
-                            </Typography>
-                          </MetricCard>
-                        </Grow>
+                        <motion.div
+                          initial={{ opacity: 0, y: 30 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+                        >
+                          <Grow in={animateMetrics} timeout={600}>
+                            <MetricCard elevation={0}>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                                <MonetizationOn className="metric-icon" sx={{ fontSize: 40, transition: 'all 0.3s ease' }} />
+                                <Typography variant="h6" sx={{ fontWeight: 600 }}>Potential Salary Increase</Typography>
+                              </Box>
+                              <MetricValue>
+                                +<AnimatedCounter value={salaryIncrease} format={formatCurrency} />
+                              </MetricValue>
+                              <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
+                                Average increase with specialized skill certification.
+                              </Typography>
+                              <Typography variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
+                                Based on salary surveys from Glassdoor and LinkedIn.
+                              </Typography>
+                            </MetricCard>
+                          </Grow>
+                        </motion.div>
+                        <motion.div
+                          initial={{ opacity: 0, y: 30 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+                        >
+                          <Grow in={animateMetrics} timeout={800}>
+                            <MetricCard elevation={0}>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                                <Timeline className="metric-icon" sx={{ fontSize: 40, transition: 'all 0.3s ease' }} />
+                                <Typography variant="h6" sx={{ fontWeight: 600 }}>Faster Career Growth</Typography>
+                              </Box>
+                              <MetricValue>{fasterPromotion} mo</MetricValue>
+                              <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
+                                Earlier promotion compared to traditional career paths.
+                              </Typography>
+                              <Typography variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
+                                Analysis of tech career progression data.
+                              </Typography>
+                            </MetricCard>
+                          </Grow>
+                        </motion.div>
+                        <motion.div
+                          initial={{ opacity: 0, y: 30 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
+                        >
+                          <Grow in={animateMetrics} timeout={1000}>
+                            <MetricCard elevation={0}>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                                <Groups className="metric-icon" sx={{ fontSize: 40, transition: 'all 0.3s ease' }} />
+                                <Typography variant="h6" sx={{ fontWeight: 600 }}>New Opportunities</Typography>
+                              </Box>
+                              <MetricValue>{jobOpportunities}x</MetricValue>
+                              <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
+                                More job opportunities with verified skills portfolio.
+                              </Typography>
+                              <Typography variant="caption" sx={{ color: 'text.disabled', mt: 1, display: 'block' }}>
+                                Based on hiring platform data for skilled professionals.
+                              </Typography>
+                            </MetricCard>
+                          </Grow>
+                        </motion.div>
                       </Box>
                     </>
                   )}
 
-                  <Fade in={animateMetrics} timeout={1200}>
-                    <Box sx={{ 
-                      mt: 4, 
-                      p: 4, 
-                      background: 'rgba(167, 218, 219, 0.05)',
-                      borderRadius: 2,
-                      border: '1px solid rgba(167, 218, 219, 0.2)'
-                    }}>
-                      <Typography 
-                        variant="body1" 
-                        sx={{ 
-                          fontSize: '1.125rem',
-                          lineHeight: 1.8,
-                          color: 'text.secondary'
-                        }}
-                        dangerouslySetInnerHTML={{ __html: closingArguments[persona] }}
-                      />
-                    </Box>
-                  </Fade>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, ease: "easeOut", delay: 0.6 }}
+                  >
+                    <Fade in={animateMetrics} timeout={1200}>
+                      <Box sx={{ 
+                        mt: 4, 
+                        p: 4, 
+                        background: 'rgba(167, 218, 219, 0.05)',
+                        borderRadius: 2,
+                        border: '1px solid rgba(167, 218, 219, 0.2)'
+                      }}>
+                        <Typography 
+                          variant="body1" 
+                          sx={{ 
+                            fontSize: '1.125rem',
+                            lineHeight: 1.8,
+                            color: 'text.secondary'
+                          }}
+                          dangerouslySetInnerHTML={{ __html: closingArguments[persona] }}
+                        />
+                      </Box>
+                    </Fade>
+                  </motion.div>
                 </Box>
               </motion.div>
             )}
           </AnimatePresence>
         </CalculatorWrapper>
 
-        <Box sx={{ 
-          textAlign: 'left', 
-          mt: 8,
-          pt: 6,
-          borderTop: '1px solid rgba(167, 218, 219, 0.1)',
-        }}>
-          <Typography variant="h4" sx={{ mb: 3, fontSize: { xs: '1.75rem', md: '2.25rem' } }}>
-            Ready to <AccentText>transform</AccentText> your future?
-          </Typography>
-          <Button
-            variant="contained"
-            size="large"
-            onClick={onRevealNext}
-            endIcon={<Handshake aria-hidden="true" className="icon-anim icon-float" />}
-            sx={{
-              backgroundColor: 'secondary.main',
-              color: '#ffffff',
-              padding: { xs: '12px 20px', sm: '12px 24px' },
-              fontSize: '1rem',
-              fontWeight: 600,
-              borderRadius: 1,
-              textTransform: 'none',
-              transition: 'all 0.3s ease',
-              position: 'relative',
-              overflow: 'hidden',
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                top: 0,
-                left: -100,
-                width: '100%',
-                height: '100%',
-                background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
-                transition: 'left 0.5s ease',
-              },
-              '&:hover': {
-                backgroundColor: 'secondary.dark',
-                transform: 'translateY(-2px)',
-                boxShadow: '0 8px 20px rgba(79, 70, 229, 0.3)',
+        <Box 
+          ref={ctaRef}
+          sx={{ 
+            textAlign: 'left', 
+            mt: 8,
+            pt: 6,
+            borderTop: '1px solid rgba(167, 218, 219, 0.1)',
+          }}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={ctaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <Typography variant="h4" sx={{ mb: 3, fontSize: { xs: '1.75rem', md: '2.25rem' } }}>
+              Ready to <AccentText>transform</AccentText> your future?
+            </Typography>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={ctaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+          >
+            <Button
+              variant="contained"
+              size="large"
+              onClick={onRevealNext}
+              endIcon={<Handshake aria-hidden="true" className="icon-anim icon-float" />}
+              sx={{
+                backgroundColor: 'secondary.main',
+                color: '#ffffff',
+                padding: { xs: '12px 20px', sm: '12px 24px' },
+                fontSize: '1rem',
+                fontWeight: 600,
+                borderRadius: 1,
+                textTransform: 'none',
+                transition: 'all 0.3s ease',
+                position: 'relative',
+                overflow: 'hidden',
                 '&::before': {
-                  left: '100%',
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: -100,
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
+                  transition: 'left 0.5s ease',
                 },
-              },
-            }}>
-            Who we Partner with
-          </Button>
+                '&:hover': {
+                  backgroundColor: 'secondary.dark',
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 8px 20px rgba(79, 70, 229, 0.3)',
+                  '&::before': {
+                    left: '100%',
+                  },
+                },
+              }}>
+              Who we Partner with
+            </Button>
+          </motion.div>
         </Box>
       </Container>
     </ROISection>
