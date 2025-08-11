@@ -105,9 +105,7 @@ export default function Hero({ onRevealNext }: HeroProps) {
         description="The future of business is being written in India, yet a silent crisis threatens to derail it all. Millions of ambitious individuals are entering the workforce, but they lack the specific, critical skills your company needs to innovate and compete."
         accentWords={['Future-Ready', 'skills gap', 'job-ready talent', 'silent crisis']}
         showScrollIndicator={true}
-      />
-      
-      <Container maxWidth="lg" sx={{ mt: -8, mb: 4 }}>
+      >
         <FadeInContent delay={3100} isVisible={isVisible}>
           <CTAContainer>
             <PrimaryButton
@@ -128,7 +126,7 @@ export default function Hero({ onRevealNext }: HeroProps) {
             </SecondaryButton>
           </CTAContainer>
         </FadeInContent>
-      </Container>
+      </StandardHero>
 
       <CaseStudyModal isOpen={isOpen} onClose={closeModal} />
     </>

@@ -1,3 +1,4 @@
+- Instructor UI components to be added in Phase 2: ModuleList, LessonList, LessonEditor (TipTap), FileUploadButton (UploadThing), Progress bar (shadcn/ui)
 # SmartSlate Component Library
 
 ## 📚 Overview

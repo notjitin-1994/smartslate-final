@@ -7,6 +7,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/// Content lesson types supported by the LMS
+enum LessonType {
+  VIDEO
+  TEXT
+  QUIZ
+  FILE
+  EMBED
+}
+
 model Account {
   id                String  @id
   userId            String
@@ -64,8 +73,10 @@ model Module {
   createdAt   DateTime @default(now())
   updatedAt   DateTime
   Course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  Lesson      Lesson[]
 
   @@index([courseId])
+  @@index([courseId, order])
 }
 
 model Session {
@@ -86,10 +97,12 @@ model User {
   updatedAt     DateTime
   company       String?
   stackAuthId   String?      @unique
+  passwordHash  String?
   Account       Account[]
   Session       Session[]
   UserCourse    UserCourse[]
   UserRole      UserRole[]
+  lessonProgress UserLessonProgress[]
 }
 
 model UserCourse {
@@ -97,14 +110,54 @@ model UserCourse {
   userId      String
   courseId    String
   enrolledAt  DateTime  @default(now())
+  startedAt   DateTime?
   completedAt DateTime?
   progress    Float     @default(0)
+  progressPct Int       @default(0)
   Course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
   User        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, courseId])
   @@index([courseId])
   @@index([userId])
+}
+
+/// Tracks per-lesson completion by user
+model UserLessonProgress {
+  id          String   @id @default(cuid())
+  userId      String
+  lessonId    String
+  completed   Boolean  @default(false)
+  completedAt DateTime?
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@index([userId])
+  @@index([lessonId])
+}
+
+/// Lesson content belonging to a Module
+model Lesson {
+  id          String     @id @default(cuid())
+  moduleId    String
+  title       String
+  type        LessonType
+  order       Int
+  metadata    Json?
+  textContent String?
+  videoUrl    String?
+  fileUrl     String?
+  quizSpec    Json?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime
+
+  Module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  userProgress UserLessonProgress[]
+
+  @@index([moduleId])
+  @@index([moduleId, order])
 }
 
 model VerificationToken {

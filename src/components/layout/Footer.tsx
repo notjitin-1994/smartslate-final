@@ -5,9 +5,9 @@ import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 
 const FooterWrapper = styled('footer')(({ theme }) => ({
-  marginTop: theme.spacing(10),
+  marginTop: theme.spacing(0.02),
   borderTop: `1px solid ${theme.palette.divider}`,
-  padding: `${theme.spacing(4)} 0`,
+  padding: `${theme.spacing(0.8)} 0`,
   backgroundColor: 'transparent',
 }));
 

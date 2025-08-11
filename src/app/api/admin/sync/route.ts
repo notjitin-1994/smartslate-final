@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withPermission } from '@/middleware/rbac';
 import { seedRoles } from '@/lib/rbac-db';
 import prisma from '@/lib/prisma';
+import { syncUsersBothWays } from '@/server/services/user-sync';
 
 interface SyncJob {
   id: string;
@@ -85,7 +86,7 @@ export const POST = withPermission('database:manage', async (req: NextRequest) =
     const { jobId } = await req.json();
     const startTime = Date.now();
 
-    let result = { status: 'success', message: '' };
+    let result: { status: 'success' | 'failed'; message: string; details?: unknown } = { status: 'success', message: '' };
 
     switch (jobId) {
       case 'roles':
@@ -95,9 +96,11 @@ export const POST = withPermission('database:manage', async (req: NextRequest) =
         break;
 
       case 'users':
-        // In a real app, you'd sync with your auth provider
-        const userCount = await prisma.user.count();
-        result.message = `Synchronized ${userCount} users`;
+        {
+          const summary = await syncUsersBothWays();
+          result.message = `Sync complete: DB +${summary.createdInDb}/${summary.updatedInDb}, Auth +${summary.createdInAuth}/${summary.updatedInAuth}`;
+          result.details = summary;
+        }
         break;
 
       case 'courses':
@@ -127,7 +130,9 @@ export const POST = withPermission('database:manage', async (req: NextRequest) =
       case 'all':
         // Run all sync jobs
         await seedRoles();
-        result.message = 'All sync jobs completed successfully';
+        const summary = await syncUsersBothWays();
+        result.message = `All sync jobs completed successfully (users: DB +${summary.createdInDb}/${summary.updatedInDb}, Auth +${summary.createdInAuth}/${summary.updatedInAuth})`;
+        result.details = summary;
         break;
 
       default:

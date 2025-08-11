@@ -5,8 +5,11 @@ import prisma from '@/lib/prisma';
 import { withPermission } from '@/middleware/rbac';
 
 // Get all users (requires user:read permission)
-export const GET = withPermission('user:read', async (_req: NextRequest) => {
+export const GET = withPermission('user:read', async (req: NextRequest) => {
   try {
+    const email = req.nextUrl.searchParams.get('email') || undefined;
+    const role = req.nextUrl.searchParams.get('role') || undefined;
+
     const users = await prisma.user.findMany({
       select: {
         id: true,
@@ -19,6 +22,18 @@ export const GET = withPermission('user:read', async (_req: NextRequest) => {
             roleId: true
           }
         }
+      },
+      where: {
+        ...(email ? { email: { contains: email, mode: 'insensitive' } } : {}),
+        ...(role
+          ? {
+              UserRole: {
+                some: {
+                  roleId: role as any,
+                },
+              },
+            }
+          : {}),
       },
       orderBy: { createdAt: 'desc' },
     });

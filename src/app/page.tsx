@@ -11,7 +11,7 @@ import Partners from '@/components/landing/Partners';
 
 const PageWrapper = styled(Box)(({ theme }) => ({
   position: 'relative',
-  minHeight: '100vh',
+  minHeight: 'auto',
 }));
 
 

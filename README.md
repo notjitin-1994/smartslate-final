@@ -1,3 +1,13 @@
+## LMS Phase 1
+
+- Prisma models for Course, Module, Lesson, UserCourse, UserLessonProgress added
+- REST endpoints under `app/api` for course/module/lesson CRUD, reordering, enrolment, and progress
+- Seed script `prisma/seed.ts` creates a sample course with two modules and mixed lesson types
+
+Setup
+- Create `.env` with `DATABASE_URL` and run: `npx prisma generate && npx prisma migrate dev`.
+- Seed: `node --loader tsx prisma/seed.ts` or `ts-node prisma/seed.ts` depending on your setup.
+
 # SmartSlate
 
 Modern Next.js application with full-stack capabilities: authentication, RBAC, lead capture, analytics tracking, and admin APIs.

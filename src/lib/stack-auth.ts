@@ -24,6 +24,20 @@ export interface CreateAuthUserResult {
   raw?: unknown;
 }
 
+export interface AuthUserRecord {
+  id: string;
+  email?: string;
+  name?: string | null;
+}
+
+export interface ListAuthUsersResult {
+  ok: boolean;
+  status: number;
+  users: AuthUserRecord[];
+  error?: string;
+  raw?: unknown;
+}
+
 export async function createAuthUser(params: CreateAuthUserParams): Promise<CreateAuthUserResult> {
   const neonApiKey = process.env.NEON_API_KEY;
   const neonProjectId = process.env.NEON_PROJECT_ID;
@@ -91,6 +105,80 @@ export async function createAuthUser(params: CreateAuthUserParams): Promise<Crea
   } catch (error: any) {
     return { ok: false, status: -1, error: error?.message || 'Network error' };
   }
+}
+
+export async function listAuthUsers(): Promise<ListAuthUsersResult> {
+  const neonApiKey = process.env.NEON_API_KEY;
+  const neonProjectId = process.env.NEON_PROJECT_ID;
+
+  // Attempt Neon Console Admin API (best effort; may vary by version)
+  if (neonApiKey && neonProjectId) {
+    try {
+      const url = `https://console.neon.tech/api/v2/projects/auth/users?project_id=${encodeURIComponent(
+        neonProjectId
+      )}`;
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${neonApiKey}`,
+        },
+      });
+      const status = res.status;
+      const raw = await safeJson(res);
+      if (!res.ok) {
+        // Fallback to generic endpoint below
+        // return { ok: false, status, users: [], error: extractError(raw) || `HTTP ${status}`, raw };
+      } else {
+        const items = normalizeUsersArray(raw);
+        return { ok: true, status, users: items, raw };
+      }
+    } catch (error: any) {
+      // Ignore and try fallback
+    }
+  }
+
+  // Fallback: Generic list endpoint
+  const endpoint = process.env.NEON_AUTH_LIST_USERS_URL;
+  const apiKey = process.env.NEON_AUTH_API_KEY;
+  if (!endpoint || !apiKey) {
+    return { ok: false, status: 0, users: [], error: 'Auth list API not configured' };
+  }
+  try {
+    const res = await fetch(endpoint, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
+    });
+    const status = res.status;
+    const raw = await safeJson(res);
+    if (!res.ok) {
+      return { ok: false, status, users: [], error: extractError(raw) || `HTTP ${status}`, raw };
+    }
+    const items = normalizeUsersArray(raw);
+    return { ok: true, status, users: items, raw };
+  } catch (error: any) {
+    return { ok: false, status: -1, users: [], error: error?.message || 'Network error' };
+  }
+}
+
+function normalizeUsersArray(body: any): AuthUserRecord[] {
+  if (!body) return [];
+  const potentialArrays = [body.items, body.users, body.data, body];
+  for (const arr of potentialArrays) {
+    if (Array.isArray(arr)) {
+      return arr
+        .map((u: any) => ({
+          id: String(u.id ?? u.userId ?? u.uid ?? ''),
+          email: u.email ?? u.primaryEmail ?? u.user?.email ?? undefined,
+          name: u.name ?? u.displayName ?? u.user?.name ?? null,
+        }))
+        .filter((u: AuthUserRecord) => !!u.id);
+    }
+  }
+  return [];
 }
 
 async function safeJson(res: Response): Promise<any> {

@@ -395,12 +395,12 @@ small { font-size: 0.875em; }
 
 /* Main content spacing to account for fixed header */
 .main-content {
-  padding-top: 88px; /* Adjusted for reduced header height */
+  padding-top: 120px; /* Ensure content is below fixed header with extra clearance */
 }
 
 @media (max-width: 640px) {
   .main-content {
-    padding-top: 72px; /* Adjusted for reduced header height on mobile */
+    padding-top: 100px; /* Ensure content is below fixed header on mobile with extra clearance */
   }
 }
 

@@ -3,17 +3,18 @@
 import { motion } from 'framer-motion';
 import { Box, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import type { ReactNode } from 'react';
 
 const HeroSection = styled(Box)(({ theme }) => ({
   position: 'relative',
-  minHeight: 'calc(100vh - 100px)', // Account for header space
+  minHeight: 'auto', // Remove fixed height constraint
   display: 'flex',
   alignItems: 'center',
-  padding: `${theme.spacing(0.16)} 0`, // Reduced by 80% from original 0.8
+  padding: `${theme.spacing(30)} 0`, // Increased top padding for header clearance
   overflow: 'hidden',
   backgroundColor: theme.palette.background.default,
   [theme.breakpoints.down('sm')]: {
-    padding: `${theme.spacing(0.12)} 0`, // Reduced by 80% from original 0.6
+    padding: `${theme.spacing(20)} 0`, // Increased top padding for header clearance
   },
   // Remove the problematic radial-gradient from ::before
   // and use individual positioned elements instead
@@ -81,6 +82,7 @@ interface StandardHeroProps {
   description?: string;
   accentWords?: string[];
   showScrollIndicator?: boolean;
+  children?: ReactNode;
 }
 
 export default function StandardHero({ 
@@ -88,7 +90,8 @@ export default function StandardHero({
   subtitle, 
   description, 
   accentWords = [],
-  showScrollIndicator = false 
+  showScrollIndicator = false,
+  children,
 }: StandardHeroProps) {
   return (
     <HeroSection>
@@ -137,7 +140,7 @@ export default function StandardHero({
             className="text-left"
           >
             {/* Title */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight tracking-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 leading-tight tracking-tight">
               {title.split(' ').map((word, index) => {
                 const isAccent = accentWords.some(accent => 
                   word.toLowerCase().includes(accent.toLowerCase())
@@ -156,7 +159,7 @@ export default function StandardHero({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-lg sm:text-xl md:text-2xl text-primary mb-4 sm:mb-6 leading-relaxed max-w-4xl font-light"
+                className="text-lg sm:text-xl md:text-2xl text-primary mb-3 sm:mb-4 leading-relaxed max-w-4xl font-light"
               >
                 {subtitle}
               </motion.p>
@@ -168,44 +171,21 @@ export default function StandardHero({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="text-base sm:text-lg md:text-xl text-primary-accent leading-relaxed max-w-3xl"
+                className="text-base sm:text-lg md:text-xl text-primary-accent leading-relaxed max-w-3xl mb-4"
               >
                 {description}
               </motion.p>
             )}
+
+            {/* Inline children (e.g., CTAs) right under the text with minimal spacing */}
+            {children && (
+              <div className="mt-2">
+                {children}
+              </div>
+            )}
           </motion.div>
 
-          {/* Scroll indicator */}
-          {showScrollIndicator && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-              className="mt-8 sm:mt-12 md:mt-16"
-            >
-              <motion.div
-                animate={{ y: [0, 6, 0] }}
-                transition={{ 
-                  duration: 2, 
-                  repeat: Infinity, 
-                  ease: "easeInOut" 
-                }}
-                className="inline-flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 border border-primary-accent/20 rounded-full bg-primary-accent/5"
-                style={{
-                  // Safari-friendly backdrop blur
-                  backdropFilter: 'blur(4px)',
-                  WebkitBackdropFilter: 'blur(4px)',
-                  // Force hardware acceleration
-                  transform: 'translate3d(0, 0, 0)',
-                  WebkitTransform: 'translate3d(0, 0, 0)',
-                }}
-              >
-                <svg className="w-3 h-3 sm:w-4 sm:h-4 text-primary-accent/80" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
-                </svg>
-              </motion.div>
-            </motion.div>
-          )}
+          {/* Scroll indicator removed */}
         </ContentWrapper>
       </Container>
     </HeroSection>

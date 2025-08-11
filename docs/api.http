@@ -1,0 +1,79 @@
+# Courses
+POST http://localhost:3000/api/courses
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+{
+  "slug": "demo-course",
+  "title": "Demo Course",
+  "description": "Demo",
+  "published": true
+}
+
+###
+PATCH http://localhost:3000/api/courses/demo-course
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+{
+  "title": "Updated Title"
+}
+
+###
+POST http://localhost:3000/api/courses/demo-course/modules
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+{
+  "title": "Module 1",
+  "description": "Intro"
+}
+
+###
+POST http://localhost:3000/api/modules/reorder
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+{
+  "moduleIdsInOrder": ["mod1","mod2"]
+}
+
+###
+POST http://localhost:3000/api/modules/{{MODULE_ID}}/lessons
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+{
+  "title": "Lesson 1",
+  "type": "TEXT",
+  "textContent": "Hello"
+}
+
+###
+POST http://localhost:3000/api/lessons/reorder
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+{
+  "moduleId": "{{MODULE_ID}}",
+  "lessonIdsInOrder": ["les1","les2"]
+}
+
+###
+POST http://localhost:3000/api/courses/demo-course/enrol
+Authorization: Bearer {{TOKEN}}
+
+###
+POST http://localhost:3000/api/lessons/{{LESSON_ID}}/complete
+Authorization: Bearer {{TOKEN}}
+
+###
+GET http://localhost:3000/api/me/courses
+Authorization: Bearer {{TOKEN}}
+
+###
+GET http://localhost:3000/api/me/lessons/next
+Authorization: Bearer {{TOKEN}}
+
+
+
