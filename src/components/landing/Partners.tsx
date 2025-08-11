@@ -446,7 +446,7 @@ export default function Partners({}: PartnersProps) {
                 lineHeight: 1.2
               }}
             >
-              Who We <AccentText>Partner</AccentText> With
+              <span style={{ color: 'white' }}>Who We</span> <AccentText>Partner</AccentText> <span style={{ color: 'white' }}>With</span>
             </Typography>
           </motion.div>
           

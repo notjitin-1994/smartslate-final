@@ -388,7 +388,7 @@ export default function ROICalculator({ onRevealNext }: ROICalculatorProps) {
                 lineHeight: 1.2
               }}
             >
-              Calculate Your <AccentText>ROI</AccentText>
+              <span style={{ color: 'white' }}>Calculate Your</span> <AccentText>ROI</AccentText>
             </Typography>
           </motion.div>
           
