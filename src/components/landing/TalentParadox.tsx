@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Box, Container, Typography, Button, Paper, Fade, Grow } from '@mui/material';
+import { Box, Container, Typography, Button, Paper, Fade, Grow, Collapse, Avatar } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import {
   AccountBalance,
@@ -14,6 +14,8 @@ import {
   School,
   Work,
   Timeline,
+  AddCircle,
+  RemoveCircle,
 } from '@mui/icons-material';
 
 const Section = styled(Box)(({ theme }) => ({
@@ -39,8 +41,7 @@ const GridLayout = styled(Box)(({ theme }) => ({
   gap: theme.spacing(6),
   marginBottom: theme.spacing(10),
   [theme.breakpoints.down('lg')]: {
-    gridTemplateColumns: '1fr',
-    gap: theme.spacing(4),
+    display: 'none', // Hide on mobile, show accordion instead
   },
 }));
 
@@ -237,6 +238,108 @@ const ProgressBar = styled(Box)<{ value: number }>(({ theme, value }) => ({
   },
 }));
 
+// Mobile Accordion Styles
+const MobileAccordionWrapper = styled(Box)(({ theme }) => ({
+  display: 'none',
+  [theme.breakpoints.down('lg')]: {
+    display: 'block',
+    marginBottom: theme.spacing(6),
+  },
+}));
+
+const MobileAccordionSection = styled(Box)(({ theme }) => ({
+  borderRadius: theme.spacing(2.5),
+  overflow: 'hidden',
+  background: 'rgba(255, 255, 255, 0.02)',
+  backdropFilter: 'blur(16px)',
+  WebkitBackdropFilter: 'blur(16px)',
+  border: '1px solid rgba(255, 255, 255, 0.08)',
+  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  marginBottom: theme.spacing(3),
+  '&:hover': {
+    background: 'rgba(255, 255, 255, 0.03)',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+  },
+}));
+
+const MobileAccordionButton = styled(Button, {
+  shouldForwardProp: (prop) => prop !== 'revealed'
+})<{ revealed?: boolean }>(({ theme, revealed }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: theme.spacing(3),
+  borderRadius: 0,
+  transition: 'all 0.3s ease',
+  width: '100%',
+  backgroundColor: 'transparent',
+  border: 'none',
+  textAlign: 'left',
+  color: 'inherit',
+  fontFamily: 'inherit',
+  cursor: 'pointer',
+  position: 'relative',
+  overflow: 'hidden',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: revealed ? 0 : -100,
+    width: '100%',
+    height: '100%',
+    background: 'linear-gradient(90deg, transparent, rgba(167, 218, 219, 0.05), transparent)',
+    transition: 'left 0.6s ease',
+  },
+  '&:hover': {
+    backgroundColor: 'rgba(167, 218, 219, 0.03)',
+    '&::before': {
+      left: '100%',
+    },
+    '& .section-icon': {
+      transform: 'scale(1.1) rotate(5deg)',
+      filter: 'drop-shadow(0 0 20px rgba(167, 218, 219, 0.6))',
+    },
+  },
+}));
+
+const MobileAccordionHeader = styled(Box)(({ theme }) => ({
+  flexGrow: 1,
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.spacing(2),
+}));
+
+const MobileAccordionIcon = styled(Box)(({ theme }) => ({
+  width: 48,
+  height: 48,
+  borderRadius: theme.spacing(1.5),
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  background: 'linear-gradient(135deg, rgba(167, 218, 219, 0.15), rgba(79, 70, 229, 0.1))',
+  border: '1px solid rgba(167, 218, 219, 0.3)',
+  transition: 'all 0.3s ease',
+  '& .MuiSvgIcon-root': {
+    fontSize: '1.5rem',
+    color: theme.palette.primary.main,
+  },
+}));
+
+const MobileAccordionToggle = styled(Box)(({ theme }) => ({
+  flexShrink: 0,
+  marginLeft: theme.spacing(2),
+  color: theme.palette.primary.main,
+  transition: 'transform 0.3s ease-in-out',
+  cursor: 'pointer',
+  '& .MuiSvgIcon-root': {
+    fontSize: '1.5rem',
+  },
+}));
+
+const MobileAccordionContent = styled(Box)(({ theme }) => ({
+  padding: `${theme.spacing(0)} ${theme.spacing(3)} ${theme.spacing(3)}`,
+}));
+
 interface TalentParadoxProps {
   onRevealNext: () => void;
 }
@@ -299,7 +402,7 @@ const sections = [
     id: 'opportunity' as SectionId,
     label: 'Hidden Opportunity',
     icon: TrendingUp,
-    title: 'Your Workforce is Ready to Evolve',
+    title: 'The Solution Lies Within Your Organization',
     description: 'Here is the most hopeful part of the paradox. The desire to adapt is already there. Your future leaders and innovators aren\'t waiting to be told; they are actively seeking ways to stay relevant.',
   },
 ];
@@ -307,6 +410,9 @@ const sections = [
 export default function TalentParadox({ onRevealNext }: TalentParadoxProps) {
   const [activeSection, setActiveSection] = useState<SectionId>('economic');
   const [animateData, setAnimateData] = useState(false);
+  const [mobileRevealed, setMobileRevealed] = useState<Partial<Record<SectionId, boolean>>>({
+    economic: true, // Default expanded
+  });
   const activeSectionData = sections.find(s => s.id === activeSection);
   const activeData = sectionData[activeSection];
 
@@ -316,12 +422,16 @@ export default function TalentParadox({ onRevealNext }: TalentParadoxProps) {
     return () => clearTimeout(timer);
   }, [activeSection]);
 
+  const toggleMobile = (section: SectionId) => {
+    setMobileRevealed(prev => ({ ...prev, [section]: !prev[section] }));
+  };
+
   const formatTitle = (title: string) => {
     const patterns = [
       'Economic Equation',
       'Employability Crisis',
       'Moving Target of Talent',
-      'Workforce is Ready to Evolve'
+      'Solution Lies Within Your Organization'
     ];
     
     let formattedTitle = title;
@@ -466,6 +576,133 @@ export default function TalentParadox({ onRevealNext }: TalentParadoxProps) {
             )}
           </Box>
         </GridLayout>
+
+        {/* Mobile Accordion View */}
+        <MobileAccordionWrapper>
+          {/* Mobile Header Section */}
+          <Box sx={{ mb: 6, textAlign: 'left' }}>
+            <Typography 
+              variant="h2" 
+              sx={{ 
+                mb: 3, 
+                fontSize: { xs: '2rem', md: '2.5rem' },
+                lineHeight: 1.2,
+                color: 'white'
+              }}
+            >
+              India&apos;s <AccentText>Talent Paradox</AccentText>: Bridging the{' '}
+              <AccentText>Billion-Person Opportunity Gap</AccentText>
+            </Typography>
+            <Typography 
+              variant="body1" 
+              sx={{ 
+                color: 'text.secondary', 
+                fontSize: '1.125rem',
+                lineHeight: 1.8
+              }}
+            >
+              India&apos;s potential is a force of nature. But this immense human capital is facing a
+              widening chasm between aspiration and reality. This isn&apos;t just a challenge; it&apos;s a
+              multi-trillion-dollar crisis of scale. Let&apos;s break it down.
+            </Typography>
+          </Box>
+          
+          {sections.map((section) => (
+            <MobileAccordionSection key={section.id}>
+              <MobileAccordionButton
+                revealed={mobileRevealed[section.id]}
+                onClick={() => toggleMobile(section.id)}
+              >
+                <MobileAccordionHeader>
+                  <MobileAccordionIcon className="section-icon">
+                    <section.icon />
+                  </MobileAccordionIcon>
+                  <Box>
+                    <Typography variant="h5" sx={{ mb: 1, fontWeight: 700 }}>
+                      {section.label}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      {section.title}
+                    </Typography>
+                  </Box>
+                </MobileAccordionHeader>
+                <MobileAccordionToggle sx={{ transform: mobileRevealed[section.id] ? 'rotate(45deg)' : 'rotate(0)' }}>
+                  <AddCircle />
+                </MobileAccordionToggle>
+              </MobileAccordionButton>
+              <Collapse in={mobileRevealed[section.id]} timeout={500}>
+                <MobileAccordionContent>
+                  <Typography 
+                    variant="body1" 
+                    sx={{ 
+                      mb: 4, 
+                      color: 'text.secondary', 
+                      fontSize: '1rem',
+                      lineHeight: 1.7
+                    }}
+                  >
+                    {section.description}
+                  </Typography>
+                  
+                  <Box sx={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
+                    gap: 2,
+                    mb: 3
+                  }}>
+                    {sectionData[section.id].map((data, index) => (
+                      <Box
+                        key={data.label}
+                        sx={{
+                          textAlign: 'center',
+                          padding: 2,
+                          background: 'rgba(0, 0, 0, 0.2)',
+                          borderRadius: 1,
+                          border: '1px solid rgba(255, 255, 255, 0.05)',
+                        }}
+                      >
+                        <data.icon 
+                          sx={{ 
+                            fontSize: 32, 
+                            color: 'primary.main',
+                            mb: 1 
+                          }} 
+                        />
+                        <Typography variant="h6" sx={{ fontSize: '1.25rem', fontWeight: 700, color: 'primary.main', mb: 0.5 }}>
+                          {data.value}
+                        </Typography>
+                        <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.75rem' }}>
+                          {data.label}
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Box>
+                  
+                  {section.id === 'skills' && (
+                    <Box sx={{ mt: 3 }}>
+                      <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
+                        Skills Relevance Timeline
+                      </Typography>
+                      <ProgressBar value={75} />
+                      <Box sx={{ 
+                        display: 'flex', 
+                        justifyContent: 'space-between',
+                        mt: 1 
+                      }}>
+                        <Typography variant="caption" sx={{ color: 'text.disabled' }}>
+                          Today
+                        </Typography>
+                        <Typography variant="caption" sx={{ color: 'text.disabled' }}>
+                          2.5 Years
+                        </Typography>
+                      </Box>
+                    </Box>
+                  )}
+                </MobileAccordionContent>
+              </Collapse>
+            </MobileAccordionSection>
+          ))}
+        </MobileAccordionWrapper>
 
         <Box sx={{ 
           textAlign: 'left', 
