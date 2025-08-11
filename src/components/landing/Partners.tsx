@@ -46,16 +46,6 @@ const SectionHeaderWrapper = styled(Box)(({ theme }) => ({
   textAlign: 'left',
   marginBottom: theme.spacing(8),
   position: 'relative',
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    bottom: -theme.spacing(4),
-    left: 0,
-    width: 120,
-    height: 3,
-    background: theme.palette.primary.main,
-    borderRadius: theme.spacing(0.5),
-  },
 }));
 
 const AccordionWrapper = styled(Box)(({ theme }) => ({
@@ -355,29 +345,23 @@ const content = {
     benefits: [
       { icon: School, text: 'Industry-Informed Curriculum', description: 'Align programs with market demands' },
       { icon: ElectricBolt, text: 'AI-Powered Learning', description: 'Personalized education at scale' },
-      { icon: Groups, text: 'Enhanced Graduate Employability', description: '95% placement rates' },
+      { icon: Groups, text: 'Enhanced Graduate Employability', description: 'Improved career readiness and industry alignment' },
       { icon: CheckCircle, text: 'Accreditation Support', description: 'Meet quality standards effortlessly' },
       { icon: BarChart, text: 'Analytics Dashboard', description: 'Track student progress in real-time' },
       { icon: AutoAwesome, text: 'White-Label Solutions', description: 'Customize with your branding' },
     ],
-    testimonial: {
-      text: "SmartSlate transformed our computer science program. Our students are now graduating with skills that companies actually need, and our placement rates have skyrocketed.",
-      author: "Dr. Priya Sharma",
-      role: "Dean of Engineering, IIT Delhi",
-      rating: 5,
-    },
     cta: 'Explore Our Programs',
   },
   businesses: {
     title: 'For Business Leaders',
     pitch: 'Stop the endless search for the perfect hire and start cultivating the skills you need.',
     benefits: [
-      { icon: Lightbulb, text: 'Targeted Upskilling at Scale', description: 'Train 1000s simultaneously' },
+      { icon: Lightbulb, text: 'Targeted Upskilling at Scale', description: 'Train teams simultaneously across locations' },
       { icon: BarChart, text: 'AI-Driven Performance Insights', description: 'Predictive skill analytics' },
-      { icon: Groups, text: 'Boost Retention & Innovation', description: 'Reduce attrition by 50%' },
+      { icon: Groups, text: 'Boost Retention & Innovation', description: 'Improve employee satisfaction and innovation culture' },
       { icon: CheckCircle, text: 'Custom Learning Paths', description: 'Role-specific training programs' },
-      { icon: ElectricBolt, text: 'Rapid Deployment', description: 'Go live in under 2 weeks' },
-      { icon: AutoAwesome, text: 'ROI Guarantee', description: '3x return on training investment' },
+      { icon: ElectricBolt, text: 'Rapid Deployment', description: 'Quick implementation and rollout' },
+      { icon: AutoAwesome, text: 'ROI Guarantee', description: 'Measurable return on training investment' },
     ],
     testimonial: {
       text: "We've reduced our training time by 60% while improving skill retention. The AI-powered insights help us identify and develop future leaders before our competitors even know they exist.",
@@ -430,8 +414,7 @@ export default function Partners({}: PartnersProps) {
           <Typography variant="body1" sx={{ 
             fontSize: '1.25rem', 
             color: 'text.secondary',
-            lineHeight: 1.8,
-            maxWidth: '65ch'
+            lineHeight: 1.8
           }}>
             We collaborate with forward-thinking organizations to build the future of education and
             workforce development. Join the leaders who are already transforming their talent ecosystem.
@@ -464,30 +447,7 @@ export default function Partners({}: PartnersProps) {
             </SectionHeaderButton>
             <Collapse in={revealed.institutions} timeout={500}>
               <ContentBody>
-                <TestimonialCard>
-                  <QuoteIcon />
-                  <Typography variant="body1" sx={{ fontSize: '1.125rem', lineHeight: 1.8, mb: 2 }}>
-                    {'\u201C'}{content.institutions.testimonial.text}{'\u201D'}
-                  </Typography>
-                  <TestimonialAuthor>
-                    <Avatar sx={{ bgcolor: 'primary.main' }}>
-                      {content.institutions.testimonial.author.charAt(0)}
-                    </Avatar>
-                    <Box>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                        {content.institutions.testimonial.author}
-                      </Typography>
-                      <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                        {content.institutions.testimonial.role}
-                      </Typography>
-                      <RatingStars>
-                        {[...Array(content.institutions.testimonial.rating)].map((_, i) => (
-                          <Star key={i} sx={{ fontSize: 16 }} />
-                        ))}
-                      </RatingStars>
-                    </Box>
-                  </TestimonialAuthor>
-                </TestimonialCard>
+
 
                 <BenefitsList>
                   {content.institutions.benefits.map((benefit, index) => (

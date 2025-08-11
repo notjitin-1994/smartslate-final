@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Box, Container, Typography, Button, Paper, Fade, Grow, Collapse, Avatar } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { motion, useInView } from 'framer-motion';
 import {
   AccountBalance,
   Shield,
@@ -410,11 +411,24 @@ const sections = [
 export default function TalentParadox({ onRevealNext }: TalentParadoxProps) {
   const [activeSection, setActiveSection] = useState<SectionId>('economic');
   const [animateData, setAnimateData] = useState(false);
+  const [isInView, setIsInView] = useState(false);
   const [mobileRevealed, setMobileRevealed] = useState<Partial<Record<SectionId, boolean>>>({
     economic: true, // Default expanded
   });
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(sectionRef, { 
+    once: true, 
+    amount: 0.2,
+    margin: "-100px 0px -100px 0px"
+  });
   const activeSectionData = sections.find(s => s.id === activeSection);
   const activeData = sectionData[activeSection];
+
+  useEffect(() => {
+    if (inView) {
+      setIsInView(true);
+    }
+  }, [inView]);
 
   useEffect(() => {
     setAnimateData(false);
@@ -443,55 +457,82 @@ export default function TalentParadox({ onRevealNext }: TalentParadoxProps) {
   };
 
   return (
-    <Section>
+    <Section ref={sectionRef}>
       <Container maxWidth="lg">
         <GridLayout>
           <LeftPanel>
-            <Box sx={{ mb: 6 }}>
-              <Typography 
-                variant="h2" 
-                sx={{ 
-                  mb: 3, 
-                  fontSize: { xs: '2rem', md: '2.5rem', lg: '3rem' },
-                  lineHeight: 1.2,
-                  color: 'white'
-                }}
-              >
-                India&apos;s <AccentText>Talent Paradox</AccentText>: Bridging the{' '}
-                <AccentText>Billion-Person Opportunity Gap</AccentText>
-              </Typography>
-              <Typography 
-                variant="body1" 
-                sx={{ 
-                  color: 'text.secondary', 
-                  fontSize: '1.125rem',
-                  lineHeight: 1.8
-                }}
-              >
-                India&apos;s potential is a force of nature. But this immense human capital is facing a
-                widening chasm between aspiration and reality. This isn&apos;t just a challenge; it&apos;s a
-                multi-trillion-dollar crisis of scale. Let&apos;s break it down.
-              </Typography>
-            </Box>
-
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-              {sections.map((section) => (
-                <SectionButton
-                  key={section.id}
-                  active={activeSection === section.id}
-                  onClick={() => setActiveSection(section.id)}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              <Box sx={{ mb: 6 }}>
+                <Typography 
+                  variant="h2" 
+                  sx={{ 
+                    mb: 3, 
+                    fontSize: { xs: '2rem', md: '2.5rem', lg: '3rem' },
+                    lineHeight: 1.2,
+                    color: 'white'
+                  }}
                 >
-                  <section.icon />
-                  <span>{section.label}</span>
-                </SectionButton>
-              ))}
-            </Box>
+                  India&apos;s <AccentText>Talent Paradox</AccentText>: Bridging the{' '}
+                  <AccentText>Billion-Person Opportunity Gap</AccentText>
+                </Typography>
+                <Typography 
+                  variant="body1" 
+                  sx={{ 
+                    color: 'text.secondary', 
+                    fontSize: '1.125rem',
+                    lineHeight: 1.8
+                  }}
+                >
+                  India&apos;s potential is a force of nature. But this immense human capital is facing a
+                  widening chasm between aspiration and reality. This isn&apos;t just a challenge; it&apos;s a
+                  multi-trillion-dollar crisis of scale. Let&apos;s break it down.
+                </Typography>
+              </Box>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+            >
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                {sections.map((section, index) => (
+                  <motion.div
+                    key={section.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                    transition={{ 
+                      duration: 0.5, 
+                      ease: "easeOut", 
+                      delay: 0.4 + (index * 0.1) 
+                    }}
+                  >
+                    <SectionButton
+                      active={activeSection === section.id}
+                      onClick={() => setActiveSection(section.id)}
+                    >
+                      <section.icon />
+                      <span>{section.label}</span>
+                    </SectionButton>
+                  </motion.div>
+                ))}
+              </Box>
+            </motion.div>
           </LeftPanel>
 
-          <Box sx={{ minHeight: 550, position: 'relative' }}>
-            {activeSectionData && (
-              <Fade in={true} timeout={300}>
-                <ContentCard elevation={0}>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
+          >
+            <Box sx={{ minHeight: 550, position: 'relative' }}>
+              {activeSectionData && (
+                <Fade in={true} timeout={300}>
+                  <ContentCard elevation={0}>
                   <Typography
                     variant="h3"
                     sx={{ 
@@ -575,40 +616,57 @@ export default function TalentParadox({ onRevealNext }: TalentParadoxProps) {
               </Fade>
             )}
           </Box>
+            </motion.div>
         </GridLayout>
 
         {/* Mobile Accordion View */}
         <MobileAccordionWrapper>
           {/* Mobile Header Section */}
-          <Box sx={{ mb: 6, textAlign: 'left' }}>
-            <Typography 
-              variant="h2" 
-              sx={{ 
-                mb: 3, 
-                fontSize: { xs: '2rem', md: '2.5rem' },
-                lineHeight: 1.2,
-                color: 'white'
-              }}
-            >
-              India&apos;s <AccentText>Talent Paradox</AccentText>: Bridging the{' '}
-              <AccentText>Billion-Person Opportunity Gap</AccentText>
-            </Typography>
-            <Typography 
-              variant="body1" 
-              sx={{ 
-                color: 'text.secondary', 
-                fontSize: '1.125rem',
-                lineHeight: 1.8
-              }}
-            >
-              India&apos;s potential is a force of nature. But this immense human capital is facing a
-              widening chasm between aspiration and reality. This isn&apos;t just a challenge; it&apos;s a
-              multi-trillion-dollar crisis of scale. Let&apos;s break it down.
-            </Typography>
-          </Box>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <Box sx={{ mb: 6, textAlign: 'left' }}>
+              <Typography 
+                variant="h2" 
+                sx={{ 
+                  mb: 3, 
+                  fontSize: { xs: '2rem', md: '2.5rem' },
+                  lineHeight: 1.2,
+                  color: 'white'
+                }}
+              >
+                India&apos;s <AccentText>Talent Paradox</AccentText>: Bridging the{' '}
+                <AccentText>Billion-Person Opportunity Gap</AccentText>
+              </Typography>
+              <Typography 
+                variant="body1" 
+                sx={{ 
+                  color: 'text.secondary', 
+                  fontSize: '1.125rem',
+                  lineHeight: 1.8
+                }}
+              >
+                India&apos;s potential is a force of nature. But this immense human capital is facing a
+                widening chasm between aspiration and reality. This isn&apos;t just a challenge; it&apos;s a
+                multi-trillion-dollar crisis of scale. Let&apos;s break it down.
+              </Typography>
+            </Box>
+          </motion.div>
           
-          {sections.map((section) => (
-            <MobileAccordionSection key={section.id}>
+          {sections.map((section, index) => (
+            <motion.div
+              key={section.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ 
+                duration: 0.6, 
+                ease: "easeOut", 
+                delay: 0.2 + (index * 0.1) 
+              }}
+            >
+              <MobileAccordionSection>
               <MobileAccordionButton
                 revealed={mobileRevealed[section.id]}
                 onClick={() => toggleMobile(section.id)}
@@ -701,87 +759,94 @@ export default function TalentParadox({ onRevealNext }: TalentParadoxProps) {
                 </MobileAccordionContent>
               </Collapse>
             </MobileAccordionSection>
+            </motion.div>
           ))}
         </MobileAccordionWrapper>
 
-        <Box sx={{ 
-          textAlign: 'left', 
-          mt: 10, 
-          pt: 6, 
-          borderTop: '1px solid rgba(167, 218, 219, 0.1)',
-          position: 'relative',
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100px',
-            height: '2px',
-            background: 'linear-gradient(90deg, var(--primary-accent), var(--secondary-accent))',
-          }
-        }}>
-          <Typography 
-            variant="h4" 
-            sx={{ 
-              mb: 3, 
-              fontSize: { xs: '1.75rem', md: '2.25rem', lg: '2.5rem' } 
-            }}
-          >
-            Your <AccentText>Workforce is Ready to Evolve</AccentText>
-          </Typography>
-          <Typography 
-            variant="body1" 
-            sx={{ 
-              mb: 5, 
-              color: 'text.secondary', 
-              fontSize: '1.25rem',
-              lineHeight: 1.8 
-            }}
-          >
-            Understanding the problem is the first step. Solving it is the next. SmartSlate is
-            designed to be the bridge across this divide—connecting motivated talent with the
-            future-focused skills your company needs to thrive.
-          </Typography>
-          
-          <Button
-            variant="contained"
-            size="large"
-            onClick={onRevealNext}
-            endIcon={<Hub aria-hidden="true" className="icon-anim icon-float" />}
-            sx={{
-              backgroundColor: 'secondary.main',
-              color: '#ffffff',
-              padding: { xs: '12px 20px', sm: '12px 24px' },
-              fontSize: '1rem',
-              fontWeight: 600,
-              borderRadius: 1,
-              textTransform: 'none',
-              transition: 'all 0.3s ease',
-              position: 'relative',
-              overflow: 'hidden',
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                top: 0,
-                left: -100,
-                width: '100%',
-                height: '100%',
-                background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
-                transition: 'left 0.5s ease',
-              },
-              '&:hover': {
-                backgroundColor: 'secondary.dark',
-                transform: 'translateY(-2px)',
-                boxShadow: '0 8px 20px rgba(79, 70, 229, 0.3)',
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
+        >
+          <Box sx={{ 
+            textAlign: 'left', 
+            mt: 10, 
+            pt: 6, 
+            borderTop: '1px solid rgba(167, 218, 219, 0.1)',
+            position: 'relative',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100px',
+              height: '2px',
+              background: 'linear-gradient(90deg, var(--primary-accent), var(--secondary-accent))',
+            }
+          }}>
+            <Typography 
+              variant="h4" 
+              sx={{ 
+                mb: 3, 
+                fontSize: { xs: '1.75rem', md: '2.25rem', lg: '2.5rem' } 
+              }}
+            >
+              Your <AccentText>Workforce is Ready to Evolve</AccentText>
+            </Typography>
+            <Typography 
+              variant="body1" 
+              sx={{ 
+                mb: 5, 
+                color: 'text.secondary', 
+                fontSize: '1.25rem',
+                lineHeight: 1.8 
+              }}
+            >
+              Understanding the problem is the first step. Solving it is the next. SmartSlate is
+              designed to be the bridge across this divide—connecting motivated talent with the
+              future-focused skills your company needs to thrive.
+            </Typography>
+            
+            <Button
+              variant="contained"
+              size="large"
+              onClick={onRevealNext}
+              endIcon={<Hub aria-hidden="true" className="icon-anim icon-float" />}
+              sx={{
+                backgroundColor: 'secondary.main',
+                color: '#ffffff',
+                padding: { xs: '12px 20px', sm: '12px 24px' },
+                fontSize: '1rem',
+                fontWeight: 600,
+                borderRadius: 1,
+                textTransform: 'none',
+                transition: 'all 0.3s ease',
+                position: 'relative',
+                overflow: 'hidden',
                 '&::before': {
-                  left: '100%',
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: -100,
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
+                  transition: 'left 0.5s ease',
                 },
-              },
-            }}
-          >
-            Discover our Framework
-          </Button>
-        </Box>
+                '&:hover': {
+                  backgroundColor: 'secondary.dark',
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 8px 20px rgba(79, 70, 229, 0.3)',
+                  '&::before': {
+                    left: '100%',
+                  },
+                },
+              }}
+            >
+              Discover our Framework
+            </Button>
+          </Box>
+        </motion.div>
       </Container>
     </Section>
   );

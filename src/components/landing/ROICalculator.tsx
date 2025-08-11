@@ -45,16 +45,6 @@ const SectionHeader = styled(Box)(({ theme }) => ({
   margin: `0 0 ${theme.spacing(8)} 0`,
   textAlign: 'left',
   position: 'relative',
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    bottom: -theme.spacing(4),
-    left: 0,
-    width: 100,
-    height: 3,
-    background: theme.palette.primary.main,
-    borderRadius: theme.spacing(0.5),
-  },
 }));
 
 const CalculatorWrapper = styled(Paper)(({ theme }) => ({
@@ -387,8 +377,7 @@ export default function ROICalculator({ onRevealNext }: ROICalculatorProps) {
           <Typography variant="body1" sx={{ 
             fontSize: '1.25rem', 
             color: 'text.secondary',
-            lineHeight: 1.8,
-            maxWidth: '65ch'
+            lineHeight: 1.8
           }}>
             Your goals are <AccentText>unique</AccentText>. Your data should be too. Select the role
             that best describes you to unlock a
@@ -719,8 +708,8 @@ export default function ROICalculator({ onRevealNext }: ROICalculatorProps) {
             sx={{
               backgroundColor: 'secondary.main',
               color: '#ffffff',
-              padding: '14px 40px',
-              fontSize: '1.1rem',
+              padding: { xs: '12px 20px', sm: '12px 24px' },
+              fontSize: '1rem',
               fontWeight: 600,
               borderRadius: 1,
               textTransform: 'none',
