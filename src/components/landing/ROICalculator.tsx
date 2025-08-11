@@ -24,6 +24,7 @@ import {
   Timeline,
 } from '@mui/icons-material';
 
+
 const ROISection = styled(Box)(({ theme }) => ({
   padding: `${theme.spacing(10)} 0`,
   position: 'relative',
@@ -272,6 +273,7 @@ const AnimatedCounter = ({ value, format }: { value: number; format?: (v: number
 
 interface ROICalculatorProps {
   onRevealNext: () => void;
+  openDemoModal: () => void;
 }
 
 type Persona = 'businessman' | 'educator' | 'student';
@@ -308,7 +310,7 @@ const PersonaSelector = ({ onSelect }: { onSelect: (persona: Persona) => void })
   </Box>
 );
 
-export default function ROICalculator({ onRevealNext }: ROICalculatorProps) {
+export default function ROICalculator({ onRevealNext, openDemoModal }: ROICalculatorProps) {
   const [persona, setPersona] = useState<Persona | null>(null);
   const [animateMetrics, setAnimateMetrics] = useState(false);
   
@@ -316,6 +318,8 @@ export default function ROICalculator({ onRevealNext }: ROICalculatorProps) {
   const [teamSize, setTeamSize] = useState(50);
   const [studentCount, setStudentCount] = useState(500);
   const [currentSalary, setCurrentSalary] = useState(180000);
+
+
 
   // Add refs and inView hooks for animations
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -825,46 +829,79 @@ export default function ROICalculator({ onRevealNext }: ROICalculatorProps) {
             animate={ctaInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
           >
-            <Button
-              variant="contained"
-              size="large"
-              onClick={onRevealNext}
-              endIcon={<Handshake aria-hidden="true" className="icon-anim icon-float" />}
-              sx={{
-                backgroundColor: 'secondary.main',
-                color: '#ffffff',
-                padding: { xs: '12px 20px', sm: '12px 24px' },
-                fontSize: '1rem',
-                fontWeight: 600,
-                borderRadius: 1,
-                textTransform: 'none',
-                transition: 'all 0.3s ease',
-                position: 'relative',
-                overflow: 'hidden',
-                '&::before': {
-                  content: '""',
-                  position: 'absolute',
-                  top: 0,
-                  left: -100,
-                  width: '100%',
-                  height: '100%',
-                  background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
-                  transition: 'left 0.5s ease',
-                },
-                '&:hover': {
-                  backgroundColor: 'secondary.dark',
-                  transform: 'translateY(-2px)',
-                  boxShadow: '0 8px 20px rgba(79, 70, 229, 0.3)',
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 3, alignItems: { xs: 'stretch', sm: 'flex-start' } }}>
+              <Button
+                variant="contained"
+                size="large"
+                onClick={onRevealNext}
+                endIcon={<Handshake aria-hidden="true" className="icon-anim icon-float" />}
+                sx={{
+                  backgroundColor: 'secondary.main',
+                  color: '#ffffff',
+                  padding: { xs: '12px 20px', sm: '12px 24px' },
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  borderRadius: 1,
+                  textTransform: 'none',
+                  transition: 'all 0.3s ease',
+                  position: 'relative',
+                  overflow: 'hidden',
                   '&::before': {
-                    left: '100%',
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: -100,
+                    width: '100%',
+                    height: '100%',
+                    background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
+                    transition: 'left 0.5s ease',
                   },
-                },
-              }}>
-              Who we Partner with
-            </Button>
+                  '&:hover': {
+                    backgroundColor: 'secondary.dark',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 8px 20px rgba(79, 70, 229, 0.3)',
+                    '&::before': {
+                      left: '100%',
+                    },
+                  },
+                }}>
+                Who we Partner with
+              </Button>
+              
+              <Button
+                variant="outlined"
+                size="large"
+                onClick={openDemoModal}
+                endIcon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>}
+                sx={{
+                  borderColor: 'primary.main',
+                  color: 'primary.main',
+                  padding: { xs: '12px 20px', sm: '12px 24px' },
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  borderRadius: 1,
+                  textTransform: 'none',
+                  transition: 'all 0.3s ease',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  '&:hover': {
+                    backgroundColor: 'primary.main',
+                    color: '#ffffff',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 8px 20px rgba(167, 218, 219, 0.3)',
+                    borderColor: 'primary.main',
+                  },
+                }}>
+                Schedule a Demo
+              </Button>
+            </Box>
           </motion.div>
         </Box>
       </Container>
+
+
     </ROISection>
   );
 }

@@ -19,6 +19,10 @@ import {
   CurrencyRupee,
 } from '@mui/icons-material';
 import Accordion from '@/components/ui/Accordion';
+import { useSSAInterestModal } from '@/hooks/useSSAInterestModal';
+import { useSolaraInterestModal } from '@/hooks/useSolaraInterestModal';
+import SSAInterestModal from '@/components/products/SSAInterestModal';
+import SolaraInterestModal from '@/components/products/SolaraInterestModal';
 
 const FrameworkSection = styled(Box)(({ theme }) => ({
   padding: `${theme.spacing(10)} 0`,
@@ -256,6 +260,10 @@ export default function Framework({ onRevealNext }: FrameworkProps) {
   } as const;
   const [animateTransform, setAnimateTransform] = useState(false);
   
+  // Add modal hooks
+  const { openModal: openSSAModal } = useSSAInterestModal();
+  const { openModal: openSolaraModal } = useSolaraInterestModal();
+  
   // Add refs and inView hooks for animations
   const sectionRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -271,6 +279,20 @@ export default function Framework({ onRevealNext }: FrameworkProps) {
     // Trigger animations
     setTimeout(() => setAnimateTransform(true), 500);
   }, []);
+
+  // Function to handle button clicks based on step
+  const handleButtonClick = (stepId: StepId) => {
+    if (stepId === 'ignite') {
+      // Navigate to courses page
+      window.location.href = '/courses';
+    } else if (stepId === 'architecture') {
+      // Open SSA modal
+      openSSAModal();
+    } else if (stepId === 'solara') {
+      // Open Solara modal
+      openSolaraModal();
+    }
+  };
 
   return (
     <FrameworkSection ref={sectionRef}>
@@ -414,46 +436,45 @@ export default function Framework({ onRevealNext }: FrameworkProps) {
                   </FeatureList>
 
                   <Box sx={{ mt: 'auto' }}>
-                    <Link href={step.href} passHref>
-                      <Button
-                        variant="contained"
-                        size="large"
-                        endIcon={stepEndIcons[step.id]}
-                        fullWidth
-                        sx={{
-                          backgroundColor: 'secondary.main',
-                          color: '#ffffff',
-                          padding: { xs: '12px 20px', sm: '12px 24px' },
-                          fontSize: '1rem',
-                          fontWeight: 600,
-                          borderRadius: 1,
-                          textTransform: 'none',
-                          transition: 'all 0.3s ease',
-                          position: 'relative',
-                          overflow: 'hidden',
+                    <Button
+                      variant="contained"
+                      size="large"
+                      endIcon={stepEndIcons[step.id]}
+                      fullWidth
+                      onClick={() => handleButtonClick(step.id)}
+                      sx={{
+                        backgroundColor: 'secondary.main',
+                        color: '#ffffff',
+                        padding: { xs: '12px 20px', sm: '12px 24px' },
+                        fontSize: '1rem',
+                        fontWeight: 600,
+                        borderRadius: 1,
+                        textTransform: 'none',
+                        transition: 'all 0.3s ease',
+                        position: 'relative',
+                        overflow: 'hidden',
+                        '&::before': {
+                          content: '""',
+                          position: 'absolute',
+                          top: 0,
+                          left: -100,
+                          width: '100%',
+                          height: '100%',
+                          background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
+                          transition: 'left 0.5s ease',
+                        },
+                        '&:hover': {
+                          backgroundColor: 'secondary.dark',
+                          transform: 'translateY(-2px)',
+                          boxShadow: '0 8px 20px rgba(79, 70, 229, 0.3)',
                           '&::before': {
-                            content: '""',
-                            position: 'absolute',
-                            top: 0,
-                            left: -100,
-                            width: '100%',
-                            height: '100%',
-                            background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
-                            transition: 'left 0.5s ease',
+                            left: '100%',
                           },
-                          '&:hover': {
-                            backgroundColor: 'secondary.dark',
-                            transform: 'translateY(-2px)',
-                            boxShadow: '0 8px 20px rgba(79, 70, 229, 0.3)',
-                            '&::before': {
-                              left: '100%',
-                            },
-                          },
-                        }}
-                      >
-                        {step.buttonText}
-                      </Button>
-                    </Link>
+                        },
+                      }}
+                    >
+                      {step.buttonText}
+                    </Button>
                   </Box>
                 </ProductCard>
               </motion.div>
@@ -543,6 +564,10 @@ export default function Framework({ onRevealNext }: FrameworkProps) {
           </motion.div>
         </Box>
       </Container>
+
+      {/* Add the modals */}
+      <SSAInterestModal />
+      <SolaraInterestModal />
     </FrameworkSection>
   );
 }

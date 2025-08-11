@@ -130,6 +130,8 @@ export default function Hero({ onRevealNext }: HeroProps) {
               View Case Studies
             </SecondaryButton>
           </FadeInContent>
+
+
         </div>
       </StandardHero>
 

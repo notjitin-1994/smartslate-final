@@ -23,6 +23,8 @@ import {
   Description,
   AutoGraph,
 } from '@mui/icons-material';
+import CaseStudyModal from '@/components/landing/CaseStudyModal';
+import { useCaseStudyModal } from '@/hooks/useCaseStudyModal';
 
 const PartnersSection = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -357,7 +359,9 @@ const RatingStars = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(1),
 }));
 
-type PartnersProps = Record<string, never>
+interface PartnersProps {
+  openDemoModal: () => void;
+}
 
 type PartnerType = 'institutions' | 'businesses';
 
@@ -406,11 +410,12 @@ const partnerLogos = [
   { name: 'IIM Bangalore', type: 'institution' },
 ];
 
-export default function Partners({}: PartnersProps) {
+export default function Partners({ openDemoModal }: PartnersProps) {
   const [revealed, setRevealed] = useState<Partial<Record<PartnerType, boolean>>>({
     institutions: true, // Default expanded
   });
   const [animateLogos, setAnimateLogos] = useState(false);
+  const { isOpen, openModal, closeModal } = useCaseStudyModal();
 
   // Add refs and inView hooks for animations
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -535,8 +540,13 @@ export default function Partners({}: PartnersProps) {
                           {content.institutions.cta}
                         </PrimaryCTAButton>
                       </Link>
-                      <SecondaryCTAButton endIcon={<Description aria-hidden="true" className="icon-anim icon-float" />}>
-                        Download Brochure
+                      <SecondaryCTAButton 
+                        endIcon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>}
+                        onClick={openDemoModal}
+                      >
+                        Schedule Demo
                       </SecondaryCTAButton>
                     </CTAWrapper>
                   </motion.div>
@@ -639,10 +649,16 @@ export default function Partners({}: PartnersProps) {
                     transition={{ duration: 0.6, ease: "easeOut", delay: 0.7 }}
                   >
                     <CTAWrapper>
-                      <PrimaryCTAButton endIcon={<EventAvailable aria-hidden="true" className="icon-anim icon-float" />}>
+                      <PrimaryCTAButton 
+                        endIcon={<EventAvailable aria-hidden="true" className="icon-anim icon-float" />}
+                        onClick={openDemoModal}
+                      >
                         {content.businesses.cta}
                       </PrimaryCTAButton>
-                      <SecondaryCTAButton startIcon={<AutoGraph aria-hidden="true" className="icon-anim icon-float" />}>
+                      <SecondaryCTAButton 
+                        startIcon={<AutoGraph aria-hidden="true" className="icon-anim icon-float" />}
+                        onClick={openModal}
+                      >
                         View Case Studies
                       </SecondaryCTAButton>
                     </CTAWrapper>
@@ -653,6 +669,8 @@ export default function Partners({}: PartnersProps) {
           </motion.div>
         </AccordionWrapper>
       </Container>
+      
+      <CaseStudyModal isOpen={isOpen} onClose={closeModal} />
     </PartnersSection>
   );
 }

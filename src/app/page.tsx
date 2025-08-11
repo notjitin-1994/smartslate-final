@@ -8,6 +8,8 @@ import TalentParadox from '@/components/landing/TalentParadox';
 import Framework from '@/components/landing/Framework';
 import ROICalculator from '@/components/landing/ROICalculator';
 import Partners from '@/components/landing/Partners';
+import DemoModal from '@/components/landing/DemoModal';
+import { useDemoModal } from '@/hooks/useDemoModal';
 
 const PageWrapper = styled(Box)(({ theme }) => ({
   position: 'relative',
@@ -74,6 +76,9 @@ export default function Home() {
     roi: false,
     partners: false,
   });
+
+  // Demo modal state - shared across all components
+  const { isOpen: isDemoModalOpen, openModal: openDemoModal, closeModal: closeDemoModal } = useDemoModal();
   
 
   const [currentSection, setCurrentSection] = useState(0);
@@ -191,7 +196,7 @@ export default function Home() {
           className="visible"
           ref={el => sectionsRef.current[3] = el}
         >
-          <ROICalculator onRevealNext={() => revealNext('partners')} />
+          <ROICalculator onRevealNext={() => revealNext('partners')} openDemoModal={openDemoModal} />
         </SectionWrapper>
       )}
       
@@ -201,9 +206,12 @@ export default function Home() {
           className="visible"
           ref={el => sectionsRef.current[4] = el}
         >
-          <Partners />
+          <Partners openDemoModal={openDemoModal} />
         </SectionWrapper>
       )}
+
+      {/* Demo Modal - shared across all components */}
+      <DemoModal isOpen={isDemoModalOpen} onClose={closeDemoModal} />
     </PageWrapper>
   );
 }
