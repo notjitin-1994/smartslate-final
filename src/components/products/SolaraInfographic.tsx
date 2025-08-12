@@ -6,10 +6,11 @@ export default function SolaraInfographic() {
   const reduced = useReducedMotion();
   const features = [
     { name: 'Polaris', icon: '●', angle: 0 },
-    { name: 'Constellation', icon: '●', angle: 72 },
-    { name: 'Nova', icon: '●', angle: 144 },
-    { name: 'Orbit', icon: '●', angle: 216 },
-    { name: 'Spectrum', icon: '●', angle: 288 },
+    { name: 'Constellation', icon: '●', angle: 60 },
+    { name: 'Nova', icon: '●', angle: 120 },
+    { name: 'Orbit', icon: '●', angle: 180 },
+    { name: 'Nebula', icon: '●', angle: 240 },
+    { name: 'Spectrum', icon: '●', angle: 300 },
   ];
 
   return (

@@ -38,13 +38,20 @@ export default function CTASection() {
           transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
           className="relative z-10 text-left"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 leading-[1.2] text-left">
+          <h2 
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 leading-tight tracking-tight text-left"
+            style={{
+              fontSize: 'clamp(1.875rem, 1.2vw + 1.25rem, 3.75rem)',
+              lineHeight: '1.2',
+              letterSpacing: '-0.02em'
+            }}
+          >
             Ready to Experience the{' '}
             <span className="text-primary-accent font-bold">
               SmartSlate Difference
             </span>?
           </h2>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-primary mb-6 sm:mb-8 md:mb-10 max-w-3xl leading-[1.5] sm:leading-relaxed text-left">
+          <p className="text-base sm:text-lg md:text-xl text-primary mb-3 sm:mb-4 leading-relaxed text-left">
             Join forward-thinking organizations that have transformed their learning culture and achieved measurable results.
           </p>
         </motion.div>

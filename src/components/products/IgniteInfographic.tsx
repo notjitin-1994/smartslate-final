@@ -114,13 +114,6 @@ export default function IgniteInfographic() {
           strokeDasharray="3 4"
           opacity="0.3"
         />
-        <defs>
-          <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="var(--primary-accent)" />
-            <stop offset="100%" stopColor="var(--secondary-accent)" />
-          </linearGradient>
-        </defs>
-      </svg>
         <motion.line
           initial={reduced ? false : { pathLength: 0 }}
           animate={reduced ? { opacity: 0.3 } : { pathLength: 1 }}
@@ -141,6 +134,13 @@ export default function IgniteInfographic() {
           strokeDasharray="3 4"
           opacity="0.3"
         />
+        <defs>
+          <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="var(--primary-accent)" />
+            <stop offset="100%" stopColor="var(--secondary-accent)" />
+          </linearGradient>
+        </defs>
+      </svg>
     </div>
   );
 }

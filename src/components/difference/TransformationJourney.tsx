@@ -67,10 +67,17 @@ export default function TransformationJourney() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="text-left mb-16"
       >
-        <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 leading-tight text-left">
+        <h2 
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 leading-tight tracking-tight text-left"
+          style={{
+            fontSize: 'clamp(1.875rem, 1.2vw + 1.25rem, 3.75rem)',
+            lineHeight: '1.2',
+            letterSpacing: '-0.02em'
+          }}
+        >
           Your Transformation <span className="text-primary-accent font-bold">Journey</span>
         </h2>
-        <p className="text-lg md:text-xl lg:text-2xl text-primary max-w-4xl leading-relaxed text-left">
+        <p className="text-lg sm:text-xl md:text-2xl text-primary mb-3 sm:mb-4 leading-relaxed font-light text-left">
           From initial consultation to continuous improvement, we&apos;re with you every step of the way
         </p>
       </motion.div>

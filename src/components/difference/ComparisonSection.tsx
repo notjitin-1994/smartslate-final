@@ -101,10 +101,17 @@ export default function ComparisonSection() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="text-left mb-16"
       >
-        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 leading-[1.2] text-left">
+        <h2 
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 leading-tight tracking-tight text-left"
+          style={{
+            fontSize: 'clamp(1.875rem, 1.2vw + 1.25rem, 3.75rem)',
+            lineHeight: '1.2',
+            letterSpacing: '-0.02em'
+          }}
+        >
           Traditional Training vs. <span className="text-primary-accent font-bold">SmartSlate Learning</span>
         </h2>
-        <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-primary max-w-4xl leading-[1.5] sm:leading-relaxed text-left">
+        <p className="text-lg sm:text-xl md:text-2xl text-primary mb-3 sm:mb-4 leading-relaxed font-light text-left">
           See why forward-thinking organizations choose SmartSlate over conventional training approaches
         </p>
       </motion.div>
@@ -185,7 +192,7 @@ export default function ComparisonSection() {
                         <span className="text-primary-accent text-xs sm:text-sm font-medium uppercase tracking-wide">SmartSlate</span>
                       </div>
                     </div>
-                    <p className="text-primary font-medium text-sm sm:text-base md:text-lg leading-[1.5]">{item.smartslate}</p>
+                    <p className="text-primary text-sm sm:text-base md:text-lg leading-[1.5]">{item.smartslate}</p>
                   </div>
                 </motion.div>
               </div>
@@ -194,15 +201,14 @@ export default function ComparisonSection() {
         ))}
       </motion.div>
 
-
       {/* Summary Statement */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.6, delay: 0.8 }}
-        className="mt-10 sm:mt-12 md:mt-16 text-left"
+        className="mt-20 text-left"
       >
-        <div className="glass-effect-strong p-6 sm:p-8 rounded-xl sm:rounded-2xl max-w-3xl border border-primary-accent/20">
+        <div className="glass-effect-strong p-6 sm:p-8 rounded-xl sm:rounded-2xl max-w-6xl mx-auto border border-primary-accent/20">
           <div className="flex items-start gap-3">
             <div className="w-10 h-10 bg-gradient-to-br from-primary-accent/20 to-secondary-accent/20 rounded-lg flex items-center justify-center flex-shrink-0">
               <svg className="w-5 h-5 text-primary-accent" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
