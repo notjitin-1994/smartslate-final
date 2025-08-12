@@ -12,6 +12,7 @@ interface JourneyStep {
   icon: React.ReactElement;
   duration: string;
   outcome: string;
+  animation: React.ReactElement;
 }
 
 const journeySteps: JourneyStep[] = [
@@ -26,6 +27,23 @@ const journeySteps: JourneyStep[] = [
         <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
       </svg>
     ),
+    animation: (
+      <div className="relative w-full h-full flex items-center justify-center">
+        {/* Simple Magnifying Glass */}
+        <motion.div
+          animate={{ 
+            scale: [1, 1.1, 1],
+            rotate: [0, 2, -2, 0]
+          }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <svg className="w-32 h-32 md:w-40 md:h-40 text-primary-accent/20" fill="none" viewBox="0 0 24 24" strokeWidth="1" stroke="currentColor">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
+        </motion.div>
+      </div>
+    ),
   },
   {
     number: '02',
@@ -37,6 +55,25 @@ const journeySteps: JourneyStep[] = [
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
       </svg>
+    ),
+    animation: (
+      <div className="relative w-full h-full flex items-center justify-center">
+        {/* Simple Blueprint */}
+        <motion.div
+          animate={{ 
+            scale: [1, 1.05, 1],
+            opacity: [0.7, 1, 0.7]
+          }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <svg className="w-32 h-32 md:w-40 md:h-40 text-primary-accent/20" fill="none" viewBox="0 0 24 24" strokeWidth="1" stroke="currentColor">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <line x1="9" y1="9" x2="15" y2="9" />
+            <line x1="9" y1="12" x2="15" y2="12" />
+            <line x1="9" y1="15" x2="13" y2="15" />
+          </svg>
+        </motion.div>
+      </div>
     ),
   },
   {
@@ -50,6 +87,26 @@ const journeySteps: JourneyStep[] = [
         <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
       </svg>
     ),
+    animation: (
+      <div className="relative w-full h-full flex items-center justify-center">
+        {/* Simple Learning Platform */}
+        <motion.div
+          animate={{ 
+            scale: [1, 1.02, 1],
+            opacity: [0.8, 1, 0.8]
+          }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <svg className="w-32 h-32 md:w-40 md:h-40 text-primary-accent/20" fill="none" viewBox="0 0 24 24" strokeWidth="1" stroke="currentColor">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <line x1="6" y1="7" x2="18" y2="7" />
+            <line x1="6" y1="10" x2="18" y2="10" />
+            <line x1="6" y1="13" x2="18" y2="13" />
+            <line x1="6" y1="16" x2="14" y2="16" />
+          </svg>
+        </motion.div>
+      </div>
+    ),
   },
   {
     number: '04',
@@ -61,6 +118,25 @@ const journeySteps: JourneyStep[] = [
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
       </svg>
+    ),
+    animation: (
+      <div className="relative w-full h-full flex items-center justify-center">
+        {/* Simple Analytics Chart */}
+        <motion.div
+          animate={{ 
+            scale: [1, 1.05, 1],
+            opacity: [0.8, 1, 0.8]
+          }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <svg className="w-32 h-32 md:w-40 md:h-40 text-primary-accent/20" fill="none" viewBox="0 0 24 24" strokeWidth="1" stroke="currentColor">
+            <path d="M3 3v18h18" />
+            <path d="M18 17V9" />
+            <path d="M13 17V5" />
+            <path d="M8 17v-3" />
+          </svg>
+        </motion.div>
+      </div>
     ),
   },
 ];
@@ -135,35 +211,53 @@ export default function TransformationJourney() {
                 <motion.div
                   whileHover={{ y: -2 }}
                   transition={{ duration: 0.2 }}
-                  className="glass-effect-strong p-6 md:p-8 rounded-2xl"
+                  className="glass-effect-strong p-6 md:p-8 rounded-2xl relative overflow-hidden"
                 >
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className="text-5xl md:text-6xl font-bold text-primary-accent/20">{step.number}</div>
-                    <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-primary-accent/20 to-secondary-accent/20 rounded-xl flex items-center justify-center text-primary-accent">
-                      {step.icon}
-                    </div>
+                  {/* Mobile Animation Background */}
+                  <div className="absolute inset-0 md:hidden opacity-10 blur-sm">
+                    {step.animation}
                   </div>
-                  <h3 className="text-xl md:text-2xl font-bold mb-3 text-primary text-left">{step.title}</h3>
-                  <p className="text-primary text-base md:text-lg leading-relaxed text-left mb-4">{step.description}</p>
                   
-                  {/* Duration and Outcome */}
-                  <div className="flex flex-col sm:flex-row gap-4 text-sm">
-                    <div className="flex items-center gap-2 text-primary-accent/80">
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                      </svg>
-                      <span>{step.duration}</span>
+                  <div className="relative z-10">
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className="text-5xl md:text-6xl font-bold text-primary-accent/20">{step.number}</div>
+                      <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-primary-accent/20 to-secondary-accent/20 rounded-xl flex items-center justify-center text-primary-accent">
+                        {step.icon}
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2 text-primary-accent/80">
-                      <div className="w-2 h-2 bg-primary-accent rounded-full"></div>
-                      <span>{step.outcome}</span>
+                    <h3 className="text-xl md:text-2xl font-bold mb-3 text-primary text-left">{step.title}</h3>
+                    <p className="text-primary text-base md:text-lg leading-relaxed text-left mb-4">{step.description}</p>
+                    
+                    {/* Duration and Outcome */}
+                    <div className="flex flex-col sm:flex-row gap-4 text-sm">
+                      <div className="flex items-center gap-2 text-primary-accent/80">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+                        <span>{step.duration}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-primary-accent/80">
+                        <div className="w-2 h-2 bg-primary-accent rounded-full"></div>
+                        <span>{step.outcome}</span>
+                      </div>
                     </div>
                   </div>
                 </motion.div>
               </div>
 
-              {/* Spacer for desktop layout */}
-              <div className="hidden md:block flex-1" />
+              {/* Desktop Animation Side */}
+              <div className="hidden md:block flex-1">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.8, delay: index * 0.2 + 0.3, ease: "easeOut" }}
+                  className="relative h-64 flex items-center justify-center"
+                >
+                  <div className="relative w-full h-full">
+                    {step.animation}
+                  </div>
+                </motion.div>
+              </div>
             </motion.div>
           ))}
         </div>
