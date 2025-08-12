@@ -391,9 +391,9 @@ const content = {
       { icon: AutoAwesome, text: 'ROI Guarantee', description: 'Measurable return on training investment' },
     ],
     testimonial: {
-      text: "We've reduced our training time by 60% while improving skill retention. The AI-powered insights help us identify and develop future leaders before our competitors even know they exist.",
-      author: "Rajesh Kumar",
-      role: "CHRO, Infosys",
+      text: "The AI Foundations course completely transformed how I approach digital strategy. I used the knowledge to build a comprehensive digital presence for my entire business, from AI-powered customer service to automated marketing campaigns. The practical applications I learned are now driving measurable growth across all our digital touchpoints.",
+      author: "Jitin Nair",
+      role: "Business Owner",
       rating: 5,
     },
     cta: 'Schedule a Demo',
@@ -596,9 +596,15 @@ export default function Partners({ openDemoModal }: PartnersProps) {
                         {'\u201C'}{content.businesses.testimonial.text}{'\u201D'}
                       </Typography>
                       <TestimonialAuthor>
-                        <Avatar sx={{ bgcolor: 'secondary.main' }}>
-                          {content.businesses.testimonial.author.charAt(0)}
-                        </Avatar>
+                        <Avatar 
+                          src="/images/userheadshot.png"
+                          alt="Jitin Nair"
+                          sx={{ 
+                            width: 48, 
+                            height: 48,
+                            objectFit: 'cover'
+                          }}
+                        />
                         <Box>
                           <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                             {content.businesses.testimonial.author}
