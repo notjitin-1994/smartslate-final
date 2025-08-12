@@ -268,13 +268,13 @@ export default function TransformationJourney() {
         initial={{ opacity: 0, y: 20 }}
         animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
-        className="text-center mt-20"
+        className="text-left mt-20"
       >
-        <div className="glass-effect-strong p-6 sm:p-8 md:p-10 rounded-xl sm:rounded-2xl max-w-2xl mx-auto border border-primary-accent/20">
-          <p className="text-base sm:text-lg md:text-xl text-primary mb-4 sm:mb-6 leading-[1.5] sm:leading-relaxed text-center">
+        <div className="glass-effect-strong p-6 sm:p-8 md:p-10 rounded-xl sm:rounded-2xl border border-primary-accent/20">
+          <p className="text-base sm:text-lg md:text-xl text-primary mb-4 sm:mb-6 leading-[1.5] sm:leading-relaxed text-left">
             Ready to begin your transformation journey?
           </p>
-          <div className="flex justify-center">
+          <div className="flex justify-start">
             <motion.button
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
