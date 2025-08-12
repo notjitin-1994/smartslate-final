@@ -1,13 +1,17 @@
 'use client';
 
+import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { useState } from 'react';
 
 interface JourneyStep {
   number: string;
   title: string;
   description: string;
-  icon: JSX.Element;
+  icon: React.ReactElement;
+  duration: string;
+  outcome: string;
 }
 
 const journeySteps: JourneyStep[] = [
@@ -15,6 +19,8 @@ const journeySteps: JourneyStep[] = [
     number: '01',
     title: 'Discovery & Analysis',
     description: 'We deep-dive into your unique challenges, culture, and objectives to understand your true learning needs.',
+    duration: '2-3 weeks',
+    outcome: 'Comprehensive Learning Strategy',
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -25,6 +31,8 @@ const journeySteps: JourneyStep[] = [
     number: '02',
     title: 'Strategic Design',
     description: 'Our experts craft a custom learning architecture aligned with your business goals and learner profiles.',
+    duration: '3-4 weeks',
+    outcome: 'Custom Learning Blueprint',
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
@@ -35,6 +43,8 @@ const journeySteps: JourneyStep[] = [
     number: '03',
     title: 'Engaging Delivery',
     description: 'Launch immersive learning experiences that captivate learners and drive real behavioral change.',
+    duration: 'Ongoing',
+    outcome: 'Active Learning Platform',
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
@@ -45,6 +55,8 @@ const journeySteps: JourneyStep[] = [
     number: '04',
     title: 'Continuous Evolution',
     description: 'Monitor, measure, and refine the learning experience based on data-driven insights and feedback.',
+    duration: 'Continuous',
+    outcome: 'Optimized Learning Ecosystem',
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
@@ -58,9 +70,11 @@ export default function TransformationJourney() {
     threshold: 0.1,
     triggerOnce: true,
   });
+  const [hoveredStep, setHoveredStep] = useState<number | null>(null);
 
   return (
     <div ref={ref}>
+      {/* Header Section - Left Aligned */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -82,7 +96,7 @@ export default function TransformationJourney() {
         </p>
       </motion.div>
 
-      {/* Unified Timeline for all screen sizes */}
+      {/* Timeline */}
       <div className="relative max-w-5xl mx-auto">
         {/* Timeline Line */}
         <div className="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-primary-accent/20 via-primary-accent/40 to-primary-accent/20"></div>
@@ -97,8 +111,10 @@ export default function TransformationJourney() {
               className={`relative flex flex-col md:flex-row items-start md:items-center gap-8 ${
                 index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
               }`}
+              onMouseEnter={() => setHoveredStep(index)}
+              onMouseLeave={() => setHoveredStep(null)}
             >
-              {/* Mobile Timeline Node */}
+              {/* Timeline Node */}
               <div className="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 -translate-x-1/2">
                 <motion.div
                   whileHover={{ scale: 1.2 }}
@@ -128,7 +144,21 @@ export default function TransformationJourney() {
                     </div>
                   </div>
                   <h3 className="text-xl md:text-2xl font-bold mb-3 text-primary text-left">{step.title}</h3>
-                  <p className="text-primary text-base md:text-lg leading-relaxed text-left">{step.description}</p>
+                  <p className="text-primary text-base md:text-lg leading-relaxed text-left mb-4">{step.description}</p>
+                  
+                  {/* Duration and Outcome */}
+                  <div className="flex flex-col sm:flex-row gap-4 text-sm">
+                    <div className="flex items-center gap-2 text-primary-accent/80">
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                      </svg>
+                      <span>{step.duration}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-primary-accent/80">
+                      <div className="w-2 h-2 bg-primary-accent rounded-full"></div>
+                      <span>{step.outcome}</span>
+                    </div>
+                  </div>
                 </motion.div>
               </div>
 
