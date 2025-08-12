@@ -391,7 +391,7 @@ const content = {
       { icon: AutoAwesome, text: 'ROI Guarantee', description: 'Measurable return on training investment' },
     ],
     testimonial: {
-      text: "The AI Foundations course completely transformed how I approach digital strategy. I used the knowledge to build a comprehensive digital presence for my entire business, from AI-powered customer service to automated marketing campaigns. The practical applications I learned are now driving measurable growth across all our digital touchpoints.",
+      text: "The AI Foundations course gave me the blueprint to build a complete business from scratch in just 3 weeks. I automated everything—website development, database architecture, lead generation, documentation, cold outreach, meeting scheduling, and transcription. It's proven, I did it, and you can too! The course doesn't just teach AI concepts; it shows you how to turn AI into your business partner that works 24/7.",
       author: "Jitin Nair",
       role: "Business Owner",
       rating: 5,
