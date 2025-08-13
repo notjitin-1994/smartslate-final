@@ -7,7 +7,6 @@ import {
   Container, 
   Typography, 
   Button, 
-  Grid, 
   Card, 
   CardContent, 
   Stepper, 
@@ -25,6 +24,7 @@ import {
   Modal,
   Paper
 } from '@mui/material';
+// Removed Grid import; using CSS grid via Box for layout to avoid type issues
 import { styled } from '@mui/material/styles';
 import Link from 'next/link';
 import StandardHero from '@/components/ui/StandardHero';
@@ -292,91 +292,142 @@ export default function SmartslateTestimonyPage() {
   const [mobileTocOpen, setMobileTocOpen] = useState(false);
   const [currentChapter, setCurrentChapter] = useState(1);
 
-  // Chapter data
+  // Inline highlighter for brand-accent emphasis within paragraphs
+  const highlightPhrases = (text: string, phrases: string[]) => {
+    if (!phrases || phrases.length === 0) return text;
+    const escapeRegex = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const sorted = [...phrases].sort((a, b) => b.length - a.length);
+    const pattern = new RegExp(`(${sorted.map(escapeRegex).join('|')})`, 'gi');
+    const parts = text.split(pattern);
+    return parts.map((part, idx) => {
+      const isMatch = sorted.some(p => part.toLowerCase() === p.toLowerCase());
+      return isMatch ? (
+        <Box key={idx} component="span" sx={{ color: '#06B6D4', fontWeight: 700 }}>
+          {part}
+        </Box>
+      ) : (
+        <Box key={idx} component="span">{part}</Box>
+      );
+    });
+  };
+
+  // Chapter data (birth-of-organisation narrative)
   const chapters = [
     {
       title: 'Chapter 1: The Spark',
       content: [
         {
-          text: 'He began as a Bachelor of Commerce graduate with no illusions of grandeur—just a headset, a buzzing bay lined with long desks, people seated side-by-side and across, their voices weaving into a constant backdrop of conversation and ringing phones.',
-          italic: false
+          text: 'In a buzzing operations floor—rows of desks, overlapping conversations, and constant ring tones—a pattern began to emerge. Teams learned fastest when clarity was engineered, not improvised.',
+          italic: false,
         },
         {
-          text: 'In that hum of activity, he found his first spark: while training new hires, he discovered that teaching wasn\'t just something he could do—it was something he loved doing.',
-          italic: false
-        }
-      ]
+          text: 'From that signal, an idea took shape: a system for learning that could be designed, repeated, and scaled. This was the first spark that would become Smartslate.',
+          italic: false,
+        },
+      ],
+      highlights: [
+        'clarity was engineered, not improvised',
+        'designed, repeated, and scaled',
+        'first spark',
+        'Smartslate',
+      ],
     },
     {
-      title: 'Chapter 2: The Evolution',
+      title: 'Chapter 2: The Blueprint',
       content: [
         {
-          text: 'This passion pulled him into HR, and eventually, into the role of corporate trainer at a multinational company. Here, he found his rhythm—guiding others, designing learning paths, and creating "aha!" moments.',
-          italic: false
+          text: 'The spark matured into a blueprint. Outcomes were defined, curricula were mapped, and workflows were drawn to produce consistent \"aha!\" moments across cohorts and contexts.',
+          italic: false,
         },
         {
-          text: 'But curiosity pushed him further. He learned Instructional Design, crafting high-impact courses across companies of every size.',
-          italic: false
-        }
-      ]
+          text: 'Instructional design evolved into programme architecture—an operating model designed to work across organisations of every size.',
+          italic: false,
+        },
+      ],
+      highlights: [
+        'blueprint',
+        'Outcomes were defined',
+        'programme architecture',
+        'operating model',
+      ],
     },
     {
-      title: 'Chapter 3: The Realization',
+      title: 'Chapter 3: The Gap',
       content: [
         {
-          text: 'Then, a realization struck. There was a gap in the learning ecosystem—a problem no existing solution truly solved. To fix it, he needed more than ideas; he needed a platform. But building it meant reinventing himself.',
-          italic: false
+          text: 'A gap in the learning ecosystem became obvious. Tools existed, but the operating system for learning did not. What was needed was a platform that could turn capability into outcomes—reliably and repeatedly.',
+          italic: false,
         },
         {
-          text: 'So, he did.',
-          italic: true
-        }
-      ]
+          text: 'The path forward was clear: design a platform built for repeatability, measurement, and real deployment inside institutions and enterprises.',
+          italic: false,
+        },
+      ],
+      highlights: [
+        'gap in the learning ecosystem',
+        'operating system for learning',
+        'repeatability, measurement, and real deployment',
+      ],
     },
     {
-      title: 'Chapter 4: The Reinvention',
+      title: 'Chapter 4: The Build',
       content: [
         {
-          text: 'He became his own brand strategist, creating the visual identity from scratch. He learned frontend design, then frontend development, then fullstack engineering. He built his own LMS, his own authoring tool, his own systems.',
-          italic: false
+          text: 'Language, interface, and full‑stack systems converged into a single foundation. An LMS, authoring tools, and orchestration services were assembled into one coherent ecosystem.',
+          italic: false,
         },
         {
-          text: 'Piece by piece, he wasn\'t just making software—he was building an ecosystem.',
-          italic: false
-        }
-      ]
+          text: 'Piece by piece, a platform emerged—not just software, but a structured way to create, deliver, and sustain learning at scale.',
+          italic: false,
+        },
+      ],
+      highlights: [
+        'LMS, authoring tools, and orchestration services',
+        'coherent ecosystem',
+        'structured way to create, deliver, and sustain learning at scale',
+      ],
     },
     {
       title: 'Chapter 5: The AI Partnership',
       content: [
         {
-          text: 'And he wasn\'t doing it alone. His secret weapon? AI.',
-          italic: false
+          text: 'AI joined as a co‑engineer. From copy and visual identity to flows and infrastructure, each artefact moved from concept to code through a governed, auditable process.',
+          italic: false,
         },
         {
-          text: 'AI helped him write website copy, choose the perfect logo, craft the color palette, design the UI, and even engineer the infrastructure. Every part of the platform—concept to code—was touched by human vision and AI acceleration.',
-          italic: false
-        }
-      ]
+          text: 'Acceleration met rigour: AI accelerated production; design and engineering standards ensured reliability.',
+          italic: false,
+        },
+      ],
+      highlights: [
+        'AI joined as a co‑engineer',
+        'governed, auditable process',
+        'Acceleration met rigour',
+      ],
     },
     {
-      title: 'Chapter 6: The Result',
+      title: 'Chapter 6: The Launch',
       content: [
         {
-          text: 'That platform became Smartslate.',
-          italic: false
+          text: 'The system gained a name: Smartslate.',
+          italic: false,
         },
         {
-          text: 'What started in a buzzing customer care bay became a company—a living, breathing solution that embodied years of learning, resilience, and reinvention.',
-          italic: false
+          text: 'What began as a spark became an organisation—a living platform purpose‑built to turn capability into outcomes.',
+          italic: false,
         },
         {
-          text: 'Read on to discover how he turned skills into a system, and a dream into Smartslate.',
+          text: 'Read on to see how capability became a system, and how Smartslate came to life.',
           italic: true,
-          isLink: true
-        }
-      ]
-    }
+          isLink: true,
+        },
+      ],
+      highlights: [
+        'Smartslate',
+        'purpose‑built to turn capability into outcomes',
+        'came to life',
+      ],
+    },
   ];
 
   // Navigation handlers
@@ -392,11 +443,7 @@ export default function SmartslateTestimonyPage() {
     }
   };
 
-  // Helper function to get chapter slug for illustration filename
-  const getChapterSlug = (chapterNumber: number) => {
-    const slugs = ['spark-alt', 'evolution-alt', 'realization-alt', 'reinvention-alt', 'ai-partnership-alt', 'result-alt'];
-    return slugs[chapterNumber - 1];
-  };
+
 
   const tocSections = [
     { id: 'why-leaders', title: 'From a Bustling Bay to Founder\'s Desk: The Smartslate Story' },
@@ -726,14 +773,14 @@ export default function SmartslateTestimonyPage() {
             </Box>
 
             {/* Interactive Story Timeline */}
-            <Box sx={{ width: '100%' }}>
-              {/* Chapter Content with Illustration */}
+            <Box sx={{ width: '100%', position: 'relative' }}>
+              {/* Chapter Content with Fade Animation */}
               <motion.div
                 key={currentChapter}
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.5 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
               >
                 <Box sx={{ 
                   display: 'flex', 
@@ -805,136 +852,175 @@ export default function SmartslateTestimonyPage() {
                               fontStyle: paragraph.italic ? 'italic' : 'normal'
                             }}
                           >
-                            {paragraph.text}
+                            {highlightPhrases(
+                              paragraph.text,
+                              (chapters[currentChapter - 1] as any).highlights || []
+                            )}
                           </Typography>
                         )
                       ))}
                     </SectionCard>
                   </Box>
-
-                  {/* Chapter Illustration */}
-                  <Box sx={{ 
-                    display: 'flex', 
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: { xs: '100%', md: '200px' },
-                    flexShrink: 0
-                  }}>
-                    <motion.div
-                      key={`illustration-${currentChapter}`}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.6, delay: 0.2 }}
-                    >
-                      <Box
-                        component="img"
-                        src={`/images/story-illustrations/chapter${currentChapter}-${getChapterSlug(currentChapter)}.svg`}
-                        alt={`Illustration for ${chapters[currentChapter - 1].title}`}
-                        sx={{
-                          width: { xs: '150px', md: '200px' },
-                          height: { xs: '150px', md: '200px' },
-                          filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1))',
-                          transition: 'transform 0.3s ease',
-                          '&:hover': {
-                            transform: 'scale(1.05)',
-                          }
-                        }}
-                      />
-                    </motion.div>
-                  </Box>
                 </Box>
               </motion.div>
 
-              {/* Navigation Controls */}
+              {/* Fixed Navigation Controls - Below Chapters */}
               <Box sx={{ 
-                position: 'relative',
+                position: 'sticky',
+                bottom: 20,
+                zIndex: 10,
+                display: 'flex',
+                flexDirection: 'column',
                 mt: 4,
-                mb: 6
+                borderRadius: '16px',
+                background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
+                border: '1px solid rgba(167, 218, 219, 0.2)',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+                overflow: 'hidden'
               }}>
-                {/* Previous Button - Positioned at start of text box */}
-                <Box sx={{ 
-                  position: 'absolute',
-                  left: -60,
-                  top: 0,
-                  display: 'flex', 
-                  alignItems: 'center',
-                  opacity: currentChapter === 1 ? 0.3 : 1,
-                  cursor: currentChapter === 1 ? 'not-allowed' : 'pointer',
-                  transition: 'all 0.3s ease',
-                  '&:hover': currentChapter !== 1 ? {
-                    transform: 'scale(1.1)',
-                  } : {},
+                {/* Horizontal Progress Bar */}
+                <Box sx={{
+                  width: '100%',
+                  height: '3px',
+                  background: 'rgba(167, 218, 219, 0.1)',
+                  position: 'relative'
                 }}>
+                  <Box sx={{
+                    width: `${(currentChapter / chapters.length) * 100}%`,
+                    height: '100%',
+                    background: 'linear-gradient(90deg, #06B6D4 0%, #4F46E5 100%)',
+                    transition: 'width 0.6s ease-in-out',
+                    borderRadius: '0 2px 2px 0'
+                  }} />
+                </Box>
+
+                {/* Navigation Buttons */}
+                <Box sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  px: 2,
+                  py: 2
+                }}>
+                  {/* Previous Button */}
                   <Box
                     onClick={handlePrevChapter}
                     sx={{
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'center',
-                      width: 48,
-                      height: 48,
-                      borderRadius: '50%',
-                      background: 'rgba(167, 218, 219, 0.1)',
-                      border: '2px solid rgba(167, 218, 219, 0.3)',
+                      gap: 1,
+                      opacity: currentChapter === 1 ? 0.3 : 1,
+                      cursor: currentChapter === 1 ? 'not-allowed' : 'pointer',
                       transition: 'all 0.3s ease',
                       '&:hover': currentChapter !== 1 ? {
-                        background: 'rgba(167, 218, 219, 0.2)',
-                        borderColor: 'rgba(167, 218, 219, 0.5)',
-                        boxShadow: '0 4px 12px rgba(167, 218, 219, 0.3)',
+                        transform: 'translateX(-4px)',
+                        '& .nav-arrow': {
+                          transform: 'translateX(-2px) rotate(180deg)',
+                        }
                       } : {},
                     }}
                   >
-                    <ArrowForwardIcon 
+                    <Box sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 56,
+                      height: 56,
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, rgba(167, 218, 219, 0.1) 0%, rgba(79, 70, 229, 0.1) 100%)',
+                      border: '2px solid rgba(167, 218, 219, 0.3)',
+                      transition: 'all 0.3s ease',
+                      '&:hover': currentChapter !== 1 ? {
+                        background: 'linear-gradient(135deg, rgba(167, 218, 219, 0.2) 0%, rgba(79, 70, 229, 0.2) 100%)',
+                        borderColor: 'rgba(167, 218, 219, 0.6)',
+                        boxShadow: '0 8px 25px rgba(167, 218, 219, 0.3)',
+                      } : {},
+                    }}>
+                      <ArrowForwardIcon 
+                        className="nav-arrow"
+                        sx={{ 
+                          color: '#06B6D4', 
+                          fontSize: '1.75rem',
+                          transform: 'rotate(180deg)',
+                          transition: 'transform 0.3s ease'
+                        }} 
+                      />
+                    </Box>
+                    <Typography 
+                      variant="body2" 
                       sx={{ 
-                        color: '#06B6D4', 
-                        fontSize: '1.5rem',
-                        transform: 'rotate(180deg)',
-                        transition: 'transform 0.3s ease'
-                      }} 
-                    />
+                        color: '#06B6D4',
+                        fontWeight: 600,
+                        fontSize: '0.875rem',
+                        opacity: 0.8,
+                        transition: 'opacity 0.3s ease',
+                        '&:hover': {
+                          opacity: 1
+                        }
+                      }}
+                    >
+                      Previous
+                    </Typography>
                   </Box>
-                </Box>
 
-                {/* Next Button - Positioned at end of text box */}
-                <Box sx={{ 
-                  position: 'absolute',
-                  right: -60,
-                  top: 0,
-                  display: 'flex', 
-                  alignItems: 'center',
-                  opacity: currentChapter === chapters.length ? 0.3 : 1,
-                  cursor: currentChapter === chapters.length ? 'not-allowed' : 'pointer',
-                  transition: 'all 0.3s ease',
-                  '&:hover': currentChapter !== chapters.length ? {
-                    transform: 'scale(1.1)',
-                  } : {},
-                }}>
+                  {/* Next Button */}
                   <Box
                     onClick={handleNextChapter}
                     sx={{
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'center',
-                      width: 48,
-                      height: 48,
-                      borderRadius: '50%',
-                      background: 'rgba(167, 218, 219, 0.1)',
-                      border: '2px solid rgba(167, 218, 219, 0.3)',
+                      gap: 1,
+                      opacity: currentChapter === chapters.length ? 0.3 : 1,
+                      cursor: currentChapter === chapters.length ? 'not-allowed' : 'pointer',
                       transition: 'all 0.3s ease',
                       '&:hover': currentChapter !== chapters.length ? {
-                        background: 'rgba(167, 218, 219, 0.2)',
-                        borderColor: 'rgba(167, 218, 219, 0.5)',
-                        boxShadow: '0 4px 12px rgba(167, 218, 219, 0.3)',
+                        transform: 'translateX(4px)',
+                        '& .nav-arrow': {
+                          transform: 'translateX(2px)',
+                        }
                       } : {},
                     }}
                   >
-                    <ArrowForwardIcon 
+                    <Typography 
+                      variant="body2" 
                       sx={{ 
-                        color: '#06B6D4', 
-                        fontSize: '1.5rem',
-                        transition: 'transform 0.3s ease'
-                      }} 
-                    />
+                        color: '#06B6D4',
+                        fontWeight: 600,
+                        fontSize: '0.875rem',
+                        opacity: 0.8,
+                        transition: 'opacity 0.3s ease',
+                        '&:hover': {
+                          opacity: 1
+                        }
+                      }}
+                    >
+                      Next
+                    </Typography>
+                    <Box sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 56,
+                      height: 56,
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, rgba(167, 218, 219, 0.1) 0%, rgba(79, 70, 229, 0.1) 100%)',
+                      border: '2px solid rgba(167, 218, 219, 0.3)',
+                      transition: 'all 0.3s ease',
+                      '&:hover': currentChapter !== chapters.length ? {
+                        background: 'linear-gradient(135deg, rgba(167, 218, 219, 0.2) 0%, rgba(79, 70, 229, 0.2) 100%)',
+                        borderColor: 'rgba(167, 218, 219, 0.6)',
+                        boxShadow: '0 8px 25px rgba(167, 218, 219, 0.3)',
+                      } : {},
+                    }}>
+                      <ArrowForwardIcon 
+                        className="nav-arrow"
+                        sx={{ 
+                          color: '#06B6D4', 
+                          fontSize: '1.75rem',
+                          transition: 'transform 0.3s ease'
+                        }} 
+                      />
+                    </Box>
                   </Box>
                 </Box>
               </Box>
@@ -1063,8 +1149,12 @@ export default function SmartslateTestimonyPage() {
               ROI for Your Organisation
             </Typography>
             
-            <Grid container spacing={4}>
-              <Grid item xs={12} md={6} component="div">
+            <Box sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
+              gap: 4
+            }}>
+              <Box>
                 <ROICard>
                   <Typography variant="h3" component="h3" gutterBottom sx={{ 
                     fontSize: '1.5rem',
@@ -1094,9 +1184,9 @@ export default function SmartslateTestimonyPage() {
                     ))}
                   </Box>
                 </ROICard>
-              </Grid>
+              </Box>
               
-              <Grid item xs={12} md={6} component="div">
+              <Box>
                 <ROICard>
                   <Typography variant="h3" component="h3" gutterBottom sx={{ 
                     fontSize: '1.5rem',
@@ -1126,8 +1216,8 @@ export default function SmartslateTestimonyPage() {
                     ))}
                   </Box>
                 </ROICard>
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
           </motion.div>
         </SectionWrapper>
 
