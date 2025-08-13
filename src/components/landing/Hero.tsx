@@ -102,7 +102,7 @@ export default function Hero({ onRevealNext }: HeroProps) {
   return (
     <>
       <StandardHero
-        title="Build Your Future-Ready Workforce"
+        title="Smartslate — Build Your Future-Ready Workforce"
         subtitle="India is on the cusp of a major economic expansion, fueled by its vibrant young population. However, a significant skills gap threatens progress—companies need job-ready talent but emerging professionals aren't yet prepared."
         description="The future of business is being written in India, yet a silent crisis threatens to derail it all. Millions of ambitious individuals are entering the workforce, but they lack the specific, critical skills your company needs to innovate and compete."
         accentWords={['Future-Ready', 'skills gap', 'job-ready talent', 'silent crisis']}

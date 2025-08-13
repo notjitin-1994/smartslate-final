@@ -18,6 +18,7 @@ import {
   CheckCircle,
   FormatQuote,
   Star,
+  StarHalf,
   AutoAwesome,
   EventAvailable,
   Description,
@@ -229,6 +230,16 @@ const TestimonialAuthor = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(2),
 }));
 
+const TestimonialDisclaimer = styled(Typography)(({ theme }) => ({
+  position: 'absolute',
+  bottom: theme.spacing(0),
+  left: theme.spacing(2),
+  fontSize: '0.75rem',
+  color: 'rgba(255, 255, 255, 0.5)',
+  fontStyle: 'italic',
+  zIndex: 1,
+}));
+
 const CTAWrapper = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(6),
   display: 'flex',
@@ -391,10 +402,10 @@ const content = {
       { icon: AutoAwesome, text: 'ROI Guarantee', description: 'Measurable return on training investment' },
     ],
     testimonial: {
-      text: "The AI Foundations course gave me the blueprint to build a complete business from scratch in just 3 weeks. I automated everything—website development, database architecture, lead generation, documentation, cold outreach, meeting scheduling, and transcription. It's proven, I did it, and you can too! The course doesn't just teach AI concepts; it shows you how to turn AI into your business partner that works 24/7.",
-      author: "Jitin Nair",
-      role: "Business Owner",
-      rating: 5,
+      text: "The future of education is digital, and platforms like Smartslate are leading the transformation. Their comprehensive approach to AI, data science, and emerging technologies has fundamentally changed how we think about skill development and career readiness.",
+      author: "Mr Bharat Ravindranath",
+      role: "Creative Director, The Bangalore Editorial",
+      rating: 4.5,
     },
     cta: 'Schedule a Demo',
   },
@@ -596,15 +607,31 @@ export default function Partners({ openDemoModal }: PartnersProps) {
                         {'\u201C'}{content.businesses.testimonial.text}{'\u201D'}
                       </Typography>
                       <TestimonialAuthor>
-                        <Avatar 
-                          src="/images/userheadshot.png"
-                          alt="Jitin Nair"
-                          sx={{ 
-                            width: 48, 
-                            height: 48,
-                            objectFit: 'cover'
-                          }}
-                        />
+                        <Box sx={{ position: 'relative' }}>
+                          <Box
+                            sx={{
+                              width: 56,
+                              height: 56,
+                              borderRadius: '50%',
+                              background: '#A7DADB',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              padding: '4px'
+                            }}
+                          >
+                            <Avatar 
+                              src="/images/470809190_1118913992455380_9130060745355906785_n.jpg"
+                              alt="Mr Bharat Ravindranath headshot"
+                              sx={{ 
+                                width: 48, 
+                                height: 48,
+                                objectFit: 'cover'
+                              }}
+                              imgProps={{ loading: 'lazy', referrerPolicy: 'no-referrer' }}
+                            />
+                          </Box>
+                        </Box>
                         <Box>
                           <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                             {content.businesses.testimonial.author}
@@ -613,12 +640,24 @@ export default function Partners({ openDemoModal }: PartnersProps) {
                             {content.businesses.testimonial.role}
                           </Typography>
                           <RatingStars>
-                            {[...Array(content.businesses.testimonial.rating)].map((_, i) => (
-                              <Star key={i} sx={{ fontSize: 16 }} />
-                            ))}
+                            {[...Array(5)].map((_, i) => {
+                              const starValue = i + 1;
+                              const rating = content.businesses.testimonial.rating;
+                              
+                              if (starValue <= Math.floor(rating)) {
+                                return <Star key={i} sx={{ fontSize: 16 }} />;
+                              } else if (starValue === Math.ceil(rating) && rating % 1 !== 0) {
+                                return <StarHalf key={i} sx={{ fontSize: 16 }} />;
+                              } else {
+                                return <Star key={i} sx={{ fontSize: 16, opacity: 0.3 }} />;
+                              }
+                            })}
                           </RatingStars>
                         </Box>
                       </TestimonialAuthor>
+                      <TestimonialDisclaimer>
+                        This testimonial was part of our platform testing phase to validate user experience and content effectiveness.
+                      </TestimonialDisclaimer>
                     </TestimonialCard>
                   </motion.div>
 

@@ -7,10 +7,13 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
+    "postbuild": "next-sitemap",
     "db:push": "prisma db push",
     "db:reset": "prisma migrate reset --force --skip-generate --skip-seed",
     "seed": "node prisma/seed.ts",
-    "test": "vitest"
+    "test": "vitest",
+    "seo:report": "mkdir -p reports && npx --yes lighthouse http://localhost:3000 --output html --output-path ./reports/lh.html --chrome-flags='--headless'",
+    "seo:ci": "npm run seo:report"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -48,6 +51,7 @@
     "eslint-plugin-prettier": "^5.5.3",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
+    "next-sitemap": "^4.2.3",
     "nodemailer": "^7.0.5",
     "prettier": "^3.6.2",
     "prisma": "^6.13.0",

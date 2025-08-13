@@ -5,12 +5,11 @@ import { Box, Button, IconButton, Container, Menu, MenuItem, Avatar } from '@mui
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 import Link from 'next/link';
-import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
 
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useUserRoles } from '@/hooks/useUserRoles';
+import MobileMenu, { AnimatedHamburgerButton } from './MobileMenu';
 
 const HeaderWrapper = styled('header', {
   shouldForwardProp: (prop) => prop !== 'hide'
@@ -127,84 +126,7 @@ const CTAButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const MobileMenuButton = styled(IconButton)(({ theme }) => ({
-  display: 'none',
-  color: theme.palette.text.primary,
-  [theme.breakpoints.down('md')]: {
-    display: 'flex',
-  },
-}));
 
-const MobileMenuBackdrop = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'open'
-})<{ open: boolean }>(({ theme, open }) => ({
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  width: '100%',
-  height: '100%',
-  backgroundColor: 'rgba(0, 0, 0, 0.3)',
-  backdropFilter: 'blur(5px)',
-  opacity: open ? 1 : 0,
-  visibility: open ? 'visible' : 'hidden',
-  transition: 'all 0.3s ease',
-  zIndex: 1100,
-}));
-
-const MobileMenuPanel = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'open'
-})<{ open: boolean }>(({ theme, open }) => ({
-  position: 'fixed',
-  top: 0,
-  right: 0,
-  width: '80%',
-  maxWidth: 320,
-  height: '100%',
-  backgroundColor: 'rgba(13, 27, 42, 0.95)',
-  backdropFilter: 'blur(20px)',
-  zIndex: 1101,
-  padding: theme.spacing(4),
-  transform: open ? 'translateX(0)' : 'translateX(100%)',
-  transition: 'transform 0.3s ease',
-  boxShadow: '-4px 0 24px rgba(0, 0, 0, 0.3)',
-  borderLeft: `1px solid ${theme.palette.primary.main}`,
-}));
-
-const MobileNav = styled('nav')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: theme.spacing(3),
-  marginTop: theme.spacing(8),
-}));
-
-const MobileNavLink = styled(Link)(({ theme }) => ({
-  color: theme.palette.text.primary,
-  textDecoration: 'none',
-  fontSize: '1.1rem',
-  fontWeight: 500,
-  padding: `${theme.spacing(1.5)} 0`,
-  borderBottom: `1px solid ${theme.palette.divider}`,
-  transition: 'all 0.2s ease',
-  '&:hover': {
-    color: theme.palette.primary.main,
-    paddingLeft: theme.spacing(1),
-  },
-}));
-
-const MobileCTAButton = styled(Button)(({ theme }) => ({
-  marginTop: theme.spacing(4),
-  backgroundColor: theme.palette.secondary.main,
-  color: '#ffffff',
-  padding: `${theme.spacing(1.5)} ${theme.spacing(3)}`,
-  borderRadius: theme.spacing(1),
-  textTransform: 'none',
-  fontWeight: 600,
-  fontSize: '1rem',
-  width: '100%',
-  '&:hover': {
-    backgroundColor: theme.palette.secondary.dark,
-  },
-}));
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -231,16 +153,7 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [mobileMenuOpen]);
+
 
   const navItems = [
     { label: 'Products', href: '/products' },
@@ -253,7 +166,7 @@ export default function Header() {
       <HeaderWrapper hide={mobileMenuOpen}>
         <HeaderBackground />
         <HeaderContent maxWidth="lg">
-          <LogoLink href="/">
+          <LogoLink href="/" aria-label="Smartslate home">
             <Image
               src="/logo.png"
               alt="SmartSlate Logo"
@@ -261,6 +174,7 @@ export default function Header() {
               height={32}
               priority
             />
+            <span className="sr-only">Smartslate</span>
           </LogoLink>
 
           <NavContainer>
@@ -297,123 +211,20 @@ export default function Header() {
               </CTAButton>
             )}
 
-            <MobileMenuButton
+            <AnimatedHamburgerButton
+              open={mobileMenuOpen}
               onClick={() => setMobileMenuOpen(true)}
               aria-label="Open menu"
-              aria-expanded={mobileMenuOpen ? 'true' : 'false'}
-              sx={{
-                display: { xs: 'flex', md: 'none' },
-                transition: 'transform 0.3s ease',
-                transform: mobileMenuOpen ? 'rotate(90deg)' : 'none',
-              }}
-            >
-              <MenuIcon />
-            </MobileMenuButton>
+            />
           </NavContainer>
         </HeaderContent>
       </HeaderWrapper>
 
-      <MobileMenuBackdrop
+      <MobileMenu
         open={mobileMenuOpen}
-        onClick={() => setMobileMenuOpen(false)}
+        onClose={() => setMobileMenuOpen(false)}
+        navItems={navItems}
       />
-
-      <MobileMenuPanel open={mobileMenuOpen}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-          <Image
-            src="/logo.png"
-            alt="SmartSlate Logo"
-            width={140}
-            height={32}
-          />
-          <IconButton
-            onClick={() => setMobileMenuOpen(false)}
-            aria-label="Close menu"
-            sx={{ color: 'text.primary', transition: 'transform 0.3s ease', transform: mobileMenuOpen ? 'rotate(-90deg)' : 'none' }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </Box>
-
-        {/* Logo removed - header logo remains visible */}
-
-        <MobileNav>
-          {navItems.map((item) => (
-            <MobileNavLink
-              key={item.href}
-              href={item.href}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {item.label}
-            </MobileNavLink>
-          ))}
-        </MobileNav>
-
-        {isAuthenticated ? (
-          <>
-            {isOwner && (
-              <MobileCTAButton 
-                variant="outlined" 
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  router.push('/admin');
-                }}
-                sx={{ 
-                  mb: 2,
-                  borderColor: 'secondary.main',
-                  color: 'secondary.main',
-                  '&:hover': {
-                    borderColor: 'secondary.light',
-                    backgroundColor: 'rgba(79, 70, 229, 0.1)'
-                  }
-                }}
-              >
-                Admin Dashboard
-              </MobileCTAButton>
-            )}
-            <MobileCTAButton 
-              variant="outlined" 
-              onClick={() => {
-                setMobileMenuOpen(false);
-                router.push('/profile');
-              }}
-              sx={{ 
-                mb: 2,
-                borderColor: 'primary.main',
-                color: 'primary.main',
-                '&:hover': {
-                  borderColor: 'primary.light',
-                  backgroundColor: 'rgba(167, 218, 219, 0.1)'
-                }
-              }}
-            >
-              Profile
-            </MobileCTAButton>
-            <MobileCTAButton 
-              variant="contained" 
-              onClick={() => {
-                setMobileMenuOpen(false);
-                window.location.href = '/handler/sign-out';
-              }}
-              sx={{
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                '&:hover': {
-                  backgroundColor: 'rgba(255, 255, 255, 0.15)'
-                }
-              }}
-            >
-              Sign Out
-            </MobileCTAButton>
-          </>
-        ) : (
-          <MobileCTAButton variant="contained" onClick={() => {
-            setMobileMenuOpen(false);
-            window.location.href = '/handler/sign-up';
-          }}>
-            Get Started
-          </MobileCTAButton>
-        )}
-      </MobileMenuPanel>
 
       {/* User Menu */}
       <Menu

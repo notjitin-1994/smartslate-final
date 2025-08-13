@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { StackTheme } from "@stackframe/stack";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { AuthProvider } from "@/contexts/AuthContext";
@@ -13,38 +13,36 @@ import { Suspense } from "react";
 
 
 export const metadata: Metadata = {
-  title: "Smartslate",
-  description: "Revolutionizing the way the World learns. Bridge the skills gap with SmartSlate's innovative learning solutions.",
+  metadataBase: new URL('https://smartslate.io'),
+  title: {
+    default: "Smartslate — Build Your Future-Ready Workforce",
+    template: "%s | Smartslate",
+  },
+  description: "Revolutionizing the way the World learns. Bridge the skills gap with Smartslate's innovative learning solutions.",
   keywords: "learning, workforce development, skills training, AI education, LMS, corporate training",
   authors: [{ name: "SmartSlate Team" }],
   openGraph: {
-    title: "SmartSlate - Build Your Future-Ready Workforce",
+    title: "Smartslate — Build Your Future-Ready Workforce",
     description: "Revolutionizing the way the World learns.",
     type: "website",
     locale: "en_US",
     url: "https://smartslate.io",
-    siteName: "SmartSlate",
+    siteName: "Smartslate",
     images: [
       {
-        url: "/og-image.png",
+        url: "/logo.png",
         width: 1200,
         height: 630,
-        alt: "SmartSlate - Build Your Future-Ready Workforce"
+        alt: "Smartslate — Build Your Future-Ready Workforce"
       }
     ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "SmartSlate - Build Your Future-Ready Workforce",
+    title: "Smartslate — Build Your Future-Ready Workforce",
     description: "Revolutionizing the way the World learns.",
-    images: ["/og-image.png"]
+    images: ["/logo.png"]
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1
-  },
-  themeColor: "#091521",
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
@@ -71,6 +69,13 @@ export const metadata: Metadata = {
   }
 };
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  themeColor: '#091521',
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -78,6 +83,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
+        <link rel="preload" href="/logo.png" as="image" imageSrcSet="/logo.png 1x" imageSizes="140px" />
+      </head>
       <body>
         <AuthProvider>
           <AuthStackProvider>

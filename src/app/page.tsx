@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Hero from '@/components/landing/Hero';
+import JsonLd from '@/components/seo/JsonLd';
+import { getOrganizationJsonLd, getWebsiteJsonLd } from '@/components/seo/jsonld';
 import TalentParadox from '@/components/landing/TalentParadox';
 import Framework from '@/components/landing/Framework';
 import ROICalculator from '@/components/landing/ROICalculator';
@@ -152,8 +154,6 @@ export default function Home() {
 
   return (
     <PageWrapper>
-
-
       <NavigationDots>
         {sections.map((section, index) => (
           <Dot
@@ -212,6 +212,12 @@ export default function Home() {
 
       {/* Demo Modal - shared across all components */}
       <DemoModal isOpen={isDemoModalOpen} onClose={closeDemoModal} />
+
+      {/* JSON-LD for Organization and WebSite */}
+      <JsonLd data={getOrganizationJsonLd()} />
+      <JsonLd data={getWebsiteJsonLd()} />
     </PageWrapper>
   );
 }
+
+// Note: cannot export metadata from a Client Component.

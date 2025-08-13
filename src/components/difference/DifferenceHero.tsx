@@ -49,7 +49,7 @@ export default function DifferenceHero() {
       accentWords={['SmartSlate', 'transformative', 'learning ecosystems']}
       showScrollIndicator={true}
     >
-      <Link href="/personal-testimonial" style={{ textDecoration: 'none' }}>
+      <Link href="/smartslate-testimony" style={{ textDecoration: 'none' }}>
         <CTAButton variant="contained" size="large">
           Discover Our AI-Human Journey
         </CTAButton>

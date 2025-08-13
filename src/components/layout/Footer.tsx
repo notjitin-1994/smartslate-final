@@ -3,6 +3,7 @@
 import { Box, Container, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const FooterWrapper = styled('footer')(({ theme }) => ({
   marginTop: theme.spacing(0.02),
@@ -73,13 +74,16 @@ export default function Footer() {
     <FooterWrapper>
       <FooterContent maxWidth="lg">
         <LogoWrapper>
-          <Image
-            src="/logo.png"
-            alt="SmartSlate Logo"
-            width={140}
-            height={34}
-            style={{ height: 'auto' }}
-          />
+          <Link href="/" aria-label="Smartslate home">
+            <Image
+              src="/logo.png"
+              alt="SmartSlate Logo"
+              width={140}
+              height={34}
+              style={{ height: 'auto' }}
+            />
+            <span className="sr-only">Smartslate</span>
+          </Link>
         </LogoWrapper>
 
         <FooterText>
