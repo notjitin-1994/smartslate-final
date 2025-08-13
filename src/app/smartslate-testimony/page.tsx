@@ -291,6 +291,8 @@ export default function SmartslateTestimonyPage() {
   const [desktopTocOpen, setDesktopTocOpen] = useState(false);
   const [mobileTocOpen, setMobileTocOpen] = useState(false);
   const [currentChapter, setCurrentChapter] = useState(1);
+  const [subtitleTransition, setSubtitleTransition] = useState(false);
+  const [showSkillStackExploration, setShowSkillStackExploration] = useState(false);
 
   // Inline highlighter for brand-accent emphasis within paragraphs
   const highlightPhrases = (text: string, phrases: string[]) => {
@@ -430,6 +432,26 @@ export default function SmartslateTestimonyPage() {
     },
   ];
 
+  // Skill Stack Exploration content
+  const skillStackContent = [
+    {
+      text: 'The traditional approach to technology implementation focuses on tools and infrastructure—what we call the "Tech Stack." But Smartslate represents a fundamental shift: the "Skill Stack."',
+      italic: false,
+    },
+    {
+      text: 'While Tech Stack emphasizes what you use, Skill Stack emphasizes what you can do. It\'s the difference between having powerful software and having the capability to wield it effectively.',
+      italic: false,
+    },
+    {
+      text: 'In the Skill Stack paradigm, every tool becomes an extension of human capability. Teams don\'t just learn to use AI—they learn to think with AI, to collaborate with AI, and to create new possibilities that neither humans nor AI could achieve alone.',
+      italic: false,
+    },
+    {
+      text: 'This is why Smartslate\'s platform exists: to transform capability gaps into capability bridges, turning every learner into a force multiplier for their organisation.',
+      italic: false,
+    },
+  ];
+
   // Navigation handlers
   const handleNextChapter = () => {
     if (currentChapter < chapters.length) {
@@ -443,10 +465,17 @@ export default function SmartslateTestimonyPage() {
     }
   };
 
+  // Subtitle transition handler
+  const handleSubtitleTransition = () => {
+    setSubtitleTransition(true);
+    setShowSkillStackExploration(true);
+  };
+
 
 
   const tocSections = [
     { id: 'why-leaders', title: 'From a Bustling Bay to Founder\'s Desk: The Smartslate Story' },
+    { id: 'skill-stack-exploration', title: 'Skill Stack Exploration', conditional: true },
     { id: 'skills-impact', title: 'Skills With Direct Organisational Impact' },
     { id: 'proven-practice', title: 'Proven in Practice' },
     { id: 'roi', title: 'ROI for Your Organisation' },
@@ -479,7 +508,7 @@ export default function SmartslateTestimonyPage() {
     }, observerOptions);
 
     // Observe all sections with exact ID matching
-    const sectionIds = ['why-leaders', 'skills-impact', 'proven-practice', 'roi', 'cohort-delivery', 'timeline', 'bottom-line'];
+    const sectionIds = ['why-leaders', 'skill-stack-exploration', 'skills-impact', 'proven-practice', 'roi', 'cohort-delivery', 'timeline', 'bottom-line'];
     sectionIds.forEach((id) => {
       const section = document.getElementById(id);
       if (section) {
@@ -625,13 +654,19 @@ export default function SmartslateTestimonyPage() {
             </Button>
           </Box>
           <List>
-                        {tocSections.map((section) => (
-              <ListItem key={section.id} disablePadding sx={{ mb: 1.5 }}>
-                <ListItemButton
-                  component="a"
-                  href={`#${section.id}`}
-                  onClick={() => setMobileTocOpen(false)}
-                                      sx={{ 
+            {tocSections.map((section) => {
+              // Skip conditional sections that aren't active yet
+              if (section.conditional && !showSkillStackExploration) {
+                return null;
+              }
+              
+              return (
+                <ListItem key={section.id} disablePadding sx={{ mb: 1.5 }}>
+                  <ListItemButton
+                    component="a"
+                    href={`#${section.id}`}
+                    onClick={() => setMobileTocOpen(false)}
+                    sx={{ 
                       borderRadius: 2,
                       py: 2,
                       px: 3,
@@ -647,24 +682,25 @@ export default function SmartslateTestimonyPage() {
                         boxShadow: '0 6px 16px rgba(167, 218, 219, 0.15)'
                       }
                     }}
-                >
-                  <ListItemText 
-                    primary={section.title} 
-                    primaryTypographyProps={{ 
-                      sx: { 
-                        fontSize: '1rem', 
-                        color: activeSection === section.id ? 'primary.main' : '#ffffff',
-                        fontWeight: activeSection === section.id ? 700 : 600,
-                        lineHeight: 1.4,
-                        letterSpacing: activeSection === section.id ? '0.2px' : '0px',
-                        textShadow: activeSection === section.id ? '0 1px 2px rgba(167, 218, 219, 0.1)' : '0 2px 4px rgba(0, 0, 0, 0.8)'
+                  >
+                    <ListItemText 
+                      primary={section.title} 
+                      primaryTypographyProps={{ 
+                        sx: { 
+                          fontSize: '1rem', 
+                          color: activeSection === section.id ? 'primary.main' : '#ffffff',
+                          fontWeight: activeSection === section.id ? 700 : 600,
+                          lineHeight: 1.4,
+                          letterSpacing: activeSection === section.id ? '0.2px' : '0px',
+                          textShadow: activeSection === section.id ? '0 1px 2px rgba(167, 218, 219, 0.1)' : '0 2px 4px rgba(0, 0, 0, 0.8)'
                       } 
                     }} 
                   />
                 </ListItemButton>
               </ListItem>
-            ))}
-          </List>
+            );
+          })}
+        </List>
         </MobileTOCPaper>
       </MobileTOCModal>
 
@@ -699,28 +735,34 @@ export default function SmartslateTestimonyPage() {
           Table of Contents
         </Typography>
         <List dense>
-          {tocSections.map((section) => (
-            <ListItem key={section.id} disablePadding>
-                              <ListItemButton
+          {tocSections.map((section) => {
+            // Skip conditional sections that aren't active yet
+            if (section.conditional && !showSkillStackExploration) {
+              return null;
+            }
+            
+            return (
+              <ListItem key={section.id} disablePadding>
+                <ListItemButton
                   component="a"
                   href={`#${section.id}`}
                   onClick={() => setDesktopTocOpen(false)}
-                                  sx={{ 
-                  py: 1.5,
-                  px: 2,
-                  borderRadius: 1,
-                  color: activeSection === section.id ? 'primary.main' : '#ffffff',
-                  backgroundColor: activeSection === section.id ? 'rgba(167, 218, 219, 0.1)' : 'transparent',
-                  borderLeft: activeSection === section.id ? '3px solid' : '3px solid transparent',
-                  borderColor: activeSection === section.id ? 'primary.main' : 'transparent',
-                  transition: 'all 0.3s ease',
-                  '&:hover': { 
-                    backgroundColor: 'rgba(167, 218, 219, 0.1)',
-                    transform: 'translateX(4px)'
-                  }
-                }}
+                  sx={{ 
+                    py: 1.5,
+                    px: 2,
+                    borderRadius: 1,
+                    color: activeSection === section.id ? 'primary.main' : '#ffffff',
+                    backgroundColor: activeSection === section.id ? 'rgba(167, 218, 219, 0.1)' : 'transparent',
+                    borderLeft: activeSection === section.id ? '3px solid' : '3px solid transparent',
+                    borderColor: activeSection === section.id ? 'primary.main' : 'transparent',
+                    transition: 'all 0.3s ease',
+                    '&:hover': { 
+                      backgroundColor: 'rgba(167, 218, 219, 0.1)',
+                      transform: 'translateX(4px)'
+                    }
+                  }}
                 >
-                                  <ListItemText 
+                  <ListItemText 
                     primary={section.title} 
                     primaryTypographyProps={{ 
                       sx: { 
@@ -732,9 +774,10 @@ export default function SmartslateTestimonyPage() {
                       } 
                     }} 
                   />
-              </ListItemButton>
-            </ListItem>
-          ))}
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
         </List>
       </StickyTOC>
 
@@ -748,7 +791,7 @@ export default function SmartslateTestimonyPage() {
             viewport={{ once: true }}
           >
             {/* Story Header */}
-            <Box sx={{ textAlign: 'left', mb: 8 }}>
+            <Box sx={{ textAlign: 'left', mb: 8, position: 'relative', minHeight: '80px' }}>
               <Typography variant="h2" component="h2" gutterBottom sx={{
                 background: 'linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%)',
                 backgroundClip: 'text',
@@ -761,15 +804,63 @@ export default function SmartslateTestimonyPage() {
               }}>
                 From a Bustling Bay to Founder's Desk
               </Typography>
-              <Typography variant="h3" sx={{ 
-                fontSize: { xs: '1.5rem', md: '2rem' },
-                fontWeight: 600,
-                color: 'primary.main',
-                mb: 2,
-                fontStyle: 'italic'
-              }}>
-                The Smartslate Story
-              </Typography>
+              
+              {/* Original Subtitle with Fade Out */}
+              <motion.div
+                initial={{ opacity: 1, x: 0 }}
+                animate={{ 
+                  opacity: subtitleTransition ? 0 : 1, 
+                  x: subtitleTransition ? -20 : 0 
+                }}
+                transition={{ 
+                  duration: 0.2, 
+                  ease: "easeInOut"
+                }}
+                style={{ 
+                  position: 'absolute',
+                  width: '100%'
+                }}
+              >
+                <Typography variant="h3" sx={{ 
+                  fontSize: { xs: '1.5rem', md: '2rem' },
+                  fontWeight: 600,
+                  color: 'primary.main',
+                  mb: 2,
+                  fontStyle: 'italic'
+                }}>
+                  The Smartslate Story
+                </Typography>
+              </motion.div>
+
+              {/* New Subtitle with Fade In from Right */}
+              <motion.div
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ 
+                  opacity: subtitleTransition ? 1 : 0, 
+                  x: subtitleTransition ? 0 : 100 
+                }}
+                transition={{ 
+                  duration: 0.5, 
+                  ease: "easeOut",
+                  delay: 5.0,
+                  opacity: { duration: 0.8 },
+                  x: { duration: 1.0 }
+                }}
+                style={{ 
+                  position: 'absolute',
+                  width: '100%'
+                }}
+              >
+                <Typography variant="h3" sx={{ 
+                  fontSize: { xs: '1.5rem', md: '2rem' },
+                  fontWeight: 600,
+                  color: 'primary.main',
+                  mb: 2,
+                  fontStyle: 'italic'
+                }}>
+                  The dawn of Skill Stack - Tech Stack vs. Skill Stack
+                </Typography>
+              </motion.div>
             </Box>
 
             {/* Interactive Story Timeline */}
@@ -791,74 +882,110 @@ export default function SmartslateTestimonyPage() {
                   {/* Text Content */}
                   <Box sx={{ flex: 1 }}>
                     <SectionCard sx={{ minHeight: '400px' }}>
-                      <Typography variant="h4" sx={{ 
-                        fontSize: { xs: '1.25rem', md: '1.5rem' },
-                        fontWeight: 700,
-                        color: 'primary.main',
-                        mb: 3
-                      }}>
-                        {chapters[currentChapter - 1].title}
-                      </Typography>
-                      {chapters[currentChapter - 1].content.map((paragraph, index) => (
-                        paragraph.isLink ? (
-                          <Link href="/courses" key={index} style={{ textDecoration: 'none' }}>
-                            <Box sx={{ 
-                              display: 'flex', 
-                              alignItems: 'center', 
-                              gap: 1,
-                              cursor: 'pointer',
-                              transition: 'all 0.3s ease',
-                              '&:hover': {
-                                transform: 'translateX(4px)',
-                                '& .arrow-icon': {
-                                  transform: 'translateX(4px)',
-                                }
-                              }
-                            }}>
+                      {!showSkillStackExploration ? (
+                        <>
+                          <Typography variant="h4" sx={{ 
+                            fontSize: { xs: '1.25rem', md: '1.5rem' },
+                            fontWeight: 700,
+                            color: 'primary.main',
+                            mb: 3
+                          }}>
+                            {chapters[currentChapter - 1].title}
+                          </Typography>
+                          {chapters[currentChapter - 1].content.map((paragraph, index) => (
+                            paragraph.isLink ? (
+                              <Box 
+                                key={index}
+                                onClick={handleSubtitleTransition}
+                                sx={{ 
+                                  display: 'flex', 
+                                  alignItems: 'center', 
+                                  gap: 1,
+                                  cursor: 'pointer',
+                                  transition: 'all 0.3s ease',
+                                  '&:hover': {
+                                    transform: 'translateX(4px)',
+                                    '& .arrow-icon': {
+                                      transform: 'translateX(4px)',
+                                    }
+                                  }
+                                }}
+                              >
+                                <Typography 
+                                  variant="body1" 
+                                  sx={{ 
+                                    fontSize: { xs: '1rem', md: '1.125rem' },
+                                    lineHeight: 1.8,
+                                    color: '#06B6D4',
+                                    mb: 0,
+                                    fontWeight: 600,
+                                    fontStyle: 'italic',
+                                    textDecoration: 'none'
+                                  }}
+                                >
+                                  {paragraph.text}
+                                </Typography>
+                                <ArrowForwardIcon 
+                                  className="arrow-icon"
+                                  sx={{ 
+                                    color: '#06B6D4', 
+                                    fontSize: '1.2rem',
+                                    transition: 'transform 0.3s ease'
+                                  }} 
+                                />
+                              </Box>
+                            ) : (
                               <Typography 
+                                key={index}
                                 variant="body1" 
                                 sx={{ 
                                   fontSize: { xs: '1rem', md: '1.125rem' },
                                   lineHeight: 1.8,
-                                  color: '#06B6D4',
-                                  mb: 0,
-                                  fontWeight: 600,
-                                  fontStyle: 'italic',
-                                  textDecoration: 'none'
+                                  color: 'text.primary',
+                                  mb: index < chapters[currentChapter - 1].content.length - 1 ? 3 : 0,
+                                  fontWeight: 400,
+                                  fontStyle: paragraph.italic ? 'italic' : 'normal'
                                 }}
                               >
-                                {paragraph.text}
+                                {highlightPhrases(
+                                  paragraph.text,
+                                  (chapters[currentChapter - 1] as any).highlights || []
+                                )}
                               </Typography>
-                              <ArrowForwardIcon 
-                                className="arrow-icon"
-                                sx={{ 
-                                  color: '#06B6D4', 
-                                  fontSize: '1.2rem',
-                                  transition: 'transform 0.3s ease'
-                                }} 
-                              />
-                            </Box>
-                          </Link>
-                        ) : (
-                          <Typography 
-                            key={index}
-                            variant="body1" 
-                            sx={{ 
-                              fontSize: { xs: '1rem', md: '1.125rem' },
-                              lineHeight: 1.8,
-                              color: 'text.primary',
-                              mb: index < chapters[currentChapter - 1].content.length - 1 ? 3 : 0,
-                              fontWeight: 400,
-                              fontStyle: paragraph.italic ? 'italic' : 'normal'
-                            }}
-                          >
-                            {highlightPhrases(
-                              paragraph.text,
-                              (chapters[currentChapter - 1] as any).highlights || []
-                            )}
+                            )
+                          ))}
+                        </>
+                      ) : (
+                        <Box id="skill-stack-exploration">
+                          <Typography variant="h4" sx={{ 
+                            fontSize: { xs: '1.25rem', md: '1.5rem' },
+                            fontWeight: 700,
+                            color: 'primary.main',
+                            mb: 3
+                          }}>
+                            Skill Stack Exploration
                           </Typography>
-                        )
-                      ))}
+                          {skillStackContent.map((paragraph, index) => (
+                            <Typography 
+                              key={index}
+                              variant="body1" 
+                              sx={{ 
+                                fontSize: { xs: '1rem', md: '1.125rem' },
+                                lineHeight: 1.8,
+                                color: 'text.primary',
+                                mb: index < skillStackContent.length - 1 ? 3 : 0,
+                                fontWeight: 400,
+                                fontStyle: paragraph.italic ? 'italic' : 'normal'
+                              }}
+                            >
+                              {highlightPhrases(
+                                paragraph.text,
+                                ['Tech Stack', 'Skill Stack', 'Smartslate', 'capability', 'AI']
+                              )}
+                            </Typography>
+                          ))}
+                        </Box>
+                      )}
                     </SectionCard>
                   </Box>
                 </Box>
@@ -872,7 +999,7 @@ export default function SmartslateTestimonyPage() {
                 display: 'flex',
                 flexDirection: 'column',
                 mt: 4,
-                borderRadius: '16px',
+                borderRadius: '12px',
                 background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
                 border: '1px solid rgba(167, 218, 219, 0.2)',
                 boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
@@ -881,7 +1008,7 @@ export default function SmartslateTestimonyPage() {
                 {/* Horizontal Progress Bar */}
                 <Box sx={{
                   width: '100%',
-                  height: '3px',
+                  height: '2px',
                   background: 'rgba(167, 218, 219, 0.1)',
                   position: 'relative'
                 }}>
@@ -890,7 +1017,7 @@ export default function SmartslateTestimonyPage() {
                     height: '100%',
                     background: 'linear-gradient(90deg, #06B6D4 0%, #4F46E5 100%)',
                     transition: 'width 0.6s ease-in-out',
-                    borderRadius: '0 2px 2px 0'
+                    borderRadius: '0 1px 1px 0'
                   }} />
                 </Box>
 
@@ -899,8 +1026,8 @@ export default function SmartslateTestimonyPage() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  px: 2,
-                  py: 2
+                  px: 1.5,
+                  py: 1.5
                 }}>
                   {/* Previous Button */}
                   <Box
@@ -908,14 +1035,14 @@ export default function SmartslateTestimonyPage() {
                     sx={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 1,
+                      gap: 0.75,
                       opacity: currentChapter === 1 ? 0.3 : 1,
                       cursor: currentChapter === 1 ? 'not-allowed' : 'pointer',
                       transition: 'all 0.3s ease',
                       '&:hover': currentChapter !== 1 ? {
-                        transform: 'translateX(-4px)',
+                        transform: 'translateX(-3px)',
                         '& .nav-arrow': {
-                          transform: 'translateX(-2px) rotate(180deg)',
+                          transform: 'translateX(-1px) rotate(180deg)',
                         }
                       } : {},
                     }}
@@ -924,23 +1051,23 @@ export default function SmartslateTestimonyPage() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      width: 56,
-                      height: 56,
+                      width: 40,
+                      height: 40,
                       borderRadius: '50%',
                       background: 'linear-gradient(135deg, rgba(167, 218, 219, 0.1) 0%, rgba(79, 70, 229, 0.1) 100%)',
-                      border: '2px solid rgba(167, 218, 219, 0.3)',
+                      border: '1.5px solid rgba(167, 218, 219, 0.3)',
                       transition: 'all 0.3s ease',
                       '&:hover': currentChapter !== 1 ? {
                         background: 'linear-gradient(135deg, rgba(167, 218, 219, 0.2) 0%, rgba(79, 70, 229, 0.2) 100%)',
                         borderColor: 'rgba(167, 218, 219, 0.6)',
-                        boxShadow: '0 8px 25px rgba(167, 218, 219, 0.3)',
+                        boxShadow: '0 6px 20px rgba(167, 218, 219, 0.3)',
                       } : {},
                     }}>
                       <ArrowForwardIcon 
                         className="nav-arrow"
                         sx={{ 
                           color: '#06B6D4', 
-                          fontSize: '1.75rem',
+                          fontSize: '1.25rem',
                           transform: 'rotate(180deg)',
                           transition: 'transform 0.3s ease'
                         }} 
@@ -951,7 +1078,7 @@ export default function SmartslateTestimonyPage() {
                       sx={{ 
                         color: '#06B6D4',
                         fontWeight: 600,
-                        fontSize: '0.875rem',
+                        fontSize: '0.75rem',
                         opacity: 0.8,
                         transition: 'opacity 0.3s ease',
                         '&:hover': {
@@ -969,14 +1096,14 @@ export default function SmartslateTestimonyPage() {
                     sx={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 1,
+                      gap: 0.75,
                       opacity: currentChapter === chapters.length ? 0.3 : 1,
                       cursor: currentChapter === chapters.length ? 'not-allowed' : 'pointer',
                       transition: 'all 0.3s ease',
                       '&:hover': currentChapter !== chapters.length ? {
-                        transform: 'translateX(4px)',
+                        transform: 'translateX(3px)',
                         '& .nav-arrow': {
-                          transform: 'translateX(2px)',
+                          transform: 'translateX(1px)',
                         }
                       } : {},
                     }}
@@ -986,7 +1113,7 @@ export default function SmartslateTestimonyPage() {
                       sx={{ 
                         color: '#06B6D4',
                         fontWeight: 600,
-                        fontSize: '0.875rem',
+                        fontSize: '0.75rem',
                         opacity: 0.8,
                         transition: 'opacity 0.3s ease',
                         '&:hover': {
@@ -1000,23 +1127,23 @@ export default function SmartslateTestimonyPage() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      width: 56,
-                      height: 56,
+                      width: 40,
+                      height: 40,
                       borderRadius: '50%',
                       background: 'linear-gradient(135deg, rgba(167, 218, 219, 0.1) 0%, rgba(79, 70, 229, 0.1) 100%)',
-                      border: '2px solid rgba(167, 218, 219, 0.3)',
+                      border: '1.5px solid rgba(167, 218, 219, 0.3)',
                       transition: 'all 0.3s ease',
                       '&:hover': currentChapter !== chapters.length ? {
                         background: 'linear-gradient(135deg, rgba(167, 218, 219, 0.2) 0%, rgba(79, 70, 229, 0.2) 100%)',
                         borderColor: 'rgba(167, 218, 219, 0.6)',
-                        boxShadow: '0 8px 25px rgba(167, 218, 219, 0.3)',
+                        boxShadow: '0 6px 20px rgba(167, 218, 219, 0.3)',
                       } : {},
                     }}>
                       <ArrowForwardIcon 
                         className="nav-arrow"
                         sx={{ 
                           color: '#06B6D4', 
-                          fontSize: '1.75rem',
+                          fontSize: '1.25rem',
                           transition: 'transform 0.3s ease'
                         }} 
                       />
