@@ -33,6 +33,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import CloseIcon from '@mui/icons-material/Close';
 import ListIcon from '@mui/icons-material/List';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 
 // Styled components following the project's design system
@@ -60,13 +61,7 @@ const SectionCard = styled(Card)(({ theme }) => ({
   border: '2px solid rgba(255, 255, 255, 0.08)',
   borderRadius: theme.spacing(3),
   padding: theme.spacing(4),
-  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
   boxShadow: '0 8px 24px rgba(0, 0, 0, 0.1)',
-  '&:hover': {
-    transform: 'translateY(-8px) scale(1.02)',
-    boxShadow: '0 20px 40px rgba(167, 218, 219, 0.15)',
-    borderColor: 'rgba(167, 218, 219, 0.3)',
-  },
   [theme.breakpoints.down('sm')]: {
     padding: theme.spacing(3),
   },
@@ -295,9 +290,116 @@ export default function SmartslateTestimonyPage() {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [desktopTocOpen, setDesktopTocOpen] = useState(false);
   const [mobileTocOpen, setMobileTocOpen] = useState(false);
+  const [currentChapter, setCurrentChapter] = useState(1);
+
+  // Chapter data
+  const chapters = [
+    {
+      title: 'Chapter 1: The Spark',
+      content: [
+        {
+          text: 'He began as a Bachelor of Commerce graduate with no illusions of grandeur—just a headset, a buzzing bay lined with long desks, people seated side-by-side and across, their voices weaving into a constant backdrop of conversation and ringing phones.',
+          italic: false
+        },
+        {
+          text: 'In that hum of activity, he found his first spark: while training new hires, he discovered that teaching wasn\'t just something he could do—it was something he loved doing.',
+          italic: false
+        }
+      ]
+    },
+    {
+      title: 'Chapter 2: The Evolution',
+      content: [
+        {
+          text: 'This passion pulled him into HR, and eventually, into the role of corporate trainer at a multinational company. Here, he found his rhythm—guiding others, designing learning paths, and creating "aha!" moments.',
+          italic: false
+        },
+        {
+          text: 'But curiosity pushed him further. He learned Instructional Design, crafting high-impact courses across companies of every size.',
+          italic: false
+        }
+      ]
+    },
+    {
+      title: 'Chapter 3: The Realization',
+      content: [
+        {
+          text: 'Then, a realization struck. There was a gap in the learning ecosystem—a problem no existing solution truly solved. To fix it, he needed more than ideas; he needed a platform. But building it meant reinventing himself.',
+          italic: false
+        },
+        {
+          text: 'So, he did.',
+          italic: true
+        }
+      ]
+    },
+    {
+      title: 'Chapter 4: The Reinvention',
+      content: [
+        {
+          text: 'He became his own brand strategist, creating the visual identity from scratch. He learned frontend design, then frontend development, then fullstack engineering. He built his own LMS, his own authoring tool, his own systems.',
+          italic: false
+        },
+        {
+          text: 'Piece by piece, he wasn\'t just making software—he was building an ecosystem.',
+          italic: false
+        }
+      ]
+    },
+    {
+      title: 'Chapter 5: The AI Partnership',
+      content: [
+        {
+          text: 'And he wasn\'t doing it alone. His secret weapon? AI.',
+          italic: false
+        },
+        {
+          text: 'AI helped him write website copy, choose the perfect logo, craft the color palette, design the UI, and even engineer the infrastructure. Every part of the platform—concept to code—was touched by human vision and AI acceleration.',
+          italic: false
+        }
+      ]
+    },
+    {
+      title: 'Chapter 6: The Result',
+      content: [
+        {
+          text: 'That platform became Smartslate.',
+          italic: false
+        },
+        {
+          text: 'What started in a buzzing customer care bay became a company—a living, breathing solution that embodied years of learning, resilience, and reinvention.',
+          italic: false
+        },
+        {
+          text: 'Read on to discover how he turned skills into a system, and a dream into Smartslate.',
+          italic: true,
+          isLink: true
+        }
+      ]
+    }
+  ];
+
+  // Navigation handlers
+  const handleNextChapter = () => {
+    if (currentChapter < chapters.length) {
+      setCurrentChapter(currentChapter + 1);
+    }
+  };
+
+  const handlePrevChapter = () => {
+    if (currentChapter > 1) {
+      setCurrentChapter(currentChapter - 1);
+    }
+  };
+
+  // Helper function to get chapter slug for illustration filename
+  const getChapterSlug = (chapterNumber: number) => {
+    const slugs = ['spark-alt', 'evolution-alt', 'realization-alt', 'reinvention-alt', 'ai-partnership-alt', 'result-alt'];
+    return slugs[chapterNumber - 1];
+  };
 
   const tocSections = [
-    { id: 'why-leaders', title: 'Why Leaders Are Choosing AI Foundations: Concept to Application' },
+    { id: 'why-leaders', title: 'From a Bustling Bay to Founder\'s Desk: The Smartslate Story' },
     { id: 'skills-impact', title: 'Skills With Direct Organisational Impact' },
     { id: 'proven-practice', title: 'Proven in Practice' },
     { id: 'roi', title: 'ROI for Your Organisation' },
@@ -590,7 +692,7 @@ export default function SmartslateTestimonyPage() {
       </StickyTOC>
 
       <Container maxWidth="lg">
-        {/* Why Leaders Are Choosing AI Foundations: Concept to Application */}
+                {/* From a Bustling Bay to Founder's Desk: The Smartslate Story */}
         <SectionWrapper id="why-leaders">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -598,36 +700,245 @@ export default function SmartslateTestimonyPage() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <Typography variant="h2" component="h2" gutterBottom sx={{ 
-              fontSize: { xs: '2.5rem', md: '3rem', lg: '3.5rem' },
-              fontWeight: 700,
-              color: 'text.primary',
-              mb: 6,
-              lineHeight: 1.2
-            }}>
-              Why Leaders Are Choosing AI Foundations: Concept to Application
-            </Typography>
-            
-            <SectionCard>
-              <Typography variant="body1" sx={{ 
-                fontSize: { xs: '1rem', md: '1.125rem' },
-                lineHeight: 1.7,
-                color: 'text.primary',
-                mb: 4,
-                fontWeight: 400
+            {/* Story Header */}
+            <Box sx={{ textAlign: 'left', mb: 8 }}>
+              <Typography variant="h2" component="h2" gutterBottom sx={{
+                background: 'linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                fontSize: { xs: '2.5rem', md: '3rem', lg: '3.5rem' },
+                fontWeight: 700,
+                mb: 3,
+                lineHeight: 1.2
               }}>
-                As an academic leader, you need graduates who enter the workforce able to contribute from day one. As a business leader, you want teams that can adopt AI effectively to innovate, automate, and optimise — without disrupting existing workflows.
+                From a Bustling Bay to Founder's Desk
               </Typography>
-              
-              <Typography variant="body1" sx={{ 
-                fontSize: { xs: '1rem', md: '1.125rem' },
-                lineHeight: 1.7,
-                color: 'text.primary',
-                fontWeight: 400
+              <Typography variant="h3" sx={{ 
+                fontSize: { xs: '1.5rem', md: '2rem' },
+                fontWeight: 600,
+                color: 'primary.main',
+                mb: 2,
+                fontStyle: 'italic'
               }}>
-                AI Foundations: Concept to Application delivers exactly that. It's not abstract theory — it's the same structured approach I used to design and launch Smartslate's AI-powered learning platform. If it can build the systems behind Smartslate, it can strengthen the capabilities of your students or employees so they can deliver more, faster, and with better alignment to your goals.
+                The Smartslate Story
               </Typography>
-            </SectionCard>
+            </Box>
+
+            {/* Interactive Story Timeline */}
+            <Box sx={{ width: '100%' }}>
+              {/* Chapter Content with Illustration */}
+              <motion.div
+                key={currentChapter}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Box sx={{ 
+                  display: 'flex', 
+                  flexDirection: { xs: 'column', md: 'row' }, 
+                  gap: 4,
+                  alignItems: { xs: 'center', md: 'flex-start' }
+                }}>
+                  {/* Text Content */}
+                  <Box sx={{ flex: 1 }}>
+                    <SectionCard sx={{ minHeight: '400px' }}>
+                      <Typography variant="h4" sx={{ 
+                        fontSize: { xs: '1.25rem', md: '1.5rem' },
+                        fontWeight: 700,
+                        color: 'primary.main',
+                        mb: 3
+                      }}>
+                        {chapters[currentChapter - 1].title}
+                      </Typography>
+                      {chapters[currentChapter - 1].content.map((paragraph, index) => (
+                        paragraph.isLink ? (
+                          <Link href="/courses" key={index} style={{ textDecoration: 'none' }}>
+                            <Box sx={{ 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              gap: 1,
+                              cursor: 'pointer',
+                              transition: 'all 0.3s ease',
+                              '&:hover': {
+                                transform: 'translateX(4px)',
+                                '& .arrow-icon': {
+                                  transform: 'translateX(4px)',
+                                }
+                              }
+                            }}>
+                              <Typography 
+                                variant="body1" 
+                                sx={{ 
+                                  fontSize: { xs: '1rem', md: '1.125rem' },
+                                  lineHeight: 1.8,
+                                  color: '#06B6D4',
+                                  mb: 0,
+                                  fontWeight: 600,
+                                  fontStyle: 'italic',
+                                  textDecoration: 'none'
+                                }}
+                              >
+                                {paragraph.text}
+                              </Typography>
+                              <ArrowForwardIcon 
+                                className="arrow-icon"
+                                sx={{ 
+                                  color: '#06B6D4', 
+                                  fontSize: '1.2rem',
+                                  transition: 'transform 0.3s ease'
+                                }} 
+                              />
+                            </Box>
+                          </Link>
+                        ) : (
+                          <Typography 
+                            key={index}
+                            variant="body1" 
+                            sx={{ 
+                              fontSize: { xs: '1rem', md: '1.125rem' },
+                              lineHeight: 1.8,
+                              color: 'text.primary',
+                              mb: index < chapters[currentChapter - 1].content.length - 1 ? 3 : 0,
+                              fontWeight: 400,
+                              fontStyle: paragraph.italic ? 'italic' : 'normal'
+                            }}
+                          >
+                            {paragraph.text}
+                          </Typography>
+                        )
+                      ))}
+                    </SectionCard>
+                  </Box>
+
+                  {/* Chapter Illustration */}
+                  <Box sx={{ 
+                    display: 'flex', 
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: { xs: '100%', md: '200px' },
+                    flexShrink: 0
+                  }}>
+                    <motion.div
+                      key={`illustration-${currentChapter}`}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.6, delay: 0.2 }}
+                    >
+                      <Box
+                        component="img"
+                        src={`/images/story-illustrations/chapter${currentChapter}-${getChapterSlug(currentChapter)}.svg`}
+                        alt={`Illustration for ${chapters[currentChapter - 1].title}`}
+                        sx={{
+                          width: { xs: '150px', md: '200px' },
+                          height: { xs: '150px', md: '200px' },
+                          filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1))',
+                          transition: 'transform 0.3s ease',
+                          '&:hover': {
+                            transform: 'scale(1.05)',
+                          }
+                        }}
+                      />
+                    </motion.div>
+                  </Box>
+                </Box>
+              </motion.div>
+
+              {/* Navigation Controls */}
+              <Box sx={{ 
+                position: 'relative',
+                mt: 4,
+                mb: 6
+              }}>
+                {/* Previous Button - Positioned at start of text box */}
+                <Box sx={{ 
+                  position: 'absolute',
+                  left: -60,
+                  top: 0,
+                  display: 'flex', 
+                  alignItems: 'center',
+                  opacity: currentChapter === 1 ? 0.3 : 1,
+                  cursor: currentChapter === 1 ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.3s ease',
+                  '&:hover': currentChapter !== 1 ? {
+                    transform: 'scale(1.1)',
+                  } : {},
+                }}>
+                  <Box
+                    onClick={handlePrevChapter}
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      borderRadius: '50%',
+                      background: 'rgba(167, 218, 219, 0.1)',
+                      border: '2px solid rgba(167, 218, 219, 0.3)',
+                      transition: 'all 0.3s ease',
+                      '&:hover': currentChapter !== 1 ? {
+                        background: 'rgba(167, 218, 219, 0.2)',
+                        borderColor: 'rgba(167, 218, 219, 0.5)',
+                        boxShadow: '0 4px 12px rgba(167, 218, 219, 0.3)',
+                      } : {},
+                    }}
+                  >
+                    <ArrowForwardIcon 
+                      sx={{ 
+                        color: '#06B6D4', 
+                        fontSize: '1.5rem',
+                        transform: 'rotate(180deg)',
+                        transition: 'transform 0.3s ease'
+                      }} 
+                    />
+                  </Box>
+                </Box>
+
+                {/* Next Button - Positioned at end of text box */}
+                <Box sx={{ 
+                  position: 'absolute',
+                  right: -60,
+                  top: 0,
+                  display: 'flex', 
+                  alignItems: 'center',
+                  opacity: currentChapter === chapters.length ? 0.3 : 1,
+                  cursor: currentChapter === chapters.length ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.3s ease',
+                  '&:hover': currentChapter !== chapters.length ? {
+                    transform: 'scale(1.1)',
+                  } : {},
+                }}>
+                  <Box
+                    onClick={handleNextChapter}
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 48,
+                      height: 48,
+                      borderRadius: '50%',
+                      background: 'rgba(167, 218, 219, 0.1)',
+                      border: '2px solid rgba(167, 218, 219, 0.3)',
+                      transition: 'all 0.3s ease',
+                      '&:hover': currentChapter !== chapters.length ? {
+                        background: 'rgba(167, 218, 219, 0.2)',
+                        borderColor: 'rgba(167, 218, 219, 0.5)',
+                        boxShadow: '0 4px 12px rgba(167, 218, 219, 0.3)',
+                      } : {},
+                    }}
+                  >
+                    <ArrowForwardIcon 
+                      sx={{ 
+                        color: '#06B6D4', 
+                        fontSize: '1.5rem',
+                        transition: 'transform 0.3s ease'
+                      }} 
+                    />
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
           </motion.div>
         </SectionWrapper>
 

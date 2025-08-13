@@ -7,30 +7,27 @@ export function middleware(request: NextRequest) {
 
   // 1) Canonical host normalization (production only)
   if (process.env.NODE_ENV === 'production') {
-    const host = request.headers.get('x-forwarded-host') || request.headers.get('host') || '';
     const proto = request.headers.get('x-forwarded-proto') || 'https';
-    const isWww = host.startsWith('www.');
-    const isHttp = proto === 'http';
-
-    if (isWww || isHttp) {
-      const nextHost = host.replace(/^www\./, '');
+    // Enforce HTTPS only (avoid host flips that can conflict with hosting provider canonicalization)
+    if (proto === 'http') {
       const redirectUrl = new URL(url);
-      redirectUrl.host = nextHost;
       redirectUrl.protocol = 'https:';
       return NextResponse.redirect(redirectUrl, 308);
     }
+
+    // Optionally enforce a single canonical host if explicitly configured
+    const configuredCanonicalHost = process.env.CANONICAL_HOST;
+    if (configuredCanonicalHost) {
+      const host = request.headers.get('x-forwarded-host') || request.headers.get('host') || '';
+      if (host && host !== configuredCanonicalHost) {
+        const redirectUrl = new URL(url);
+        redirectUrl.host = configuredCanonicalHost;
+        return NextResponse.redirect(redirectUrl, 308);
+      }
+    }
   }
 
-  // 2) Trailing slash normalization (except root and file-like paths)
-  if (
-    pathname.length > 1 &&
-    pathname.endsWith('/') &&
-    !pathname.match(/\.[a-zA-Z0-9]{2,}$/)
-  ) {
-    const redirectUrl = new URL(url);
-    redirectUrl.pathname = pathname.replace(/\/+$/, '');
-    return NextResponse.redirect(redirectUrl, 308);
-  }
+  // 2) Trailing slash normalization disabled to avoid conflicts with host/CDN rules
 
   // 3) Intercept all Stack Auth sign-in routes and redirect to custom page
   if (

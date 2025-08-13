@@ -3,7 +3,7 @@
 import { useAuth } from '@/contexts/AuthContext';
 import { Container, Box, Typography, Avatar, Paper } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 const ProfileWrapper = styled(Box)(({ theme }) => ({
@@ -60,12 +60,13 @@ const InfoRow = styled(Box)(({ theme }) => ({
 
 export default function ProfilePage() {
   const { isAuthenticated, user, loading } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
-      redirect('/handler/sign-in');
+      router.replace('/handler/sign-in');
     }
-  }, [loading, isAuthenticated]);
+  }, [loading, isAuthenticated, router]);
 
   if (loading) {
     return (
