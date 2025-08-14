@@ -51,7 +51,8 @@ export function middleware(request: NextRequest) {
         return '';
       }
     })();
-    if (configuredCanonicalHost) {
+    const enforceCanonicalHost = process.env.ENFORCE_CANONICAL_HOST === '1';
+    if (configuredCanonicalHost && enforceCanonicalHost) {
       const host = request.headers.get('x-forwarded-host') || request.headers.get('host') || '';
       if (host && host !== configuredCanonicalHost) {
         const redirectUrl = new URL(url);
