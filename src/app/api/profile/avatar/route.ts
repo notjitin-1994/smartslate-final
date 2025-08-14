@@ -1,18 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyJwt } from '@/lib/auth';
+import { getAuthContextFromRequest } from '@/lib/auth';
 import { getSupabaseService } from '@/lib/supabase';
 import { getDb } from '@/lib/db';
 
 // POST expects multipart/form-data with field "file"
 export async function POST(req: NextRequest) {
   try {
-    const auth = req.headers.get('authorization') || req.headers.get('Authorization');
-    if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    const [scheme, token] = auth.split(' ');
-    if (scheme?.toLowerCase() !== 'bearer' || !token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-    const payload = await verifyJwt(token);
-    const userId = (payload.sub as string) || null;
+    const ctx = await getAuthContextFromRequest(req);
+    const userId = ctx.sub;
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {

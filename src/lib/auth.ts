@@ -22,12 +22,9 @@ function resolveKeyFetcher(): KeyFetcher {
     ? `${supabaseBaseUrl.replace(/\/$/, '')}/auth/v1/keys`
     : undefined;
   let jwksUrl = process.env.SUPABASE_JWKS_URL || supabaseComputedJwks || process.env.NEON_AUTH_JWKS_URL;
-  // Some Supabase projects require apikey for JWKS; append it if available and missing
-  if (jwksUrl && /\.supabase\.co\//.test(jwksUrl) && !/[?&]apikey=/.test(jwksUrl)) {
-    const apikey = (process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '').trim();
-    if (apikey) {
-      jwksUrl += (jwksUrl.includes('?') ? '&' : '?') + 'apikey=' + encodeURIComponent(apikey);
-    }
+  // If upstream JWKS is restricted, proxy via our own route which attaches apikey header
+  if (!process.env.SUPABASE_JWKS_URL && supabaseComputedJwks) {
+    jwksUrl = '/api/auth/jwks';
   }
   if (jwksUrl) {
     if (!remoteJwks) remoteJwks = createRemoteJWKSet(new URL(jwksUrl));

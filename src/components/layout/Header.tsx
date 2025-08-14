@@ -134,10 +134,11 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [userMenuAnchor, setUserMenuAnchor] = useState<null | HTMLElement>(null);
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, user, logout, token } = useAuth();
   const { isOwner } = useUserRoles();
   const router = useRouter();
   const { open } = useAuthModal();
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   const userInitials = (name?: string) => {
     if (!name) return 'U';
@@ -156,6 +157,40 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Load avatar url from profile when authenticated
+  useEffect(() => {
+    let isMounted = true;
+    async function loadProfile() {
+      if (!isAuthenticated || !token) {
+        if (isMounted) setAvatarUrl(null);
+        return;
+      }
+      try {
+        const res = await fetch('/api/profile', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) return;
+        const data = await res.json().catch(() => ({}));
+        if (isMounted) setAvatarUrl(data?.profile?.avatar_url || null);
+      } catch {}
+    }
+    loadProfile();
+    return () => {
+      isMounted = false;
+    };
+  }, [isAuthenticated, token]);
+
+  // React to avatar changes broadcasted from profile page
+  useEffect(() => {
+    function onAvatarChanged(e: Event) {
+      try {
+        const evt = e as CustomEvent<{ url?: string | null }>;
+        setAvatarUrl(evt.detail?.url || null);
+      } catch {}
+    }
+    window.addEventListener('avatar-url-changed', onAvatarChanged as EventListener);
+    return () => window.removeEventListener('avatar-url-changed', onAvatarChanged as EventListener);
+  }, []);
 
 
   const navItems = [
@@ -204,8 +239,8 @@ export default function Header() {
                   '&:hover': { borderColor: 'primary.main', backgroundColor: 'rgba(255,255,255,0.04)' },
                 }}
               >
-                <Avatar sx={{ width: 36, height: 36, bgcolor: 'primary.main' }}>
-                  {userInitials(user?.full_name)}
+                <Avatar src={avatarUrl || undefined} sx={{ width: 36, height: 36, bgcolor: 'primary.main' }}>
+                  {!avatarUrl && userInitials(user?.full_name)}
                 </Avatar>
               </IconButton>
             ) : (
@@ -245,8 +280,8 @@ export default function Header() {
         }}
       >
         <Box sx={{ px: 2, py: 1.5, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Avatar sx={{ width: 28, height: 28, bgcolor: 'primary.main' }}>
-            {userInitials(user?.full_name)}
+          <Avatar src={avatarUrl || undefined} sx={{ width: 28, height: 28, bgcolor: 'primary.main' }}>
+            {!avatarUrl && userInitials(user?.full_name)}
           </Avatar>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Box component="span" sx={{ fontSize: 14, fontWeight: 600, color: 'text.primary' }}>

@@ -189,6 +189,9 @@ export default function ProfilePage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || 'Upload failed');
       setProfile((p) => ({ ...(p || {}), avatar_url: data.url }));
+      try {
+        window.dispatchEvent(new CustomEvent('avatar-url-changed', { detail: { url: data.url } }));
+      } catch {}
       setToast({ open: true, message: 'Avatar updated', severity: 'success' });
     } catch (e: any) {
       setToast({ open: true, message: e?.message || 'Upload failed', severity: 'error' });

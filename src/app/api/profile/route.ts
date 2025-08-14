@@ -2,20 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getDb } from '@/lib/db';
 import { getSupabaseService } from '@/lib/supabase';
 import { UpdateProfileSchema } from '@/lib/validators/user';
-import { verifyJwt } from '@/lib/auth';
+import { getAuthContextFromRequest } from '@/lib/auth';
 
 // GET returns the current profile (merging auth metadata + db profile)
 export async function GET(req: NextRequest) {
   try {
-    const auth = req.headers.get('authorization') || req.headers.get('Authorization');
-    if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    const [scheme, token] = auth.split(' ');
-    if (scheme?.toLowerCase() !== 'bearer' || !token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-    const payload = await verifyJwt(token);
-    const userId = (payload.sub as string) || null;
-    const email = (payload.email as string) || null;
-    const fullNameMeta = (payload["user_metadata"] as any)?.full_name as string | undefined;
+    const ctx = await getAuthContextFromRequest(req);
+    const userId = ctx.sub;
+    const email = ctx.email;
+    const fullNameMeta = (ctx.raw?.["user_metadata"] as any)?.full_name as string | undefined;
     if (!userId || !email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const db = getDb();
@@ -54,14 +49,9 @@ export async function GET(req: NextRequest) {
 // PUT updates profile fields in Postgres and optionally Supabase auth metadata name
 export async function PUT(req: NextRequest) {
   try {
-    const auth = req.headers.get('authorization') || req.headers.get('Authorization');
-    if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    const [scheme, token] = auth.split(' ');
-    if (scheme?.toLowerCase() !== 'bearer' || !token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-    const payload = await verifyJwt(token);
-    const userId = (payload.sub as string) || null;
-    const email = (payload.email as string) || null;
+    const ctx = await getAuthContextFromRequest(req);
+    const userId = ctx.sub;
+    const email = ctx.email;
     if (!userId || !email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const json = await req.json().catch(() => ({}));
