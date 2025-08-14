@@ -21,7 +21,14 @@ function resolveKeyFetcher(): KeyFetcher {
   const supabaseComputedJwks = supabaseBaseUrl
     ? `${supabaseBaseUrl.replace(/\/$/, '')}/auth/v1/keys`
     : undefined;
-  const jwksUrl = process.env.SUPABASE_JWKS_URL || supabaseComputedJwks || process.env.NEON_AUTH_JWKS_URL;
+  let jwksUrl = process.env.SUPABASE_JWKS_URL || supabaseComputedJwks || process.env.NEON_AUTH_JWKS_URL;
+  // Some Supabase projects require apikey for JWKS; append it if available and missing
+  if (jwksUrl && /\.supabase\.co\//.test(jwksUrl) && !/[?&]apikey=/.test(jwksUrl)) {
+    const apikey = (process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '').trim();
+    if (apikey) {
+      jwksUrl += (jwksUrl.includes('?') ? '&' : '?') + 'apikey=' + encodeURIComponent(apikey);
+    }
+  }
   if (jwksUrl) {
     if (!remoteJwks) remoteJwks = createRemoteJWKSet(new URL(jwksUrl));
     return remoteJwks;
@@ -33,10 +40,22 @@ function resolveKeyFetcher(): KeyFetcher {
 
 export async function verifyJwt(token: string): Promise<JWTPayload> {
   const key = resolveKeyFetcher();
-  const { payload } = await jwtVerify(token, key, {
-    algorithms: ['HS256', 'RS256'],
-  });
-  return payload;
+  try {
+    const { payload } = await jwtVerify(token, key, {
+      algorithms: ['HS256', 'RS256'],
+    });
+    return payload;
+  } catch (err) {
+    // Fallback: if JWKS fetch failed but an HMAC secret is configured, try HS256
+    const secret = process.env.SUPABASE_JWT_SECRET || process.env.JWT_SECRET || process.env.NEON_AUTH_JWT_SECRET;
+    if (secret) {
+      const { payload } = await jwtVerify(token, ENCODER.encode(secret), {
+        algorithms: ['HS256'],
+      });
+      return payload;
+    }
+    throw err;
+  }
 }
 
 export function extractBearer(req: NextRequest): string | null {
