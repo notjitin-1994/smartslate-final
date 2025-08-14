@@ -1,4 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { withOptionalInsecureTLS } from './fetch';
 
 let cachedAnon: SupabaseClient | null = null;
 
@@ -12,6 +13,9 @@ export function getSupabaseAnon(): SupabaseClient {
       persistSession: false,
       autoRefreshToken: false,
     },
+    global: {
+      fetch: (input, init) => fetch(input, withOptionalInsecureTLS(init)),
+    },
   });
   return cachedAnon;
 }
@@ -24,6 +28,9 @@ export function getSupabaseService(): SupabaseClient {
     auth: {
       persistSession: false,
       autoRefreshToken: false,
+    },
+    global: {
+      fetch: (input, init) => fetch(input, withOptionalInsecureTLS(init)),
     },
   });
 }

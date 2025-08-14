@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { withOptionalInsecureTLS } from './fetch';
 
 export interface SendEmailParams {
   to: string;
@@ -9,11 +10,11 @@ export interface SendEmailParams {
 export async function sendEmail({ to, subject, html }: SendEmailParams): Promise<void> {
   const resendKey = process.env.RESEND_API_KEY;
   if (resendKey) {
-    const res = await fetch('https://api.resend.com/emails', {
+    const res = await fetch('https://api.resend.com/emails', withOptionalInsecureTLS({
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${resendKey}` },
       body: JSON.stringify({ from: 'no-reply@smartslate.io', to, subject, html }),
-    });
+    }));
     if (!res.ok) {
       const text = await res.text();
       throw new Error(`Resend failed: ${text}`);

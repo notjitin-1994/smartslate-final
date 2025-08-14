@@ -29,12 +29,15 @@ function resolveKeyFetcher(): KeyFetcher {
     : undefined;
   let jwksUrl = process.env.SUPABASE_JWKS_URL || supabaseComputedJwks || process.env.NEON_AUTH_JWKS_URL;
   if (!process.env.SUPABASE_JWKS_URL && supabaseComputedJwks) {
-    jwksUrl = '/api/auth/jwks';
+    // Prefer proxying via our API to attach apikey and apply optional TLS relax
+    const base = (process.env.NEXT_PUBLIC_APP_URL || '').trim();
+    jwksUrl = base ? `${base.replace(/\/$/, '')}/api/auth/jwks` : '/api/auth/jwks';
   }
   if (!jwksUrl) {
     throw new Error('Missing SUPABASE_JWT_SECRET/JWT_SECRET and no JWKS URL available');
   }
-  if (!remoteJwks) remoteJwks = createRemoteJWKSet(new URL(jwksUrl));
+  const absoluteJwksUrl = jwksUrl.startsWith('http') ? jwksUrl : `${process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '') || 'http://localhost:3000'}` + jwksUrl;
+  if (!remoteJwks) remoteJwks = createRemoteJWKSet(new URL(absoluteJwksUrl));
   return remoteJwks;
 }
 

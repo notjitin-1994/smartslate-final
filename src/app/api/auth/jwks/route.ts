@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { withOptionalInsecureTLS } from '@/lib/fetch';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -9,10 +10,10 @@ export async function GET() {
     if (!base) return NextResponse.json({ error: 'SUPABASE_URL not configured' }, { status: 500 });
     const url = `${base.replace(/\/$/, '')}/auth/v1/keys`;
     const apikey = (process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '').trim();
-    const res = await fetch(url, {
+    const res = await fetch(url, withOptionalInsecureTLS({
       headers: apikey ? { apikey } : undefined,
       cache: 'no-store',
-    });
+    }));
     if (!res.ok) {
       const body = await res.text();
       return new NextResponse(body || 'Upstream error', { status: res.status, headers: { 'content-type': res.headers.get('content-type') || 'text/plain' } });
