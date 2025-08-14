@@ -16,23 +16,26 @@ const ENCODER = new TextEncoder();
 let remoteJwks: ReturnType<typeof createRemoteJWKSet> | null = null;
 type KeyFetcher = ReturnType<typeof createRemoteJWKSet> | Uint8Array;
 function resolveKeyFetcher(): KeyFetcher {
-  // Prefer Supabase JWKS if configured, fall back to Neon or HMAC secret.
+  // Prefer offline verification with a shared secret when available to avoid HTTPS fetches.
+  const offlineSecret = process.env.SUPABASE_JWT_SECRET || process.env.JWT_SECRET || process.env.NEON_AUTH_JWT_SECRET;
+  if (offlineSecret) {
+    return ENCODER.encode(offlineSecret);
+  }
+
+  // Otherwise, fall back to remote JWKS. If upstream requires apikey, we proxy via our JWKS route.
   const supabaseBaseUrl = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').trim();
   const supabaseComputedJwks = supabaseBaseUrl
     ? `${supabaseBaseUrl.replace(/\/$/, '')}/auth/v1/keys`
     : undefined;
   let jwksUrl = process.env.SUPABASE_JWKS_URL || supabaseComputedJwks || process.env.NEON_AUTH_JWKS_URL;
-  // If upstream JWKS is restricted, proxy via our own route which attaches apikey header
   if (!process.env.SUPABASE_JWKS_URL && supabaseComputedJwks) {
     jwksUrl = '/api/auth/jwks';
   }
-  if (jwksUrl) {
-    if (!remoteJwks) remoteJwks = createRemoteJWKSet(new URL(jwksUrl));
-    return remoteJwks;
+  if (!jwksUrl) {
+    throw new Error('Missing SUPABASE_JWT_SECRET/JWT_SECRET and no JWKS URL available');
   }
-  const secret = process.env.SUPABASE_JWT_SECRET || process.env.JWT_SECRET || process.env.NEON_AUTH_JWT_SECRET;
-  if (!secret) throw new Error('Missing SUPABASE_JWKS_URL/SUPABASE_URL or SUPABASE_JWT_SECRET/JWT_SECRET');
-  return ENCODER.encode(secret);
+  if (!remoteJwks) remoteJwks = createRemoteJWKSet(new URL(jwksUrl));
+  return remoteJwks;
 }
 
 export async function verifyJwt(token: string): Promise<JWTPayload> {
