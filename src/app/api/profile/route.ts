@@ -19,12 +19,28 @@ export async function GET(req: NextRequest) {
     if (!userId || !email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const db = getDb();
-    const { rows } = await db.query(
+    let { rows } = await db.query(
       `SELECT user_id, full_name, company, phone, bio, location, website, twitter, linkedin, github, avatar_url, avatar_path
        FROM app.user_profiles WHERE user_id = $1`,
       [userId]
     );
-    const profile = rows[0] || null;
+    let profile = rows[0] || null;
+    // Auto-provision minimal profile row if missing
+    if (!profile) {
+      const fullName = fullNameMeta || (email ? email.split('@')[0] : null);
+      try {
+        await db.query(
+          `INSERT INTO app.user_profiles (user_id, full_name) VALUES ($1, $2) ON CONFLICT (user_id) DO NOTHING`,
+          [userId, fullName]
+        );
+        const refetch = await db.query(
+          `SELECT user_id, full_name, company, phone, bio, location, website, twitter, linkedin, github, avatar_url, avatar_path
+           FROM app.user_profiles WHERE user_id = $1`,
+          [userId]
+        );
+        profile = refetch.rows[0] || null;
+      } catch {}
+    }
 
     return NextResponse.json({
       user: { id: userId, email, full_name: fullNameMeta || email.split('@')[0] },

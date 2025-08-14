@@ -21,7 +21,8 @@
     "migrate:solara": "tsx scripts/migrate-solara-table.ts",
     "migrate:demo": "tsx scripts/migrate-demo-table.ts",
     "migrate:consultation": "tsx scripts/migrate-consultation-table.ts",
-    "migrate:user-profiles": "tsx scripts/migrate-user-profiles-table.ts"
+    "migrate:user-profiles": "tsx scripts/migrate-user-profiles-table.ts",
+    "backfill:user-profiles": "tsx scripts/backfill-user-profiles.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
