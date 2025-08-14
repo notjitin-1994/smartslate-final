@@ -9,12 +9,25 @@ export async function POST(req: Request) {
   }
 
   try {
-    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
+    if (!process.env.SUPABASE_URL || (!process.env.SUPABASE_ANON_KEY && !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY)) {
+      console.error('Missing Supabase configuration:', {
+        SUPABASE_URL: !!process.env.SUPABASE_URL,
+        SUPABASE_ANON_KEY: !!process.env.SUPABASE_ANON_KEY,
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY: !!process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY
+      });
       return NextResponse.json({ error: 'Supabase is not configured. Please set SUPABASE_URL and SUPABASE_ANON_KEY and restart the dev server.' }, { status: 500 });
     }
     const supabase = getSupabaseAnon();
+    console.log('Attempting sign-in for email:', email);
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error || !data.session) return NextResponse.json({ error: error?.message || 'Invalid credentials' }, { status: 401 });
+    if (error) {
+      console.error('Supabase sign-in error:', error);
+      return NextResponse.json({ error: error?.message || 'Invalid credentials' }, { status: 401 });
+    }
+    if (!data.session) {
+      console.error('No session returned from Supabase');
+      return NextResponse.json({ error: 'Authentication failed - no session' }, { status: 401 });
+    }
 
     return NextResponse.json({
       token: data.session.access_token,

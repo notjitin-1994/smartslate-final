@@ -6,6 +6,7 @@ import Modal from '@/components/ui/Modal';
 import FormField from '@/components/ui/FormField';
 import { useAuthModal } from '@/hooks/useAuthModal';
 import { useAuth } from '@/contexts/AuthContext';
+import { getSupabaseBrowser } from '@/lib/supabase-browser';
 
 type AuthTab = 'signin' | 'signup';
 
@@ -173,6 +174,47 @@ export default function AuthModal() {
 
   const initialFocusSelector = activeTab === 'signin' ? '#signin-email' : '#signup-name';
 
+  const startGoogleOAuth = async () => {
+    try {
+      setIsSubmitting(true);
+      const supabase = getSupabaseBrowser();
+      const origin = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000');
+      const nextPath = typeof window !== 'undefined' ? (window.location.pathname + window.location.search) : '/';
+      const redirectTo = `${origin}/auth/callback?next=${encodeURIComponent(nextPath)}`;
+      
+      console.log('Starting Google OAuth with redirectTo:', redirectTo);
+      
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo,
+          skipBrowserRedirect: true,
+        },
+      } as any);
+      
+      if (error) {
+        console.error('Google OAuth error:', error);
+        throw error;
+      }
+      
+      const url = data?.url;
+      if (url) {
+        console.log('Redirecting to Google OAuth URL:', url);
+        window.location.href = url;
+        return;
+      }
+      
+      console.log('No OAuth URL returned, data:', data);
+      // Fallback: if SDK auto-redirects, do nothing
+    } catch (err: any) {
+      console.error('Google OAuth failed:', err);
+      const message = err?.message || 'Google sign-in failed';
+      setErrors((prev) => ({ ...prev, form: message }));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -336,7 +378,7 @@ export default function AuthModal() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  <SocialButton provider="google" onClick={() => setActiveTab('signin')} />
+                  <SocialButton provider="google" onClick={startGoogleOAuth} />
                   <SocialButton provider="github" onClick={() => setActiveTab('signin')} />
                   <SocialButton provider="linkedin" onClick={() => setActiveTab('signin')} />
                 </div>
@@ -480,7 +522,7 @@ export default function AuthModal() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  <SocialButton provider="google" onClick={() => setActiveTab('signup')} />
+                  <SocialButton provider="google" onClick={startGoogleOAuth} />
                   <SocialButton provider="github" onClick={() => setActiveTab('signup')} />
                   <SocialButton provider="linkedin" onClick={() => setActiveTab('signup')} />
                 </div>
