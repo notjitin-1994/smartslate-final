@@ -17,6 +17,18 @@ export default function AuthCallbackPage() {
         console.log('Auth callback started, URL:', typeof window !== 'undefined' ? window.location.href : '');
         const supabase = getSupabaseBrowser();
         const url = typeof window !== 'undefined' ? window.location.href : '';
+        const code = params.get('code');
+        const oauthError = params.get('error') || params.get('error_description');
+        if (oauthError) {
+          console.error('OAuth provider returned error:', oauthError);
+          setError(decodeURIComponent(oauthError));
+          return;
+        }
+        if (!code) {
+          console.error('No authorization code present in callback URL');
+          setError('No authorization code found. Please start sign-in again.');
+          return;
+        }
         const { data, error } = await supabase.auth.exchangeCodeForSession(url);
         
         if (error) {

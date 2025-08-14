@@ -188,7 +188,7 @@ export default function AuthModal() {
         provider: 'google',
         options: {
           redirectTo,
-          skipBrowserRedirect: true,
+          // Let Supabase handle the redirect to reliably persist PKCE code_verifier
         },
       } as any);
       
@@ -197,14 +197,9 @@ export default function AuthModal() {
         throw error;
       }
       
+      // If SDK returns a URL in some environments, follow it; otherwise it will redirect automatically
       const url = data?.url;
-      if (url) {
-        console.log('Redirecting to Google OAuth URL:', url);
-        window.location.href = url;
-        return;
-      }
-      
-      console.log('No OAuth URL returned, data:', data);
+      if (url) window.location.href = url;
       // Fallback: if SDK auto-redirects, do nothing
     } catch (err: any) {
       console.error('Google OAuth failed:', err);
