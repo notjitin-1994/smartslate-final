@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 interface User {
-  id: number;
+  id: string;
   full_name: string;
   email: string;
   phone_number?: string;
@@ -33,26 +33,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     const storedToken = localStorage.getItem('auth_token');
     const storedUser = localStorage.getItem('auth_user');
-
-    if (storedToken && storedUser) {
+    if (storedToken && storedUser && isTokenValid(storedToken)) {
       try {
-        const parsedUser = JSON.parse(storedUser);
-        
-        if (isTokenValid(storedToken)) {
-          setToken(storedToken);
-          setUser(parsedUser);
-          setIsAuthenticated(true);
-        } else {
-          localStorage.removeItem('auth_token');
-          localStorage.removeItem('auth_user');
-        }
-      } catch (error) {
-        console.error('Error parsing stored user data:', error);
-        localStorage.removeItem('auth_token');
-        localStorage.removeItem('auth_user');
-      }
+        const parsedUser = JSON.parse(storedUser) as User;
+        setToken(storedToken);
+        setUser(parsedUser);
+        setIsAuthenticated(true);
+      } catch {}
     }
-    
     setLoading(false);
   }, []);
 
@@ -72,7 +60,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setToken(newToken);
     setUser(newUser);
     setIsAuthenticated(true);
-    
     localStorage.setItem('auth_token', newToken);
     localStorage.setItem('auth_user', JSON.stringify(newUser));
   };
@@ -81,7 +68,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setToken(null);
     setUser(null);
     setIsAuthenticated(false);
-    
+    fetch('/api/auth/signout', { method: 'POST' }).catch(() => {});
     localStorage.removeItem('auth_token');
     localStorage.removeItem('auth_user');
   };

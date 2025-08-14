@@ -10,6 +10,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useUserRoles } from '@/hooks/useUserRoles';
 import MobileMenu, { AnimatedHamburgerButton } from './MobileMenu';
+import AuthModal from '@/components/auth/AuthModal';
+import { useAuthModal } from '@/hooks/useAuthModal';
 
 const HeaderWrapper = styled('header', {
   shouldForwardProp: (prop) => prop !== 'hide'
@@ -135,6 +137,7 @@ export default function Header() {
   const { isAuthenticated, user, logout } = useAuth();
   const { isOwner } = useUserRoles();
   const router = useRouter();
+  const { open } = useAuthModal();
 
   const userInitials = (name?: string) => {
     if (!name) return 'U';
@@ -206,7 +209,7 @@ export default function Header() {
                 </Avatar>
               </IconButton>
             ) : (
-              <CTAButton variant="contained" onClick={() => (window.location.href = '/sign-up')}>
+              <CTAButton variant="contained" onClick={() => open('signup')}>
                 Get Started
               </CTAButton>
             )}
@@ -288,13 +291,16 @@ export default function Header() {
         <MenuItem 
           onClick={() => {
             setUserMenuAnchor(null);
-            window.location.href = '/handler/sign-out';
+            logout();
           }}
           sx={{ color: 'text.primary' }}
         >
           Sign Out
         </MenuItem>
       </Menu>
+
+      {/* Auth Modal root */}
+      <AuthModal />
     </>
   );
 }
