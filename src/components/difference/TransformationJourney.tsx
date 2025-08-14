@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useState } from 'react';
+import { useConsultationModal } from '@/hooks/useConsultationModal';
 
 interface JourneyStep {
   number: string;
@@ -147,6 +148,7 @@ export default function TransformationJourney() {
     triggerOnce: true,
   });
   const [hoveredStep, setHoveredStep] = useState<number | null>(null);
+  const { openModal } = useConsultationModal();
 
   return (
     <div ref={ref}>
@@ -280,6 +282,7 @@ export default function TransformationJourney() {
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.2 }}
               className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-2.5 sm:py-3 bg-gradient-to-r from-[#4F46E5] to-[#3730A3] text-white font-bold text-sm sm:text-base md:text-lg rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl hover:shadow-[#4F46E5]/20 transition-all duration-300"
+              onClick={openModal}
             >
               Start Your Journey
               <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor">

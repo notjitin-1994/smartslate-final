@@ -16,16 +16,22 @@
     "seed": "echo 'Deprecated: Prisma removed'",
     "test": "vitest",
     "seo:report": "mkdir -p reports && npx --yes lighthouse http://localhost:3000 --output html --output-path ./reports/lh.html --chrome-flags='--headless'",
-    "seo:ci": "npm run seo:report"
+    "seo:ci": "npm run seo:report",
+    "migrate:ssa": "tsx scripts/migrate-ssa-table.ts",
+    "migrate:solara": "tsx scripts/migrate-solara-table.ts",
+    "migrate:demo": "tsx scripts/migrate-demo-table.ts",
+    "migrate:consultation": "tsx scripts/migrate-consultation-table.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.2.0",
     "@mui/material": "^7.2.0",
+    "@prisma/client": "^6.14.0",
     "axios": "^1.11.0",
     "framer-motion": "^12.23.12",
     "jose": "^6.0.12",
+    "pg": "^8.12.0",
     "lucide-react": "^0.536.0",
     "next": "15.4.5",
     "react": "19.1.0",
@@ -54,13 +60,15 @@
     "next-sitemap": "^4.2.3",
     "nodemailer": "^7.0.5",
     "prettier": "^3.6.2",
+    "prisma": "^6.14.0",
     "resend": "^6.0.1",
     "tailwindcss": "^4",
     "tsx": "^4.20.3",
     "typescript": "^5",
     "vitest": "^3.2.4",
     "zod": "^4.0.17"
+  },
+  "overrides": {
+    "esbuild": "^0.25.9"
   }
-  ,
-  "overrides": { "esbuild": "^0.25.9" }
 }

@@ -62,7 +62,6 @@ export default function CaseStudyModal({ isOpen, onClose }: CaseStudyModalProps)
     setIsSubmitting(true);
 
     try {
-      // Backend removed; stub request
       const res = await fetch('/api/leads/case-study', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -178,7 +177,7 @@ export default function CaseStudyModal({ isOpen, onClose }: CaseStudyModalProps)
                 value={formData.name}
                 onChange={(value) => updateFormData('name', value)}
                 required
-                placeholder="John Doe"
+                placeholder="Amit Sharma"
                 error={errors.name}
               />
               <FormField
@@ -188,8 +187,16 @@ export default function CaseStudyModal({ isOpen, onClose }: CaseStudyModalProps)
                 value={formData.email}
                 onChange={(value) => updateFormData('email', value)}
                 required
-                placeholder="john@company.com"
+                placeholder="amit@company.in"
                 error={errors.email}
+              />
+              <FormField
+                label="Phone (Optional)"
+                name="phone"
+                type="tel"
+                value={formData.phone}
+                onChange={(value) => updateFormData('phone', value)}
+                placeholder="+91 98765 43210"
               />
             </div>
 
@@ -201,7 +208,7 @@ export default function CaseStudyModal({ isOpen, onClose }: CaseStudyModalProps)
                 value={formData.company}
                 onChange={(value) => updateFormData('company', value)}
                 required
-                placeholder="Acme Corporation"
+                placeholder="Acme Pvt Ltd"
                 error={errors.company}
               />
               <FormField

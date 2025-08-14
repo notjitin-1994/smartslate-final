@@ -3,12 +3,15 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import Link from 'next/link';
+import { useConsultationModal } from '@/hooks/useConsultationModal';
+import ConsultationModal from '@/components/landing/ConsultationModal';
 
 export default function CTASection() {
   const { ref, inView } = useInView({
     threshold: 0.1,
     triggerOnce: true,
   });
+  const { isOpen, openModal, closeModal } = useConsultationModal();
 
   return (
     <div ref={ref} className="relative">
@@ -62,17 +65,16 @@ export default function CTASection() {
           transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
           className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-start items-start sm:items-center relative z-10"
         >
-          <Link href="/contact">
-            <motion.button
-              whileHover={{ scale: 1.03, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.2 }}
-              className="btn btn-primary w-full sm:w-auto"
-            >
-              <span className="relative z-10">Schedule a Consultation</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-[#3730A3] to-[#4F46E5] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </motion.button>
-          </Link>
+          <motion.button
+            whileHover={{ scale: 1.03, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ duration: 0.2 }}
+            className="btn btn-primary w-full sm:w-auto"
+            onClick={openModal}
+          >
+            <span className="relative z-10">Schedule a Consultation</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#3730A3] to-[#4F46E5] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          </motion.button>
           
           <Link href="/products">
             <motion.button
@@ -103,6 +105,9 @@ export default function CTASection() {
           </a>
         </p>
       </motion.div>
+
+      {/* Consultation Modal */}
+      <ConsultationModal isOpen={isOpen} onClose={closeModal} />
     </div>
   );
 }

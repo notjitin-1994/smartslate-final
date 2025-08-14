@@ -109,6 +109,37 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
   },
 }));
 
+const SectionContainer = styled(Box)(({ theme }) => ({
+  marginTop: theme.spacing(8),
+  marginBottom: theme.spacing(4),
+}));
+
+const StepsGrid = styled(Box)(({ theme }) => ({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+  gap: theme.spacing(3),
+}));
+
+const StepCard = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(3),
+  borderRadius: theme.spacing(2),
+  background: 'rgba(255, 255, 255, 0.02)',
+  border: '1px solid rgba(255, 255, 255, 0.08)',
+}));
+
+const HighlightsGrid = styled(Box)(({ theme }) => ({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+  gap: theme.spacing(3),
+}));
+
+const HighlightCard = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(3),
+  borderRadius: theme.spacing(2),
+  background: 'rgba(167, 218, 219, 0.04)',
+  border: '1px solid rgba(167, 218, 219, 0.25)',
+}));
+
 // Partnership data
 const partnershipOpportunities = [
   {
@@ -120,9 +151,13 @@ const partnershipOpportunities = [
     modalConfig: {
       title: 'Become a Course Architect',
       formFields: [
+        { name: 'collaborationType', label: 'Collaboration Type', type: 'select', required: true, options: [ { label: 'Course Architect', value: 'course-architect' } ] },
         { name: 'name', label: 'Name', type: 'text' },
         { name: 'email', label: 'Email', type: 'email' },
-        { name: 'linkedin', label: 'Link to LinkedIn/Portfolio', type: 'url' }
+        { name: 'linkedin', label: 'Link to LinkedIn/Portfolio', type: 'url', required: false },
+        { name: 'expertise', label: 'Primary Area of Expertise', type: 'text' },
+        { name: 'audience', label: 'Target Audience (e.g., beginners, practitioners, leaders)', type: 'text', required: false },
+        { name: 'courseIdea', label: 'Describe your course idea', type: 'textarea' },
       ]
     }
   },
@@ -135,10 +170,14 @@ const partnershipOpportunities = [
     modalConfig: {
       title: 'Strategic Partnership Inquiry',
       formFields: [
+        { name: 'collaborationType', label: 'Collaboration Type', type: 'select', required: true, options: [ { label: 'Strategic Growth', value: 'strategic-growth' } ] },
         { name: 'name', label: 'Name', type: 'text' },
         { name: 'email', label: 'Email', type: 'email' },
         { name: 'company', label: 'Company/Institution', type: 'text' },
-        { name: 'role', label: 'Your Role', type: 'text' }
+        { name: 'role', label: 'Your Role', type: 'text' },
+        { name: 'teamSize', label: 'Team Size (approx.)', type: 'text', required: false },
+        { name: 'primaryChallenge', label: 'Primary Skills/Training Challenge', type: 'textarea' },
+        { name: 'timeline', label: 'Desired timeline', type: 'text', required: false },
       ]
     }
   },
@@ -151,9 +190,12 @@ const partnershipOpportunities = [
     modalConfig: {
       title: 'Investment Opportunities',
       formFields: [
+        { name: 'collaborationType', label: 'Collaboration Type', type: 'select', required: true, options: [ { label: 'Investment', value: 'invest' } ] },
         { name: 'name', label: 'Name', type: 'text' },
         { name: 'email', label: 'Email', type: 'email' },
-        { name: 'fund', label: 'Fund/Organization Name', type: 'text' }
+        { name: 'fund', label: 'Fund/Organization Name', type: 'text' },
+        { name: 'checkSize', label: 'Typical check size (USD)', type: 'text', required: false },
+        { name: 'thesis', label: 'Investment thesis / area of interest', type: 'textarea', required: false },
       ]
     }
   },
@@ -166,9 +208,12 @@ const partnershipOpportunities = [
     modalConfig: {
       title: 'Build with Us',
       formFields: [
+        { name: 'collaborationType', label: 'Collaboration Type', type: 'select', required: true, options: [ { label: 'Build with Us', value: 'build-future' } ] },
         { name: 'name', label: 'Name', type: 'text' },
         { name: 'email', label: 'Email', type: 'email' },
-        { name: 'github', label: 'Link to GitHub/Portfolio', type: 'url' }
+        { name: 'github', label: 'Link to GitHub/Portfolio', type: 'url', required: false },
+        { name: 'skills', label: 'Core skills and relevant experience', type: 'textarea' },
+        { name: 'roleInterest', label: 'Preferred role/area (e.g., AI eng, product, design)', type: 'text', required: false },
       ]
     }
   }
@@ -231,7 +276,7 @@ export default function CollaborateClient() {
               <PartnershipCard
                 opportunity={opportunity}
                 delay={index * 150}
-               onClick={() => {}}
+               onClick={() => openModal(opportunity.modalConfig)}
               />
               {index < partnershipOpportunities.length - 1 && (
                 <StyledDivider />
@@ -239,6 +284,65 @@ export default function CollaborateClient() {
             </React.Fragment>
           ))}
         </Box>
+
+        <SectionContainer>
+          <SectionHeading>How Collaboration Works</SectionHeading>
+          <SectionDescription>
+            Clear, outcome-focused partnership in four steps.
+          </SectionDescription>
+          <StepsGrid>
+            {[ 
+              { title: '1. Discovery', desc: 'We align on outcomes, constraints, and success metrics.' },
+              { title: '2. Co-Design', desc: 'We co-create a solution: program, pilot, or integration.' },
+              { title: '3. Launch', desc: 'We deploy with enablement, learner journeys, and analytics.' },
+              { title: '4. Scale & Optimize', desc: 'We iterate using performance data to expand impact.' },
+            ].map((step) => (
+              <StepCard key={step.title}>
+                <Typography variant="h6" sx={{ mb: 1, fontWeight: 700 }}>{step.title}</Typography>
+                <Typography variant="body2" color="text.secondary">{step.desc}</Typography>
+              </StepCard>
+            ))}
+          </StepsGrid>
+        </SectionContainer>
+
+        <SectionContainer>
+          <SectionHeading>Why Partner with Smartslate</SectionHeading>
+          <HighlightsGrid>
+            {[
+              { title: 'Industry-Relevant Content', desc: 'Programs co-built with practitioners.' },
+              { title: 'AI-Powered Delivery', desc: 'Adaptive learning and measurable outcomes.' },
+              { title: 'Enterprise-Grade', desc: 'Secure, scalable, and integration-friendly.' },
+              { title: 'Speed to Value', desc: 'Launch pilots in weeks, not months.' },
+            ].map((h) => (
+              <HighlightCard key={h.title}>
+                <Typography variant="subtitle1" sx={{ mb: 0.5, fontWeight: 700 }}>{h.title}</Typography>
+                <Typography variant="body2" color="text.secondary">{h.desc}</Typography>
+              </HighlightCard>
+            ))}
+          </HighlightsGrid>
+        </SectionContainer>
+
+        <SectionContainer sx={{ textAlign: 'left' }}>
+          <Typography variant="h5" sx={{ mb: 2, fontWeight: 700 }}>
+            Ready to explore a collaboration?
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+            Tell us a bit about you and we’ll reach out within 1–2 business days.
+          </Typography>
+          <CTAButton
+            variant="contained"
+            onClick={() => openModal({
+              title: 'General Partnership Inquiry',
+              formFields: [
+                { name: 'name', label: 'Name', type: 'text' },
+                { name: 'email', label: 'Email', type: 'email' },
+                { name: 'company', label: 'Company/Institution', type: 'text' },
+              ],
+            })}
+          >
+            Start the Conversation
+          </CTAButton>
+        </SectionContainer>
       </Container>
 
       <ContactModal

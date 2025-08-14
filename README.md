@@ -21,39 +21,29 @@ Modern Next.js application with full-stack capabilities: authentication, RBAC, l
 - **Framework**: Next.js 15 (app directory)
 - **UI**: Tailwind CSS 4, Material UI 7, Framer Motion
 - **State**: Zustand
-- **Data**: AWS-managed DB (to be integrated)
+- **Data**: Supabase Postgres + Prisma
 
 ## Environment
 Set the following in `.env.local` (or your host’s env). See `docs/ENVIRONMENT.md` for details.
 
 ```
-# Database
-DATABASE_URL=postgresql://user:password@host:5432/dbname
+# Supabase
+SUPABASE_URL="https://YOUR_PROJECT_REF.supabase.co"
+# Optional explicit JWKS URL (otherwise auto-discovered):
+# SUPABASE_JWKS_URL="https://YOUR_PROJECT_REF.supabase.co/auth/v1/keys"
 
-# Stack (Neon Auth) client SDK
-NEXT_PUBLIC_STACK_PROJECT_ID=your_stack_project_id
-NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY=your_stack_publishable_key
-STACK_SECRET_SERVER_KEY=your_stack_server_secret
+# Prisma (Supabase Postgres)
+# Pooled (runtime):
+DATABASE_URL="postgresql://postgres:YOUR_PASSWORD@db.YOUR_PROJECT_REF.supabase.co:6543/postgres?pgbouncer=true&connection_limit=1"
+# Direct (migrations):
+DIRECT_URL="postgresql://postgres:YOUR_PASSWORD@db.YOUR_PROJECT_REF.supabase.co:5432/postgres"
 
-# Auth token verification (choose one)
-# Use JWKS endpoint (recommended when using Neon Auth hosted):
-NEON_AUTH_JWKS_URL=https://…/.well-known/jwks.json
-# OR use an HMAC secret for local/testing:
-# NEON_AUTH_JWT_SECRET=replace-with-strong-secret
-# (You may also use JWT_SECRET as a fallback env var.)
-
-# Optional: Neon Console Admin API (for programmatic user creation)
-NEON_API_KEY=your_neon_console_api_key
-NEON_PROJECT_ID=your_neon_project_id
-
-# Optional: Generic Stack Admin endpoint fallback
-# NEON_AUTH_CREATE_USER_URL=https://your-endpoint
-# NEON_AUTH_API_KEY=your-bearer-token
+# Optional HMAC secret for local dev
+# JWT_SECRET=replace-with-strong-secret
 ```
 
 Notes:
-- Admin API usage and RBAC-protected routes expect a Bearer token. Verification uses `NEON_AUTH_JWKS_URL` or `NEON_AUTH_JWT_SECRET`.
-- Programmatic user provisioning via Neon Console Admin API requires `NEON_API_KEY` and `NEON_PROJECT_ID`.
+- Admin API usage and RBAC-protected routes expect a Bearer token. Verification uses Supabase JWKS (auto) or `SUPABASE_JWT_SECRET`/`JWT_SECRET` fallback.
 
 ## Local development
 1) Install deps

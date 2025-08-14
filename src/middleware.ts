@@ -5,6 +5,13 @@ export function middleware(request: NextRequest) {
   const url = request.nextUrl;
   const { pathname } = url;
 
+  // Bypass all redirects/normalization for localhost in any env to avoid HTTPS redirects in local dev
+  const hostHeader = request.headers.get('x-forwarded-host') || request.headers.get('host') || '';
+  const isLocalHost = hostHeader.startsWith('localhost') || hostHeader.startsWith('127.0.0.1') || hostHeader === '::1' || hostHeader.endsWith('.local');
+  if (isLocalHost) {
+    return NextResponse.next();
+  }
+
   // 1) Canonical host normalization (production only)
   if (process.env.NODE_ENV === 'production') {
     const proto = request.headers.get('x-forwarded-proto') || 'https';

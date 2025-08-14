@@ -1,12 +1,14 @@
+'use client';
+
 import { create } from 'zustand';
 
-interface SSAInterestModalState {
+interface ConsultationModalStore {
   isOpen: boolean;
   openModal: () => void;
   closeModal: () => void;
 }
 
-export const useSSAInterestModal = create<SSAInterestModalState>((set) => ({
+export const useConsultationModal = create<ConsultationModalStore>((set) => ({
   isOpen: false,
   openModal: () => set({ isOpen: true }),
   closeModal: () => set({ isOpen: false }),

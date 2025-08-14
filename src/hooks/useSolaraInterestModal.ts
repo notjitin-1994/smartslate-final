@@ -8,6 +8,6 @@ interface SolaraInterestModalState {
 
 export const useSolaraInterestModal = create<SolaraInterestModalState>((set) => ({
   isOpen: false,
-  openModal: () => {},
-  closeModal: () => {},
+  openModal: () => set({ isOpen: true }),
+  closeModal: () => set({ isOpen: false }),
 }));

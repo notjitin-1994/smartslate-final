@@ -100,5 +100,71 @@ export default function Modal({
   }, [isOpen, onClose]);
 
   // Modals disabled globally
-  return null;
+  if (!isOpen) return null;
+
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (closeOnOverlayClick && e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  const maxWidthClass = {
+    sm: 'max-w-sm',
+    md: 'max-w-2xl',
+    lg: 'max-w-4xl',
+  }[maxWidth];
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          aria-hidden={!isOpen}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={labelledById}
+          aria-describedby={describedById}
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={handleOverlayClick}
+        >
+          {/* Backdrop */}
+          <motion.div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          />
+
+          {/* Modal panel */}
+          <motion.div
+            ref={modalRef}
+            className={`relative w-full ${maxWidthClass} mx-4 bg-background-dark text-primary rounded-xl shadow-xl border border-white/10 overflow-hidden`}
+            initial={{ opacity: 0, scale: 0.98, y: 6 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.98, y: 6 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 22 }}
+          >
+            {showCloseButton && (
+              <button
+                type="button"
+                aria-label="Close"
+                className="absolute top-3 right-3 inline-flex items-center justify-center rounded-md p-2 text-secondary hover:text-primary hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-primary-accent"
+                onClick={onClose}
+              >
+                <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fillRule="evenodd" d="M10 8.586l4.95-4.95a1 1 0 111.414 1.415L11.414 10l4.95 4.95a1 1 0 01-1.415 1.414L10 11.414l-4.95 4.95a1 1 0 01-1.414-1.415L8.586 10l-4.95-4.95A1 1 0 115.05 3.636L10 8.586z" clipRule="evenodd" />
+                </svg>
+              </button>
+            )}
+
+            <div className="max-h-[90vh] overflow-hidden">
+              {children}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 }

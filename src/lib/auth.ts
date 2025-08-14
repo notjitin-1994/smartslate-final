@@ -15,13 +15,17 @@ const ENCODER = new TextEncoder();
 
 let remoteJwks: ReturnType<typeof createRemoteJWKSet> | null = null;
 function resolveKeyFetcher() {
-  const jwksUrl = process.env.NEON_AUTH_JWKS_URL;
+  // Prefer Supabase JWKS if configured, fall back to Neon or HMAC secret.
+  const supabaseComputedJwks = process.env.SUPABASE_URL
+    ? `${process.env.SUPABASE_URL.replace(/\/$/, '')}/auth/v1/keys`
+    : undefined;
+  const jwksUrl = process.env.SUPABASE_JWKS_URL || supabaseComputedJwks || process.env.NEON_AUTH_JWKS_URL;
   if (jwksUrl) {
     if (!remoteJwks) remoteJwks = createRemoteJWKSet(new URL(jwksUrl));
     return remoteJwks;
   }
-  const secret = process.env.NEON_AUTH_JWT_SECRET || process.env.JWT_SECRET;
-  if (!secret) throw new Error('Missing NEON_AUTH_JWKS_URL or NEON_AUTH_JWT_SECRET');
+  const secret = process.env.SUPABASE_JWT_SECRET || process.env.JWT_SECRET || process.env.NEON_AUTH_JWT_SECRET;
+  if (!secret) throw new Error('Missing SUPABASE_JWKS_URL/SUPABASE_URL or SUPABASE_JWT_SECRET/JWT_SECRET');
   return ENCODER.encode(secret);
 }
 

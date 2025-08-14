@@ -11,29 +11,54 @@ interface DemoModalProps {
 }
 
 export default function DemoModal({ isOpen, onClose }: DemoModalProps) {
+  const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
-    // Contact Information
+    // Step 1: Contact & Professional Information
     name: '',
     email: '',
     phone: '',
-    // Professional Context
     company: '',
     role: '',
+    department: '',
     industry: '',
     companySize: '',
-    // Demo Preferences
+    location: '',
+    
+    // Step 2: Demo Preferences & Scheduling
     demoType: '',
     preferredDate: '',
     preferredTime: '',
     timezone: '',
-    // Business Context
+    demoDuration: '60 minutes',
+    attendeesCount: '',
+    attendeeRoles: [] as string[],
+    
+    // Step 3: Business Context & Challenges
     currentChallenges: '',
     teamSize: '',
-    budget: '',
+    budgetRange: '',
     timeline: '',
-    // Additional Information
+    decisionMakers: '',
+    implementationScope: '',
+    
+    // Step 4: Product Interest & Features
+    productInterest: [] as string[],
     specificFeatures: [] as string[],
+    useCase: '',
+    integrationNeeds: [] as string[],
+    
+    // Step 5: Current State & Requirements
+    currentLMS: '',
+    currentTools: [] as string[],
+    learningGoals: '',
+    successMetrics: '',
+    complianceNeeds: [] as string[],
+    
+    // Step 6: Additional Context
+    howDidYouHear: '',
+    competitiveAnalysis: '',
     additionalNotes: '',
+    urgencyLevel: 'normal',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -98,18 +123,36 @@ export default function DemoModal({ isOpen, onClose }: DemoModalProps) {
         phone: '',
         company: '',
         role: '',
+        department: '',
         industry: '',
         companySize: '',
+        location: '',
         demoType: '',
         preferredDate: '',
         preferredTime: '',
         timezone: '',
+        demoDuration: '60 minutes',
+        attendeesCount: '',
+        attendeeRoles: [],
         currentChallenges: '',
         teamSize: '',
-        budget: '',
+        budgetRange: '',
         timeline: '',
+        decisionMakers: '',
+        implementationScope: '',
+        productInterest: [],
         specificFeatures: [],
+        useCase: '',
+        integrationNeeds: [],
+        currentLMS: '',
+        currentTools: [],
+        learningGoals: '',
+        successMetrics: '',
+        complianceNeeds: [],
+        howDidYouHear: '',
+        competitiveAnalysis: '',
         additionalNotes: '',
+        urgencyLevel: 'normal',
       });
       setIsSuccess(false);
       onClose();
@@ -425,8 +468,8 @@ export default function DemoModal({ isOpen, onClose }: DemoModalProps) {
                 label="Budget Range (Optional)"
                 name="budget"
                 type="select"
-                value={formData.budget}
-                onChange={(value) => updateFormData('budget', value)}
+                                  value={formData.budgetRange}
+                                  onChange={(value) => updateFormData('budgetRange', value)}
                 options={[
                   { value: '', label: 'Select budget range' },
                   { value: 'under-10k', label: 'Under $10,000' },
