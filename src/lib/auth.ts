@@ -14,10 +14,12 @@ export interface AuthContext {
 const ENCODER = new TextEncoder();
 
 let remoteJwks: ReturnType<typeof createRemoteJWKSet> | null = null;
-function resolveKeyFetcher() {
+type KeyFetcher = ReturnType<typeof createRemoteJWKSet> | Uint8Array;
+function resolveKeyFetcher(): KeyFetcher {
   // Prefer Supabase JWKS if configured, fall back to Neon or HMAC secret.
-  const supabaseComputedJwks = process.env.SUPABASE_URL
-    ? `${process.env.SUPABASE_URL.replace(/\/$/, '')}/auth/v1/keys`
+  const supabaseBaseUrl = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').trim();
+  const supabaseComputedJwks = supabaseBaseUrl
+    ? `${supabaseBaseUrl.replace(/\/$/, '')}/auth/v1/keys`
     : undefined;
   const jwksUrl = process.env.SUPABASE_JWKS_URL || supabaseComputedJwks || process.env.NEON_AUTH_JWKS_URL;
   if (jwksUrl) {
@@ -31,7 +33,7 @@ function resolveKeyFetcher() {
 
 export async function verifyJwt(token: string): Promise<JWTPayload> {
   const key = resolveKeyFetcher();
-  const { payload } = await jwtVerify(token, key as any, {
+  const { payload } = await jwtVerify(token, key, {
     algorithms: ['HS256', 'RS256'],
   });
   return payload;
