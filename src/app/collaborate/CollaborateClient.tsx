@@ -231,7 +231,7 @@ export default function CollaborateClient() {
               <PartnershipCard
                 opportunity={opportunity}
                 delay={index * 150}
-                onClick={() => openModal(opportunity.modalConfig)}
+               onClick={() => {}}
               />
               {index < partnershipOpportunities.length - 1 && (
                 <StyledDivider />

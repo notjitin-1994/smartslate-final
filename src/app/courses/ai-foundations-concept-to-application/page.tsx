@@ -118,7 +118,7 @@ export default function AIFoundationsPage() {
             />
             <div className="flex flex-col sm:flex-row gap-4 mt-8">
               <button
-                onClick={() => openModal(courseInfo)}
+               onClick={() => {}}
                 className="btn btn-primary w-full sm:w-auto"
               >
                 Join Waitlist &amp; Save {discountPercentage}%
@@ -348,7 +348,7 @@ export default function AIFoundationsPage() {
                 designation on your certificate of completion.
               </p>
               <button
-                onClick={() => openModal(courseInfo)}
+               onClick={() => {}}
                 className="btn btn-primary"
               >
                 Secure Your Founding Member Spot
@@ -465,7 +465,7 @@ export default function AIFoundationsPage() {
                   </div>
 
                   <button
-                    onClick={() => openModal(courseInfo)}
+                   onClick={() => {}}
                     className="btn btn-primary w-full"
                   >
                     Join &amp; Secure {discountPercentage}% Off
@@ -527,7 +527,7 @@ export default function AIFoundationsPage() {
                 </div>
               </div>
               <button
-                onClick={() => openModal(courseInfo)}
+               onClick={() => {}}
                 className="btn btn-primary whitespace-nowrap"
               >
                 Join &amp; Save {discountPercentage}%

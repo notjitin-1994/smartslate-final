@@ -61,7 +61,7 @@ export default function DemoButton({
     <StyledDemoButton
       variant={variant}
       size={size}
-      onClick={openModal}
+      onClick={() => {}}
       startIcon={defaultStartIcon}
       endIcon={endIcon}
       fullWidth={fullWidth}

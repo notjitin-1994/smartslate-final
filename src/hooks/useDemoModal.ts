@@ -10,6 +10,6 @@ interface DemoModalStore {
 
 export const useDemoModal = create<DemoModalStore>((set) => ({
   isOpen: false,
-  openModal: () => set({ isOpen: true }),
-  closeModal: () => set({ isOpen: false }),
+  openModal: () => {},
+  closeModal: () => {},
 }));

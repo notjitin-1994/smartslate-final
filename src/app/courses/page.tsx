@@ -186,7 +186,7 @@ export default function CoursesPage() {
                   key={course.slug || index}
                   course={course}
                   index={index}
-                  onWaitlistClick={() => course.statusColor !== 'horizon' && openModal(course)}
+                  onWaitlistClick={() => {}}
                 />
               ))}
             </div>
@@ -211,12 +211,7 @@ export default function CoursesPage() {
         </Box>
       </PageWrapper>
 
-      {/* Course Waitlist Modal */}
-      <CourseWaitlistModal 
-        isOpen={isOpen}
-        onClose={closeModal}
-        course={selectedCourse}
-      />
+      {/* Course Waitlist Modal removed */}
     </>
   );
 }

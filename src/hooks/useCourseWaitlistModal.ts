@@ -21,6 +21,6 @@ interface CourseWaitlistModalStore {
 export const useCourseWaitlistModal = create<CourseWaitlistModalStore>((set) => ({
   isOpen: false,
   selectedCourse: null,
-  openModal: (course) => set({ isOpen: true, selectedCourse: course }),
-  closeModal: () => set({ isOpen: false, selectedCourse: null }),
+  openModal: (_course) => {},
+  closeModal: () => {},
 }));
