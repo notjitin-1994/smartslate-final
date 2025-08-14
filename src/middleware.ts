@@ -5,6 +5,24 @@ export function middleware(request: NextRequest) {
   const url = request.nextUrl;
   const { pathname } = url;
 
+  // If OAuth provider redirected back with an auth code (or error) to a non-callback path,
+  // forward to our dedicated callback page to complete the session exchange.
+  const hasOAuthParams = url.searchParams.has('code') || url.searchParams.has('error') || url.searchParams.has('error_description');
+  if (hasOAuthParams && pathname !== '/auth/callback') {
+    const callbackUrl = new URL('/auth/callback', url);
+    const passthrough = ['code', 'state', 'error', 'error_description'] as const;
+    for (const key of passthrough) {
+      const value = url.searchParams.get(key);
+      if (value) callbackUrl.searchParams.set(key, value);
+    }
+    // Preserve original destination as `next`, excluding OAuth parameters
+    const nextParams = new URLSearchParams(url.search);
+    for (const key of passthrough) nextParams.delete(key);
+    const nextStr = pathname + (nextParams.toString() ? `?${nextParams.toString()}` : '');
+    callbackUrl.searchParams.set('next', nextStr || '/');
+    return NextResponse.redirect(callbackUrl, 307);
+  }
+
   // Bypass all redirects/normalization for localhost in any env to avoid HTTPS redirects in local dev
   const hostHeader = request.headers.get('x-forwarded-host') || request.headers.get('host') || '';
   const isLocalHost = hostHeader.startsWith('localhost') || hostHeader.startsWith('127.0.0.1') || hostHeader === '::1' || hostHeader.endsWith('.local');

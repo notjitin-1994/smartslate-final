@@ -1,5 +1,5 @@
 // Minimal service worker for installability and basic offline shell
-const CACHE_NAME = 'smartslate-cache-v1';
+const CACHE_NAME = 'smartslate-cache-v2';
 const APP_SHELL = ['/'];
 
 self.addEventListener('install', (event) => {
@@ -19,6 +19,15 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET') return;
+  try {
+    const url = new URL(request.url);
+    // Never cache OAuth redirects or the auth callback; always hit network
+    const hasOAuthParams = url.searchParams.has('code') || url.searchParams.has('error') || url.searchParams.has('error_description');
+    if (hasOAuthParams || url.pathname === '/auth/callback') {
+      event.respondWith(fetch(request).catch(() => caches.match('/')));
+      return;
+    }
+  } catch {}
 
   event.respondWith(
     caches.match(request).then((cached) => {
