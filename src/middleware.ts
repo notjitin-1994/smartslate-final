@@ -32,12 +32,15 @@ export function middleware(request: NextRequest) {
 
   // 1) Canonical host normalization (production only)
   if (process.env.NODE_ENV === 'production') {
-    const proto = request.headers.get('x-forwarded-proto') || 'https';
-    // Enforce HTTPS only (avoid host flips that can conflict with hosting provider canonicalization)
-    if (proto === 'http') {
-      const redirectUrl = new URL(url);
-      redirectUrl.protocol = 'https:';
-      return NextResponse.redirect(redirectUrl, 308);
+    const enforceHttps = process.env.ENFORCE_HTTPS === '1';
+    if (enforceHttps) {
+      const proto = request.headers.get('x-forwarded-proto') || url.protocol.replace(':', '') || 'https';
+      // Enforce HTTPS only when explicitly enabled
+      if (proto === 'http') {
+        const redirectUrl = new URL(url);
+        redirectUrl.protocol = 'https:';
+        return NextResponse.redirect(redirectUrl, 308);
+      }
     }
 
     // Optionally enforce a single canonical host if explicitly configured
