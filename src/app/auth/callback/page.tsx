@@ -16,36 +16,30 @@ export default function AuthCallbackPage() {
       try {
         console.log('Auth callback started, URL:', typeof window !== 'undefined' ? window.location.href : '');
         const supabase = getSupabaseBrowser();
-        const url = typeof window !== 'undefined' ? window.location.href : '';
-        const code = params.get('code');
+        
+        // Check for OAuth errors first
         const oauthError = params.get('error') || params.get('error_description');
         if (oauthError) {
           console.error('OAuth provider returned error:', oauthError);
           setError(decodeURIComponent(oauthError));
           return;
         }
-        if (!code) {
-          console.error('No authorization code present in callback URL');
-          setError('No authorization code found. Please start sign-in again.');
-          return;
-        }
-        // Supabase will read code from window.location if detectSessionInUrl is true
-        const { data, error } = await supabase.auth.exchangeCodeForSession(url);
+
+        // Let Supabase automatically handle the session exchange
+        // Since detectSessionInUrl is true, it should automatically detect and exchange the code
+        const { data: { session }, error } = await supabase.auth.getSession();
         
         if (error) {
           console.error('Auth callback error:', error);
           throw error;
         }
         
-        console.log('Auth callback data:', data);
-        const session = data?.session;
-        const user = data?.user;
-        
-        if (!session || !user) {
-          console.error('No session or user returned from auth callback');
+        if (!session) {
+          console.error('No session returned from auth callback');
           throw new Error('No session returned');
         }
         
+        const user = session.user;
         const fullName = (user.user_metadata?.full_name as string) || user.email?.split('@')[0] || 'User';
         console.log('Logging in user:', { id: user.id, full_name: fullName, email: user.email });
         

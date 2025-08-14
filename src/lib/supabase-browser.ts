@@ -20,6 +20,8 @@ export function getSupabaseBrowser(): SupabaseClient {
       autoRefreshToken: false,
       detectSessionInUrl: true,
       flowType: 'pkce',
+      // Add these settings to ensure proper PKCE handling
+      storageKey: 'sb-oyjslszrygcajdpwgxbe-auth-token',
     },
   });
   return cachedBrowserClient;

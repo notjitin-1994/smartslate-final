@@ -1,30 +1,181 @@
 'use client';
 
 import { useAuth } from '@/contexts/AuthContext';
-import { Container, Box, Typography, Avatar, Paper, Grid, TextField, Button, Stack, IconButton, CircularProgress, Snackbar, Alert } from '@mui/material';
+
+// Add global CSS for animations
+const globalStyles = `
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-20px) rotate(1deg);
+    }
+  }
+  
+  @keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200px 0;
+    }
+    100% {
+      background-position: calc(200px + 100%) 0;
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  @keyframes slideInUp {
+    from {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeInScale {
+    from {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+`;
+
+// Inject global styles
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style');
+  style.textContent = globalStyles;
+  document.head.appendChild(style);
+}
+import { 
+  Container, 
+  Box, 
+  Typography, 
+  Avatar, 
+  Paper, 
+  Grid, 
+  TextField, 
+  Button, 
+  Stack, 
+  IconButton, 
+  CircularProgress, 
+  Snackbar, 
+  Alert,
+  Divider,
+  Chip,
+  Card,
+  CardContent,
+  Fade,
+  Slide
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { CameraAlt, Save } from '@mui/icons-material';
+import { 
+  CameraAlt, 
+  Save, 
+  Edit, 
+  Person, 
+  Business, 
+  Phone, 
+  LocationOn, 
+  Language, 
+  Twitter, 
+  LinkedIn, 
+  GitHub,
+  Description,
+  CheckCircle,
+  ArrowBack
+} from '@mui/icons-material';
 
+// Styled Components
 const ProfileWrapper = styled(Box)(({ theme }) => ({
   minHeight: '100vh',
+  background: 'linear-gradient(135deg, var(--background-dark) 0%, var(--background-paper) 100%)',
   paddingTop: theme.spacing(15),
   paddingBottom: theme.spacing(8),
 }));
 
-const ProfileCard = styled(Paper)(({ theme }) => ({
-  background: 'rgba(13, 27, 42, 0.5)',
-  backdropFilter: 'blur(20px)',
-  WebkitBackdropFilter: 'blur(20px)',
-  border: '1px solid rgba(42, 58, 74, 0.5)',
-  borderRadius: theme.spacing(2),
+const HeroSection = styled(Box)(({ theme }) => ({
+  background: `
+    radial-gradient(circle at 20% 80%, rgba(167, 218, 219, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
+    linear-gradient(135deg, rgba(13, 27, 42, 0.95) 0%, rgba(20, 36, 51, 0.95) 100%)
+  `,
+  borderRadius: '24px',
   padding: theme.spacing(6),
-  textAlign: 'center',
-  maxWidth: 600,
-  margin: '0 auto',
+  marginBottom: theme.spacing(6),
+  position: 'relative',
+  overflow: 'hidden',
+  border: '1px solid rgba(167, 218, 219, 0.15)',
+  boxShadow: `
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 8px 16px rgba(167, 218, 219, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08)
+  `,
+  backdropFilter: 'blur(16px)',
+  WebkitBackdropFilter: 'blur(16px)',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: `
+      linear-gradient(45deg, transparent 30%, rgba(167, 218, 219, 0.03) 50%, transparent 70%)
+    `,
+    pointerEvents: 'none',
+    animation: 'shimmer 10s ease-in-out infinite',
+  },
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    top: '-1px',
+    left: '-1px',
+    right: '-1px',
+    bottom: '-1px',
+    background: 'linear-gradient(45deg, var(--primary-accent), var(--secondary-accent), var(--primary-accent))',
+    borderRadius: '25px',
+    zIndex: -1,
+    opacity: 0.2,
+    filter: 'blur(4px)',
+  },
   [theme.breakpoints.down('sm')]: {
     padding: theme.spacing(4),
+    borderRadius: '20px',
+  },
+}));
+
+const ProfileCard = styled(Card)(({ theme }) => ({
+  background: 'rgba(13, 27, 42, 0.6)',
+  backdropFilter: 'blur(20px)',
+  WebkitBackdropFilter: 'blur(20px)',
+  border: '1px solid rgba(167, 218, 219, 0.2)',
+  borderRadius: theme.spacing(3),
+  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+  transition: 'all 0.3s ease',
+  '&:hover': {
+    boxShadow: '0 12px 40px rgba(0, 0, 0, 0.4)',
+    border: '1px solid rgba(167, 218, 219, 0.3)',
   },
 }));
 
@@ -33,29 +184,283 @@ const ProfileAvatar = styled(Avatar)(({ theme }) => ({
   height: 120,
   margin: '0 auto',
   marginBottom: theme.spacing(3),
-  backgroundColor: theme.palette.primary.main,
+  background: `
+    linear-gradient(135deg, var(--primary-accent) 0%, var(--secondary-accent) 50%, var(--primary-accent) 100%),
+    linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%, rgba(255, 255, 255, 0.1) 100%)
+  `,
   fontSize: '3rem',
   fontWeight: 700,
-  boxShadow: '0 0 30px rgba(167, 218, 219, 0.3)',
-  border: '4px solid rgba(167, 218, 219, 0.2)',
+  boxShadow: `
+    0 12px 24px rgba(0, 0, 0, 0.2),
+    0 4px 8px rgba(167, 218, 219, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15)
+  `,
+  border: '3px solid rgba(167, 218, 219, 0.3)',
+  transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+  position: 'relative',
+  '&:hover': {
+    transform: 'scale(1.05) translateY(-4px)',
+    boxShadow: `
+      0 20px 32px rgba(0, 0, 0, 0.3),
+      0 8px 16px rgba(167, 218, 219, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2)
+    `,
+  },
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    inset: -2,
+    background: 'linear-gradient(45deg, var(--primary-accent), var(--secondary-accent), var(--primary-accent))',
+    borderRadius: '50%',
+    zIndex: -1,
+    opacity: 0.3,
+    animation: 'rotate 6s linear infinite',
+    filter: 'blur(2px)',
+  },
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    inset: 0,
+    background: 'radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 50%)',
+    borderRadius: '50%',
+    pointerEvents: 'none',
+  },
 }));
 
-const InfoSection = styled(Box)(({ theme }) => ({
-  marginTop: theme.spacing(4),
-  padding: theme.spacing(3),
-  background: 'rgba(255, 255, 255, 0.02)',
-  borderRadius: theme.spacing(1),
-  border: '1px solid rgba(255, 255, 255, 0.05)',
+const UserInfoContainer = styled(Box)(({ theme }) => ({
+  textAlign: 'center',
+  position: 'relative',
+  zIndex: 2,
+  animation: 'slideInUp 0.6s ease-out',
+  '& .MuiTypography-h4': {
+    background: 'linear-gradient(135deg, var(--primary-accent) 0%, var(--secondary-accent) 100%)',
+    backgroundClip: 'text',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    fontWeight: 700,
+    marginBottom: theme.spacing(1),
+    fontSize: '1.8rem',
+    textShadow: '0 0 20px rgba(167, 218, 219, 0.2)',
+    letterSpacing: '-0.01em',
+  },
+  '& .MuiTypography-body1': {
+    color: 'var(--text-secondary)',
+    fontSize: '1rem',
+    marginBottom: theme.spacing(2.5),
+    opacity: 0.85,
+    fontWeight: 400,
+    letterSpacing: '0.01em',
+  },
 }));
 
-const InfoRow = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  padding: `${theme.spacing(2)} 0`,
-  borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
-  '&:last-child': {
-    borderBottom: 'none',
+const InfoChip = styled(Chip)(({ theme }) => ({
+  margin: theme.spacing(0.5),
+  background: `
+    linear-gradient(135deg, rgba(167, 218, 219, 0.12) 0%, rgba(79, 70, 229, 0.08) 100%)
+  `,
+  border: '1px solid rgba(167, 218, 219, 0.3)',
+  color: 'var(--primary-accent)',
+  fontWeight: 500,
+  fontSize: '0.85rem',
+  padding: theme.spacing(1),
+  borderRadius: '16px',
+  transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+  backdropFilter: 'blur(8px)',
+  boxShadow: `
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    0 1px 2px rgba(167, 218, 219, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08)
+  `,
+  '&:hover': {
+    background: `
+      linear-gradient(135deg, rgba(167, 218, 219, 0.2) 0%, rgba(79, 70, 229, 0.15) 100%)
+    `,
+    border: '1px solid rgba(167, 218, 219, 0.5)',
+    transform: 'translateY(-2px) scale(1.02)',
+    boxShadow: `
+      0 4px 12px rgba(0, 0, 0, 0.12),
+      0 2px 4px rgba(167, 218, 219, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15)
+    `,
+  },
+  '& .MuiChip-icon': {
+    color: 'var(--primary-accent)',
+    fontSize: '1rem',
+  },
+}));
+
+const GreetingContainer = styled(Box)(({ theme }) => ({
+  position: 'relative',
+  zIndex: 2,
+  animation: 'fadeInScale 0.8s ease-out 0.1s both',
+  '& .MuiTypography-h2': {
+    background: 'linear-gradient(135deg, var(--primary-accent) 0%, var(--secondary-accent) 50%, var(--primary-accent) 100%)',
+    backgroundClip: 'text',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    fontWeight: 800,
+    fontSize: { xs: '2.5rem', sm: '3rem', md: '3.5rem' },
+    lineHeight: 1,
+    marginBottom: theme.spacing(2),
+    textShadow: '0 0 25px rgba(167, 218, 219, 0.3)',
+    letterSpacing: '-0.02em',
+    animation: 'pulse 4s ease-in-out infinite',
+  },
+  '& .MuiTypography-h5': {
+    color: 'var(--text-secondary)',
+    fontWeight: 400,
+    fontSize: { xs: '1.1rem', sm: '1.2rem' },
+    opacity: 0.8,
+    lineHeight: 1.3,
+    letterSpacing: '0.01em',
+    textShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
+  },
+}));
+
+const SectionCard = styled(Card)(({ theme }) => ({
+  background: 'rgba(20, 36, 51, 0.4)',
+  backdropFilter: 'blur(12px)',
+  WebkitBackdropFilter: 'blur(12px)',
+  border: '1px solid rgba(255, 255, 255, 0.08)',
+  borderRadius: theme.spacing(2),
+  transition: 'all 0.3s ease',
+  '&:hover': {
+    background: 'rgba(20, 36, 51, 0.6)',
+    border: '1px solid rgba(255, 255, 255, 0.12)',
+  },
+}));
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  '& .MuiOutlinedInput-root': {
+    background: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: theme.spacing(1),
+    '& fieldset': {
+      borderColor: 'rgba(255, 255, 255, 0.1)',
+    },
+    '&:hover fieldset': {
+      borderColor: 'rgba(167, 218, 219, 0.3)',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: 'var(--primary-accent)',
+    },
+  },
+  '& .MuiInputLabel-root': {
+    color: 'var(--text-secondary)',
+    '&.Mui-focused': {
+      color: 'var(--primary-accent)',
+    },
+  },
+  '& .MuiInputBase-input': {
+    color: 'var(--text-primary)',
+  },
+}));
+
+const ActionButton = styled(Button)(({ theme }) => ({
+  background: 'linear-gradient(135deg, var(--primary-accent) 0%, var(--secondary-accent) 100%)',
+  borderRadius: theme.spacing(2),
+  padding: `${theme.spacing(1.5)} ${theme.spacing(4)}`,
+  fontWeight: 600,
+  textTransform: 'none',
+  boxShadow: '0 4px 15px rgba(167, 218, 219, 0.3)',
+  transition: 'all 0.3s ease',
+  '&:hover': {
+    transform: 'translateY(-2px)',
+    boxShadow: '0 6px 20px rgba(167, 218, 219, 0.4)',
+  },
+}));
+
+const BackButton = styled(Button)(({ theme }) => ({
+  color: 'var(--text-secondary)',
+  borderColor: 'rgba(167, 218, 219, 0.3)',
+  borderRadius: '12px',
+  padding: `${theme.spacing(1.5)} ${theme.spacing(4)}`,
+  textTransform: 'none',
+  fontWeight: 500,
+  fontSize: '0.9rem',
+  transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+  background: `
+    linear-gradient(135deg, rgba(167, 218, 219, 0.08) 0%, rgba(79, 70, 229, 0.04) 100%)
+  `,
+  backdropFilter: 'blur(12px)',
+  boxShadow: `
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    0 1px 2px rgba(167, 218, 219, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08)
+  `,
+  '&:hover': {
+    borderColor: 'var(--primary-accent)',
+    color: 'var(--primary-accent)',
+    background: `
+      linear-gradient(135deg, rgba(167, 218, 219, 0.15) 0%, rgba(79, 70, 229, 0.08) 100%)
+    `,
+    transform: 'translateY(-2px)',
+    boxShadow: `
+      0 4px 12px rgba(0, 0, 0, 0.12),
+      0 2px 4px rgba(167, 218, 219, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15)
+    `,
+  },
+}));
+
+const CameraButton = styled(IconButton)(({ theme }) => ({
+  position: 'absolute',
+  bottom: 8,
+  right: -8,
+  background: `
+    linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.75) 100%)
+  `,
+  color: 'white',
+  border: '2px solid var(--primary-accent)',
+  width: 36,
+  height: 36,
+  backdropFilter: 'blur(8px)',
+  boxShadow: `
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    0 2px 4px rgba(167, 218, 219, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08)
+  `,
+  transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+  '&:hover': {
+    background: `
+      linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.8) 100%)
+    `,
+    transform: 'scale(1.1) rotate(3deg)',
+    boxShadow: `
+      0 6px 16px rgba(0, 0, 0, 0.25),
+      0 3px 6px rgba(167, 218, 219, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15)
+    `,
+  },
+}));
+
+const FloatingOrbs = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  pointerEvents: 'none',
+  zIndex: 1,
+  '&::before, &::after': {
+    content: '""',
+    position: 'absolute',
+    borderRadius: '50%',
+    background: 'radial-gradient(circle, rgba(167, 218, 219, 0.08) 0%, transparent 70%)',
+    animation: 'float 8s ease-in-out infinite',
+  },
+  '&::before': {
+    width: '80px',
+    height: '80px',
+    top: '15%',
+    right: '20%',
+    animationDelay: '0s',
+  },
+  '&::after': {
+    width: '60px',
+    height: '60px',
+    bottom: '25%',
+    left: '15%',
+    animationDelay: '4s',
   },
 }));
 
@@ -79,6 +484,7 @@ export default function ProfilePage() {
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [editing, setEditing] = useState(false);
   const [toast, setToast] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({ open: false, message: '', severity: 'success' });
 
   useEffect(() => {
@@ -90,6 +496,10 @@ export default function ProfilePage() {
   const displayName = useMemo(() => {
     return profile?.full_name || user?.full_name || 'User';
   }, [profile?.full_name, user?.full_name]);
+
+  const firstName = useMemo(() => {
+    return displayName.split(' ')[0] || 'User';
+  }, [displayName]);
 
   const loadProfile = useCallback(async () => {
     if (!token) return;
@@ -129,7 +539,7 @@ export default function ProfilePage() {
       <ProfileWrapper>
         <Container maxWidth="lg">
           <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
-            <Typography variant="h6" color="text.secondary">Loading...</Typography>
+            <CircularProgress size={40} sx={{ color: 'var(--primary-accent)' }} />
           </Box>
         </Container>
       </ProfileWrapper>
@@ -169,7 +579,8 @@ export default function ProfilePage() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data?.error || 'Failed to save');
-      setToast({ open: true, message: 'Profile updated', severity: 'success' });
+      setToast({ open: true, message: 'Profile updated successfully!', severity: 'success' });
+      setEditing(false);
     } catch (e: any) {
       setToast({ open: true, message: e?.message || 'Failed to save', severity: 'error' });
     } finally {
@@ -192,7 +603,7 @@ export default function ProfilePage() {
       try {
         window.dispatchEvent(new CustomEvent('avatar-url-changed', { detail: { url: data.url } }));
       } catch {}
-      setToast({ open: true, message: 'Avatar updated', severity: 'success' });
+      setToast({ open: true, message: 'Avatar updated successfully!', severity: 'success' });
     } catch (e: any) {
       setToast({ open: true, message: e?.message || 'Upload failed', severity: 'error' });
     } finally {
@@ -201,87 +612,287 @@ export default function ProfilePage() {
     }
   };
 
+  const hasSocialLinks = profile?.twitter || profile?.linkedin || profile?.github || profile?.website;
+
   return (
     <ProfileWrapper>
       <Container maxWidth="lg">
-        <ProfileCard elevation={0}>
-          <Box position="relative" display="inline-block">
-            <ProfileAvatar src={profile?.avatar_url || undefined}>
-              {!profile?.avatar_url && userInitials(displayName)}
-            </ProfileAvatar>
-            <IconButton 
-              aria-label="Change avatar"
-              onClick={onAvatarClick}
-              size="small"
-              sx={{ position: 'absolute', bottom: 8, right: -8, background: 'rgba(0,0,0,0.6)', color: 'white', '&:hover': { background: 'rgba(0,0,0,0.8)' } }}
-            >
-              {uploading ? <CircularProgress size={18} color="inherit" /> : <CameraAlt fontSize="small" />}
-            </IconButton>
-            <input ref={fileInputRef} type="file" accept="image/*" hidden onChange={onAvatarChange} />
-          </Box>
-          
-          <Typography variant="h4" component="h1" gutterBottom fontWeight={700} color="primary">
-            {displayName}
-          </Typography>
-          
-          <Typography variant="body1" color="text.secondary" gutterBottom>
-            {user.email}
-          </Typography>
+        {/* Hero Section */}
+        <HeroSection>
+          <FloatingOrbs />
+          <Box position="relative" zIndex={2}>
+            <Stack direction="row" alignItems="center" spacing={2} mb={4}>
+              <BackButton
+                variant="outlined"
+                startIcon={<ArrowBack />}
+                onClick={() => router.back()}
+              >
+                Back
+              </BackButton>
+            </Stack>
+            
+            <Box display="flex" flexDirection={{ xs: 'column', lg: 'row' }} alignItems="center" gap={{ xs: 3, lg: 6 }}>
+              {/* Left side - Avatar and basic info */}
+              <UserInfoContainer flex={{ lg: '0 0 40%' }}>
+                <Box position="relative" display="inline-block">
+                  <ProfileAvatar src={profile?.avatar_url || undefined}>
+                    {!profile?.avatar_url && userInitials(displayName)}
+                  </ProfileAvatar>
+                  <CameraButton
+                    aria-label="Change avatar"
+                    onClick={onAvatarClick}
+                  >
+                    {uploading ? <CircularProgress size={20} color="inherit" /> : <CameraAlt fontSize="small" />}
+                  </CameraButton>
+                  <input ref={fileInputRef} type="file" accept="image/*" hidden onChange={onAvatarChange} />
+                </Box>
+                
+                <Typography variant="h4" component="h2" gutterBottom>
+                  {displayName}
+                </Typography>
+                
+                <Typography variant="body1" gutterBottom>
+                  {user.email}
+                </Typography>
 
-          <InfoSection>
-            <Typography variant="h6" gutterBottom fontWeight={600} color="primary">
-              Profile
-            </Typography>
-            {loadingProfile && (
-              <Box display="flex" justifyContent="center" py={4}><CircularProgress size={24} /></Box>
-            )}
-            {!loadingProfile && profile && (
-              <Box component="form" noValidate onSubmit={(e) => { e.preventDefault(); onSave(); }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <TextField label="Full name" fullWidth value={profile.full_name || ''} onChange={(e) => setProfile(p => ({ ...(p || {}), full_name: e.target.value }))} />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField label="Email" fullWidth value={user.email} disabled />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField label="Company" fullWidth value={profile.company || ''} onChange={(e) => setProfile(p => ({ ...(p || {}), company: e.target.value }))} />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField label="Phone" fullWidth value={profile.phone || ''} onChange={(e) => setProfile(p => ({ ...(p || {}), phone: e.target.value }))} />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField label="Location" fullWidth value={profile.location || ''} onChange={(e) => setProfile(p => ({ ...(p || {}), location: e.target.value }))} />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField label="Website" fullWidth placeholder="https://..." value={profile.website || ''} onChange={(e) => setProfile(p => ({ ...(p || {}), website: e.target.value }))} />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField label="Twitter (X)" fullWidth placeholder="@handle" value={profile.twitter || ''} onChange={(e) => setProfile(p => ({ ...(p || {}), twitter: e.target.value }))} />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField label="LinkedIn" fullWidth placeholder="Profile URL or handle" value={profile.linkedin || ''} onChange={(e) => setProfile(p => ({ ...(p || {}), linkedin: e.target.value }))} />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField label="GitHub" fullWidth placeholder="username" value={profile.github || ''} onChange={(e) => setProfile(p => ({ ...(p || {}), github: e.target.value }))} />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField label="Bio" fullWidth multiline minRows={3} value={profile.bio || ''} onChange={(e) => setProfile(p => ({ ...(p || {}), bio: e.target.value }))} />
-                  </Grid>
-                </Grid>
-                <Stack direction="row" spacing={2} justifyContent="center" mt={3}>
-                  <Button type="submit" variant="contained" color="primary" startIcon={<Save />} disabled={saving}>
-                    {saving ? 'Saving...' : 'Save changes'}
-                  </Button>
-                  <Button variant="outlined" onClick={loadProfile} disabled={saving}>Reset</Button>
-                </Stack>
-              </Box>
-            )}
-          </InfoSection>
-        </ProfileCard>
+                <Box display="flex" flexDirection="column" alignItems="center" gap={1}>
+                  {profile?.company && (
+                    <InfoChip 
+                      icon={<Business />} 
+                      label={profile.company} 
+                      variant="outlined" 
+                    />
+                  )}
+
+                  {profile?.location && (
+                    <InfoChip 
+                      icon={<LocationOn />} 
+                      label={profile.location} 
+                      variant="outlined" 
+                    />
+                  )}
+                </Box>
+              </UserInfoContainer>
+
+              {/* Right side - Greeting */}
+              <GreetingContainer flex={{ lg: '0 0 60%' }}>
+                <Typography 
+                  variant="h2" 
+                  component="h1" 
+                  gutterBottom 
+                >
+                  Hello, {firstName}! 👋
+                </Typography>
+                <Typography 
+                  variant="h5" 
+                  color="text.secondary" 
+                >
+                  Welcome to your profile dashboard
+                </Typography>
+              </GreetingContainer>
+            </Box>
+          </Box>
+        </HeroSection>
+
+        {/* Main Profile Content */}
+        <Box>
+          {/* Profile Details Form */}
+          <Box>
+            <Slide direction="up" in timeout={800}>
+              <SectionCard>
+                <CardContent sx={{ p: 4 }}>
+                  <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+                    <Typography variant="h5" component="h3" fontWeight={600} color="primary">
+                      Profile Information
+                    </Typography>
+                    <Button
+                      variant={editing ? "outlined" : "contained"}
+                      startIcon={editing ? <CheckCircle /> : <Edit />}
+                      onClick={() => setEditing(!editing)}
+                      sx={{ 
+                        background: editing ? 'transparent' : 'linear-gradient(135deg, var(--primary-accent) 0%, var(--secondary-accent) 100%)',
+                        borderColor: editing ? 'var(--primary-accent)' : 'transparent',
+                        color: editing ? 'var(--primary-accent)' : 'white',
+                        textTransform: 'none',
+                        borderRadius: 2
+                      }}
+                    >
+                      {editing ? 'Cancel' : 'Edit Profile'}
+                    </Button>
+                  </Box>
+
+                  {loadingProfile && (
+                    <Box display="flex" justifyContent="center" py={4}>
+                      <CircularProgress size={32} sx={{ color: 'var(--primary-accent)' }} />
+                    </Box>
+                  )}
+
+                  {!loadingProfile && profile && (
+                    <Box component="form" noValidate onSubmit={(e) => { e.preventDefault(); onSave(); }}>
+                      <Box display="grid" gridTemplateColumns={{ xs: '1fr', sm: '1fr 1fr' }} gap={3}>
+                        <StyledTextField
+                          label="Full Name"
+                          fullWidth
+                          value={profile.full_name || ''}
+                          onChange={(e) => setProfile(p => ({ ...(p || {}), full_name: e.target.value }))}
+                          disabled={!editing}
+                          InputProps={{
+                            startAdornment: <Person sx={{ mr: 1, color: 'var(--text-secondary)' }} />
+                          }}
+                        />
+                        <StyledTextField
+                          label="Email"
+                          fullWidth
+                          value={user.email}
+                          disabled
+                          InputProps={{
+                            startAdornment: <Person sx={{ mr: 1, color: 'var(--text-secondary)' }} />
+                          }}
+                        />
+                        <StyledTextField
+                          label="Company"
+                          fullWidth
+                          value={profile.company || ''}
+                          onChange={(e) => setProfile(p => ({ ...(p || {}), company: e.target.value }))}
+                          disabled={!editing}
+                          InputProps={{
+                            startAdornment: <Business sx={{ mr: 1, color: 'var(--text-secondary)' }} />
+                          }}
+                        />
+                        <StyledTextField
+                          label="Phone"
+                          fullWidth
+                          value={profile.phone || ''}
+                          onChange={(e) => setProfile(p => ({ ...(p || {}), phone: e.target.value }))}
+                          disabled={!editing}
+                          InputProps={{
+                            startAdornment: <Phone sx={{ mr: 1, color: 'var(--text-secondary)' }} />
+                          }}
+                        />
+                        <StyledTextField
+                          label="Location"
+                          fullWidth
+                          value={profile.location || ''}
+                          onChange={(e) => setProfile(p => ({ ...(p || {}), location: e.target.value }))}
+                          disabled={!editing}
+                          InputProps={{
+                            startAdornment: <LocationOn sx={{ mr: 1, color: 'var(--text-secondary)' }} />
+                          }}
+                        />
+                        <StyledTextField
+                          label="Website"
+                          fullWidth
+                          placeholder="https://..."
+                          value={profile.website || ''}
+                          onChange={(e) => setProfile(p => ({ ...(p || {}), website: e.target.value }))}
+                          disabled={!editing}
+                          InputProps={{
+                            startAdornment: <Language sx={{ mr: 1, color: 'var(--text-secondary)' }} />
+                          }}
+                        />
+                        <StyledTextField
+                          label="Twitter (X)"
+                          fullWidth
+                          placeholder="@handle"
+                          value={profile.twitter || ''}
+                          onChange={(e) => setProfile(p => ({ ...(p || {}), twitter: e.target.value }))}
+                          disabled={!editing}
+                          InputProps={{
+                            startAdornment: <Twitter sx={{ mr: 1, color: 'var(--text-secondary)' }} />
+                          }}
+                        />
+                        <StyledTextField
+                          label="LinkedIn"
+                          fullWidth
+                          placeholder="Profile URL"
+                          value={profile.linkedin || ''}
+                          onChange={(e) => setProfile(p => ({ ...(p || {}), linkedin: e.target.value }))}
+                          disabled={!editing}
+                          InputProps={{
+                            startAdornment: <LinkedIn sx={{ mr: 1, color: 'var(--text-secondary)' }} />
+                          }}
+                        />
+                        <StyledTextField
+                          label="GitHub"
+                          fullWidth
+                          placeholder="username"
+                          value={profile.github || ''}
+                          onChange={(e) => setProfile(p => ({ ...(p || {}), github: e.target.value }))}
+                          disabled={!editing}
+                          InputProps={{
+                            startAdornment: <GitHub sx={{ mr: 1, color: 'var(--text-secondary)' }} />
+                          }}
+                        />
+                        <Box gridColumn={{ xs: '1', sm: '1 / -1' }}>
+                          <StyledTextField
+                            label="Bio"
+                            fullWidth
+                            multiline
+                            minRows={4}
+                            value={profile.bio || ''}
+                            onChange={(e) => setProfile(p => ({ ...(p || {}), bio: e.target.value }))}
+                            disabled={!editing}
+                            InputProps={{
+                              startAdornment: <Description sx={{ mr: 1, color: 'var(--text-secondary)', alignSelf: 'flex-start', mt: 1 }} />
+                            }}
+                          />
+                        </Box>
+                      </Box>
+
+                      {editing && (
+                        <Stack direction="row" spacing={2} justifyContent="center" mt={4}>
+                          <ActionButton
+                            type="submit"
+                            startIcon={<Save />}
+                            disabled={saving}
+                            variant="contained"
+                          >
+                            {saving ? 'Saving...' : 'Save Changes'}
+                          </ActionButton>
+                          <Button
+                            variant="outlined"
+                            onClick={() => {
+                              setEditing(false);
+                              loadProfile();
+                            }}
+                            disabled={saving}
+                            sx={{
+                              borderColor: 'rgba(255, 255, 255, 0.2)',
+                              color: 'var(--text-secondary)',
+                              '&:hover': {
+                                borderColor: 'var(--primary-accent)',
+                                color: 'var(--primary-accent)'
+                              }
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                        </Stack>
+                      )}
+                    </Box>
+                  )}
+                </CardContent>
+              </SectionCard>
+            </Slide>
+          </Box>
+        </Box>
       </Container>
-      <Snackbar open={toast.open} autoHideDuration={3000} onClose={() => setToast(t => ({ ...t, open: false }))}>
-        <Alert onClose={() => setToast(t => ({ ...t, open: false }))} severity={toast.severity} variant="filled" sx={{ width: '100%' }}>
+
+      <Snackbar 
+        open={toast.open} 
+        autoHideDuration={4000} 
+        onClose={() => setToast(t => ({ ...t, open: false }))}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert 
+          onClose={() => setToast(t => ({ ...t, open: false }))} 
+          severity={toast.severity} 
+          variant="filled" 
+          sx={{ 
+            width: '100%',
+            background: toast.severity === 'success' ? 'var(--primary-accent)' : undefined
+          }}
+        >
           {toast.message}
         </Alert>
       </Snackbar>
