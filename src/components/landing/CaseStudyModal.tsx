@@ -62,6 +62,7 @@ export default function CaseStudyModal({ isOpen, onClose }: CaseStudyModalProps)
     setIsSubmitting(true);
 
     try {
+      // Backend removed; stub request
       const res = await fetch('/api/leads/case-study', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

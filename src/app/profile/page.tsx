@@ -64,7 +64,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
-      router.replace('/handler/sign-in');
+      router.replace('/sign-in');
     }
   }, [loading, isAuthenticated, router]);
 

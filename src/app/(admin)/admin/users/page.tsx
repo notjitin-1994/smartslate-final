@@ -15,9 +15,10 @@ import {
   DateRange,
   AdminPanelSettings
 } from '@mui/icons-material';
-import { User } from '@prisma/client';
-
-interface UserWithRoles extends User {
+interface UserWithRoles {
+  id: string;
+  email: string;
+  createdAt: string | Date;
   roles?: string[];
 }
 
@@ -36,26 +37,8 @@ export default function AdminUsersPage() {
   async function loadUsers() {
     try {
       const token = localStorage.getItem('auth_token');
-      const res = await fetch('/api/users', {
-        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-      });
-      
-      if (!res.ok) {
-        throw new Error(`Failed to fetch users: ${res.status}`);
-      }
-      
-      const data = await res.json();
-      
-      // Ensure data is an array
-      if (Array.isArray(data)) {
-        setUsers(data);
-      } else if (data && Array.isArray(data.users)) {
-        // Handle case where API returns {users: [...]}
-        setUsers(data.users);
-      } else {
-        console.error('Unexpected data format from API:', data);
-        setUsers([]);
-      }
+      // Backend removed; stub empty list
+      setUsers([]);
     } catch (e) {
       console.error('Failed to load users:', e);
       setUsers([]);
@@ -67,18 +50,8 @@ export default function AdminUsersPage() {
   async function createUser(email: string, name: string) {
     try {
       const token = localStorage.getItem('auth_token');
-      const res = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token ? { Authorization: `Bearer ${token}` } : {})
-        },
-        body: JSON.stringify({ email, name })
-      });
-      if (res.ok) {
-        loadUsers();
-        setShowCreateModal(false);
-      }
+      // Backend removed; stub
+      setShowCreateModal(false);
     } catch (e) {
       console.error('Failed to create user:', e);
     }
@@ -97,22 +70,9 @@ export default function AdminUsersPage() {
   async function updateUserRoles(userId: string, roles: string[]) {
     try {
       const token = localStorage.getItem('auth_token');
-      const res = await fetch(`/api/users/${userId}/roles`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token ? { Authorization: `Bearer ${token}` } : {})
-        },
-        body: JSON.stringify({ roles })
-      });
-      if (res.ok) {
-        await loadUsers();
-        setSelectedUser(null);
-        alert('User roles updated successfully!');
-      } else {
-        const error = await res.json();
-        alert(`Failed to update roles: ${error.error || 'Unknown error'}`);
-      }
+      // Backend removed; stub
+      setSelectedUser(null);
+      alert('Backend not available');
     } catch (e) {
       console.error('Failed to update user roles:', e);
       alert('Failed to update user roles');

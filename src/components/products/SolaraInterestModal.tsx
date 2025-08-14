@@ -54,6 +54,7 @@ export default function SolaraInterestModal() {
     setIsSubmitting(true);
 
     try {
+      // Backend removed; stub request
       const res = await fetch('/api/leads/solara', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

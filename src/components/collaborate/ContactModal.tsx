@@ -117,6 +117,7 @@ export default function ContactModal({
     setLoading(true);
 
     try {
+      // Backend removed; stub request
       const res = await fetch('/api/leads/partner', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

@@ -75,6 +75,7 @@ export default function SSAInterestModal() {
     setIsSubmitting(true);
 
     try {
+      // Backend removed; stub request
       const res = await fetch('/api/leads/ssa', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

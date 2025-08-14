@@ -2,7 +2,7 @@
 module.exports = {
   siteUrl: 'https://smartslate.io',
   generateRobotsTxt: true,
-  exclude: ['/api/*', '/admin/*', '/handler/*'],
+  exclude: ['/api/*', '/admin/*'],
   robotsTxtOptions: {
     policies: [{ userAgent: '*', allow: '/' }],
   },

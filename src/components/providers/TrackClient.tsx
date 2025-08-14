@@ -30,7 +30,7 @@ export default function TrackClient() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    postJSON('/api/track/identify', {});
+    // Tracking backend removed; stubbed
   }, []);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function TrackClient() {
       },
       userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
     };
-    postJSON('/api/track/event', { type: 'pageview', data: payload });
+    // Tracking backend removed; stubbed
   }, [pathname, searchParams]);
 
   return null;

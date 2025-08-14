@@ -1,12 +1,9 @@
 ## LMS Phase 1
 
-- Prisma models for Course, Module, Lesson, UserCourse, UserLessonProgress added
-- REST endpoints under `app/api` for course/module/lesson CRUD, reordering, enrolment, and progress
-- Seed script `prisma/seed.ts` creates a sample course with two modules and mixed lesson types
+- Backend removed (prepping for AWS). Prisma models and REST endpoints have been removed.
 
 Setup
-- Create `.env` with `DATABASE_URL` and run: `npx prisma generate && npx prisma migrate dev`.
-- Seed: `node --loader tsx prisma/seed.ts` or `ts-node prisma/seed.ts` depending on your setup.
+- Create `.env` for AWS Cognito and AWS database when ready. No local backend steps required yet.
 
 # SmartSlate
 
@@ -14,8 +11,7 @@ Modern Next.js application with full-stack capabilities: authentication, RBAC, l
 
 ### Features
 - Next.js 15 (App Router), React 19, Tailwind 4, MUI 7, Zustand
-- Prisma + PostgreSQL data layer and migrations
-- Neon Auth (Stack) integration for user provisioning via Admin API
+- Prepared for AWS (Cognito/Auth and AWS-managed DB). Old Prisma/Neon removed.
 - Role-based access control (RBAC) with config-driven permissions
 - Lead capture APIs (Course waitlist, Solara, SSA, Case studies, Partner)
 - Anonymous analytics tracking (identify + pageview/interaction events)
@@ -25,7 +21,7 @@ Modern Next.js application with full-stack capabilities: authentication, RBAC, l
 - **Framework**: Next.js 15 (app directory)
 - **UI**: Tailwind CSS 4, Material UI 7, Framer Motion
 - **State**: Zustand
-- **Data**: Prisma 6, PostgreSQL
+- **Data**: AWS-managed DB (to be integrated)
 
 ## Environment
 Set the following in `.env.local` (or your host’s env). See `docs/ENVIRONMENT.md` for details.

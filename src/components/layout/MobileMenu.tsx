@@ -417,7 +417,7 @@ export default function MobileMenu({ open, onClose, navItems }: MobileMenuProps)
                   </MobileCTAButton>
                   <MobileCTAButton 
                     variant="contained" 
-                    onClick={() => handleAuthAction(() => window.location.href = '/handler/sign-out')}
+                    onClick={() => handleAuthAction(() => window.location.href = '/sign-out')}
                     custom={2}
                     variants={buttonVariants}
                     initial="hidden"
@@ -438,7 +438,7 @@ export default function MobileMenu({ open, onClose, navItems }: MobileMenuProps)
               ) : (
                 <MobileCTAButton 
                   variant="contained" 
-                  onClick={() => handleAuthAction(() => window.location.href = '/handler/sign-up')}
+                  onClick={() => handleAuthAction(() => window.location.href = '/sign-up')}
                   custom={0}
                   variants={buttonVariants}
                   initial="hidden"

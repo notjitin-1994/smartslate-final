@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useStackApp, useUser } from '@stackframe/stack';
+// Stack Auth removed; local form retained for future AWS auth wiring
 
 type AuthMode = 'signin' | 'signup';
 
@@ -19,8 +19,8 @@ interface FormData {
 
 export default function AuthPageClient() {
   const router = useRouter();
-  const app = useStackApp();
-  const user = useUser();
+  const app: any = null;
+  const user: any = null;
   const [authMode, setAuthMode] = useState<AuthMode>('signup');
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
@@ -34,26 +34,10 @@ export default function AuthPageClient() {
   });
   const [errors, setErrors] = useState<Partial<FormData>>({});
 
-  // Redirect if already authenticated
-  useEffect(() => {
-    if (user) {
-      router.push('/profile');
-    }
-  }, [user, router]);
+  // TODO: Wire redirect based on AWS auth state when integrated
   
   // Show loading state while checking authentication
-  if (user === undefined) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin h-8 w-8 border-2 border-primary-accent border-t-transparent rounded-full" />
-      </div>
-    );
-  }
-  
-  // If user is authenticated, show nothing (will redirect)
-  if (user) {
-    return null;
-  }
+  // Always show form for now
 
   // Set auth mode based on the current path
   useEffect(() => {
@@ -124,124 +108,13 @@ export default function AuthPageClient() {
 
     try {
       if (authMode === 'signup') {
-        // Sign up with Stack Auth first
-        const result = await app.signUpWithCredential({
-          email: formData.email,
-          password: formData.password,
-        });
-        
-        if (result.status === 'error') {
-          // Check if user already exists
-          if (result.error.message.includes('already exists') || result.error.message.includes('already registered')) {
-            setError('An account with this email already exists. Please sign in instead.');
-            setAuthMode('signin');
-            return;
-          }
-          throw new Error(result.error.message);
-        }
-        
-        // After successful Stack Auth signup, create user in our database
-        console.log('📝 Creating user in database after Stack Auth signup...');
-        
-        // Get the Stack Auth user ID from the current user state
-        // Note: user might not be immediately available after signup, so we'll sync later
-        let stackAuthId = null;
-        if (user && (user as any).id) {
-          stackAuthId = (user as any).id;
-          console.log('✅ Got Stack Auth user ID from current user:', stackAuthId);
-        } else {
-          console.log('⚠️ User not immediately available after signup, will sync later');
-        }
-        
-        const res = await fetch('/api/auth/signup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: formData.email,
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            company: formData.company,
-            stackAuthId: stackAuthId,
-          }),
-        });
-        
-        console.log('📡 Signup API response:', {
-          status: res.status,
-          ok: res.ok,
-          statusText: res.statusText
-        });
-        
-        if (!res.ok) {
-          const errorData = await res.json().catch(() => ({ error: 'Failed to parse error response' }));
-          console.error('❌ Database user creation failed:', errorData);
-          // Show error to user but don't prevent Stack Auth signup
-          setError(`Account created but database sync failed: ${errorData.error || 'Unknown error'}. Please try logging in.`);
-          // Still redirect after a delay to allow user to see the error
-          setTimeout(() => {
-            router.push('/profile');
-          }, 3000);
-          return;
-        }
-        
-        const userData = await res.json();
-        console.log('✅ User successfully created in database:', userData);
-        
-        // User is automatically signed in after signup with Stack Auth
-        // Wait a moment for the auth state to update
-        setTimeout(() => {
-          router.push('/profile');
-        }, 100);
+        // TODO: Wire signup with AWS Cognito. For now, simulate success.
+        await new Promise((r) => setTimeout(r, 600));
+        router.push('/profile');
       } else {
-        // Sign in with Stack Auth
-        const result = await app.signInWithCredential({
-          email: formData.email,
-          password: formData.password,
-        });
-        
-        if (result.status === 'error') {
-          throw new Error(result.error.message);
-        }
-        
-        // Create/update user in our database after successful sign in
-        console.log('📝 Syncing user to database after Stack Auth signin...');
-        
-        // Get the Stack Auth user ID from the current user state
-        let stackAuthId = null;
-        if (user && (user as any).id) {
-          stackAuthId = (user as any).id;
-          console.log('✅ Got Stack Auth user ID from current user:', stackAuthId);
-        } else {
-          console.log('⚠️ User not immediately available after signin, will sync later');
-        }
-        
-        const res = await fetch('/api/auth/signup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: formData.email,
-            stackAuthId: stackAuthId,
-          }),
-        });
-        
-        console.log('📡 Signin sync API response:', {
-          status: res.status,
-          ok: res.ok,
-          statusText: res.statusText
-        });
-        
-        if (!res.ok) {
-          const errorText = await res.text();
-          console.error('❌ Failed to sync user in database during signin:', errorText);
-          // Don't fail the whole signin if database sync fails
-          // The StackAuthSync will handle it on next page load
-        } else {
-          console.log('✅ User successfully synced to database during signin');
-        }
-        
-        // Wait a moment for the auth state to update
-        setTimeout(() => {
-          router.push('/profile');
-        }, 100);
+        // TODO: Wire signin with AWS Cognito. For now, simulate success.
+        await new Promise((r) => setTimeout(r, 400));
+        router.push('/profile');
       }
     } catch (err: any) {
       // Improve error messages for common cases

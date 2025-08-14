@@ -1,8 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { StackTheme } from "@stackframe/stack";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { AuthProvider } from "@/contexts/AuthContext";
-import AuthStackProvider from "@/components/providers/StackProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
@@ -90,21 +88,17 @@ export default function RootLayout({
       </head>
       <body>
         <AuthProvider>
-          <AuthStackProvider>
-            <StackTheme>
-              <ThemeProvider>
-                <Header />
-                <main className="main-content">
-                  {children}
-                </main>
-                <Footer />
-                <Suspense fallback={null}>
-                  <TrackClient />
-                  <PWAClient />
-                </Suspense>
-              </ThemeProvider>
-            </StackTheme>
-          </AuthStackProvider>
+          <ThemeProvider>
+            <Header />
+            <main className="main-content">
+              {children}
+            </main>
+            <Footer />
+            <Suspense fallback={null}>
+              <TrackClient />
+              <PWAClient />
+            </Suspense>
+          </ThemeProvider>
         </AuthProvider>
       </body>
     </html>

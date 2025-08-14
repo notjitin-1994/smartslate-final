@@ -73,6 +73,7 @@ export default function CourseWaitlistModal({
     setIsSubmitting(true);
 
     try {
+      // Backend removed; stub request
       const res = await fetch('/api/leads/course-waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

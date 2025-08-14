@@ -48,7 +48,7 @@ export async function getAuthContextFromRequest(req: NextRequest): Promise<AuthC
   try {
     const payload = await verifyJwt(token);
 
-    // Neon Auth commonly uses standard claims. We expect custom claims for roles.
+    // Expect standard claims; roles will be provided by AWS in the future
     const sub = (payload.sub as string) ?? null;
     const email = (payload.email as string) ?? null;
 
@@ -61,20 +61,9 @@ export async function getAuthContextFromRequest(req: NextRequest): Promise<AuthC
       roles = [roleClaim as RoleName];
     }
 
-    // Emergency override for owner via database lookup using Stack user ID
-    if (sub && !roles.includes('owner')) {
-      try {
-        const { getUserByStackAuthId } = await import('./rbac-db');
-        const dbUser = await getUserByStackAuthId(sub);
-        if (dbUser && dbUser.email === 'jitin@smartslate.io' && !roles.includes('owner')) {
-          roles = ['owner', ...roles];
-        }
-      } catch (error) {
-        // If database lookup fails, fall back to email-based override for backward compatibility
-        if (email === 'jitin@smartslate.io' && !roles.includes('owner')) {
-          roles = ['owner', ...roles];
-        }
-      }
+    // Temporary owner override via email until AWS roles are wired
+    if (email === 'jitin@smartslate.io' && !roles.includes('owner')) {
+      roles = ['owner', ...roles];
     }
 
     const { permissions } = computeEffectivePermissions(roles);
@@ -97,20 +86,9 @@ export async function getAuthContextFromRequest(req: NextRequest): Promise<AuthC
           roles = [roleClaim as RoleName];
         }
 
-        // Emergency override for owner via database lookup using Stack user ID (fallback)
-        if (sub && !roles.includes('owner')) {
-          try {
-            const { getUserByStackAuthId } = await import('./rbac-db');
-            const dbUser = await getUserByStackAuthId(sub);
-            if (dbUser && dbUser.email === 'jitin@smartslate.io' && !roles.includes('owner')) {
-              roles = ['owner', ...roles];
-            }
-          } catch (error) {
-            // If database lookup fails, fall back to email-based override for backward compatibility
-            if (email === 'jitin@smartslate.io' && !roles.includes('owner')) {
-              roles = ['owner', ...roles];
-            }
-          }
+        // Temporary owner override via email until AWS roles are wired
+        if (email === 'jitin@smartslate.io' && !roles.includes('owner')) {
+          roles = ['owner', ...roles];
         }
 
         const { permissions } = computeEffectivePermissions(roles);

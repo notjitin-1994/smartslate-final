@@ -206,7 +206,7 @@ export default function Header() {
                 </Avatar>
               </IconButton>
             ) : (
-              <CTAButton variant="contained" onClick={() => (window.location.href = '/handler/sign-up')}>
+              <CTAButton variant="contained" onClick={() => (window.location.href = '/sign-up')}>
                 Get Started
               </CTAButton>
             )}

@@ -68,22 +68,7 @@ export default function AdminSettingsPage() {
 
   useEffect(() => {
     async function loadSettings() {
-      try {
-        const token = localStorage.getItem('auth_token');
-        const res = await fetch('/api/admin/settings', {
-          headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.settings) {
-            setSettings(data.settings);
-          }
-        }
-      } catch (error) {
-        console.error('Failed to load settings:', error);
-      } finally {
-        setLoading(false);
-      }
+      setLoading(false);
     }
     loadSettings();
   }, []);
@@ -222,28 +207,7 @@ export default function AdminSettingsPage() {
   ];
 
   const handleSave = async () => {
-    try {
-      const token = localStorage.getItem('auth_token');
-      const res = await fetch('/api/admin/settings', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token ? { Authorization: `Bearer ${token}` } : {})
-        },
-        body: JSON.stringify(settings)
-      });
-
-      if (res.ok) {
-        setSaved(true);
-        setTimeout(() => setSaved(false), 3000);
-      } else {
-        const error = await res.json();
-        alert(`Failed to save settings: ${error.error || 'Unknown error'}`);
-      }
-    } catch (error) {
-      console.error('Failed to save settings:', error);
-      alert('Failed to save settings');
-    }
+    alert('Backend not available');
   };
 
   const currentSection = sections.find(s => s.id === activeSection)!;
@@ -366,10 +330,9 @@ export default function AdminSettingsPage() {
             </p>
             <div className="space-y-2">
               <code className="block text-sm bg-black/30 p-3 rounded-lg text-green-400">
-                NEON_API_KEY=your_neon_api_key<br/>
-                NEON_PROJECT_ID=your_project_id<br/>
-                STACK_PROJECT_ID=your_stack_project_id<br/>
-                STACK_PUBLISHABLE_CLIENT_KEY=your_stack_key
+                COGNITO_USER_POOL_ID=your_user_pool_id<br/>
+                COGNITO_APP_CLIENT_ID=your_app_client_id<br/>
+                COGNITO_REGION=your_region
               </code>
             </div>
           </div>

@@ -46,42 +46,13 @@ export default function AdminLeadsPage() {
 
   useEffect(() => {
     async function load() {
-      try {
-        const token = localStorage.getItem('auth_token');
-        const res = await fetch('/api/admin/leads', {
-          headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-          cache: 'no-store',
-        });
-        const json = await res.json();
-        if (!res.ok || !json.ok) throw new Error(json.error || 'Failed to fetch leads');
-        setData(json.data);
-      } catch (e: any) {
-        setError(e.message);
-      } finally {
-        setLoading(false);
-      }
+      setData({ waitlist: [], solara: [], ssa: [], caseStudies: [], partners: [] });
+      setLoading(false);
     }
     load();
   }, []);
 
-  async function deleteLead(leadType: string, leadId: string) {
-    try {
-      const token = localStorage.getItem('auth_token');
-      const res = await fetch(`/api/admin/leads/${leadType}/${leadId}`, {
-        method: 'DELETE',
-        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-      });
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.error || 'Failed to delete lead');
-      }
-      return true;
-    } catch (e: any) {
-      console.error('Failed to delete lead:', e);
-      alert(`Failed to delete lead: ${e.message}`);
-      return false;
-    }
-  }
+  async function deleteLead(_leadType: string, _leadId: string) { return false; }
 
   async function deleteSelectedLeads() {
     if (selectedLeads.size === 0) return;

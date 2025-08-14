@@ -1,6 +1,5 @@
 'use client';
 
-import { useUser } from '@stackframe/stack';
 import { useEffect, useState } from 'react';
 import { 
   TrendingUp, 
@@ -21,7 +20,7 @@ interface Metrics {
 }
 
 export default function AdminPage() {
-  const stackUser = useUser();
+  const stackUser: any = null;
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [loading, setLoading] = useState(true);
   const [systemStatus, setSystemStatus] = useState('operational');
@@ -70,9 +69,7 @@ export default function AdminPage() {
             <h1 className="text-4xl font-bold text-text-primary mb-2">
               Admin Dashboard
             </h1>
-            <p className="text-text-secondary">
-              Welcome back, <span className="text-primary-accent font-semibold">{stackUser?.primaryEmail}</span>
-            </p>
+             <p className="text-text-secondary">Welcome back</p>
           </div>
           <div className="text-right">
             <p className="text-sm text-text-secondary">System Status</p>

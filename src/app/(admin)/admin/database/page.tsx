@@ -34,20 +34,8 @@ export default function AdminDatabasePage() {
   }, []);
 
   async function loadDatabaseStats() {
-    try {
-      const token = localStorage.getItem('auth_token');
-      const res = await fetch('/api/admin/database/stats', {
-        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-      });
-      const data = await res.json();
-      if (data.ok) {
-        setTables(data.tables);
-      }
-    } catch (e) {
-      console.error('Failed to load database stats:', e);
-    } finally {
-      setLoading(false);
-    }
+    setTables([]);
+    setLoading(false);
   }
 
   const quickActions = [
@@ -88,46 +76,7 @@ export default function AdminDatabasePage() {
 
     setIsExecuting(true);
     try {
-      const token = localStorage.getItem('auth_token');
-      const res = await fetch('/api/admin/database/operations', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token ? { Authorization: `Bearer ${token}` } : {})
-        },
-        body: JSON.stringify({ action })
-      });
-      
-      const data = await res.json();
-      if (data.ok) {
-        setQueryResult({
-          type: 'success',
-          message: data.message,
-          data: data.data
-        });
-        // Reload stats after operation
-        loadDatabaseStats();
-        
-        // Show alert for successful operations
-        if (action === 'export' && data.data) {
-          // For export, show the data in a modal or downloadable format
-          const jsonStr = JSON.stringify(data.data, null, 2);
-          const blob = new Blob([jsonStr], { type: 'application/json' });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `smartslate-backup-${new Date().toISOString().split('T')[0]}.json`;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-          alert('Database exported successfully! Check your downloads.');
-        } else {
-          alert(data.message);
-        }
-      } else {
-        throw new Error(data.error || 'Operation failed');
-      }
+      setQueryResult({ type: 'error', message: 'Backend not available' });
     } catch (e: any) {
       setQueryResult({
         type: 'error',
@@ -149,32 +98,7 @@ export default function AdminDatabasePage() {
     setQueryResult(null);
 
     try {
-      const token = localStorage.getItem('auth_token');
-      const res = await fetch('/api/admin/database/query', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token ? { Authorization: `Bearer ${token}` } : {})
-        },
-        body: JSON.stringify({ query: sqlQuery })
-      });
-      
-      const data = await res.json();
-      
-      if (res.ok) {
-        setQueryResult({
-          type: 'success',
-          message: data.message,
-          result: data.result,
-          rowCount: data.rowCount
-        });
-      } else {
-        setQueryResult({
-          type: 'error',
-          message: data.error,
-          details: data.details
-        });
-      }
+      setQueryResult({ type: 'error', message: 'Backend not available' });
     } catch (error: any) {
       setQueryResult({
         type: 'error',

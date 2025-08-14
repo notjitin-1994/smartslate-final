@@ -29,33 +29,7 @@ export function middleware(request: NextRequest) {
 
   // 2) Trailing slash normalization disabled to avoid conflicts with host/CDN rules
 
-  // 3) Intercept all Stack Auth sign-in routes and redirect to custom page
-  if (
-    pathname.includes('/handler/sign-in') ||
-    pathname.includes('/handler/signin') ||
-    pathname.includes('/handler/auth/sign-in') ||
-    pathname.includes('/handler/auth/signin') ||
-    pathname === '/handler' ||
-    pathname === '/handler/'
-  ) {
-    if (pathname === '/handler/sign-in') {
-      return NextResponse.next();
-    }
-    return NextResponse.redirect(new URL('/handler/sign-in', request.url));
-  }
-
-  // 4) Intercept Stack Auth sign-up routes
-  if (
-    pathname.includes('/handler/sign-up') ||
-    pathname.includes('/handler/signup') ||
-    pathname.includes('/handler/auth/sign-up') ||
-    pathname.includes('/handler/auth/signup')
-  ) {
-    if (pathname === '/handler/sign-up') {
-      return NextResponse.next();
-    }
-    return NextResponse.redirect(new URL('/handler/sign-up', request.url));
-  }
+  // Removed Stack handler redirects
 
   return NextResponse.next();
 }
