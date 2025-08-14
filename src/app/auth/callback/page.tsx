@@ -29,6 +29,7 @@ export default function AuthCallbackPage() {
           setError('No authorization code found. Please start sign-in again.');
           return;
         }
+        // Supabase will read code from window.location if detectSessionInUrl is true
         const { data, error } = await supabase.auth.exchangeCodeForSession(url);
         
         if (error) {

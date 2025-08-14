@@ -41,7 +41,16 @@ export function middleware(request: NextRequest) {
     }
 
     // Optionally enforce a single canonical host if explicitly configured
-    const configuredCanonicalHost = process.env.CANONICAL_HOST;
+    const configuredCanonicalHost = process.env.CANONICAL_HOST || (() => {
+      try {
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+        if (!appUrl) return '';
+        const u = new URL(appUrl);
+        return u.host;
+      } catch {
+        return '';
+      }
+    })();
     if (configuredCanonicalHost) {
       const host = request.headers.get('x-forwarded-host') || request.headers.get('host') || '';
       if (host && host !== configuredCanonicalHost) {

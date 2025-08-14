@@ -179,8 +179,7 @@ export default function AuthModal() {
       setIsSubmitting(true);
       const supabase = getSupabaseBrowser();
       const origin = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000');
-      const nextPath = typeof window !== 'undefined' ? (window.location.pathname + window.location.search) : '/';
-      const redirectTo = `${origin}/auth/callback?next=${encodeURIComponent(nextPath)}`;
+      const redirectTo = `${origin}/auth/callback`;
       
       console.log('Starting Google OAuth with redirectTo:', redirectTo);
       
@@ -199,7 +198,7 @@ export default function AuthModal() {
       
       // If SDK returns a URL in some environments, follow it; otherwise it will redirect automatically
       const url = data?.url;
-      if (url) window.location.href = url;
+      if (url) window.location.assign(url);
       // Fallback: if SDK auto-redirects, do nothing
     } catch (err: any) {
       console.error('Google OAuth failed:', err);

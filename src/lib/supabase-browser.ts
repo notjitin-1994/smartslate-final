@@ -15,10 +15,10 @@ export function getSupabaseBrowser(): SupabaseClient {
     auth: {
       // Explicitly use localStorage so PKCE code_verifier persists across the redirect
       storage: typeof window !== 'undefined' ? window.localStorage : undefined,
-      // Keep app-level session handling, but allow PKCE storage
-      persistSession: false,
+      // Allow Supabase to persist and recover data needed for PKCE
+      persistSession: true,
       autoRefreshToken: false,
-      detectSessionInUrl: false,
+      detectSessionInUrl: true,
       flowType: 'pkce',
     },
   });
