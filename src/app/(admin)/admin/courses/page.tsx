@@ -10,7 +10,17 @@ import {
   Search,
   FilterList
 } from '@mui/icons-material';
-import { Course } from '@prisma/client';
+type Course = {
+  id: string;
+  title: string;
+  description: string | null;
+  slug: string;
+  imageUrl?: string | null;
+  published: boolean;
+  duration?: string | null;
+  level?: string | null;
+  price?: number | null;
+};
 
 export default function AdminCoursesPage() {
   const [courses, setCourses] = useState<Course[]>([]);

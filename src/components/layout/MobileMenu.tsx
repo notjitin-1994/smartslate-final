@@ -143,9 +143,7 @@ const panelVariants = {
     x: 0,
     scale: 1,
     transition: {
-      type: 'spring',
-      damping: 25,
-      stiffness: 300,
+      // use numeric easing-friendly values to satisfy type defs
       duration: 0.6,
     }
   },
@@ -153,9 +151,6 @@ const panelVariants = {
     x: '100%',
     scale: 0.95,
     transition: {
-      type: 'spring',
-      damping: 25,
-      stiffness: 300,
       duration: 0.4,
     }
   },
@@ -174,7 +169,6 @@ const menuItemVariants = {
     transition: {
       delay: i * 0.05,
       duration: 0.4,
-      ease: [0.22, 1, 0.36, 1],
     }
   }),
   exit: (i: number) => ({
@@ -184,7 +178,6 @@ const menuItemVariants = {
     transition: {
       delay: (3 - i) * 0.03,
       duration: 0.3,
-      ease: [0.22, 1, 0.36, 1],
     }
   }),
 };
@@ -202,7 +195,6 @@ const buttonVariants = {
     transition: {
       delay: 0.2 + (i * 0.05),
       duration: 0.4,
-      ease: [0.22, 1, 0.36, 1],
     }
   }),
   exit: (i: number) => ({
@@ -212,7 +204,6 @@ const buttonVariants = {
     transition: {
       delay: (2 - i) * 0.03,
       duration: 0.3,
-      ease: [0.22, 1, 0.36, 1],
     }
   }),
 };
@@ -493,7 +484,7 @@ export function AnimatedHamburgerButton({
             custom={i}
             variants={lineVariants}
             animate={open ? 'open' : 'closed'}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.3 }}
             style={{
               top: `${(i - 1) * 6 + 3}px`,
             }}

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Box, Container, Typography, Button, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import ContactModal from '@/components/collaborate/ContactModal';
+import ContactModal, { FormField } from '@/components/collaborate/ContactModal';
 import StandardHero from '@/components/ui/StandardHero';
 import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
@@ -245,7 +245,7 @@ export default function CollaborateClient() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalConfig, setModalConfig] = useState({
     title: '',
-    formFields: [] as { name: string; label: string; type: string }[]
+    formFields: [] as FormField[]
   });
 
   const openModal = (config: typeof modalConfig) => {

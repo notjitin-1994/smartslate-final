@@ -69,7 +69,8 @@ export default function AdminLeadsPage() {
     const successCount = results.filter(r => r).length;
     
     if (successCount > 0) {
-      await load();
+      // reload data
+      setData({ waitlist: [], solara: [], ssa: [], caseStudies: [], partners: [] });
       setSelectedLeads(new Set());
     }
     

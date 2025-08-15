@@ -10,7 +10,9 @@ import SolaraInfographic from "@/components/products/SolaraInfographic";
 import SSAInterestModal from "@/components/products/SSAInterestModal";
 import SolaraInterestModal from "@/components/products/SolaraInterestModal";
 
-const products = [
+type Product = Parameters<typeof ProductSection>[0]['product'];
+
+const products: Product[] = [
   {
     heading: 'Ignite Series',
     tagline: 'From Classroom to Career: A Direct Pipeline to Verified Talent',
@@ -144,7 +146,7 @@ const products = [
           <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-1.007 1.11-1.227l.128-.054a2 2 0 012.115 0l.128.054c.55.22 1.02.685 1.11 1.227l.068.416a2 2 0 001.943 1.542l.433-.064a2 2 0 012.23 2.23l-.064.433a2 2 0 001.542 1.943l.416.068c.542.09 1.007.56 1.227 1.11l.054.128a2 2 0 010 2.115l-.054.128c-.22.55-.685 1.02-1.227 1.11l-.416.068a2 2 0 00-1.542 1.943l.064.433a2 2 0 01-2.23 2.23l-.433-.064a2 2 0 00-1.943 1.542l-.068.416c-.09.542-.56 1.007-1.11 1.227l-.128.054a2 2 0 01-2.115 0l-.128-.054c-.55-.22-1.02-.685-1.11-1.227l-.068-.416a2 2 0 00-1.943-1.542l-.433.064a2 2 0 01-2.23-2.23l.064-.433a2 2 0 00-1.542-1.943l-.416-.068c-.542-.09-1.007-.56-1.227-1.11l-.054-.128a2 2 0 010-2.115l.054.128c.22-.55.685-1.02 1.227-1.11l.416-.068a2 2 0 001.542-1.943l-.064-.433a2 2 0 012.23-2.23l.433.064a2 2 0 001.943-1.542l.068-.416zM12 15a3 3 0 100-6 3 3 0 000 6z" />
         </svg>
       ),
-      action: 'openSSAModal'
+      action: 'openSSAModal' as const
     },
     reverse: true
   },
@@ -262,7 +264,7 @@ const products = [
           <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
         </svg>
       ),
-      action: 'openSolaraModal'
+      action: 'openSolaraModal' as const
     },
     status: 'coming-soon' as const
   }

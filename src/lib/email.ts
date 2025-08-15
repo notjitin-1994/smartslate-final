@@ -1,3 +1,6 @@
+// Optional runtime import; typing shim provided via ambient declaration
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import nodemailer from 'nodemailer';
 import { withOptionalInsecureTLS } from './fetch';
 

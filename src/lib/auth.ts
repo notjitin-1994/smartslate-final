@@ -44,20 +44,19 @@ function resolveKeyFetcher(): KeyFetcher {
 export async function verifyJwt(token: string): Promise<JWTPayload> {
   const key = resolveKeyFetcher();
   try {
-    const { payload } = await jwtVerify(token, key, {
-      algorithms: ['HS256', 'RS256'],
-    });
-    return payload;
-  } catch (err) {
-    // Fallback: if JWKS fetch failed but an HMAC secret is configured, try HS256
-    const secret = process.env.SUPABASE_JWT_SECRET || process.env.JWT_SECRET || process.env.NEON_AUTH_JWT_SECRET;
-    if (secret) {
-      const { payload } = await jwtVerify(token, ENCODER.encode(secret), {
-        algorithms: ['HS256'],
-      });
+    if (key instanceof Uint8Array) {
+      const { payload } = await jwtVerify(token, key, { algorithms: ['HS256'] });
       return payload;
     }
-    throw err;
+    const { payload } = await jwtVerify(token, key, { algorithms: ['RS256'] });
+    return payload;
+  } catch (err) {
+    const secret = process.env.SUPABASE_JWT_SECRET || process.env.JWT_SECRET || process.env.NEON_AUTH_JWT_SECRET;
+    if (secret) {
+      const { payload } = await jwtVerify(token, ENCODER.encode(secret), { algorithms: ['HS256'] });
+      return payload;
+    }
+    throw err as Error;
   }
 }
 

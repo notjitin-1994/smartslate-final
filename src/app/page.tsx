@@ -84,7 +84,7 @@ export default function Home() {
   
 
   const [currentSection, setCurrentSection] = useState(0);
-  const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const sectionsRef = useRef<Array<HTMLDivElement | null>>([]);
 
   // Track current section for navigation dots
   useEffect(() => {
@@ -166,7 +166,7 @@ export default function Home() {
         ))}
       </NavigationDots>
 
-      <Box id="hero" ref={el => sectionsRef.current[0] = el}>
+      <Box id="hero" ref={(el: HTMLDivElement | null) => { sectionsRef.current[0] = el; }}>
         <Hero onRevealNext={() => revealNext('paradox')} />
       </Box>
       
@@ -174,7 +174,7 @@ export default function Home() {
         <SectionWrapper 
           id="paradox" 
           className="visible"
-          ref={el => sectionsRef.current[1] = el}
+          ref={(el: HTMLDivElement | null) => { sectionsRef.current[1] = el; }}
         >
           <TalentParadox onRevealNext={() => revealNext('framework')} />
         </SectionWrapper>
@@ -184,7 +184,7 @@ export default function Home() {
         <SectionWrapper 
           id="framework" 
           className="visible"
-          ref={el => sectionsRef.current[2] = el}
+          ref={(el: HTMLDivElement | null) => { sectionsRef.current[2] = el; }}
         >
           <Framework onRevealNext={() => revealNext('roi')} />
         </SectionWrapper>
@@ -194,7 +194,7 @@ export default function Home() {
         <SectionWrapper 
           id="roi" 
           className="visible"
-          ref={el => sectionsRef.current[3] = el}
+          ref={(el: HTMLDivElement | null) => { sectionsRef.current[3] = el; }}
         >
           <ROICalculator onRevealNext={() => revealNext('partners')} openDemoModal={openDemoModal} />
         </SectionWrapper>
@@ -204,7 +204,7 @@ export default function Home() {
         <SectionWrapper 
           id="partners" 
           className="visible"
-          ref={el => sectionsRef.current[4] = el}
+          ref={(el: HTMLDivElement | null) => { sectionsRef.current[4] = el; }}
         >
           <Partners openDemoModal={openDemoModal} />
         </SectionWrapper>

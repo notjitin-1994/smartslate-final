@@ -1,56 +1,54 @@
-import prisma from '../src/lib/prisma';
+import { getDb } from '../src/lib/db';
 
 async function clearAllUsers() {
   try {
+    const db = getDb();
     console.log('🗑️  Starting to clear all user data...\n');
 
     // Delete in order of dependencies (reverse of foreign key constraints)
     
     // 1. Delete UserRole associations
-    const deletedUserRoles = await prisma.userRole.deleteMany({});
-    console.log(`✓ Deleted ${deletedUserRoles.count} user-role associations`);
+    const { rowCount: deletedUserRoles } = await db.query('DELETE FROM app.user_roles');
+    console.log(`✓ Deleted ${deletedUserRoles || 0} user-role associations`);
 
     // 2. Delete UserCourse associations
-    const deletedUserCourses = await prisma.userCourse.deleteMany({});
-    console.log(`✓ Deleted ${deletedUserCourses.count} user-course enrollments`);
+    const { rowCount: deletedUserCourses } = await db.query('DELETE FROM app.user_courses');
+    console.log(`✓ Deleted ${deletedUserCourses || 0} user-course enrollments`);
 
     // 3. Delete Sessions
-    const deletedSessions = await prisma.session.deleteMany({});
-    console.log(`✓ Deleted ${deletedSessions.count} sessions`);
+    const { rowCount: deletedSessions } = await db.query('DELETE FROM app.sessions');
+    console.log(`✓ Deleted ${deletedSessions || 0} sessions`);
 
     // 4. Delete Accounts (OAuth accounts)
-    const deletedAccounts = await prisma.account.deleteMany({});
-    console.log(`✓ Deleted ${deletedAccounts.count} OAuth accounts`);
+    const { rowCount: deletedAccounts } = await db.query('DELETE FROM app.accounts');
+    console.log(`✓ Deleted ${deletedAccounts || 0} OAuth accounts`);
 
     // 5. Delete Users (main User table)
-    const deletedUsers = await prisma.user.deleteMany({});
-    console.log(`✓ Deleted ${deletedUsers.count} users from User table`);
+    const { rowCount: deletedUsers } = await db.query('DELETE FROM app.users');
+    console.log(`✓ Deleted ${deletedUsers || 0} users from users table`);
 
     // 6. Delete users from legacy table if it exists
-    try {
-      const deletedLegacyUsers = await prisma.users.deleteMany({});
-      console.log(`✓ Deleted ${deletedLegacyUsers.count} users from legacy users table`);
-    } catch (error) {
-      console.log('ℹ️  No legacy users table found or already empty');
-    }
+    // Legacy users table not present in Supabase schema; skip
 
     // 7. Clear anonymous user activity
-    const deletedAnonymousActivity = await prisma.anonymousUserActivity.deleteMany({});
-    console.log(`✓ Deleted ${deletedAnonymousActivity.count} anonymous user activity records`);
+    const { rowCount: deletedAnonymousActivity } = await db.query('DELETE FROM app.anonymous_user_activity');
+    console.log(`✓ Deleted ${deletedAnonymousActivity || 0} anonymous user activity records`);
 
     // 8. Optional: Clear all leads data if you want a complete fresh start
     console.log('\n📋 Lead data summary (not deleted):');
-    const courseWaitlistCount = await prisma.courseWaitlistLead.count();
-    const solaraWaitlistCount = await prisma.solaraWaitlistLead.count();
-    const ssaInquiryCount = await prisma.sSAInquiry.count();
-    const caseStudyCount = await prisma.caseStudyRequest.count();
-    const partnerInquiryCount = await prisma.partnerInquiry.count();
+    const [{ rows: c1 }, { rows: c2 }, { rows: c3 }, { rows: c4 }, { rows: c5 }] = await Promise.all([
+      db.query('SELECT COUNT(*)::int AS count FROM app.course_waitlist_leads'),
+      db.query('SELECT COUNT(*)::int AS count FROM app.solara_waitlist_leads'),
+      db.query('SELECT COUNT(*)::int AS count FROM app.ssa_inquiries'),
+      db.query('SELECT COUNT(*)::int AS count FROM app.case_study_requests'),
+      db.query('SELECT COUNT(*)::int AS count FROM app.partner_inquiries'),
+    ]);
     
-    console.log(`  - Course waitlist leads: ${courseWaitlistCount}`);
-    console.log(`  - Solara waitlist leads: ${solaraWaitlistCount}`);
-    console.log(`  - SSA inquiries: ${ssaInquiryCount}`);
-    console.log(`  - Case study requests: ${caseStudyCount}`);
-    console.log(`  - Partner inquiries: ${partnerInquiryCount}`);
+    console.log(`  - Course waitlist leads: ${c1?.[0]?.count || 0}`);
+    console.log(`  - Solara waitlist leads: ${c2?.[0]?.count || 0}`);
+    console.log(`  - SSA inquiries: ${c3?.[0]?.count || 0}`);
+    console.log(`  - Case study requests: ${c4?.[0]?.count || 0}`);
+    console.log(`  - Partner inquiries: ${c5?.[0]?.count || 0}`);
 
     console.log('\n✅ All user data has been cleared successfully!');
     console.log('You can now start testing from scratch.');
@@ -58,7 +56,7 @@ async function clearAllUsers() {
   } catch (error) {
     console.error('❌ Error clearing user data:', error);
   } finally {
-    await prisma.$disconnect();
+    process.exit(0);
   }
 }
 
@@ -74,22 +72,18 @@ if (clearLeads) {
     
     console.log('\n🗑️  Clearing all lead data...');
     
-    const deletedCourseWaitlist = await prisma.courseWaitlistLead.deleteMany({});
-    console.log(`✓ Deleted ${deletedCourseWaitlist.count} course waitlist leads`);
-    
-    const deletedSolaraWaitlist = await prisma.solaraWaitlistLead.deleteMany({});
-    console.log(`✓ Deleted ${deletedSolaraWaitlist.count} Solara waitlist leads`);
-    
-    const deletedSSA = await prisma.sSAInquiry.deleteMany({});
-    console.log(`✓ Deleted ${deletedSSA.count} SSA inquiries`);
-    
-    const deletedCaseStudy = await prisma.caseStudyRequest.deleteMany({});
-    console.log(`✓ Deleted ${deletedCaseStudy.count} case study requests`);
-    
-    const deletedPartner = await prisma.partnerInquiry.deleteMany({});
-    console.log(`✓ Deleted ${deletedPartner.count} partner inquiries`);
-    
-    await prisma.$disconnect();
+    const db = getDb();
+    const r1 = await db.query('DELETE FROM app.course_waitlist_leads');
+    console.log(`✓ Deleted ${r1.rowCount || 0} course waitlist leads`);
+    const r2 = await db.query('DELETE FROM app.solara_waitlist_leads');
+    console.log(`✓ Deleted ${r2.rowCount || 0} Solara waitlist leads`);
+    const r3 = await db.query('DELETE FROM app.ssa_inquiries');
+    console.log(`✓ Deleted ${r3.rowCount || 0} SSA inquiries`);
+    const r4 = await db.query('DELETE FROM app.case_study_requests');
+    console.log(`✓ Deleted ${r4.rowCount || 0} case study requests`);
+    const r5 = await db.query('DELETE FROM app.partner_inquiries');
+    console.log(`✓ Deleted ${r5.rowCount || 0} partner inquiries`);
+    process.exit(0);
   }, 5000);
 } else {
   clearAllUsers();

@@ -88,7 +88,6 @@ export default function ComparisonSection() {
       y: 0,
       transition: {
         duration: 0.5,
-        ease: "easeOut",
       },
     },
   };
@@ -98,7 +97,7 @@ export default function ComparisonSection() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        transition={{ duration: 0.6 }}
         className="text-left mb-16"
       >
         <h2 

@@ -1,10 +1,9 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { getDb } from '../src/lib/db';
 
 async function reseedEssentialData() {
   try {
     console.log('🌱 Starting to re-seed essential data...\n');
+    const db = getDb();
 
     // 1. Re-seed the roles
     console.log('🔑 Creating roles...');
@@ -19,70 +18,47 @@ async function reseedEssentialData() {
     ];
 
     for (const role of roles) {
-      await prisma.role.upsert({
-        where: { id: role.id },
-        create: { id: role.id, description: role.description },
-        update: { description: role.description },
-      });
+      await db.query(
+        `INSERT INTO app.roles (id, description) VALUES ($1, $2)
+         ON CONFLICT (id) DO UPDATE SET description = EXCLUDED.description`,
+        [role.id, role.description]
+      );
       console.log(`✅ Role '${role.id}' created/updated`);
     }
 
     // 2. Create the admin user
     console.log('\n👤 Creating admin user...');
-    const adminUser = await prisma.user.upsert({
-      where: { email: 'jitin@smartslate.io' },
-      create: {
-        id: 'jitin-owner-user',
-        email: 'jitin@smartslate.io',
-        name: 'Jitin M Nair',
-        stackAuthId: '5b6c0014-a81b-4ff6-9442-82ff156da2f6', // Keep the same Stack Auth ID
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      update: {
-        name: 'Jitin M Nair',
-        updatedAt: new Date(),
-      },
-    });
+    const { rows: adminRows } = await db.query(
+      `INSERT INTO app.users (id, email, full_name, created_at, updated_at)
+       VALUES ($1, $2, $3, now(), now())
+       ON CONFLICT (email) DO UPDATE SET full_name = EXCLUDED.full_name, updated_at = now()
+       RETURNING id, email`,
+      ['jitin-owner-user', 'jitin@smartslate.io', 'Jitin M Nair']
+    );
+    const adminUser = adminRows[0];
     console.log('✅ Admin user created/updated:', adminUser.email);
 
     // 3. Assign owner role to admin user
     console.log('\n🔑 Assigning owner role to admin user...');
-    await prisma.userRole.upsert({
-      where: { 
-        userId_roleId: { 
-          userId: adminUser.id, 
-          roleId: 'owner' 
-        } 
-      },
-      create: { 
-        userId: adminUser.id, 
-        roleId: 'owner',
-        assignedAt: new Date()
-      },
-      update: { 
-        assignedAt: new Date()
-      },
-    });
+    await db.query(
+      `INSERT INTO app.user_roles (user_id, role_id, assigned_at)
+       VALUES ($1, $2, now())
+       ON CONFLICT (user_id, role_id) DO UPDATE SET assigned_at = now()`,
+      [adminUser.id, 'owner']
+    );
     console.log('✅ Owner role assigned to admin user');
 
     // 4. Verify the setup
     console.log('\n🔍 Verifying the setup...');
-    const userWithRoles = await prisma.user.findUnique({
-      where: { email: 'jitin@smartslate.io' },
-      include: {
-        UserRole: {
-          include: {
-            Role: true
-          }
-        }
-      }
-    });
-
-    if (userWithRoles) {
+    const verifyUser = await db.query(`SELECT email FROM app.users WHERE email = $1`, ['jitin@smartslate.io']);
+    const verifyRoles = await db.query(
+      `SELECT role_id FROM app.user_roles WHERE user_id = $1`,
+      [adminUser.id]
+    );
+    if (verifyUser.rows[0]) {
       console.log('✅ Verification successful:');
-      console.log(`  User: ${userWithRoles.email}`);
-      console.log(`  Roles: ${userWithRoles.UserRole.map(ur => ur.Role.id).join(', ')}`);
+      console.log(`  User: ${verifyUser.rows[0].email}`);
+      console.log(`  Roles: ${verifyRoles.rows.map((r: any) => r.role_id).join(', ')}`);
     } else {
       console.log('❌ Verification failed');
     }
@@ -96,7 +72,7 @@ async function reseedEssentialData() {
   } catch (error) {
     console.error('❌ Error re-seeding data:', error);
   } finally {
-    await prisma.$disconnect();
+    process.exit(0);
   }
 }
 

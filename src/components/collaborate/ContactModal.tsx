@@ -5,19 +5,19 @@ import { motion } from 'framer-motion';
 import Modal from '@/components/ui/Modal';
 import FormField from '@/components/ui/FormField';
 
-interface FormFieldBase {
+export interface FormFieldBase {
   name: string;
   label: string;
   type: 'text' | 'email' | 'url' | 'tel' | 'textarea' | 'select';
   required?: boolean;
 }
 
-interface SelectField extends FormFieldBase {
+export interface SelectField extends FormFieldBase {
   type: 'select';
   options: { label: string; value: string }[];
 }
 
-type FormField = FormFieldBase | SelectField;
+export type FormField = FormFieldBase | SelectField;
 
 interface ContactModalProps {
   open: boolean;
