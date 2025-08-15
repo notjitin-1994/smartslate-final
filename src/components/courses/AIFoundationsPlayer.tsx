@@ -50,8 +50,13 @@ const PlayerStage = styled(Box)(({ theme }) => ({
   aspectRatio: '16/9',
   position: 'relative',
   padding: theme.spacing(4),
+  display: 'flex',
+  flexDirection: 'column',
   [theme.breakpoints.down('md')]: {
-    padding: theme.spacing(3),
+    padding: theme.spacing(2),
+  },
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(1.5),
   },
 }));
 
@@ -276,16 +281,16 @@ const Slide = ({ slide }: { slide: any }) => {
   const theme = useTheme();
   
   return (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <Box sx={{ flex: 1, overflow: 'auto', pr: 1 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <Box sx={{ flex: 1, pr: 1 }}>
         {slide.heading && (
           <Typography 
             variant="h4" 
             sx={{ 
-              fontSize: { xs: '1.5rem', md: '2rem' },
+              fontSize: { xs: '1.25rem', sm: '1.5rem', md: '2rem' },
               fontWeight: 700,
               color: theme.palette.primary.main,
-              mb: 2,
+              mb: { xs: 1.5, md: 2 },
               lineHeight: 1.3
             }}
           >
@@ -297,9 +302,9 @@ const Slide = ({ slide }: { slide: any }) => {
           <Typography 
             variant="h6" 
             sx={{ 
-              fontSize: { xs: '1.125rem', md: '1.25rem' },
+              fontSize: { xs: '1rem', sm: '1.125rem', md: '1.25rem' },
               color: theme.palette.text.secondary,
-              mb: 2,
+              mb: { xs: 1.5, md: 2 },
               fontStyle: 'italic',
               fontWeight: 500
             }}
@@ -312,10 +317,10 @@ const Slide = ({ slide }: { slide: any }) => {
           <Typography 
             variant="body1" 
             sx={{ 
-              fontSize: { xs: '1rem', md: '1.125rem' },
+              fontSize: { xs: '0.875rem', sm: '1rem', md: '1.125rem' },
               lineHeight: 1.7,
               color: theme.palette.text.primary,
-              mb: 3
+              mb: { xs: 2, md: 3 }
             }}
           >
             {slide.body}
@@ -323,17 +328,17 @@ const Slide = ({ slide }: { slide: any }) => {
         )}
         
         {slide.bullets && (
-          <Box component="ul" sx={{ pl: 3, mb: 3 }}>
+          <Box component="ul" sx={{ pl: { xs: 2, md: 3 }, mb: { xs: 2, md: 3 } }}>
             {slide.bullets.map((bullet: string, i: number) => (
               <Typography 
                 key={i} 
                 component="li" 
                 variant="body1"
                 sx={{ 
-                  fontSize: { xs: '1rem', md: '1.125rem' },
+                  fontSize: { xs: '0.875rem', sm: '1rem', md: '1.125rem' },
                   lineHeight: 1.6,
                   color: theme.palette.text.primary,
-                  mb: 1
+                  mb: { xs: 0.5, md: 1 }
                 }}
               >
                 {bullet}
@@ -365,8 +370,9 @@ const Slide = ({ slide }: { slide: any }) => {
         <Box sx={{ 
           display: 'grid', 
           gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, 1fr)' },
-          gap: 2, 
-          mt: 3 
+          gap: { xs: 1.5, md: 2 }, 
+          mt: { xs: 2, md: 3 },
+          flexShrink: 0
         }}>
           {slide.callouts.map((callout: any, i: number) => (
             <SceneCard key={i}>
@@ -468,7 +474,10 @@ export default function AIFoundationsPlayer() {
   });
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Container maxWidth="lg" sx={{ 
+      py: { xs: 2, md: 4 },
+      px: { xs: 2, md: 3 }
+    }}>
       <PlayerContainer>
         <PlayerStage>
           {/* Scene background gradient */}
@@ -486,30 +495,39 @@ export default function AIFoundationsPlayer() {
           />
 
           {/* Content area */}
-          <Box sx={{ position: 'relative', zIndex: 1, height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <Box sx={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
             {/* Scene header */}
             <Box sx={{ 
               display: 'flex', 
               alignItems: 'center', 
-              gap: 1, 
-              mb: 2,
+              gap: { xs: 0.5, md: 1 }, 
+              mb: { xs: 1, md: 2 },
               color: theme.palette.text.secondary,
-              fontSize: '0.875rem'
+              fontSize: { xs: '0.75rem', md: '0.875rem' },
+              flexShrink: 0
             }}>
               {scene.icon}
-              <Typography variant="body2" sx={{ fontWeight: 500 }}>
+              <Typography variant="body2" sx={{ 
+                fontWeight: 500,
+                fontSize: { xs: '0.75rem', md: '0.875rem' }
+              }}>
                 {scene.title}
               </Typography>
-              <Typography variant="body2" sx={{ opacity: 0.6 }}>
+              <Typography variant="body2" sx={{ 
+                opacity: 0.6,
+                fontSize: { xs: '0.75rem', md: '0.875rem' }
+              }}>
                 •
               </Typography>
-              <Typography variant="body2">
+              <Typography variant="body2" sx={{ 
+                fontSize: { xs: '0.75rem', md: '0.875rem' }
+              }}>
                 Slide {slideIndex + 1} / {scene.slides.length}
               </Typography>
             </Box>
 
             {/* Slide content */}
-            <Box sx={{ flex: 1, overflow: 'hidden', mb: 3 }}>
+            <Box sx={{ flex: 1, overflow: 'auto', mb: { xs: 2, md: 3 } }}>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={`${scene.id}-${slideIndex}`}
@@ -517,7 +535,6 @@ export default function AIFoundationsPlayer() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -12 }}
                   transition={{ duration: 0.35, ease: "easeOut" }}
-                  style={{ height: '100%' }}
                 >
                   <Slide slide={scene.slides[slideIndex]} />
                 </motion.div>
@@ -525,7 +542,7 @@ export default function AIFoundationsPlayer() {
             </Box>
 
             {/* Progress bar */}
-            <Box sx={{ mb: 3 }}>
+            <Box sx={{ mb: { xs: 2, md: 3 }, flexShrink: 0 }}>
               <ProgressBar 
                 variant="determinate" 
                 value={((globalSlideIndex + 1) / totalSlides) * 100} 
@@ -535,34 +552,41 @@ export default function AIFoundationsPlayer() {
             {/* Controls */}
             <Box sx={{ 
               display: 'flex', 
+              flexDirection: { xs: 'column', sm: 'row' },
               justifyContent: 'space-between', 
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              gap: 2
+              alignItems: { xs: 'stretch', sm: 'center' },
+              gap: { xs: 1.5, sm: 2 },
+              flexShrink: 0
             }}>
               <Box sx={{ 
                 display: 'flex', 
                 alignItems: 'center', 
+                justifyContent: { xs: 'center', sm: 'flex-start' },
                 gap: 1,
                 color: theme.palette.text.secondary,
-                fontSize: '0.75rem'
+                fontSize: { xs: '0.625rem', sm: '0.75rem' }
               }}>
-                <Typography variant="caption">
+                <Typography variant="caption" sx={{ fontSize: 'inherit' }}>
                   {globalSlideIndex + 1} / {totalSlides}
                 </Typography>
-                <Typography variant="caption" sx={{ opacity: 0.6 }}>
+                <Typography variant="caption" sx={{ opacity: 0.6, fontSize: 'inherit' }}>
                   •
                 </Typography>
-                <Typography variant="caption">
-                  Space: Play/Pause • ←/→: Navigate • H: Home
+                <Typography variant="caption" sx={{ fontSize: 'inherit' }}>
+                  {isMobile ? 'Tap to navigate' : 'Space: Play/Pause • ←/→: Navigate • H: Home'}
                 </Typography>
               </Box>
 
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: { xs: 'center', sm: 'flex-end' },
+                gap: { xs: 0.5, sm: 1 } 
+              }}>
                 <ControlButton
                   onClick={goHome}
                   size="small"
-                  startIcon={<Home sx={{ fontSize: 16 }} />}
+                  startIcon={<Home sx={{ fontSize: { xs: 14, sm: 16 } }} />}
                 >
                   {!isMobile && "Home"}
                 </ControlButton>
@@ -570,7 +594,7 @@ export default function AIFoundationsPlayer() {
                 <ControlButton
                   onClick={goPrev}
                   size="small"
-                  startIcon={<ChevronLeft sx={{ fontSize: 16 }} />}
+                  startIcon={<ChevronLeft sx={{ fontSize: { xs: 14, sm: 16 } }} />}
                 >
                   {!isMobile && "Prev"}
                 </ControlButton>
@@ -579,7 +603,7 @@ export default function AIFoundationsPlayer() {
                   onClick={() => setIsPlaying((p: boolean) => !p)}
                   size="small"
                   className={isPlaying ? 'Mui-active' : ''}
-                  startIcon={isPlaying ? <Pause sx={{ fontSize: 16 }} /> : <PlayArrow sx={{ fontSize: 16 }} />}
+                  startIcon={isPlaying ? <Pause sx={{ fontSize: { xs: 14, sm: 16 } }} /> : <PlayArrow sx={{ fontSize: { xs: 14, sm: 16 } }} />}
                 >
                   {!isMobile && (isPlaying ? "Pause" : "Play")}
                 </ControlButton>
@@ -587,7 +611,7 @@ export default function AIFoundationsPlayer() {
                 <ControlButton
                   onClick={goNext}
                   size="small"
-                  endIcon={<ChevronRight sx={{ fontSize: 16 }} />}
+                  endIcon={<ChevronRight sx={{ fontSize: { xs: 14, sm: 16 } }} />}
                 >
                   {!isMobile && "Next"}
                 </ControlButton>
@@ -596,7 +620,7 @@ export default function AIFoundationsPlayer() {
                   onClick={() => setMuted((m: boolean) => !m)}
                   size="small"
                 >
-                  {muted ? <VolumeOff sx={{ fontSize: 16 }} /> : <VolumeUp sx={{ fontSize: 16 }} />}
+                  {muted ? <VolumeOff sx={{ fontSize: { xs: 14, sm: 16 } }} /> : <VolumeUp sx={{ fontSize: { xs: 14, sm: 16 } }} />}
                 </ControlButton>
               </Box>
             </Box>
@@ -606,10 +630,10 @@ export default function AIFoundationsPlayer() {
 
       {/* Scene navigation */}
       <Box sx={{ 
-        mt: 4, 
+        mt: { xs: 3, md: 4 }, 
         display: 'grid', 
         gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
-        gap: 2 
+        gap: { xs: 1.5, md: 2 } 
       }}>
         {scenes.map((s, i) => (
           <SceneCard
@@ -624,12 +648,12 @@ export default function AIFoundationsPlayer() {
               borderColor: i === sceneIndex ? 'rgba(167, 218, 219, 0.5)' : 'rgba(167, 218, 219, 0.2)',
             }}
           >
-            <CardContent sx={{ p: 2 }}>
+            <CardContent sx={{ p: { xs: 1.5, md: 2 } }}>
               <Box sx={{ 
                 display: 'flex', 
                 justifyContent: 'space-between', 
                 alignItems: 'center',
-                mb: 2
+                mb: { xs: 1.5, md: 2 }
               }}>
                 <Typography 
                   variant="h6" 
@@ -639,7 +663,7 @@ export default function AIFoundationsPlayer() {
                     backgroundClip: 'text',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
-                    fontSize: '1rem'
+                    fontSize: { xs: '0.875rem', md: '1rem' }
                   }}
                 >
                   {s.title}
@@ -647,12 +671,12 @@ export default function AIFoundationsPlayer() {
                 {s.icon}
               </Box>
               
-              <Box sx={{ display: 'flex', gap: 0.5 }}>
+              <Box sx={{ display: 'flex', gap: { xs: 0.25, md: 0.5 } }}>
                 {s.slides.map((_, idx) => (
                   <Box
                     key={idx}
                     sx={{
-                      height: 8,
+                      height: { xs: 6, md: 8 },
                       flex: 1,
                       borderRadius: 1,
                       border: '1px solid rgba(167, 218, 219, 0.3)',
