@@ -89,6 +89,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { 
   CameraAlt, 
@@ -468,6 +469,7 @@ const FloatingOrbs = styled(Box)(({ theme }) => ({
 export default function ProfilePage() {
   const { isAuthenticated, user, loading, token } = useAuth();
   const router = useRouter();
+  const params = useSearchParams();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const [profile, setProfile] = useState<{
@@ -488,12 +490,31 @@ export default function ProfilePage() {
   const [editing, setEditing] = useState(false);
   const [toast, setToast] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({ open: false, message: '', severity: 'success' });
   const [avatarImgError, setAvatarImgError] = useState(false);
+  const [isFirstVisit, setIsFirstVisit] = useState(false);
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
-      router.replace('/sign-in');
+      router.replace('/');
     }
   }, [loading, isAuthenticated, router]);
+
+  // Detect first visit via query string or token metadata
+  useEffect(() => {
+    if (!isAuthenticated || !token) return;
+    const fromQuery = params.get('first') === '1';
+    if (fromQuery) {
+      setIsFirstVisit(true);
+      return;
+    }
+    try {
+      const parts = String(token).split('.');
+      if (parts.length === 3) {
+        const payload = JSON.parse(atob(parts[1]));
+        const hasSeen = Boolean((payload?.user_metadata || {}).has_seen_profile_prompt);
+        if (!hasSeen) setIsFirstVisit(true);
+      }
+    } catch {}
+  }, [isAuthenticated, token, params]);
 
   const displayName = useMemo(() => {
     return profile?.full_name || user?.full_name || 'User';
@@ -649,6 +670,13 @@ export default function ProfilePage() {
         <HeroSection>
           <FloatingOrbs />
           <Box position="relative" zIndex={2}>
+            {isFirstVisit && (
+              <Box mb={3}>
+                <Alert severity="info" variant="outlined">
+                  Welcome! Please complete your profile to personalize your experience.
+                </Alert>
+              </Box>
+            )}
             <Stack direction="row" alignItems="center" spacing={2} mb={4}>
               <BackButton
                 variant="outlined"

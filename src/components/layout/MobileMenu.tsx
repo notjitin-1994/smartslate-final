@@ -419,7 +419,7 @@ export default function MobileMenu({ open, onClose, navItems }: MobileMenuProps)
                   </MobileCTAButton>
                   <MobileCTAButton 
                     variant="contained" 
-                    onClick={() => handleAuthAction(() => logout())}
+                    onClick={() => handleAuthAction(() => { logout(); router.push('/'); })}
                     custom={2}
                     variants={buttonVariants}
                     initial="hidden"

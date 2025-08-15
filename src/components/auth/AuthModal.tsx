@@ -112,6 +112,22 @@ export default function AuthModal() {
         if (!res.ok) throw new Error(json?.error || 'Sign in failed');
         if (!json?.token || !json?.user) throw new Error('Invalid response');
         login(json.token, json.user);
+        // After password sign-in, check if first login and redirect to profile page
+        try {
+          // Decode JWT payload to read user_metadata flag
+          const parts = String(json.token).split('.');
+          if (parts.length === 3) {
+            const payload = JSON.parse(atob(parts[1]));
+            const hasSeen = Boolean((payload?.user_metadata || {}).has_seen_profile_prompt);
+            if (!hasSeen) {
+              await fetch('/api/auth/first-login', { method: 'POST', headers: { Authorization: `Bearer ${json.token}` } });
+              // Close the modal quickly and navigate
+              setTimeout(() => {
+                window.location.assign('/profile?first=1');
+              }, 50);
+            }
+          }
+        } catch {}
         setIsSuccess(true);
         setTimeout(() => handleClose(), 1000);
       } else {
@@ -122,11 +138,32 @@ export default function AuthModal() {
         });
         const json = await res.json();
         if (!res.ok) throw new Error(json?.error || 'Sign up failed');
-        setIsSuccess(true);
-        setTimeout(() => {
-          setIsSuccess(false);
-          setActiveTab('signin');
-        }, 1400);
+        // If dev bypass returned a session, log in and redirect to profile first-visit
+        if (json?.token && json?.user) {
+          login(json.token, json.user);
+          try {
+            const parts = String(json.token).split('.');
+            if (parts.length === 3) {
+              const payload = JSON.parse(atob(parts[1]));
+              const hasSeen = Boolean((payload?.user_metadata || {}).has_seen_profile_prompt);
+              if (!hasSeen) {
+                await fetch('/api/auth/first-login', { method: 'POST', headers: { Authorization: `Bearer ${json.token}` } });
+              }
+            }
+          } catch {}
+          setIsSuccess(true);
+          setTimeout(() => {
+            // Navigate after short success animation
+            window.location.assign('/profile?first=1');
+          }, 300);
+        } else {
+          // Standard flow (email verification)
+          setIsSuccess(true);
+          setTimeout(() => {
+            setIsSuccess(false);
+            setActiveTab('signin');
+          }, 1400);
+        }
       }
     } catch (err: any) {
       const message = err?.message || 'Something went wrong';

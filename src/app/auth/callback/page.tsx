@@ -44,6 +44,20 @@ export default function AuthCallbackPage() {
         console.log('Logging in user:', { id: user.id, full_name: fullName, email: user.email });
         
         login(session.access_token, { id: user.id, full_name: fullName, email: user.email as string });
+
+        // First-login redirect: if user hasn't seen profile prompt, mark and send to profile
+        const hasSeen = Boolean((user.user_metadata as any)?.has_seen_profile_prompt);
+        if (!hasSeen) {
+          try {
+            await fetch('/api/auth/first-login', {
+              method: 'POST',
+              headers: { Authorization: `Bearer ${session.access_token}` },
+            });
+          } catch {}
+          router.replace('/profile?first=1');
+          return;
+        }
+
         const next = params.get('next') || '/';
         console.log('Redirecting to:', next);
         router.replace(next);

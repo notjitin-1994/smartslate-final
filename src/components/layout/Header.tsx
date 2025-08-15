@@ -364,6 +364,7 @@ export default function Header() {
           onClick={() => {
             setUserMenuAnchor(null);
             logout();
+            router.push('/');
           }}
           sx={{ color: 'text.primary' }}
         >
