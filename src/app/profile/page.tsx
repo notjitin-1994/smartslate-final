@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from '@/contexts/AuthContext';
+import { getSupabaseBrowser } from '@/lib/supabase-browser';
 
 // Add global CSS for animations
 const globalStyles = `
@@ -486,6 +487,7 @@ export default function ProfilePage() {
   const [uploading, setUploading] = useState(false);
   const [editing, setEditing] = useState(false);
   const [toast, setToast] = useState<{ open: boolean; message: string; severity: 'success' | 'error' }>({ open: false, message: '', severity: 'success' });
+  const [avatarImgError, setAvatarImgError] = useState(false);
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
@@ -509,6 +511,30 @@ export default function ProfilePage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || 'Failed to load profile');
       const dbProfile = data.profile || {};
+      let candidate: string | undefined = ((): string | undefined => {
+        const v = dbProfile.avatar_url as string | undefined;
+        if (!v) return undefined;
+        const s = String(v).trim();
+        if (!s || s.toLowerCase() === 'null' || s.toLowerCase() === 'undefined') return undefined;
+        if (/^https?:\/\//i.test(s) || s.startsWith('/')) return s;
+        return undefined;
+      })();
+
+      if (!candidate) {
+        try {
+          const supabase = getSupabaseBrowser();
+          const { data: sess } = await supabase.auth.getSession();
+          const meta: any = sess?.session?.user?.user_metadata || {};
+          const fallback = meta.avatar_url || meta.picture || null;
+          if (fallback && (typeof fallback === 'string')) {
+            const s = String(fallback).trim();
+            if (s && s.toLowerCase() !== 'null' && s.toLowerCase() !== 'undefined' && (/^https?:\/\//i.test(s) || s.startsWith('/'))) {
+              candidate = s;
+            }
+          }
+        } catch {}
+      }
+
       setProfile({
         full_name: dbProfile.full_name || user?.full_name,
         company: dbProfile.company || '',
@@ -519,8 +545,9 @@ export default function ProfilePage() {
         twitter: dbProfile.twitter || '',
         linkedin: dbProfile.linkedin || '',
         github: dbProfile.github || '',
-        avatar_url: dbProfile.avatar_url || undefined,
+        avatar_url: candidate,
       });
+      setAvatarImgError(false);
     } catch (e: any) {
       setToast({ open: true, message: e?.message || 'Could not load profile', severity: 'error' });
     } finally {
@@ -603,6 +630,7 @@ export default function ProfilePage() {
       try {
         window.dispatchEvent(new CustomEvent('avatar-url-changed', { detail: { url: data.url } }));
       } catch {}
+      setAvatarImgError(false);
       setToast({ open: true, message: 'Avatar updated successfully!', severity: 'success' });
     } catch (e: any) {
       setToast({ open: true, message: e?.message || 'Upload failed', severity: 'error' });
@@ -635,8 +663,8 @@ export default function ProfilePage() {
               {/* Left side - Avatar and basic info */}
               <UserInfoContainer flex={{ lg: '0 0 40%' }}>
                 <Box position="relative" display="inline-block">
-                  <ProfileAvatar src={profile?.avatar_url || undefined}>
-                    {!profile?.avatar_url && userInitials(displayName)}
+                  <ProfileAvatar src={avatarImgError ? undefined : (profile?.avatar_url || undefined)} onError={() => setAvatarImgError(true)}>
+                    {(avatarImgError || !profile?.avatar_url) && userInitials(displayName)}
                   </ProfileAvatar>
                   <CameraButton
                     aria-label="Change avatar"

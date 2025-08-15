@@ -12,6 +12,7 @@ import { useUserRoles } from '@/hooks/useUserRoles';
 import MobileMenu, { AnimatedHamburgerButton } from './MobileMenu';
 import AuthModal from '@/components/auth/AuthModal';
 import { useAuthModal } from '@/hooks/useAuthModal';
+import { getSupabaseBrowser } from '@/lib/supabase-browser';
 
 const HeaderWrapper = styled('header', {
   shouldForwardProp: (prop) => prop !== 'hide'
@@ -139,6 +140,7 @@ export default function Header() {
   const router = useRouter();
   const { open } = useAuthModal();
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [avatarImgError, setAvatarImgError] = useState(false);
 
   const userInitials = (name?: string) => {
     if (!name) return 'U';
@@ -146,6 +148,14 @@ export default function Header() {
     const first = parts[0]?.[0] || '';
     const second = parts.length > 1 ? parts[1][0] : '';
     return (first + second).toUpperCase();
+  };
+
+  const normalizeAvatarUrl = (value?: string | null): string | null => {
+    if (!value) return null;
+    const s = String(value).trim();
+    if (!s || s.toLowerCase() === 'null' || s.toLowerCase() === 'undefined') return null;
+    if (/^https?:\/\//i.test(s) || s.startsWith('/')) return s;
+    return null;
   };
 
   useEffect(() => {
@@ -171,7 +181,20 @@ export default function Header() {
         });
         if (!res.ok) return;
         const data = await res.json().catch(() => ({}));
-        if (isMounted) setAvatarUrl(data?.profile?.avatar_url || null);
+        if (isMounted) {
+          let url = normalizeAvatarUrl(data?.profile?.avatar_url) || null;
+          // Fallback to Supabase session user metadata if profile lacks avatar
+          if (!url) {
+            try {
+              const supabase = getSupabaseBrowser();
+              const { data: sess } = await supabase.auth.getSession();
+              const meta: any = sess?.session?.user?.user_metadata || {};
+              url = normalizeAvatarUrl(meta.avatar_url || meta.picture || null);
+            } catch {}
+          }
+          setAvatarUrl(url);
+          setAvatarImgError(false);
+        }
       } catch {}
     }
     loadProfile();
@@ -180,12 +203,18 @@ export default function Header() {
     };
   }, [isAuthenticated, token]);
 
+  // Reset image error when url changes
+  useEffect(() => {
+    setAvatarImgError(false);
+  }, [avatarUrl]);
+
   // React to avatar changes broadcasted from profile page
   useEffect(() => {
     function onAvatarChanged(e: Event) {
       try {
         const evt = e as CustomEvent<{ url?: string | null }>;
-        setAvatarUrl(evt.detail?.url || null);
+        setAvatarUrl(normalizeAvatarUrl(evt.detail?.url || null));
+        setAvatarImgError(false);
       } catch {}
     }
     window.addEventListener('avatar-url-changed', onAvatarChanged as EventListener);
@@ -239,8 +268,12 @@ export default function Header() {
                   '&:hover': { borderColor: 'primary.main', backgroundColor: 'rgba(255,255,255,0.04)' },
                 }}
               >
-                <Avatar src={avatarUrl || undefined} sx={{ width: 36, height: 36, bgcolor: 'primary.main' }}>
-                  {!avatarUrl && userInitials(user?.full_name)}
+                <Avatar
+                  src={avatarImgError ? undefined : (avatarUrl || undefined)}
+                  imgProps={{ onError: () => setAvatarImgError(true), referrerPolicy: 'no-referrer' }}
+                  sx={{ width: 36, height: 36, bgcolor: 'primary.main' }}
+                >
+                  {(avatarImgError || !avatarUrl) && userInitials(user?.full_name)}
                 </Avatar>
               </IconButton>
             ) : (
@@ -280,8 +313,12 @@ export default function Header() {
         }}
       >
         <Box sx={{ px: 2, py: 1.5, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Avatar src={avatarUrl || undefined} sx={{ width: 28, height: 28, bgcolor: 'primary.main' }}>
-            {!avatarUrl && userInitials(user?.full_name)}
+          <Avatar
+            src={avatarImgError ? undefined : (avatarUrl || undefined)}
+            imgProps={{ onError: () => setAvatarImgError(true), referrerPolicy: 'no-referrer' }}
+            sx={{ width: 28, height: 28, bgcolor: 'primary.main' }}
+          >
+            {(avatarImgError || !avatarUrl) && userInitials(user?.full_name)}
           </Avatar>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Box component="span" sx={{ fontSize: 14, fontWeight: 600, color: 'text.primary' }}>
