@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDb } from '@/lib/db';
+import { getSupabaseService } from '@/lib/supabase';
 import { sendEmail } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
@@ -26,66 +26,54 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Store in database
+    // Store in database using Supabase service role to bypass RLS
     try {
-      const db = getDb();
-      const result = await db.query(
-        `INSERT INTO app.ssa_interest_modal (
-          name, email, phone, company, role, department,
-          company_size, industry, location,
-          current_challenges, skill_gaps, existing_lms,
-          current_training_budget, employee_count, target_audience,
-          primary_goals, timeline, budget, specific_outcomes,
-          technical_requirements, integration_needs,
-          decision_makers, competing_priorities, success_metrics,
-          how_did_you_hear, additional_notes,
-          ip_address, user_agent
-        ) VALUES (
-          $1, $2, $3, $4, $5, $6,
-          $7, $8, $9,
-          $10, $11::text[], $12,
-          $13, $14, $15,
-          $16::text[], $17, $18, $19,
-          $20, $21,
-          $22, $23, $24,
-          $25, $26,
-          $27::inet, $28
-        ) RETURNING id, created_at`,
-        [
-          body.name,
-          body.email,
-          body.phone,
-          body.company,
-          body.role,
-          body.department || null,
-          body.companySize,
-          body.industry,
-          body.location || null,
-          body.currentChallenges,
-          Array.isArray(body.skillGaps) ? body.skillGaps : [],
-          body.existingLMS || null,
-          body.currentTrainingBudget || null,
-          body.employeeCount || null,
-          body.targetAudience,
-          Array.isArray(body.primaryGoals) ? body.primaryGoals : [],
-          body.timeline,
-          body.budget || null,
-          body.specificOutcomes,
-          body.technicalRequirements || null,
-          body.integrationNeeds || null,
-          body.decisionMakers || null,
-          body.competingPriorities || null,
-          body.successMetrics || null,
-          body.howDidYouHear || null,
-          body.additionalNotes || null,
-          // capture client context if proxied via headers; otherwise null
-          request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || null,
-          request.headers.get('user-agent') || null,
-        ]
-      );
+      const supabase = getSupabaseService();
+      const { data, error } = await supabase
+        .from('ssa_interest_modal')
+        .insert({
+          name: body.name,
+          email: body.email,
+          phone: body.phone,
+          company: body.company,
+          role: body.role,
+          department: body.department || null,
+          company_size: body.companySize,
+          industry: body.industry,
+          location: body.location || null,
+          current_challenges: body.currentChallenges,
+          skill_gaps: Array.isArray(body.skillGaps) ? body.skillGaps : [],
+          existing_lms: body.existingLMS || null,
+          current_training_budget: body.currentTrainingBudget || null,
+          employee_count: body.employeeCount || null,
+          target_audience: body.targetAudience,
+          primary_goals: Array.isArray(body.primaryGoals) ? body.primaryGoals : [],
+          timeline: body.timeline,
+          budget: body.budget || null,
+          specific_outcomes: body.specificOutcomes,
+          technical_requirements: body.technicalRequirements || null,
+          integration_needs: body.integrationNeeds || null,
+          decision_makers: body.decisionMakers || null,
+          competing_priorities: body.competingPriorities || null,
+          success_metrics: body.successMetrics || null,
+          how_did_you_hear: body.howDidYouHear || null,
+          additional_notes: body.additionalNotes || null,
+          ip_address: request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || null,
+          user_agent: request.headers.get('user-agent') || null,
+        })
+        .select('id, created_at')
+        .single();
 
-      const leadId = result.rows[0]?.id;
-      const createdAt = result.rows[0]?.created_at;
+      if (error) {
+        console.error('Supabase insert error:', error);
+        return NextResponse.json(
+          { error: 'Failed to save SSA inquiry' },
+          { status: 500 }
+        );
+      }
+
+      const leadId = data.id;
+      const createdAt = data.created_at;
 
       // Send notification email to enterprise sales team
       const to = process.env.LEADS_EMAIL_TO || 'hello@smartslate.io';

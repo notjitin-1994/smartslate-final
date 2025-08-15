@@ -1,6 +1,6 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseService } from '@/lib/supabase';
 import { sendEmail } from '@/lib/email';
-import { getDb } from '@/lib/db';
 
 export async function POST(req: NextRequest) {
   try {
@@ -39,40 +39,44 @@ export async function POST(req: NextRequest) {
       <p><strong>Follow Up:</strong> ${followUp}</p>
     `;
 
-    // Persist to Supabase (Postgres)
+    // Store in database using Supabase service role to bypass RLS
     try {
-      const db = getDb();
-      const result = await db.query(
-        `INSERT INTO app.case_study_requests (
-          name, email, phone, company, role, industry,
-          case_study_type, specific_interests, current_challenges, follow_up,
-          ip_address, user_agent
-        ) VALUES (
-          $1, $2, $3, $4, $5, $6,
-          $7, $8::text[], $9, $10::app.follow_up_preference,
-          $11::inet, $12
-        ) RETURNING id, created_at`,
-        [
-          name,
-          email,
-          phone || null,
-          company,
-          role || null,
-          industry || null,
-          caseStudyType,
-          Array.isArray(specificInterests) ? specificInterests : [],
-          currentChallenges || null,
-          followUp || null,
-          // capture client context if proxied via headers; otherwise null
-          req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || null,
-          req.headers.get('user-agent') || null,
-        ]
-      );
+      const supabase = getSupabaseService();
+      const { data, error } = await supabase
+        .from('case_study_requests')
+        .insert({
+          name: name,
+          email: email,
+          phone: phone || null,
+          company: company,
+          role: role || null,
+          industry: industry || null,
+          case_study_type: caseStudyType,
+          specific_interests: Array.isArray(specificInterests) ? specificInterests : [],
+          current_challenges: currentChallenges || null,
+          follow_up: followUp || null,
+          ip_address: req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || null,
+          user_agent: req.headers.get('user-agent') || null,
+        })
+        .select('id, created_at')
+        .single();
+
+      if (error) {
+        console.error('Supabase insert error:', error);
+        return new Response(
+          JSON.stringify({ error: 'Failed to save case study request' }),
+          { status: 500 }
+        );
+      }
+
+      const leadId = data.id;
+      const createdAt = data.created_at;
+
       // Fire-and-forget email; don't block response on failures
       sendEmail({ to, subject, html }).catch((err) => console.error('Failed to send case study email', err));
 
       return new Response(
-        JSON.stringify({ ok: true, id: result.rows[0]?.id, createdAt: result.rows[0]?.created_at }),
+        JSON.stringify({ ok: true, id: leadId, createdAt: createdAt }),
         { status: 200, headers: { 'Content-Type': 'application/json' } }
       );
     } catch (err) {

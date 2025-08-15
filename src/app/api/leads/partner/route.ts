@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDb } from '@/lib/db';
+import { getSupabaseService } from '@/lib/supabase';
 import { sendEmail } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
@@ -20,94 +20,48 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Ensure table exists (lightweight guard for first-run environments)
-    const db = getDb();
-    await db.query(
-      `CREATE SCHEMA IF NOT EXISTS app;
-       CREATE TABLE IF NOT EXISTS app.partner_inquiries (
-         id BIGSERIAL PRIMARY KEY,
-         title TEXT NOT NULL,
-         collaboration_type TEXT NOT NULL DEFAULT 'general',
-         name TEXT,
-         email TEXT NOT NULL,
-         company TEXT,
-         role TEXT,
-         phone TEXT,
-         fund TEXT,
-         linkedin_url TEXT,
-         github_url TEXT,
-         source TEXT,
-         status TEXT NOT NULL DEFAULT 'new',
-         tags TEXT[],
-         data JSONB NOT NULL,
-         created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-         ip_address INET,
-         user_agent TEXT
-       );
-       ALTER TABLE app.partner_inquiries ADD COLUMN IF NOT EXISTS collaboration_type TEXT NOT NULL DEFAULT 'general';
-       ALTER TABLE app.partner_inquiries ADD COLUMN IF NOT EXISTS name TEXT;
-       ALTER TABLE app.partner_inquiries ADD COLUMN IF NOT EXISTS email TEXT;
-       ALTER TABLE app.partner_inquiries ADD COLUMN IF NOT EXISTS company TEXT;
-       ALTER TABLE app.partner_inquiries ADD COLUMN IF NOT EXISTS role TEXT;
-       ALTER TABLE app.partner_inquiries ADD COLUMN IF NOT EXISTS phone TEXT;
-       ALTER TABLE app.partner_inquiries ADD COLUMN IF NOT EXISTS fund TEXT;
-       ALTER TABLE app.partner_inquiries ADD COLUMN IF NOT EXISTS linkedin_url TEXT;
-       ALTER TABLE app.partner_inquiries ADD COLUMN IF NOT EXISTS github_url TEXT;
-       ALTER TABLE app.partner_inquiries ADD COLUMN IF NOT EXISTS source TEXT;
-       ALTER TABLE app.partner_inquiries ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'new';
-       ALTER TABLE app.partner_inquiries ADD COLUMN IF NOT EXISTS tags TEXT[];`
-    );
+    // Store in database using Supabase service role to bypass RLS
+    const supabase = getSupabaseService();
+    const { data: insertData, error } = await supabase
+      .from('partner_inquiries')
+      .insert({
+        title: title,
+        collaboration_type: collaborationType,
+        name: name,
+        email: email,
+        company: typeof data?.company === 'string' ? String(data.company) : null,
+        role: typeof data?.role === 'string' ? String(data.role) : null,
+        phone: typeof data?.phone === 'string' ? String(data.phone) : null,
+        fund: typeof data?.fund === 'string' ? String(data.fund) : null,
+        linkedin_url: typeof data?.linkedin === 'string' ? String(data.linkedin) : (typeof data?.linkedin_url === 'string' ? String(data.linkedin_url) : null),
+        github_url: typeof data?.github === 'string' ? String(data.github) : (typeof data?.github_url === 'string' ? String(data.github_url) : null),
+        source: typeof body?.source === 'string' ? body.source : 'collaborate-page',
+        status: 'new',
+        tags: Array.isArray(body?.tags) ? body.tags : null,
+        data: data,
+        ip_address: request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || null,
+        user_agent: request.headers.get('user-agent') || null,
+      })
+      .select('id, created_at')
+      .single();
 
-    const ipAddress = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || null;
-    const userAgent = request.headers.get('user-agent') || null;
+    if (error) {
+      console.error('Supabase insert error:', error);
+      return NextResponse.json(
+        { error: 'Failed to save partner inquiry' },
+        { status: 500 }
+      );
+    }
 
-    const normalizedName = name || (typeof (data as any)?.fullName === 'string' ? String((data as any).fullName) : null);
-    const normalizedCompany = typeof (data as any)?.company === 'string' ? String((data as any).company) : null;
-    const normalizedRole = typeof (data as any)?.role === 'string' ? String((data as any).role) : null;
-    const normalizedPhone = typeof (data as any)?.phone === 'string' ? String((data as any).phone) : null;
-    const normalizedFund = typeof (data as any)?.fund === 'string' ? String((data as any).fund) : null;
-    const normalizedLinkedIn = typeof (data as any)?.linkedin === 'string' ? String((data as any).linkedin) : (typeof (data as any)?.linkedin_url === 'string' ? String((data as any).linkedin_url) : null);
-    const normalizedGithub = typeof (data as any)?.github === 'string' ? String((data as any).github) : (typeof (data as any)?.github_url === 'string' ? String((data as any).github_url) : null);
-    const source = typeof body?.source === 'string' ? body.source : 'collaborate-page';
-    const status = 'new';
-    const tags = Array.isArray(body?.tags) ? body.tags : null;
-
-    const insert = await db.query(
-      `INSERT INTO app.partner_inquiries (
-         title, collaboration_type, name, email, company, role, phone, fund, linkedin_url, github_url, source, status, tags, data, ip_address, user_agent
-       ) VALUES (
-         $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13::text[], $14::jsonb, $15::inet, $16
-       )
-       RETURNING id, created_at`,
-      [
-        title,
-        collaborationType,
-        normalizedName,
-        email,
-        normalizedCompany,
-        normalizedRole,
-        normalizedPhone,
-        normalizedFund,
-        normalizedLinkedIn,
-        normalizedGithub,
-        source,
-        status,
-        tags,
-        JSON.stringify(data),
-        ipAddress,
-        userAgent,
-      ]
-    );
-
-    const requestId = insert.rows[0]?.id;
-    const createdAt = insert.rows[0]?.created_at;
+    const leadId = insertData.id;
+    const createdAt = insertData.created_at;
 
     // Notify team
     const to = process.env.LEADS_EMAIL_TO || 'hello@smartslate.io';
     const subject = `Partner Inquiry: ${title} [${collaborationType}] (${name || 'Unknown'})`;
     const html = `
       <h2>New Partner/Collaboration Inquiry</h2>
-      <p><strong>Request ID:</strong> ${requestId}</p>
+      <p><strong>Request ID:</strong> ${leadId}</p>
       <p><strong>Submitted:</strong> ${createdAt}</p>
       <p><strong>Source:</strong> Partner Contact Modal</p>
       <p><strong>Type:</strong> ${collaborationType}</p>
@@ -121,7 +75,7 @@ export async function POST(request: NextRequest) {
       {
         success: true,
         message: 'Inquiry submitted successfully',
-        requestId,
+        requestId: leadId,
         createdAt,
       },
       { status: 201 }

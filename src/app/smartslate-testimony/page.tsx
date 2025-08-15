@@ -24,6 +24,7 @@ import {
 import { styled } from '@mui/material/styles';
 import Link from 'next/link';
 import StandardHero from '@/components/ui/StandardHero';
+import AIFoundationsPlayer from '@/components/courses/AIFoundationsPlayer';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
@@ -294,6 +295,7 @@ export default function SmartslateTestimonyPage() {
 
   const tocSections = [
     { id: 'hero', title: 'AI Foundations: Concept to Application' },
+    { id: 'player', title: 'Interactive Learning Player' },
   ];
 
   const [activeSection, setActiveSection] = useState('hero');
@@ -320,7 +322,7 @@ export default function SmartslateTestimonyPage() {
     }, observerOptions);
 
     // Observe all sections with exact ID matching
-    const sectionIds = ['hero'];
+    const sectionIds = ['hero', 'player'];
     sectionIds.forEach((id) => {
       const section = document.getElementById(id);
       if (section) {
@@ -349,30 +351,9 @@ export default function SmartslateTestimonyPage() {
       {/* Hero Section */}
       <StandardHero
         title="AI Foundations: Concept to Application — The Course That Built Smartslate"
-        subtitle="The same structured approach that built Smartslate's AI-powered learning platform can strengthen your team's capabilities"
+        subtitle="The same structured approach that built Smartslate's AI-powered learning platform can strengthen your team's capabilities. Learn how human ingenuity prompted AI to create Smartslate."
         accentWords={['AI Foundations', 'Smartslate', 'Transform']}
-      >
-        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mt: 3 }}>
-          <Link href="/collaborate" style={{ textDecoration: 'none' }}>
-            <CTAButton 
-              variant="contained" 
-              size="large"
-              onClick={() => handleCTAClick('talk_to_sales')}
-            >
-              Talk to Sales
-            </CTAButton>
-          </Link>
-          <Link href="/courses" style={{ textDecoration: 'none' }}>
-            <SecondaryButton 
-              variant="outlined" 
-              size="large"
-              onClick={() => handleCTAClick('view_syllabus')}
-            >
-              View AI Foundations: Concept to Application Syllabus
-            </SecondaryButton>
-          </Link>
-        </Box>
-      </StandardHero>
+      />
 
       {/* Mobile Floating Action Button */}
       <MobileFAB
@@ -588,38 +569,90 @@ export default function SmartslateTestimonyPage() {
                   alignItems: { xs: 'center', md: 'flex-start' }
                 }}>
                   {/* Text Content */}
-                  <Box sx={{ flex: 1 }}>
-                    <SectionCard sx={{ minHeight: '400px' }}>
-                      <Typography variant="h4" sx={{ 
-                        fontSize: { xs: '1.25rem', md: '1.5rem' },
-                        fontWeight: 700,
-                        color: 'primary.main',
-                        mb: 3
-                      }}>
-                        Course Overview
-                      </Typography>
-                      <Typography 
-                        variant="body1" 
-                        sx={{ 
-                          fontSize: { xs: '1rem', md: '1.125rem' },
-                          lineHeight: 1.8,
-                          color: 'text.primary',
-                          mb: 3,
-                          fontWeight: 400
-                        }}
-                      >
-                        This course represents the structured approach that built Smartslate's AI-powered learning platform. 
-                        Learn how to strengthen your team's capabilities through the same methodology that transformed 
-                        our organization from concept to application.
-                      </Typography>
-                    </SectionCard>
-                  </Box>
+                                     <Box sx={{ flex: 1 }}>
+                     <SectionCard sx={{ minHeight: '400px' }}>
+                       <CardContent>
+                         <Typography variant="h4" sx={{ 
+                           fontSize: { xs: '1.25rem', md: '1.5rem' },
+                           fontWeight: 700,
+                           color: 'primary.main',
+                           mb: 3
+                         }}>
+                           Course Overview
+                         </Typography>
+                         <Typography 
+                           variant="body1" 
+                           sx={{ 
+                             fontSize: { xs: '1rem', md: '1.125rem' },
+                             lineHeight: 1.8,
+                             color: 'text.primary',
+                             mb: 3,
+                             fontWeight: 400
+                           }}
+                         >
+                           This course represents the structured approach that built Smartslate's AI-powered learning platform. 
+                           Learn how to strengthen your team's capabilities through the same methodology that transformed 
+                           our organization from concept to application.
+                         </Typography>
+                         <Typography 
+                           variant="body1" 
+                           sx={{ 
+                             fontSize: { xs: '1rem', md: '1.125rem' },
+                             lineHeight: 1.8,
+                             color: 'text.primary',
+                             fontWeight: 400
+                           }}
+                         >
+                           Explore the interactive learning player below to see how we applied AI Foundations principles 
+                           to build our platform, from concept to measurable results.
+                         </Typography>
+                       </CardContent>
+                     </SectionCard>
+                   </Box>
                 </Box>
               </motion.div>
             </Box>
           </motion.div>
         </SectionWrapper>
       </Container>
+
+      {/* Interactive Learning Player Section */}
+      <SectionWrapper id="player">
+        <Container maxWidth="lg">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <Box sx={{ textAlign: 'center', mb: 6 }}>
+              <Typography variant="h3" component="h2" gutterBottom sx={{
+                background: 'linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                fontSize: { xs: '2rem', md: '2.5rem', lg: '3rem' },
+                fontWeight: 700,
+                mb: 2,
+                lineHeight: 1.2
+              }}>
+                Interactive Learning Player
+              </Typography>
+              
+              <Typography variant="h5" sx={{ 
+                fontSize: { xs: '1.125rem', md: '1.25rem' },
+                fontWeight: 500,
+                color: 'primary.main',
+                fontStyle: 'italic'
+              }}>
+                Experience how AI Foundations principles shaped Smartslate's development
+              </Typography>
+            </Box>
+
+            <AIFoundationsPlayer />
+          </motion.div>
+        </Container>
+      </SectionWrapper>
     </>
   );
 }

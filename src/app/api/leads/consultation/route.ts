@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDb } from '@/lib/db';
+import { getSupabaseService } from '@/lib/supabase';
 import { sendEmail } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
@@ -38,90 +38,74 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Store in database
+    // Store in database using Supabase service role to bypass RLS
     try {
-      const db = getDb();
-      const result = await db.query(
-        `INSERT INTO app.consultation_requests (
-          name, email, phone, company, role, department,
-          industry, company_size, location,
-          consultation_type, preferred_date, preferred_time, timezone,
-          consultation_duration, attendees_count, attendee_roles, urgency_level,
-          primary_challenge, secondary_challenges, team_size, budget_range,
-          timeline, decision_makers, implementation_scope,
-          service_interest, specific_requirements, use_case,
-          integration_needs, compliance_needs, current_lms, current_tools,
-          learning_goals, success_metrics, pain_points, desired_outcomes,
-          how_did_you_hear, competitive_analysis, additional_notes, referral_source,
-          ip_address, user_agent
-        ) VALUES (
-          $1, $2, $3, $4, $5, $6,
-          $7, $8, $9,
-          $10, $11::date, $12, $13,
-          $14, $15, $16::text[], $17,
-          $18, $19::text[], $20, $21,
-          $22, $23, $24,
-          $25::text[], $26::text[], $27,
-          $28::text[], $29::text[], $30, $31::text[],
-          $32, $33, $34, $35,
-          $36, $37, $38, $39,
-          $40::inet, $41
-        ) RETURNING id, created_at`,
-        [
-          body.name,
-          body.email,
-          body.phone || null,
-          body.company,
-          body.role || null,
-          body.department || null,
-          body.industry || null,
-          body.companySize || null,
-          body.location || null,
-          body.consultationType,
-          body.preferredDate,
-          body.preferredTime,
-          body.timezone || null,
-          body.consultationDuration || '60 minutes',
-          body.attendeesCount || null,
-          Array.isArray(body.attendeeRoles) ? body.attendeeRoles : [],
-          body.urgencyLevel || 'normal',
-          body.primaryChallenge,
-          Array.isArray(body.secondaryChallenges) ? body.secondaryChallenges : [],
-          body.teamSize || null,
-          body.budgetRange || null,
-          body.timeline || null,
-          body.decisionMakers || null,
-          body.implementationScope || null,
-          Array.isArray(body.serviceInterest) ? body.serviceInterest : [],
-          Array.isArray(body.specificRequirements) ? body.specificRequirements : [],
-          body.useCase || null,
-          Array.isArray(body.integrationNeeds) ? body.integrationNeeds : [],
-          Array.isArray(body.complianceNeeds) ? body.complianceNeeds : [],
-          body.currentLMS || null,
-          Array.isArray(body.currentTools) ? body.currentTools : [],
-          body.learningGoals || null,
-          body.successMetrics || null,
-          body.painPoints || null,
-          body.desiredOutcomes || null,
-          body.howDidYouHear || null,
-          body.competitiveAnalysis || null,
-          body.additionalNotes || null,
-          body.referralSource || null,
-          // capture client context if proxied via headers; otherwise null
-          request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || null,
-          request.headers.get('user-agent') || null,
-        ]
-      );
+      const supabase = getSupabaseService();
+      const { data, error } = await supabase
+        .from('consultation_requests')
+        .insert({
+          name: body.name,
+          email: body.email,
+          phone: body.phone || null,
+          company: body.company,
+          role: body.role || null,
+          department: body.department || null,
+          industry: body.industry || null,
+          company_size: body.companySize || null,
+          location: body.location || null,
+          consultation_type: body.consultationType,
+          preferred_date: body.preferredDate,
+          preferred_time: body.preferredTime,
+          timezone: body.timezone || null,
+          consultation_duration: body.consultationDuration || '60 minutes',
+          attendees_count: body.attendeesCount || null,
+          attendee_roles: Array.isArray(body.attendeeRoles) ? body.attendeeRoles : [],
+          urgency_level: body.urgencyLevel || 'normal',
+          primary_challenge: body.primaryChallenge,
+          secondary_challenges: Array.isArray(body.secondaryChallenges) ? body.secondaryChallenges : [],
+          team_size: body.teamSize || null,
+          budget_range: body.budgetRange || null,
+          timeline: body.timeline || null,
+          decision_makers: body.decisionMakers || null,
+          implementation_scope: body.implementationScope || null,
+          service_interest: Array.isArray(body.serviceInterest) ? body.serviceInterest : [],
+          specific_requirements: Array.isArray(body.specificRequirements) ? body.specificRequirements : [],
+          use_case: body.useCase || null,
+          integration_needs: Array.isArray(body.integrationNeeds) ? body.integrationNeeds : [],
+          compliance_needs: Array.isArray(body.complianceNeeds) ? body.complianceNeeds : [],
+          current_lms: body.currentLMS || null,
+          current_tools: Array.isArray(body.currentTools) ? body.currentTools : [],
+          learning_goals: body.learningGoals || null,
+          success_metrics: body.successMetrics || null,
+          pain_points: body.painPoints || null,
+          desired_outcomes: body.desiredOutcomes || null,
+          how_did_you_hear: body.howDidYouHear || null,
+          competitive_analysis: body.competitiveAnalysis || null,
+          additional_notes: body.additionalNotes || null,
+          referral_source: body.referralSource || null,
+          ip_address: request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || null,
+          user_agent: request.headers.get('user-agent') || null,
+        })
+        .select('id, created_at')
+        .single();
 
-      const requestId = result.rows[0]?.id;
-      const createdAt = result.rows[0]?.created_at;
+      if (error) {
+        console.error('Supabase insert error:', error);
+        return NextResponse.json(
+          { error: 'Failed to save consultation request' },
+          { status: 500 }
+        );
+      }
+
+      const leadId = data.id;
+      const createdAt = data.created_at;
 
       // Send notification email to consultation team
       const to = process.env.LEADS_EMAIL_TO || 'hello@smartslate.io';
       const subject = `Consultation Request: ${body.company} (${body.name}) - ${body.consultationType}`;
       const html = `
         <h2>New Consultation Request</h2>
-        <p><strong>Request ID:</strong> ${requestId}</p>
+        <p><strong>Request ID:</strong> ${leadId}</p>
         <p><strong>Name:</strong> ${body.name}</p>
         <p><strong>Email:</strong> ${body.email}</p>
         <p><strong>Phone:</strong> ${body.phone || 'Not provided'}</p>
@@ -183,7 +167,7 @@ export async function POST(request: NextRequest) {
         { 
           success: true, 
           message: 'Consultation request submitted successfully',
-          requestId: requestId,
+          requestId: leadId,
           createdAt: createdAt
         },
         { status: 201 }

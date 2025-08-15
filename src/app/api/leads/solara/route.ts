@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDb } from '@/lib/db';
+import { getSupabaseService } from '@/lib/supabase';
 import { sendEmail } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
@@ -26,72 +26,58 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Store in database
+    // Store in database using Supabase service role to bypass RLS
     try {
-      const db = getDb();
-      const result = await db.query(
-        `INSERT INTO app.solara_interest_modal (
-          name, email, phone, company, role, department,
-          company_size, industry, location,
-          current_lms, current_tools, learning_challenges,
-          content_creation_process, learner_count, content_volume,
-          primary_use_case, solara_components, specific_features,
-          integration_needs, ai_requirements,
-          timeline, budget_range, team_size, decision_makers,
-          implementation_scope, current_pain_points, success_metrics,
-          competitive_analysis, how_did_you_hear, additional_notes,
-          ip_address, user_agent
-        ) VALUES (
-          $1, $2, $3, $4, $5, $6,
-          $7, $8, $9,
-          $10, $11::text[], $12,
-          $13, $14, $15,
-          $16, $17::text[], $18::text[],
-          $19::text[], $20::text[],
-          $21, $22, $23, $24,
-          $25, $26, $27,
-          $28, $29, $30,
-          $31::inet, $32
-        ) RETURNING id, created_at`,
-        [
-          body.name,
-          body.email,
-          body.phone || null,
-          body.company || null,
-          body.role || null,
-          body.department || null,
-          body.companySize || null,
-          body.industry || null,
-          body.location || null,
-          body.currentLMS || null,
-          Array.isArray(body.currentTools) ? body.currentTools : [],
-          body.learningChallenges || null,
-          body.contentCreationProcess || null,
-          body.learnerCount || null,
-          body.contentVolume || null,
-          body.primaryUseCase,
-          Array.isArray(body.solaraComponents) ? body.solaraComponents : [],
-          Array.isArray(body.specificFeatures) ? body.specificFeatures : [],
-          Array.isArray(body.integrationNeeds) ? body.integrationNeeds : [],
-          Array.isArray(body.aiRequirements) ? body.aiRequirements : [],
-          body.timeline || null,
-          body.budgetRange || null,
-          body.teamSize || null,
-          body.decisionMakers || null,
-          body.implementationScope || null,
-          body.currentPainPoints || null,
-          body.successMetrics || null,
-          body.competitiveAnalysis || null,
-          body.howDidYouHear || null,
-          body.additionalNotes || null,
-          // capture client context if proxied via headers; otherwise null
-          request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || null,
-          request.headers.get('user-agent') || null,
-        ]
-      );
+      const supabase = getSupabaseService();
+      const { data, error } = await supabase
+        .from('solara_interest_modal')
+        .insert({
+          name: body.name,
+          email: body.email,
+          phone: body.phone || null,
+          company: body.company || null,
+          role: body.role || null,
+          department: body.department || null,
+          company_size: body.companySize || null,
+          industry: body.industry || null,
+          location: body.location || null,
+          current_lms: body.currentLMS || null,
+          current_tools: Array.isArray(body.currentTools) ? body.currentTools : [],
+          learning_challenges: body.learningChallenges || null,
+          content_creation_process: body.contentCreationProcess || null,
+          learner_count: body.learnerCount || null,
+          content_volume: body.contentVolume || null,
+          primary_use_case: body.primaryUseCase,
+          solara_components: Array.isArray(body.solaraComponents) ? body.solaraComponents : [],
+          specific_features: Array.isArray(body.specificFeatures) ? body.specificFeatures : [],
+          integration_needs: Array.isArray(body.integrationNeeds) ? body.integrationNeeds : [],
+          ai_requirements: Array.isArray(body.aiRequirements) ? body.aiRequirements : [],
+          timeline: body.timeline || null,
+          budget_range: body.budgetRange || null,
+          team_size: body.teamSize || null,
+          decision_makers: body.decisionMakers || null,
+          implementation_scope: body.implementationScope || null,
+          current_pain_points: body.currentPainPoints || null,
+          success_metrics: body.successMetrics || null,
+          competitive_analysis: body.competitiveAnalysis || null,
+          how_did_you_hear: body.howDidYouHear || null,
+          additional_notes: body.additionalNotes || null,
+          ip_address: request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || null,
+          user_agent: request.headers.get('user-agent') || null,
+        })
+        .select('id, created_at')
+        .single();
 
-      const leadId = result.rows[0]?.id;
-      const createdAt = result.rows[0]?.created_at;
+      if (error) {
+        console.error('Supabase insert error:', error);
+        return NextResponse.json(
+          { error: 'Failed to save Solara inquiry' },
+          { status: 500 }
+        );
+      }
+
+      const leadId = data.id;
+      const createdAt = data.created_at;
 
       // Send notification email to product team
       const to = process.env.LEADS_EMAIL_TO || 'hello@smartslate.io';
