@@ -698,7 +698,7 @@ export default function Partners({ openDemoModal }: PartnersProps) {
                     <CTAWrapper>
                       <PrimaryCTAButton 
                         endIcon={<EventAvailable aria-hidden="true" className="icon-anim icon-float" />}
-                        onClick={() => {}}
+                        onClick={openDemoModal}
                       >
                         {content.businesses.cta}
                       </PrimaryCTAButton>
