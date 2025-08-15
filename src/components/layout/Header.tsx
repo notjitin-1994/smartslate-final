@@ -9,8 +9,9 @@ import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useUserRoles } from '@/hooks/useUserRoles';
-import MobileMenu, { AnimatedHamburgerButton } from './MobileMenu';
-import AuthModal from '@/components/auth/AuthModal';
+import dynamic from 'next/dynamic';
+const MobileMenu = dynamic(() => import('./MobileMenu'), { ssr: false });
+const AnimatedHamburgerButton = dynamic(() => import('./MobileMenu').then(m => m.AnimatedHamburgerButton), { ssr: false });
 import { useAuthModal } from '@/hooks/useAuthModal';
 import { getSupabaseBrowser } from '@/lib/supabase-browser';
 
@@ -138,7 +139,7 @@ export default function Header() {
   const { isAuthenticated, user, logout, token } = useAuth();
   const { isOwner } = useUserRoles();
   const router = useRouter();
-  const { open } = useAuthModal();
+  const { open, isOpen } = useAuthModal();
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [avatarImgError, setAvatarImgError] = useState(false);
 
@@ -239,6 +240,9 @@ export default function Header() {
               alt="SmartSlate Logo"
               width={140}
               height={32}
+              quality={45}
+              sizes="(max-width: 640px) 112px, 140px"
+              fetchPriority="high"
               priority
             />
             <span className="sr-only">Smartslate</span>
@@ -372,8 +376,12 @@ export default function Header() {
         </MenuItem>
       </Menu>
 
-      {/* Auth Modal root */}
-      <AuthModal />
+      {/* Auth Modal root - lazy load only when opened */}
+      {isOpen ? <LazyAuthModal /> : null}
     </>
   );
 }
+
+const LazyAuthModal = dynamic(() => import('@/components/auth/AuthModal'), {
+  ssr: false,
+});

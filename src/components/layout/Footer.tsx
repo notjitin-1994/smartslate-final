@@ -80,6 +80,9 @@ export default function Footer() {
               alt="SmartSlate Logo"
               width={140}
               height={34}
+              quality={45}
+              sizes="(max-width: 640px) 112px, 140px"
+              loading="lazy"
               style={{ height: 'auto' }}
             />
             <span className="sr-only">Smartslate</span>

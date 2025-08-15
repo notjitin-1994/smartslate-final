@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     siteName: "Smartslate",
     images: [
       {
-        url: "/logo.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Smartslate — Build Your Future-Ready Workforce"
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Smartslate — Build Your Future-Ready Workforce",
     description: "Revolutionizing the way the World learns.",
-    images: ["/logo.png"]
+    images: ["/og-image.png"]
   },
   manifest: "/manifest.webmanifest",
   appleWebApp: {
@@ -85,7 +85,6 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
-        <link rel="preload" href="/logo.png" as="image" imageSrcSet="/logo.png 1x" imageSizes="140px" />
       </head>
       <body>
         <AuthProvider>

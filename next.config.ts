@@ -1,9 +1,20 @@
 import type { NextConfig } from "next";
+// import { createOptimizedDeps } from 'next/experimental/optimize-package-imports';
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   compress: true,
   trailingSlash: false,
+  // Reduce legacy/unused JS by optimizing package imports
+  experimental: {
+    optimizePackageImports: [
+      '@mui/material',
+      '@mui/icons-material',
+      '@emotion/react',
+      '@emotion/styled',
+      'framer-motion',
+    ],
+  },
   eslint: {
     // Warning: This allows production builds to successfully complete even if
     // your project has ESLint errors.
@@ -13,6 +24,9 @@ const nextConfig: NextConfig = {
     // Warning: This allows production builds to successfully complete even if
     // your project has type errors.
     ignoreBuildErrors: true,
+  },
+  images: {
+    formats: ['image/avif', 'image/webp'],
   },
   async headers() {
     return [

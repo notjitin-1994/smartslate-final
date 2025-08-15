@@ -307,6 +307,8 @@ export default function MobileMenu({ open, onClose, navItems }: MobileMenuProps)
                   alt="SmartSlate Logo"
                   width={140}
                   height={32}
+                  quality={45}
+                  loading="lazy"
                 />
               </motion.div>
               
