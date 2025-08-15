@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDb } from '@/lib/db';
-import { getSupabaseService, getPostgrestServiceHeaders, getPostgrestServiceUrl } from '@/lib/supabase';
+import { getSupabaseService } from '@/lib/supabase';
 import { UpdateProfileSchema } from '@/lib/validators/user';
 import { getAuthContextFromRequest } from '@/lib/auth';
 
@@ -24,17 +24,10 @@ export async function GET(req: NextRequest) {
     if (!profile) {
       const fullName = fullNameMeta || (email ? email.split('@')[0] : null);
       try {
-        if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
-          const restUrl = getPostgrestServiceUrl();
-          const headers = getPostgrestServiceHeaders('app');
-          const body = [{ user_id: userId, full_name: fullName }];
-          await fetch(`${restUrl}/user_profiles?on_conflict=user_id`, { method: 'POST', headers, body: JSON.stringify(body) });
-        } else {
-          await db.query(
-            `INSERT INTO app.user_profiles (user_id, full_name) VALUES ($1, $2) ON CONFLICT (user_id) DO NOTHING`,
-            [userId, fullName]
-          );
-        }
+        await db.query(
+          `INSERT INTO app.user_profiles (user_id, full_name) VALUES ($1, $2) ON CONFLICT (user_id) DO NOTHING`,
+          [userId, fullName]
+        );
         const refetch = await db.query(
           `SELECT user_id, full_name, company, phone, bio, location, website, twitter, linkedin, github, avatar_url, avatar_path
            FROM app.user_profiles WHERE user_id = $1`,
@@ -80,24 +73,12 @@ export async function GET(req: NextRequest) {
       if (!hasCustomUpload && providerAvatarUrl) {
         const shouldUpdate = !profile?.avatar_url || profile?.avatar_url !== providerAvatarUrl;
         if (shouldUpdate) {
-          if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
-            try {
-              const restUrl = getPostgrestServiceUrl();
-              const headers = getPostgrestServiceHeaders('app');
-              await fetch(`${restUrl}/user_profiles?user_id=eq.${userId}&avatar_path=is.null`, {
-                method: 'PATCH',
-                headers,
-                body: JSON.stringify({ avatar_url: providerAvatarUrl }),
-              });
-            } catch {}
-          } else {
-            await db.query(
-              `UPDATE app.user_profiles
-               SET avatar_url = $2, updated_at = now()
-               WHERE user_id = $1 AND avatar_path IS NULL`,
-              [userId, providerAvatarUrl]
-            );
-          }
+          await db.query(
+            `UPDATE app.user_profiles
+             SET avatar_url = $2, updated_at = now()
+             WHERE user_id = $1 AND avatar_path IS NULL`,
+            [userId, providerAvatarUrl]
+          );
           const refetch = await db.query(
             `SELECT user_id, full_name, company, phone, bio, location, website, twitter, linkedin, github, avatar_url, avatar_path
              FROM app.user_profiles WHERE user_id = $1`,
@@ -135,40 +116,22 @@ export async function PUT(req: NextRequest) {
     ] as const;
     const values = fields.map((f) => (input as any)[f] ?? null);
 
-    if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      const upsertData: any = { user_id: userId };
-      for (const f of fields) {
-        (upsertData as any)[f] = (input as any)[f] ?? null;
-      }
-      const restUrl = getPostgrestServiceUrl();
-      const headers = getPostgrestServiceHeaders('app');
-      const resp = await fetch(`${restUrl}/user_profiles?on_conflict=user_id`, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify([upsertData]),
-      });
-      if (!resp.ok) {
-        const errText = await resp.text().catch(() => 'Upsert failed');
-        return NextResponse.json({ error: errText }, { status: 400 });
-      }
-    } else {
-      await db.query(
-        `INSERT INTO app.user_profiles (user_id, full_name, company, phone, bio, location, website, twitter, linkedin, github)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
-         ON CONFLICT (user_id) DO UPDATE SET
-           full_name = EXCLUDED.full_name,
-           company = EXCLUDED.company,
-           phone = EXCLUDED.phone,
-           bio = EXCLUDED.bio,
-           location = EXCLUDED.location,
-           website = EXCLUDED.website,
-           twitter = EXCLUDED.twitter,
-           linkedin = EXCLUDED.linkedin,
-           github = EXCLUDED.github,
-           updated_at = now()`,
-        [userId, ...values]
-      );
-    }
+    await db.query(
+      `INSERT INTO app.user_profiles (user_id, full_name, company, phone, bio, location, website, twitter, linkedin, github)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+       ON CONFLICT (user_id) DO UPDATE SET
+         full_name = EXCLUDED.full_name,
+         company = EXCLUDED.company,
+         phone = EXCLUDED.phone,
+         bio = EXCLUDED.bio,
+         location = EXCLUDED.location,
+         website = EXCLUDED.website,
+         twitter = EXCLUDED.twitter,
+         linkedin = EXCLUDED.linkedin,
+         github = EXCLUDED.github,
+         updated_at = now()`,
+      [userId, ...values]
+    );
 
     // If name updated, mirror to Supabase auth metadata (service role required)
     if (input.full_name && process.env.SUPABASE_SERVICE_ROLE_KEY) {

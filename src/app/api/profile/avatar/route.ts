@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAuthContextFromRequest } from '@/lib/auth';
 import { getSupabaseService } from '@/lib/supabase';
-import { getDbDirect } from '@/lib/db';
+import { getDb } from '@/lib/db';
 
 // POST expects multipart/form-data with field "file"
 export async function POST(req: NextRequest) {
@@ -41,8 +41,8 @@ export async function POST(req: NextRequest) {
     const { data: urlData } = admin.storage.from(bucket).getPublicUrl(path);
     const publicUrl = urlData.publicUrl;
 
-    // Persist to profile using direct DB connection (bypasses RLS and schema limits)
-    const db = getDbDirect();
+    // Persist to profile
+    const db = getDb();
     await db.query(
       `INSERT INTO app.user_profiles (user_id, avatar_path, avatar_url)
        VALUES ($1, $2, $3)

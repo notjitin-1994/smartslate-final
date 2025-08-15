@@ -35,24 +35,4 @@ export function getSupabaseService(): SupabaseClient {
   });
 }
 
-export function getPostgrestServiceUrl(): string {
-  const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
-  if (!url) throw new Error('Missing SUPABASE_URL');
-  return (url.endsWith('/') ? url.slice(0, -1) : url) + '/rest/v1';
-}
-
-export function getPostgrestServiceHeaders(schema: string): Record<string, string> {
-  const service = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!service) throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY');
-  return {
-    apikey: service,
-    Authorization: `Bearer ${service}`,
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-    'Content-Profile': schema,
-    'Accept-Profile': schema,
-    Prefer: 'resolution=merge-duplicates,return=representation',
-  };
-}
-
 
