@@ -10,7 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // SmartSlate brand colors
+        // Smartslate brand colors
         brand: {
           primary: '#a7dadb',
           'primary-light': '#d0edf0',

@@ -237,7 +237,7 @@ export default function DemoModal({ isOpen, onClose }: DemoModalProps) {
             Schedule Your Demo
           </h2>
           <p id="demo-modal-subtitle" className="text-secondary text-sm max-w-md mx-auto">
-            See SmartSlate in action and discover how it can transform your workforce development
+            See Smartslate in action and discover how it can transform your workforce development
           </p>
         </div>
 

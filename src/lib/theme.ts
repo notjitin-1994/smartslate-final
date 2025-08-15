@@ -37,7 +37,7 @@ export const designTokens = {
   },
 };
 
-// Create Material UI theme with SmartSlate brand colors
+// Create Material UI theme with Smartslate brand colors
 const theme = createTheme({
   palette: {
     mode: 'dark',

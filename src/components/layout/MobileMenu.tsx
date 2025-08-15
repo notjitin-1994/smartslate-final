@@ -304,7 +304,7 @@ export default function MobileMenu({ open, onClose, navItems }: MobileMenuProps)
               >
                 <Image
                   src="/logo.png"
-                  alt="SmartSlate Logo"
+                  alt="Smartslate Logo"
                   width={140}
                   height={32}
                   quality={45}

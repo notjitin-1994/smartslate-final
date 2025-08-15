@@ -37,7 +37,7 @@ export default function AdminSettingsPage() {
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(true);
   const [settings, setSettings] = useState({
-    siteName: 'SmartSlate',
+            siteName: 'Smartslate',
     siteUrl: 'https://smartslate.io',
     adminEmail: 'admin@smartslate.io',
     timezone: 'America/New_York',

@@ -304,7 +304,7 @@ export default function AuthModal() {
             </svg>
           </motion.div>
           <h2 id="auth-modal-title" className="text-xl md:text-2xl font-bold mb-1">Welcome</h2>
-          <p id="auth-modal-subtitle" className="text-secondary text-sm">Sign in or create your SmartSlate account</p>
+                      <p id="auth-modal-subtitle" className="text-secondary text-sm">Sign in or create your Smartslate account</p>
         </div>
 
         {/* Tabs */}

@@ -225,7 +225,7 @@ export default function Header() {
 
   const navItems = [
     { label: 'Products', href: '/products' },
-    { label: 'The SmartSlate Difference', href: '/difference' },
+    { label: 'The Smartslate Difference', href: '/difference' },
     { label: 'Partner & Collaborate', href: '/collaborate' },
   ];
 
@@ -237,7 +237,7 @@ export default function Header() {
           <LogoLink href="/" aria-label="Smartslate home">
             <Image
               src="/logo.png"
-              alt="SmartSlate Logo"
+              alt="Smartslate Logo"
               width={140}
               height={32}
               quality={45}

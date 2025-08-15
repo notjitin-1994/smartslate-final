@@ -108,10 +108,10 @@ export default function ComparisonSection() {
             letterSpacing: '-0.02em'
           }}
         >
-          Traditional Training vs. <span className="text-primary-accent font-bold">SmartSlate Learning</span>
+                      Traditional Training vs. <span className="text-primary-accent font-bold">Smartslate Learning</span>
         </h2>
         <p className="text-lg sm:text-xl md:text-2xl text-primary mb-3 sm:mb-4 leading-relaxed font-light text-left">
-          See why forward-thinking organizations choose SmartSlate over conventional training approaches
+                      See why forward-thinking organizations choose Smartslate over conventional training approaches
         </p>
       </motion.div>
 
@@ -174,7 +174,7 @@ export default function ComparisonSection() {
                   </div>
                 </div>
 
-                {/* SmartSlate Side */}
+                {/* Smartslate Side */}
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.2 }}
@@ -188,7 +188,7 @@ export default function ComparisonSection() {
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 bg-primary-accent rounded-full md:hidden" />
-                        <span className="text-primary-accent text-xs sm:text-sm font-medium uppercase tracking-wide">SmartSlate</span>
+                        <span className="text-primary-accent text-xs sm:text-sm font-medium uppercase tracking-wide">Smartslate</span>
                       </div>
                     </div>
                     <p className="text-primary text-sm sm:text-base md:text-lg leading-[1.5]">{item.smartslate}</p>
@@ -215,7 +215,7 @@ export default function ComparisonSection() {
               </svg>
             </div>
             <p className="text-base sm:text-lg md:text-xl text-primary leading-[1.6] sm:leading-relaxed text-left">
-              The choice is clear: <span className="text-primary-accent font-semibold">SmartSlate</span> transforms 
+              The choice is clear: <span className="text-primary-accent font-semibold">Smartslate</span> transforms 
               learning from a checkbox exercise into a strategic advantage that drives measurable business outcomes.
             </p>
           </div>

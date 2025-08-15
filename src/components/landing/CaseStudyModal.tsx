@@ -139,7 +139,7 @@ export default function CaseStudyModal({ isOpen, onClose }: CaseStudyModalProps)
             Explore Success Stories
           </h2>
           <p id="case-modal-subtitle" className="text-secondary text-sm max-w-md mx-auto">
-            See how industry leaders transformed their workforce with SmartSlate
+            See how industry leaders transformed their workforce with Smartslate
           </p>
         </div>
 

@@ -77,7 +77,7 @@ export default function Footer() {
           <Link href="/" aria-label="Smartslate home">
             <Image
               src="/logo.png"
-              alt="SmartSlate Logo"
+              alt="Smartslate Logo"
               width={140}
               height={34}
               quality={45}
@@ -95,9 +95,40 @@ export default function Footer() {
           </Tagline>
           <Divider>•</Divider>
           <Copyright variant="body2">
-            © {currentYear} SmartSlate. All rights reserved.
+            © {currentYear} Smartslate. All rights reserved.
           </Copyright>
         </FooterText>
+        
+        {/* Legal Links */}
+        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'center' }}>
+          <Link 
+            href="/legal/privacy" 
+            style={{ 
+              color: 'rgba(176, 197, 198, 0.8)', 
+              textDecoration: 'none', 
+              fontSize: '0.875rem',
+              transition: 'color 0.2s ease'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.color = '#a7dadb'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(176, 197, 198, 0.8)'}
+          >
+            Privacy Policy
+          </Link>
+          <span style={{ color: 'rgba(176, 197, 198, 0.4)' }}>•</span>
+          <Link 
+            href="/legal/terms" 
+            style={{ 
+              color: 'rgba(176, 197, 198, 0.8)', 
+              textDecoration: 'none', 
+              fontSize: '0.875rem',
+              transition: 'color 0.2s ease'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.color = '#a7dadb'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(176, 197, 198, 0.8)'}
+          >
+            Terms of Service
+          </Link>
+        </Box>
       </FooterContent>
     </FooterWrapper>
   );

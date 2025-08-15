@@ -119,7 +119,7 @@ export default function KeyDifferentiators() {
           What Sets Us <span className="text-primary-accent font-bold">Apart</span>
         </h2>
         <p className="text-lg sm:text-xl md:text-2xl text-primary mb-3 sm:mb-4 leading-relaxed font-light text-left">
-          Four pillars that make SmartSlate the choice for transformative learning
+                      Four pillars that make Smartslate the choice for transformative learning
         </p>
       </motion.div>
 

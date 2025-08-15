@@ -5,7 +5,7 @@ import React from 'react';
 
 export const metadata: Metadata = {
   title: 'Smartslate',
-  description: 'Sign in to SmartSlate to access your learning journey',
+  description: 'Sign in to Smartslate to access your learning journey',
 };
 
 export default function HandlerLayout({

@@ -372,7 +372,7 @@ export default function ImpactMetrics() {
                    fontSize: '0.95rem',
                  }}
                >
-                 &quot;The future of education is digital, and platforms like SmartSlate are leading the transformation. Our research shows that personalized, AI-driven learning experiences can improve completion rates by up to 40% compared to traditional methods.&quot;
+                 &quot;The future of education is digital, and platforms like Smartslate are leading the transformation. Our research shows that personalized, AI-driven learning experiences can improve completion rates by up to 40% compared to traditional methods.&quot;
                </Typography>
 
               {/* Author */}

@@ -43,10 +43,10 @@ const CTAButton = styled(Button)(({ theme }) => ({
 export default function DifferenceHero() {
   return (
     <StandardHero
-      title="The SmartSlate Difference"
+              title="The Smartslate Difference"
       subtitle="Where traditional training ends, transformative learning begins"
-      description="At SmartSlate, we don't just deliver training—we architect learning ecosystems that evolve with your organization. Our approach transcends conventional boundaries, creating experiences that resonate, results that matter, and transformations that last."
-      accentWords={['SmartSlate', 'transformative', 'learning ecosystems']}
+              description="At Smartslate, we don't just deliver training—we architect learning ecosystems that evolve with your organization. Our approach transcends conventional boundaries, creating experiences that resonate, results that matter, and transformations that last."
+        accentWords={['Smartslate', 'transformative', 'learning ecosystems']}
       showScrollIndicator={true}
     >
       <Link href="/smartslate-testimony" style={{ textDecoration: 'none' }}>

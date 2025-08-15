@@ -235,7 +235,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
             Schedule Your Consultation
           </h2>
           <p id="consultation-modal-subtitle" className="text-secondary text-sm max-w-md mx-auto">
-            Let's discuss your learning challenges and explore how SmartSlate can transform your workforce development
+            Let's discuss your learning challenges and explore how Smartslate can transform your workforce development
           </p>
         </div>
 
@@ -518,7 +518,7 @@ export default function ConsultationModal({ isOpen, onClose }: ConsultationModal
                   >
                     <div>
                       <label className="block text-sm font-medium mb-3">
-                        Which SmartSlate services interest you? <span className="text-red-400">*</span>
+                        Which Smartslate services interest you? <span className="text-red-400">*</span>
                       </label>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         {serviceInterestOptions.map((option) => (

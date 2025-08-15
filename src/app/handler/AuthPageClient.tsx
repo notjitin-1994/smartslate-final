@@ -209,7 +209,7 @@ export default function AuthPageClient() {
             <p className="text-secondary">
               {authMode === 'signin' 
                 ? 'Continue your learning journey' 
-                : 'Join SmartSlate and unlock your potential'}
+                : 'Join Smartslate and unlock your potential'}
             </p>
           </div>
 
@@ -450,11 +450,11 @@ export default function AuthPageClient() {
           {authMode === 'signup' && (
             <p className="text-xs text-secondary text-center mt-6">
               By creating an account, you agree to our{' '}
-              <Link href="/terms" className="text-primary-accent hover:text-primary-accent-light">
+              <Link href="/legal/terms" className="text-primary-accent hover:text-primary-accent-light">
                 Terms of Service
               </Link>{' '}
               and{' '}
-              <Link href="/privacy" className="text-primary-accent hover:text-primary-accent-light">
+              <Link href="/legal/privacy" className="text-primary-accent hover:text-primary-accent-light">
                 Privacy Policy
               </Link>
             </p>

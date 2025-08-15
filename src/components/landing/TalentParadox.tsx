@@ -802,7 +802,7 @@ export default function TalentParadox({ onRevealNext }: TalentParadoxProps) {
                 lineHeight: 1.8 
               }}
             >
-              Understanding the problem is the first step. Solving it is the next. SmartSlate is
+              Understanding the problem is the first step. Solving it is the next. Smartslate is
               designed to be the bridge across this divide—connecting motivated talent with the
               future-focused skills your company needs to thrive.
             </Typography>

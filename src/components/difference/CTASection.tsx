@@ -51,7 +51,7 @@ export default function CTASection() {
           >
             Ready to Experience the{' '}
             <span className="text-primary-accent font-bold">
-              SmartSlate Difference
+              Smartslate Difference
             </span>?
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-primary mb-3 sm:mb-4 leading-relaxed text-left">

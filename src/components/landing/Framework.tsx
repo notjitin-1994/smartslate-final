@@ -209,7 +209,7 @@ const frameworkSteps = [
     description: 'We bridge the critical gap between academic knowledge and real-world impact. Our pre-built courses are engineered in collaboration with industry leaders to cultivate the next generation of market-ready professionals.',
     features: [
       { icon: School, title: 'Industry-Forged Curriculum', description: 'Market-driven courses designed with industry leaders' },
-      { icon: Psychology, title: 'Trusted Talent Signal', description: 'SmartSlate Certification validates career-focused education' },
+              { icon: Psychology, title: 'Trusted Talent Signal', description: 'Smartslate Certification validates career-focused education' },
       { icon: CheckCircle, title: 'Commitment to Excellence', description: 'Rigorous certification ensures immediate impact' },
       { icon: TrendingUp, title: 'Seamless Pipeline', description: 'Transform students into high-performing new hires' },
     ],
@@ -311,7 +311,7 @@ export default function Framework({ onRevealNext }: FrameworkProps) {
                 lineHeight: 1.2
               }}
             >
-              <span style={{ color: 'white' }}>The</span> <AnimateText animate={animateTransform}>SmartSlate</AnimateText> <span style={{ color: 'white' }}>Framework</span>
+              <span style={{ color: 'white' }}>The</span> <AnimateText animate={animateTransform}>Smartslate</AnimateText> <span style={{ color: 'white' }}>Framework</span>
             </Typography>
           </motion.div>
           
@@ -514,7 +514,7 @@ export default function Framework({ onRevealNext }: FrameworkProps) {
                 fontSize: '1.125rem'
               }}
             >
-              Calculate your potential ROI and discover how SmartSlate can transform your workforce economics.
+              Calculate your potential ROI and discover how Smartslate can transform your workforce economics.
             </Typography>
           </motion.div>
           

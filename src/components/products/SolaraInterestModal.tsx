@@ -49,6 +49,7 @@ export default function SolaraInterestModal() {
     competitiveAnalysis: '',
     howDidYouHear: '',
     additionalNotes: '',
+    privacyConsent: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -122,6 +123,8 @@ export default function SolaraInterestModal() {
     } else if (step === 3) {
       if (!formData.primaryUseCase) newErrors.primaryUseCase = 'Primary use case is required';
       if (formData.solaraComponents.length === 0) newErrors.solaraComponents = 'Please select at least one Solara component';
+    } else if (step === 5) {
+      if (!formData.privacyConsent) newErrors.privacyConsent = 'Please accept the privacy policy and terms of service';
     }
 
     setErrors(newErrors);
@@ -195,6 +198,7 @@ export default function SolaraInterestModal() {
         competitiveAnalysis: '',
         howDidYouHear: '',
         additionalNotes: '',
+        privacyConsent: false,
       });
       setCurrentStep(1);
       setIsSuccess(false);
@@ -879,6 +883,31 @@ export default function SolaraInterestModal() {
                         rows={3}
                         maxLength={300}
                       />
+                    </div>
+
+                    {/* Privacy Policy Consent */}
+                    <div className="mt-6">
+                      <label className="inline-flex items-start gap-3 text-sm text-secondary">
+                        <input
+                          type="checkbox"
+                          checked={formData.privacyConsent || false}
+                          onChange={(e) => updateFormData('privacyConsent', e.target.checked)}
+                          className="w-4 h-4 text-primary-accent mt-0.5"
+                          required
+                        />
+                        <span>
+                          I agree to the{' '}
+                          <a href="/legal/privacy" target="_blank" rel="noopener noreferrer" className="text-primary-accent hover:underline">
+                            Privacy Policy
+                          </a>{' '}
+                          and{' '}
+                          <a href="/legal/terms" target="_blank" rel="noopener noreferrer" className="text-primary-accent hover:underline">
+                            Terms of Service
+                          </a>
+                          . I consent to Smartslate contacting me about Solara and related services.
+                        </span>
+                      </label>
+                      {errors.privacyConsent && <p className="text-sm text-red-400 mt-1">{errors.privacyConsent}</p>}
                     </div>
                   </motion.div>
                 )}

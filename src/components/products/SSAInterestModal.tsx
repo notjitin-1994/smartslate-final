@@ -41,8 +41,9 @@ export default function SSAInterestModal() {
     decisionMakers: '',
     competingPriorities: '',
     successMetrics: '',
-    howDidYouHear: '',
-    additionalNotes: '',
+            howDidYouHear: '',
+        additionalNotes: '',
+        privacyConsent: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -92,6 +93,8 @@ export default function SSAInterestModal() {
       if (formData.primaryGoals.length === 0) newErrors.primaryGoals = 'Please select at least one primary goal';
       if (!formData.timeline) newErrors.timeline = 'Timeline is required';
       if (!formData.specificOutcomes) newErrors.specificOutcomes = 'Please describe your desired outcomes';
+    } else if (step === 4) {
+      if (!formData.privacyConsent) newErrors.privacyConsent = 'Please accept the privacy policy and terms of service';
     }
 
     setErrors(newErrors);
@@ -704,7 +707,7 @@ export default function SSAInterestModal() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <FormField
-                        label="How did you hear about SmartSlate?"
+                        label="How did you hear about Smartslate?"
                         name="howDidYouHear"
                         type="select"
                         value={formData.howDidYouHear}
@@ -730,6 +733,31 @@ export default function SSAInterestModal() {
                         rows={3}
                         maxLength={300}
                       />
+                    </div>
+
+                    {/* Privacy Policy Consent */}
+                    <div className="mt-6">
+                      <label className="inline-flex items-start gap-3 text-sm text-secondary">
+                        <input
+                          type="checkbox"
+                          checked={formData.privacyConsent || false}
+                          onChange={(e) => updateFormData('privacyConsent', e.target.checked)}
+                          className="w-4 h-4 text-primary-accent mt-0.5"
+                          required
+                        />
+                        <span>
+                          I agree to the{' '}
+                          <a href="/legal/privacy" target="_blank" rel="noopener noreferrer" className="text-primary-accent hover:underline">
+                            Privacy Policy
+                          </a>{' '}
+                          and{' '}
+                          <a href="/legal/terms" target="_blank" rel="noopener noreferrer" className="text-primary-accent hover:underline">
+                            Terms of Service
+                          </a>
+                          . I consent to Smartslate contacting me about SSA and related services.
+                        </span>
+                      </label>
+                      {errors.privacyConsent && <p className="text-sm text-red-400 mt-1">{errors.privacyConsent}</p>}
                     </div>
                   </motion.div>
                 )}

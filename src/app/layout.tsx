@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   },
   description: "Revolutionizing the way the World learns. Bridge the skills gap with Smartslate's innovative learning solutions.",
   keywords: "learning, workforce development, skills training, AI education, LMS, corporate training",
-  authors: [{ name: "SmartSlate Team" }],
+  authors: [{ name: "Smartslate Team" }],
   openGraph: {
     title: "Smartslate — Build Your Future-Ready Workforce",
     description: "Revolutionizing the way the World learns.",
