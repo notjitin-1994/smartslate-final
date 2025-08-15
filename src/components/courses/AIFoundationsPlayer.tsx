@@ -47,15 +47,21 @@ const PlayerContainer = styled(Box)(({ theme }) => ({
 }));
 
 const PlayerStage = styled(Box)(({ theme }) => ({
-  aspectRatio: '16/9',
+  minHeight: '600px',
+  height: '70vh',
+  maxHeight: '800px',
   position: 'relative',
   padding: theme.spacing(4),
   display: 'flex',
   flexDirection: 'column',
   [theme.breakpoints.down('md')]: {
+    minHeight: '500px',
+    height: '65vh',
     padding: theme.spacing(2),
   },
   [theme.breakpoints.down('sm')]: {
+    minHeight: '450px',
+    height: '60vh',
     padding: theme.spacing(1.5),
   },
 }));
@@ -475,7 +481,7 @@ export default function AIFoundationsPlayer() {
 
   return (
     <Container maxWidth="lg" sx={{ 
-      py: { xs: 2, md: 4 },
+      py: { xs: 1, md: 3 },
       px: { xs: 2, md: 3 }
     }}>
       <PlayerContainer>
@@ -501,7 +507,7 @@ export default function AIFoundationsPlayer() {
               display: 'flex', 
               alignItems: 'center', 
               gap: { xs: 0.5, md: 1 }, 
-              mb: { xs: 1, md: 2 },
+              mb: { xs: 0.5, md: 1 },
               color: theme.palette.text.secondary,
               fontSize: { xs: '0.75rem', md: '0.875rem' },
               flexShrink: 0
@@ -527,7 +533,7 @@ export default function AIFoundationsPlayer() {
             </Box>
 
             {/* Slide content */}
-            <Box sx={{ flex: 1, overflow: 'auto', mb: { xs: 2, md: 3 } }}>
+            <Box sx={{ flex: 1, overflow: 'auto', mb: { xs: 1, md: 2 } }}>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={`${scene.id}-${slideIndex}`}
@@ -542,7 +548,7 @@ export default function AIFoundationsPlayer() {
             </Box>
 
             {/* Progress bar */}
-            <Box sx={{ mb: { xs: 2, md: 3 }, flexShrink: 0 }}>
+            <Box sx={{ mb: { xs: 1, md: 2 }, flexShrink: 0 }}>
               <ProgressBar 
                 variant="determinate" 
                 value={((globalSlideIndex + 1) / totalSlides) * 100} 
@@ -555,7 +561,7 @@ export default function AIFoundationsPlayer() {
               flexDirection: { xs: 'column', sm: 'row' },
               justifyContent: 'space-between', 
               alignItems: { xs: 'stretch', sm: 'center' },
-              gap: { xs: 1.5, sm: 2 },
+              gap: { xs: 1, sm: 1.5 },
               flexShrink: 0
             }}>
               <Box sx={{ 
@@ -630,7 +636,7 @@ export default function AIFoundationsPlayer() {
 
       {/* Scene navigation */}
       <Box sx={{ 
-        mt: { xs: 3, md: 4 }, 
+        mt: { xs: 2, md: 3 }, 
         display: 'grid', 
         gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
         gap: { xs: 1.5, md: 2 } 

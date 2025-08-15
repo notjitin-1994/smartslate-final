@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAuthContextFromRequest } from '@/lib/auth';
 import { getSupabaseService } from '@/lib/supabase';
-import { getDb } from '@/lib/db';
 
 // POST expects multipart/form-data with field "file"
 export async function POST(req: NextRequest) {
@@ -11,6 +10,10 @@ export async function POST(req: NextRequest) {
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      console.error('Missing Supabase configuration:', {
+        hasUrl: !!process.env.SUPABASE_URL,
+        hasServiceKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY
+      });
       return NextResponse.json({ error: 'Supabase service is not configured' }, { status: 500 });
     }
 
@@ -36,22 +39,35 @@ export async function POST(req: NextRequest) {
     const { data: uploaded, error: uploadErr } = await admin.storage
       .from(bucket)
       .upload(path, arrayBuffer, { upsert: true, contentType: file.type || `image/${ext}` });
-    if (uploadErr) return NextResponse.json({ error: uploadErr.message }, { status: 400 });
+    if (uploadErr) {
+      console.error('Storage upload error:', uploadErr);
+      return NextResponse.json({ error: uploadErr.message }, { status: 400 });
+    }
 
     const { data: urlData } = admin.storage.from(bucket).getPublicUrl(path);
     const publicUrl = urlData.publicUrl;
 
-    // Persist to profile
-    const db = getDb();
-    await db.query(
-      `INSERT INTO app.user_profiles (user_id, avatar_path, avatar_url)
-       VALUES ($1, $2, $3)
-       ON CONFLICT (user_id) DO UPDATE SET avatar_path = EXCLUDED.avatar_path, avatar_url = EXCLUDED.avatar_url, updated_at = now()`,
-      [userId, `${bucket}/${path}`, publicUrl]
-    );
+    // Persist to profile using Supabase service role to bypass RLS
+    const { error: profileError } = await admin
+      .from('user_profiles')
+      .upsert({
+        user_id: userId,
+        avatar_path: `${bucket}/${path}`,
+        avatar_url: publicUrl,
+        updated_at: new Date().toISOString()
+      }, {
+        onConflict: 'user_id'
+      });
 
+    if (profileError) {
+      console.error('Failed to update profile:', profileError);
+      return NextResponse.json({ error: 'Failed to update profile' }, { status: 500 });
+    }
+
+    console.log('Avatar upload successful:', { userId, path, publicUrl });
     return NextResponse.json({ url: publicUrl });
   } catch (e: any) {
+    console.error('Avatar upload error:', e);
     return NextResponse.json({ error: e?.message || 'Unexpected error' }, { status: 500 });
   }
 }

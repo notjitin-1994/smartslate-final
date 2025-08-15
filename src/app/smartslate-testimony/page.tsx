@@ -39,16 +39,6 @@ const SectionWrapper = styled(Box)(({ theme }) => ({
   backgroundColor: 'transparent',
   position: 'relative',
   overflow: 'hidden',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: '100%',
-    background: 'radial-gradient(ellipse at bottom right, rgba(79, 70, 229, 0.05) 0%, transparent 70%)',
-    pointerEvents: 'none',
-  },
 }));
 
 const SectionCard = styled(Card)(({ theme }) => ({
@@ -531,12 +521,9 @@ export default function SmartslateTestimonyPage() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <Box sx={{ textAlign: 'center', mb: 8 }}>
+            <Box sx={{ textAlign: 'left', mb: 8 }}>
               <Typography variant="h2" component="h2" gutterBottom sx={{
-                background: 'linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%)',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
+                color: 'text.primary',
                 fontSize: { xs: '2.5rem', md: '3rem', lg: '3.5rem' },
                 fontWeight: 700,
                 mb: 3,
@@ -568,47 +555,7 @@ export default function SmartslateTestimonyPage() {
                   gap: 4,
                   alignItems: { xs: 'center', md: 'flex-start' }
                 }}>
-                  {/* Text Content */}
-                                     <Box sx={{ flex: 1 }}>
-                     <SectionCard sx={{ minHeight: '400px' }}>
-                       <CardContent>
-                         <Typography variant="h4" sx={{ 
-                           fontSize: { xs: '1.25rem', md: '1.5rem' },
-                           fontWeight: 700,
-                           color: 'primary.main',
-                           mb: 3
-                         }}>
-                           Course Overview
-                         </Typography>
-                         <Typography 
-                           variant="body1" 
-                           sx={{ 
-                             fontSize: { xs: '1rem', md: '1.125rem' },
-                             lineHeight: 1.8,
-                             color: 'text.primary',
-                             mb: 3,
-                             fontWeight: 400
-                           }}
-                         >
-                           This course represents the structured approach that built Smartslate's AI-powered learning platform. 
-                           Learn how to strengthen your team's capabilities through the same methodology that transformed 
-                           our organization from concept to application.
-                         </Typography>
-                         <Typography 
-                           variant="body1" 
-                           sx={{ 
-                             fontSize: { xs: '1rem', md: '1.125rem' },
-                             lineHeight: 1.8,
-                             color: 'text.primary',
-                             fontWeight: 400
-                           }}
-                         >
-                           Explore the interactive learning player below to see how we applied AI Foundations principles 
-                           to build our platform, from concept to measurable results.
-                         </Typography>
-                       </CardContent>
-                     </SectionCard>
-                   </Box>
+                  
                 </Box>
               </motion.div>
             </Box>
@@ -625,29 +572,7 @@ export default function SmartslateTestimonyPage() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <Box sx={{ textAlign: 'center', mb: 6 }}>
-              <Typography variant="h3" component="h2" gutterBottom sx={{
-                background: 'linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%)',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                fontSize: { xs: '2rem', md: '2.5rem', lg: '3rem' },
-                fontWeight: 700,
-                mb: 2,
-                lineHeight: 1.2
-              }}>
-                Interactive Learning Player
-              </Typography>
-              
-              <Typography variant="h5" sx={{ 
-                fontSize: { xs: '1.125rem', md: '1.25rem' },
-                fontWeight: 500,
-                color: 'primary.main',
-                fontStyle: 'italic'
-              }}>
-                Experience how AI Foundations principles shaped Smartslate's development
-              </Typography>
-            </Box>
+
 
             <AIFoundationsPlayer />
           </motion.div>
