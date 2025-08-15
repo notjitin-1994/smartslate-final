@@ -3,17 +3,15 @@
 import { useState, useEffect, useRef } from 'react';
 import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import dynamic from 'next/dynamic';
 import Hero from '@/components/landing/Hero';
 import JsonLd from '@/components/seo/JsonLd';
 import { getOrganizationJsonLd, getWebsiteJsonLd } from '@/components/seo/jsonld';
+import TalentParadox from '@/components/landing/TalentParadox';
+import Framework from '@/components/landing/Framework';
+import ROICalculator from '@/components/landing/ROICalculator';
+import Partners from '@/components/landing/Partners';
+import DemoModal from '@/components/landing/DemoModal';
 import { useDemoModal } from '@/hooks/useDemoModal';
-
-const TalentParadox = dynamic(() => import('@/components/landing/TalentParadox'), { ssr: true });
-const Framework = dynamic(() => import('@/components/landing/Framework'), { ssr: true });
-const ROICalculator = dynamic(() => import('@/components/landing/ROICalculator'), { ssr: true });
-const Partners = dynamic(() => import('@/components/landing/Partners'), { ssr: true });
-const DemoModal = dynamic(() => import('@/components/landing/DemoModal'), { ssr: false });
 
 const PageWrapper = styled(Box)(({ theme }) => ({
   position: 'relative',
