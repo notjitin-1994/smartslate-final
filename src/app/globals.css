@@ -567,6 +567,45 @@ a:focus-visible,
 .icon-bounce-y { animation: icon-bounce-y 1.8s ease-in-out infinite }
 .icon-wiggle { animation: icon-wiggle 2.6s ease-in-out infinite }
 
+/* Revamped social auth buttons */
+.social-auth-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .social-auth-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.social-auth-btn {
+  position: relative;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  backdrop-filter: var(--blur-sm);
+  -webkit-backdrop-filter: var(--blur-sm);
+  overflow: hidden;
+}
+
+.social-auth-btn:hover {
+  border-color: var(--primary-accent);
+}
+
+.social-auth-btn .glow {
+  position: absolute;
+  inset: -1px;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.social-auth-btn:hover .glow,
+.social-auth-btn:focus-visible .glow {
+  opacity: 1;
+}
+
 .btn:hover .icon-float,
 .btn:hover .icon-pulse,
 .btn:hover .icon-bounce-y,

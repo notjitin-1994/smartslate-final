@@ -173,38 +173,72 @@ export default function AuthModal() {
     }
   };
 
-  const SocialButton = ({ provider, onClick }: { provider: 'google' | 'github' | 'linkedin'; onClick: () => void }) => {
-    const labels = {
+  const SocialButton = ({ provider, onClick, disabled = false, comingSoon = false }: { provider: 'google' | 'facebook' | 'microsoft' | 'linkedin' | 'github' | 'sso'; onClick: () => void; disabled?: boolean; comingSoon?: boolean }) => {
+    const labels: Record<string, string> = {
       google: 'Continue with Google',
-      github: 'Continue with GitHub',
+      facebook: 'Continue with Facebook',
+      microsoft: 'Continue with Microsoft',
       linkedin: 'Continue with LinkedIn',
-    } as const;
-    const Icon = () => {
+      github: 'Continue with GitHub',
+      sso: 'Continue with SSO',
+    };
+
+    const Logo = () => {
       switch (provider) {
         case 'google':
           return (
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M21.35 11.1H12v2.9h5.35c-.25 1.5-1.8 4.4-5.35 4.4-3.25 0-5.9-2.7-5.9-6s2.65-6 5.9-6c1.85 0 3.1.8 3.8 1.5l2.6-2.5C17.1 3.1 14.8 2 12 2 6.9 2 2.8 6.1 2.8 11.2S6.9 20.4 12 20.4c6.4 0 8.2-4.5 8.2-6.8 0-.5-.05-1-.15-1.5z" />
+            <svg viewBox="0 0 48 48" className="w-6 h-6" aria-hidden="true">
+              <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303C33.551 31.91 29.137 35 24 35c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.153 7.957 3.043l5.657-5.657C34.676 5.108 29.568 3 24 3 12.955 3 4 11.955 4 23s8.955 20 20 20 20-8.955 20-20c0-1.333-.138-2.633-.389-3.917z"/>
+              <path fill="#FF3D00" d="M6.306 14.691l6.571 4.818C14.411 16.367 18.878 13 24 13c3.059 0 5.842 1.153 7.957 3.043l5.657-5.657C34.676 5.108 29.568 3 24 3 16.318 3 9.65 7.337 6.306 14.691z"/>
+              <path fill="#4CAF50" d="M24 43c5.083 0 9.64-1.953 13.117-5.118l-6.052-4.953C29.068 34.373 26.677 35 24 35c-5.105 0-9.505-3.07-11.285-7.438l-6.59 5.08C8.438 38.556 15.646 43 24 43z"/>
+              <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-1.073 3.137-3.386 5.617-6.238 6.929l.001-.001 6.052 4.953C36.85 41.52 44 37 44 23c0-1.333-.138-2.633-.389-3.917z"/>
             </svg>
           );
-        case 'github':
+        case 'facebook':
           return (
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path fillRule="evenodd" d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.61-3.37-1.18-3.37-1.18-.45-1.16-1.1-1.47-1.1-1.47-.9-.61.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.95 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0112 6.84c.85 0 1.7.12 2.5.35 1.9-1.29 2.74-1.02 2.74-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.69-4.57 4.94.36.32.68.95.68 1.92 0 1.38-.01 2.49-.01 2.83 0 .27.18.59.69.49A10 10 0 0012 2z" clipRule="evenodd" />
+            <svg viewBox="0 0 24 24" className="w-6 h-6" aria-hidden="true"><path fill="#1877F2" d="M22 12.061C22 6.505 17.523 2 12 2S2 6.505 2 12.061C2 17.084 5.657 21.245 10.438 22v-6.996H7.898v-2.943h2.54V9.845c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.196 2.238.196v2.47h-1.261c-1.242 0-1.63.776-1.63 1.571v1.882h2.773l-.443 2.943h-2.33V22C18.343 21.245 22 17.084 22 12.061z"/></svg>
+          );
+        case 'microsoft':
+          return (
+            <svg viewBox="0 0 24 24" className="w-6 h-6" aria-hidden="true">
+              <rect x="1" y="1" width="10" height="10" fill="#F25022"/>
+              <rect x="13" y="1" width="10" height="10" fill="#7FBA00"/>
+              <rect x="1" y="13" width="10" height="10" fill="#00A4EF"/>
+              <rect x="13" y="13" width="10" height="10" fill="#FFB900"/>
             </svg>
           );
         case 'linkedin':
           return (
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7.5 0h3.8v2.05h.05c.53-1 1.82-2.05 3.74-2.05 4 0 4.74 2.63 4.74 6.06V23h-4v-7.38c0-1.76-.03-4.02-2.45-4.02-2.45 0-2.82 1.9-2.82 3.89V23h-4V8z" />
-            </svg>
+            <svg viewBox="0 0 24 24" className="w-6 h-6" aria-hidden="true"><path fill="#0A66C2" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.447-2.136 2.942v5.664H9.351V9h3.414v1.561h.049c.476-.9 1.637-1.852 3.37-1.852 3.604 0 4.269 2.372 4.269 5.456v6.287zM5.337 7.433a2.062 2.062 0 11.001-4.124 2.062 2.062 0 01-.001 4.124zM6.96 20.452H3.713V9H6.96v11.452z"/></svg>
+          );
+        case 'github':
+          return (
+            <svg viewBox="0 0 24 24" className="w-6 h-6" aria-hidden="true"><path fill="#FFFFFF" d="M12 .5C5.73.5.95 5.28.95 11.55c0 4.86 3.15 8.98 7.52 10.43.55.1.76-.24.76-.54 0-.26-.01-.94-.01-1.84-3.06.67-3.71-1.31-3.71-1.31-.5-1.27-1.22-1.6-1.22-1.6-.99-.68.07-.66.07-.66 1.1.08 1.68 1.13 1.68 1.13.97 1.66 2.55 1.18 3.18.9.1-.7.38-1.18.69-1.45-2.44-.28-5.01-1.22-5.01-5.44 0-1.2.43-2.17 1.13-2.94-.11-.28-.49-1.42.11-2.96 0 0 .93-.3 3.04 1.12a10.5 10.5 0 015.54 0c2.11-1.42 3.04-1.12 3.04-1.12.6 1.54.22 2.68.11 2.96.7.77 1.13 1.74 1.13 2.94 0 4.23-2.58 5.15-5.04 5.42.39.34.74 1.01.74 2.04 0 1.47-.01 2.65-.01 3.01 0 .3.2.65.77.54 4.36-1.45 7.5-5.57 7.5-10.43C23.05 5.28 18.27.5 12 .5z"/></svg>
+          );
+        case 'sso':
+          return (
+            <svg viewBox="0 0 24 24" className="w-6 h-6" aria-hidden="true"><path fill="#a7dadb" d="M12 1a5 5 0 00-5 5v3H5a1 1 0 000 2h2v9a1 1 0 001 1h8a1 1 0 001-1V11h2a1 1 0 000-2h-2V6a5 5 0 00-5-5zm-3 8V6a3 3 0 116 0v3H9z"/></svg>
           );
       }
     };
+
+    const label = labels[provider] + (comingSoon ? ' (coming soon)' : '');
+
     return (
-      <button type="button" onClick={onClick} className="inline-flex items-center justify-center gap-2 w-full px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-colors">
-        <Icon />
-        <span>{labels[provider]}</span>
+      <button
+        type="button"
+        className={`relative w-full aspect-[5/2] rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm flex items-center justify-center transition-all duration-200 ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-primary-accent/30'}`}
+        onClick={disabled ? undefined : onClick}
+        disabled={disabled}
+        aria-disabled={disabled}
+        title={comingSoon ? 'Coming soon' : labels[provider]}
+        aria-label={label}
+      >
+        {comingSoon && (
+          <span className="absolute top-2 right-2 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-white/10 border border-white/10 text-secondary uppercase tracking-wide">Coming soon</span>
+        )}
+        <span className="sr-only">{label}</span>
+        <Logo />
       </button>
     );
   };
@@ -408,10 +442,13 @@ export default function AuthModal() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
                   <SocialButton provider="google" onClick={startGoogleOAuth} />
-                  <SocialButton provider="github" onClick={() => setActiveTab('signin')} />
-                  <SocialButton provider="linkedin" onClick={() => setActiveTab('signin')} />
+                  <SocialButton provider="facebook" onClick={() => {}} disabled comingSoon />
+                  <SocialButton provider="microsoft" onClick={() => {}} disabled comingSoon />
+                  <SocialButton provider="linkedin" onClick={() => {}} disabled comingSoon />
+                  <SocialButton provider="github" onClick={() => {}} disabled comingSoon />
+                  <SocialButton provider="sso" onClick={() => {}} disabled comingSoon />
                 </div>
               </motion.form>
             ) : (
@@ -552,10 +589,13 @@ export default function AuthModal() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
                   <SocialButton provider="google" onClick={startGoogleOAuth} />
-                  <SocialButton provider="github" onClick={() => setActiveTab('signup')} />
-                  <SocialButton provider="linkedin" onClick={() => setActiveTab('signup')} />
+                  <SocialButton provider="facebook" onClick={() => {}} disabled comingSoon />
+                  <SocialButton provider="microsoft" onClick={() => {}} disabled comingSoon />
+                  <SocialButton provider="linkedin" onClick={() => {}} disabled comingSoon />
+                  <SocialButton provider="github" onClick={() => {}} disabled comingSoon />
+                  <SocialButton provider="sso" onClick={() => {}} disabled comingSoon />
                 </div>
               </motion.form>
             )}
