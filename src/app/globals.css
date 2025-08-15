@@ -18,10 +18,12 @@
   --text-primary: #e0e0e0;
   --text-secondary: #b0c5c6;
   --text-disabled: #7a8a8b;
+  --text-muted: #b0c5c6; /* alias for compatibility */
   
   /* Border Colors */
   --border-color: #2a3a4a;
   --border-subtle: 1px solid #2a3a4a;
+  --input-border: #2a3a4a; /* alias for compatibility */
   
   /* Spacing */
   --space-xs: 4px;
@@ -579,4 +581,57 @@ a:focus-visible,
   .icon-wiggle {
     animation: none !important;
   }
+}
+
+/* Brand-compliant dropdowns (native <select> on desktop) */
+select,
+.brand-select {
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 10px 12px; /* base padding; components can add right padding when using a custom caret */
+  line-height: 1.2;
+  transition: var(--transition-fast);
+}
+
+select:hover,
+.brand-select:hover {
+  border-color: var(--primary-accent);
+}
+
+select:focus,
+.brand-select:focus {
+  outline: none;
+  border-color: var(--primary-accent);
+  box-shadow: 0 0 0 3px rgba(167, 218, 219, 0.2);
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
+select:disabled,
+.brand-select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Dropdown list styling for browsers that honor option styling */
+select option {
+  background-color: var(--background-paper);
+  color: var(--text-primary);
+}
+
+select optgroup {
+  background-color: var(--background-paper);
+  color: var(--text-secondary);
+}
+
+/* Hide default arrow in older browsers */
+select::-ms-expand {
+  display: none;
+}
+
+/* Firefox focus ring improvement */
+select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 var(--text-primary);
 }

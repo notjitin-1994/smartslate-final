@@ -381,6 +381,34 @@ const theme = createTheme({
         },
       },
     },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          color: '#e0e0e0',
+          '&.Mui-selected': {
+            backgroundColor: 'rgba(167, 218, 219, 0.14)',
+            color: '#eaf6f6',
+          },
+          '&.Mui-selected:hover': {
+            backgroundColor: 'rgba(167, 218, 219, 0.2)'
+          },
+          '&:hover': {
+            backgroundColor: 'rgba(255, 255, 255, 0.06)'
+          }
+        }
+      }
+    },
+    MuiSelect: {
+      styleOverrides: {
+        select: {
+          backgroundColor: 'rgba(255, 255, 255, 0.05)',
+          borderRadius: 8,
+        },
+        icon: {
+          color: '#b0c5c6'
+        }
+      }
+    },
     MuiTooltip: {
       styleOverrides: {
         tooltip: {
