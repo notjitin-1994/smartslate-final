@@ -99,8 +99,7 @@ export default function Modal({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
-  // Modals disabled globally
-  if (!isOpen) return null;
+  // Keep component mounted so exit animations can play via AnimatePresence
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (closeOnOverlayClick && e.target === e.currentTarget) {
@@ -115,7 +114,7 @@ export default function Modal({
   }[maxWidth];
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isOpen && (
         <motion.div
           aria-hidden={!isOpen}

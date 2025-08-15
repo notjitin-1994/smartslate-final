@@ -3,10 +3,10 @@
 import { useState, useEffect } from 'react';
 import { Box, Container, Button } from '@mui/material';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
-import AutoGraphIcon from '@mui/icons-material/AutoGraph';
+// import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import { styled } from '@mui/material/styles';
-import CaseStudyModal from '@/components/landing/CaseStudyModal';
-import { useCaseStudyModal } from '@/hooks/useCaseStudyModal';
+// import CaseStudyModal from '@/components/landing/CaseStudyModal';
+// import { useCaseStudyModal } from '@/hooks/useCaseStudyModal';
 import StandardHero from '@/components/ui/StandardHero';
 
 const FadeInContent = styled(Box, {
@@ -65,26 +65,7 @@ const PrimaryButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const SecondaryButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.primary.main,
-  padding: `${theme.spacing(1.5)} ${theme.spacing(3)}`,
-  fontSize: '1rem',
-  fontWeight: 600,
-  borderRadius: theme.spacing(1),
-  textTransform: 'none',
-  border: '2px solid rgba(167, 218, 219, 0.3)',
-  backgroundColor: 'transparent',
-  transition: 'all 0.3s ease',
-  '&:hover': {
-    borderColor: theme.palette.primary.main,
-    backgroundColor: 'rgba(167, 218, 219, 0.1)',
-    transform: 'translateY(-2px)',
-  },
-  [theme.breakpoints.down('sm')]: {
-    padding: `${theme.spacing(1.5)} ${theme.spacing(2.5)}`,
-    fontSize: '0.9rem',
-  },
-}));
+// Secondary button removed (View Case Studies)
 
 interface HeroProps {
   onRevealNext: () => void;
@@ -92,7 +73,7 @@ interface HeroProps {
 
 export default function Hero({ onRevealNext }: HeroProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const { isOpen, openModal, closeModal } = useCaseStudyModal();
+  // const { isOpen, openModal, closeModal } = useCaseStudyModal();
 
   useEffect(() => {
     // Trigger animations after mount
@@ -120,22 +101,13 @@ export default function Hero({ onRevealNext }: HeroProps) {
             </PrimaryButton>
           </FadeInContent>
           
-          <FadeInContent delay={1200} isVisible={isVisible}>
-            <SecondaryButton
-              variant="outlined"
-              size="large"
-              startIcon={<AutoGraphIcon aria-hidden="true" className="icon-anim icon-float" />}
-              onClick={openModal}
-            >
-              View Case Studies
-            </SecondaryButton>
-          </FadeInContent>
+          {/* Secondary CTA (View Case Studies) removed per request */}
 
 
         </div>
       </StandardHero>
 
-      <CaseStudyModal isOpen={isOpen} onClose={closeModal} />
+      {/* CaseStudyModal removed from hero */}
     </>
   );
 }
