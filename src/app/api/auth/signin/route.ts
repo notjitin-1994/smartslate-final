@@ -1,6 +1,30 @@
 import { NextResponse } from 'next/server';
 import { getSupabaseAnon } from '@/lib/supabase';
 
+/**
+ * POST /api/auth/signin
+ *
+ * Authenticates a user using Supabase email/password and returns a short-lived access token
+ * along with minimal user profile for client storage.
+ *
+ * Request body:
+ * ```json
+ * { "email": "user@example.com", "password": "secret" }
+ * ```
+ *
+ * Success response (200):
+ * ```json
+ * {
+ *   "token": "<jwt>",
+ *   "user": { "id": "uuid", "full_name": "User", "email": "user@example.com" }
+ * }
+ * ```
+ *
+ * Errors:
+ * - 400: Missing email or password
+ * - 401: Invalid credentials or no session returned
+ * - 500: Supabase not configured or unexpected server error
+ */
 export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
   const { email, password } = body as { email?: string; password?: string };

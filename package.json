@@ -23,7 +23,9 @@
     "migrate:consultation": "tsx scripts/migrate-consultation-table.ts",
     "migrate:user-profiles": "tsx scripts/migrate-user-profiles-table.ts",
     "backfill:user-profiles": "tsx scripts/backfill-user-profiles.ts",
-    "diag:jwks": "tsx scripts/diagnose-jwks.ts"
+    "diag:jwks": "tsx scripts/diagnose-jwks.ts",
+    "docs:build": "typedoc --options typedoc.json",
+    "docs:serve": "npx http-server docs/api -p 9090 -c-"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -71,7 +73,10 @@
     "tsx": "^4.20.3",
     "typescript": "^5",
     "vitest": "^3.2.4",
-    "zod": "^4.0.17"
+    "zod": "^4.0.17",
+    "typedoc": "^0.27.6",
+    "typedoc-plugin-markdown": "^4.4.1",
+    "http-server": "^14.1.1"
   },
   "overrides": {
     "esbuild": "^0.25.9"

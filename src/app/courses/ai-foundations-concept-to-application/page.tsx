@@ -19,9 +19,8 @@ import MessageIcon from '@mui/icons-material/Message';
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 import Link from 'next/link';
 import type { ElementType } from 'react';
-import CourseWaitlistModal from '@/components/courses/CourseWaitlistModal';
 import StandardHero from '@/components/ui/StandardHero';
-import { useCourseWaitlistModal } from '@/hooks/useCourseWaitlistModal';
+import { useWaitlistModal } from '@/hooks/useWaitlistModal';
 import {
   aiCourseData, animatedStats, personas, curriculum, valuePropositions
 } from '@/types/ai-course';
@@ -30,14 +29,6 @@ const PageWrapper = styled(Box)(({ theme }) => ({
   position: 'relative',
   minHeight: '100vh',
   backgroundColor: 'var(--background-dark)',
-}));
-
-const SectionWrapper = styled(Box)(({ theme }) => ({
-  position: 'relative',
-  padding: `${theme.spacing(10)} 0`,
-  [theme.breakpoints.down('md')]: {
-    padding: `${theme.spacing(8)} 0`,
-  },
 }));
 
 // Icon mapping
@@ -60,7 +51,7 @@ export default function AIFoundationsPage() {
   const [countdown, setCountdown] = useState({ days: 14, hours: 8, minutes: 42 });
   const [activeTab, setActiveTab] = useState<'receive' | 'individual' | 'teams'>('individual');
   const [isDesktop, setIsDesktop] = useState(false);
-  const { isOpen, openModal, closeModal } = useCourseWaitlistModal();
+  const { openModal } = useWaitlistModal();
 
   const discountPercentage = Math.round(
     ((aiCourseData.price - aiCourseData.offerPrice) / aiCourseData.price) * 100
@@ -107,37 +98,34 @@ export default function AIFoundationsPage() {
     <>
       <PageWrapper>
         {/* Hero Section */}
-        <SectionWrapper>
-          <Container maxWidth="lg">
-            <StandardHero
-              title="Master the Language of the Future"
-              subtitle="Our 'AI Foundations' course is the definitive journey from theoretical concepts to practical application. Go from being curious about AI to confidently leveraging it for professional growth."
-              description="Transform your career with cutting-edge AI knowledge and practical skills that will set you apart in the digital economy."
-              accentWords={['Future', 'AI Foundations', 'professional growth']}
-              showScrollIndicator={false}
-            />
-            <div className="flex flex-col sm:flex-row gap-4 mt-8">
-              <button
-               onClick={() => {}}
-                className="btn btn-primary w-full sm:w-auto"
-              >
-                Join Waitlist &amp; Save {discountPercentage}%
-                <ArrowForwardIcon className="w-5 h-5" />
-              </button>
-              <Link
-                href="/collaborate"
-                className="btn btn-tertiary w-full sm:w-auto"
-              >
-                Request a Demo for Your Team
-                <ArrowForwardIcon className="w-5 h-5" />
-              </Link>
-            </div>
-          </Container>
-        </SectionWrapper>
+        <StandardHero
+          title="Master the Language of the Future"
+          subtitle="Our 'AI Foundations' course is the definitive journey from theoretical concepts to practical application. Go from being curious about AI to confidently leveraging it for professional growth."
+          description="Transform your career with cutting-edge AI knowledge and practical skills that will set you apart in the digital economy."
+          accentWords={['Future', 'AI Foundations', 'professional growth']}
+          showScrollIndicator={false}
+        >
+          <div className="flex flex-col sm:flex-row gap-4 mt-8">
+            <button
+              onClick={() => openModal('AI Course Page', 'AI Foundations: Concept to Application')}
+              className="btn btn-primary w-full sm:w-auto"
+            >
+              Join Waitlist &amp; Save {discountPercentage}%
+              <ArrowForwardIcon className="w-5 h-5" />
+            </button>
+            <Link
+              href="/collaborate"
+              className="btn btn-tertiary w-full sm:w-auto"
+            >
+              Request a Demo for Your Team
+              <ArrowForwardIcon className="w-5 h-5" />
+            </Link>
+          </div>
+        </StandardHero>
 
         {/* Why Now Section */}
         <section className="py-16 px-4">
-          <div className="max-w-7xl mx-auto">
+          <Container maxWidth="lg">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -179,12 +167,12 @@ export default function AIFoundationsPage() {
                 })}
               </motion.div>
             </div>
-          </div>
+          </Container>
         </section>
 
         {/* Transformation Section */}
         <section className="py-16 px-4 bg-[var(--background-paper)]">
-          <div className="max-w-7xl mx-auto">
+          <Container maxWidth="lg">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -258,12 +246,12 @@ export default function AIFoundationsPage() {
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
+          </Container>
         </section>
 
         {/* Curriculum Section */}
         <section className="py-16 px-4">
-          <div className="max-w-7xl mx-auto">
+          <Container maxWidth="lg">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -326,12 +314,12 @@ export default function AIFoundationsPage() {
                 </motion.div>
               ))}
             </div>
-          </div>
+          </Container>
         </section>
 
         {/* Opportunity Section */}
         <section className="py-16 px-4 bg-[var(--background-dark)] border-t border-b border-primary-accent">
-          <div className="max-w-7xl mx-auto">
+          <Container maxWidth="lg">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -355,12 +343,12 @@ export default function AIFoundationsPage() {
                 <ArrowForwardIcon className="w-5 h-5" />
               </button>
             </motion.div>
-          </div>
+          </Container>
         </section>
 
         {/* Enrollment Section */}
         <section className="py-16 px-4">
-          <div className="max-w-7xl mx-auto">
+          <Container maxWidth="lg">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -510,7 +498,7 @@ export default function AIFoundationsPage() {
                 </motion.div>
               )}
             </div>
-          </div>
+          </Container>
         </section>
 
         {/* Sticky Mobile Footer */}
@@ -538,12 +526,7 @@ export default function AIFoundationsPage() {
         )}
       </PageWrapper>
 
-      {/* Course Waitlist Modal */}
-      <CourseWaitlistModal 
-        isOpen={isOpen}
-        onClose={closeModal}
-        course={courseInfo}
-      />
+      
     </>
   );
 }

@@ -4,14 +4,15 @@ import { Course } from '@/types/course';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useWaitlistModal } from '@/hooks/useWaitlistModal';
 
 interface CourseCardProps {
   course: Course;
   index: number;
-  onWaitlistClick: () => void;
 }
 
-export default function CourseCard({ course, index, onWaitlistClick }: CourseCardProps) {
+export default function CourseCard({ course, index }: CourseCardProps) {
+  const { openModal } = useWaitlistModal();
   const isHorizonCard = course.statusColor === 'horizon';
 
   return (
@@ -103,7 +104,7 @@ export default function CourseCard({ course, index, onWaitlistClick }: CourseCar
               Learn More
             </Link>
             <button
-              onClick={onWaitlistClick}
+              onClick={() => openModal('Course Card', course.title.replace(/<[^>]*>/g, ''))}
               className="btn btn-primary flex-1"
             >
               Join Waitlist

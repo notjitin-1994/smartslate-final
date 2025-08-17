@@ -2,6 +2,19 @@ import { Pool } from 'pg';
 
 let pool: Pool | null = null;
 
+/**
+ * Get a singleton `pg` connection pool configured for Supabase or local Postgres.
+ *
+ * Behavior:
+ * - Infers whether SSL is required by inspecting `DATABASE_URL` host; enables TLS for non-local hosts.
+ * - Appends `sslmode=require` to the connection string when SSL is needed and not present.
+ * - In non-production (or when `DISABLE_TLS_VERIFY=1`), disables TLS verification for convenience.
+ *
+ * Env vars:
+ * - `DATABASE_URL` (required): Postgres connection string.
+ * - `DISABLE_TLS_VERIFY` (optional): set to `1` to bypass TLS verification (local/dev only).
+ * - `NODE_ENV` is used to guard TLS verification (production keeps verification on).
+ */
 export function getDb(): Pool {
   if (!process.env.DATABASE_URL) {
     throw new Error('DATABASE_URL is not set');

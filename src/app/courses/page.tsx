@@ -9,10 +9,8 @@ import TuneIcon from '@mui/icons-material/Tune';
 import SortIcon from '@mui/icons-material/Sort';
 import { courseData } from '@/types/course';
 import CourseCard from '@/components/courses/CourseCard';
-import CourseWaitlistModal from '@/components/courses/CourseWaitlistModal';
 import Pagination from '@/components/ui/Pagination';
 import StandardHero from '@/components/ui/StandardHero';
-import { useCourseWaitlistModal } from '@/hooks/useCourseWaitlistModal';
 
 const PageWrapper = styled(Box)(({ theme }) => ({
   position: 'relative',
@@ -35,7 +33,7 @@ export default function CoursesPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(9);
 
-  const { isOpen, selectedCourse, openModal, closeModal } = useCourseWaitlistModal();
+
 
   // Handle responsive items per page
   useEffect(() => {
@@ -186,7 +184,6 @@ export default function CoursesPage() {
                   key={course.slug || index}
                   course={course}
                   index={index}
-                  onWaitlistClick={() => {}}
                 />
               ))}
             </div>
