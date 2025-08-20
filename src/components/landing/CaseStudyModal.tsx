@@ -249,10 +249,11 @@ export default function CaseStudyModal({ isOpen, onClose }: CaseStudyModalProps)
               onChange={(value) => updateFormData('caseStudyType', value)}
               required
               options={[
-                { value: 'transformation', label: 'Digital Transformation', description: 'Organization-wide skill transformation' },
-                { value: 'technical', label: 'Technical Upskilling', description: 'AI, Cloud, DevOps training programs' },
-                { value: 'leadership', label: 'Leadership Development', description: 'Executive and management training' },
-                { value: 'custom', label: 'Custom Solutions', description: 'Tailored learning architectures' },
+                { value: 'ai-transformation', label: 'AI Skills Transformation', description: 'How companies built AI capabilities at scale' },
+                { value: 'talent-retention', label: 'Talent Retention', description: 'Reducing attrition through upskilling programs' },
+                { value: 'roi-impact', label: 'ROI & Business Impact', description: 'Measurable outcomes from learning initiatives' },
+                { value: 'rapid-deployment', label: 'Rapid Deployment', description: 'Fast-track implementation strategies' },
+                { value: 'custom-solutions', label: 'Custom Learning Solutions', description: 'Tailored programs for unique needs' },
               ]}
               error={errors.caseStudyType}
             />

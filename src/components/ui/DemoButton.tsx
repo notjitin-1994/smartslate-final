@@ -9,7 +9,7 @@ const StyledDemoButton = styled(Button)(({ theme }) => ({
   padding: `${theme.spacing(1.5)} ${theme.spacing(3)}`,
   fontSize: '1rem',
   fontWeight: 600,
-  borderRadius: theme.spacing(1),
+  borderRadius: 4, // Thin rounded square
   textTransform: 'none',
   border: '2px solid rgba(167, 218, 219, 0.3)',
   backgroundColor: 'transparent',

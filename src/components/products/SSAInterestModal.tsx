@@ -1,13 +1,13 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { useSSAInterestModal } from '@/hooks/useSSAInterestModal';
+import { useModalManager } from '@/hooks/useModalManager';
 import { useState, FormEvent } from 'react';
 import Modal from '@/components/ui/Modal';
 import FormField from '@/components/ui/FormField';
 
 export default function SSAInterestModal() {
-  const { isOpen, closeModal } = useSSAInterestModal();
+  const { modalStates: { ssaInterest: isOpen }, actions: { closeSSAInterestModal: closeModal } } = useModalManager();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     // Step 1: Contact & Company Information
@@ -164,6 +164,7 @@ export default function SSAInterestModal() {
         successMetrics: '',
         howDidYouHear: '',
         additionalNotes: '',
+        privacyConsent: false,
       });
       setCurrentStep(1);
       setIsSuccess(false);
@@ -171,7 +172,7 @@ export default function SSAInterestModal() {
     }, 3000);
   };
 
-  const updateFormData = (field: string, value: string | string[]) => {
+  const updateFormData = (field: string, value: string | string[] | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
     if (errors[field]) {

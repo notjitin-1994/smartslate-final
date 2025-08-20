@@ -98,12 +98,17 @@ export default function DemoModal({ isOpen, onClose }: DemoModalProps) {
     setIsSubmitting(true);
 
     try {
-      // TODO: Replace with actual API endpoint when backend is ready
+      // Map specificFeatures to productInterest for API compatibility
+      const submissionData = {
+        ...formData,
+        productInterest: formData.specificFeatures
+      };
+
       const res = await fetch('/api/leads/demo', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify(formData),
+        body: JSON.stringify(submissionData),
       });
       if (!res.ok) throw new Error('Failed to submit');
     } catch (err) {

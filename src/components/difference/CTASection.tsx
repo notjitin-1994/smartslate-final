@@ -2,112 +2,185 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
-import { useConsultationModal } from '@/hooks/useConsultationModal';
-import ConsultationModal from '@/components/landing/ConsultationModal';
+import { 
+  SectionTitle, 
+  SectionSubtitle, 
+  CTAButton,
+  ResponsiveContainer
+} from './styles/DifferenceStyles';
+import { ctaSectionData, animationConfig } from '@/lib/data/differencePage';
 
 export default function CTASection() {
   const { ref, inView } = useInView({
     threshold: 0.1,
     triggerOnce: true,
   });
-  const { isOpen, openModal, closeModal } = useConsultationModal();
 
   return (
-    <div ref={ref} className="relative">
-      {/* Simplified background decoration */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.15 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="absolute inset-0 -z-10 pointer-events-none"
-      >
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-primary-accent/10 to-secondary-accent/10 rounded-full blur-3xl" />
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="glass-effect-strong p-6 sm:p-8 md:p-12 lg:p-16 rounded-2xl sm:rounded-3xl text-center max-w-5xl mx-auto border border-primary-accent/20 relative overflow-hidden"
-      >
-        {/* Corner accents */}
-        <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-primary-accent/10 to-transparent rounded-3xl" />
-        <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-secondary-accent/10 to-transparent rounded-3xl" />
-
+    <Box ref={ref}>
+      <ResponsiveContainer>
+        {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-          className="relative z-10 text-left"
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          variants={animationConfig.fadeIn}
         >
-          <h2 
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 leading-tight tracking-tight text-left"
-            style={{
-              fontSize: 'clamp(1.875rem, 1.2vw + 1.25rem, 3.75rem)',
-              lineHeight: '1.2',
-              letterSpacing: '-0.02em'
+          <SectionTitle sx={{ textAlign: 'left' }}>
+            {ctaSectionData.title}
+          </SectionTitle>
+          <SectionSubtitle sx={{ textAlign: 'left' }}>
+            {ctaSectionData.subtitle}
+          </SectionSubtitle>
+        </motion.div>
+
+        {/* Description */}
+        <motion.div
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          variants={animationConfig.fadeIn}
+          transition={{ delay: 0.2 }}
+        >
+          <Typography
+            variant="body1"
+            sx={{
+              textAlign: 'left',
+              color: 'text.secondary',
+              maxWidth: '800px',
+              mb: 6,
+              fontSize: '1.125rem',
+              lineHeight: 1.7
             }}
           >
-            Ready to Experience the{' '}
-            <span className="text-primary-accent font-bold">
-              Smartslate Difference
-            </span>?
-          </h2>
-          <p className="text-base sm:text-lg md:text-xl text-primary mb-3 sm:mb-4 leading-relaxed text-left">
-            Join forward-thinking organizations that have transformed their learning culture and achieved measurable results.
-          </p>
+            {ctaSectionData.description}
+          </Typography>
         </motion.div>
 
+        {/* Action Buttons */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-          className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-start items-start sm:items-center relative z-10"
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          variants={animationConfig.fadeIn}
+          transition={{ delay: 0.4 }}
         >
-          <motion.button
-            whileHover={{ scale: 1.03, y: -2 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ duration: 0.2 }}
-            className="btn btn-primary w-full sm:w-auto"
-            onClick={openModal}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' },
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 3,
+              mb: 6
+            }}
           >
-            <span className="relative z-10">Schedule a Consultation</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-[#3730A3] to-[#4F46E5] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </motion.button>
-          
-          <Link href="/products">
-            <motion.button
-              whileHover={{ scale: 1.03, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.2 }}
-              className="btn btn-tertiary w-full sm:w-auto"
-            >
-              <span className="relative z-10">Explore Our Solutions</span>
-            </motion.button>
-          </Link>
+            <Link href={ctaSectionData.primaryAction.href} style={{ textDecoration: 'none' }}>
+              <CTAButton variant={ctaSectionData.primaryAction.variant} size="large">
+                {ctaSectionData.primaryAction.label}
+              </CTAButton>
+            </Link>
+
+            {ctaSectionData.secondaryAction && (
+              <Link href={ctaSectionData.secondaryAction.href} style={{ textDecoration: 'none' }}>
+                <CTAButton 
+                  variant={ctaSectionData.secondaryAction.variant} 
+                  size="large"
+                  sx={{
+                    backgroundColor: 'transparent',
+                    color: 'primary.main',
+                    border: '2px solid',
+                    borderColor: 'primary.main',
+                    '&:hover': {
+                      backgroundColor: 'rgba(167, 218, 219, 0.1)',
+                      borderColor: 'primary.light',
+                    }
+                  }}
+                >
+                  {ctaSectionData.secondaryAction.label}
+                </CTAButton>
+              </Link>
+            )}
+          </Box>
         </motion.div>
 
-
-      </motion.div>
-
-      {/* Quick contact info */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 0.6, delay: 0.6 }}
-        className="text-center sm:text-left mt-6 sm:mt-8 text-primary-accent/60"
-      >
-        <p className="text-xs sm:text-sm text-primary">
-          Questions? Reach out at{' '}
-          <a href="mailto:info@smartslate.io" className="text-primary-accent hover:underline font-medium">
-            info@smartslate.io
-          </a>
-        </p>
-      </motion.div>
-
-      {/* Consultation Modal */}
-      <ConsultationModal isOpen={isOpen} onClose={closeModal} />
-    </div>
+        {/* Additional Information */}
+        <motion.div
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          variants={animationConfig.fadeIn}
+          transition={{ delay: 0.6 }}
+        >
+          <Box
+            sx={{
+              p: 4,
+              background: 'linear-gradient(135deg, rgba(167, 218, 219, 0.08), rgba(79, 70, 229, 0.04))',
+              backdropFilter: 'blur(16px)',
+              borderRadius: 3,
+              border: '2px solid rgba(167, 218, 219, 0.2)',
+              textAlign: 'center'
+            }}
+          >
+            <Typography
+              variant="h5"
+              sx={{
+                color: 'primary.main',
+                fontWeight: 600,
+                mb: 2,
+                textAlign: 'left'
+              }}
+            >
+              Why Choose Smartslate?
+            </Typography>
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
+                gap: 3,
+                mt: 3
+              }}
+            >
+              {[
+                {
+                  title: 'Proven Results',
+                  description: '94% engagement rate and 87% completion rate across all programs'
+                },
+                {
+                  title: 'Industry Expertise',
+                  description: 'Direct partnerships with leading companies and industry experts'
+                },
+                {
+                  title: 'Continuous Support',
+                  description: 'Ongoing optimization and support throughout your learning journey'
+                }
+              ].map((item, index) => (
+                <Box key={index} sx={{ textAlign: 'center' }}>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: 'primary.main',
+                      fontWeight: 600,
+                      mb: 1,
+                      fontSize: '1rem'
+                    }}
+                  >
+                    {item.title}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: 'text.secondary',
+                      fontSize: '0.875rem',
+                      lineHeight: 1.5
+                    }}
+                  >
+                    {item.description}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        </motion.div>
+      </ResponsiveContainer>
+    </Box>
   );
 }

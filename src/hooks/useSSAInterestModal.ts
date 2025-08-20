@@ -1,13 +1,14 @@
-import { create } from 'zustand';
+import { useState } from 'react';
 
-interface SSAInterestModalState {
-  isOpen: boolean;
-  openModal: () => void;
-  closeModal: () => void;
+export function useSSAInterestModal() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
+
+  return {
+    isOpen,
+    openModal,
+    closeModal,
+  };
 }
-
-export const useSSAInterestModal = create<SSAInterestModalState>((set) => ({
-  isOpen: false,
-  openModal: () => set({ isOpen: true }),
-  closeModal: () => set({ isOpen: false }),
-}));

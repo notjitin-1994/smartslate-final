@@ -1,7 +1,6 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { useConsultationModal } from '@/hooks/useConsultationModal';
 import { useState, FormEvent } from 'react';
 import Modal from '@/components/ui/Modal';
 import FormField from '@/components/ui/FormField';

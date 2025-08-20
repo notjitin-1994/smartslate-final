@@ -4,39 +4,8 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import Link from 'next/link';
 import { ReactNode } from 'react';
-import { useSSAInterestModal } from '@/hooks/useSSAInterestModal';
-import { useSolaraInterestModal } from '@/hooks/useSolaraInterestModal';
-
-interface Feature {
-  icon: ReactNode;
-  text: string;
-}
-
-interface OneLinerFeature {
-  icon: ReactNode;
-  text: string;
-}
-
-interface CTA {
-  text: string;
-  link?: string;
-  icon?: ReactNode;
-  action?: 'openSSAModal' | 'openSolaraModal';
-}
-
-interface Product {
-  heading: string;
-  tagline: string;
-  description: string;
-  features: Feature[];
-  oneLinerFeatures?: OneLinerFeature[];
-  cta: CTA;
-  secondaryCta?: {
-    text: string;
-    link: string;
-  };
-  status?: 'live' | 'coming-soon';
-}
+import { useModalManager } from '@/hooks/useModalManager';
+import { Product } from '@/lib/types/products';
 
 interface ProductSectionProps {
   product: Product;
@@ -50,8 +19,7 @@ export default function ProductSection({ product, reverse = false, children }: P
     triggerOnce: true,
   });
 
-  const { openModal: openSSAModal } = useSSAInterestModal();
-  const { openModal: openSolaraModal } = useSolaraInterestModal();
+  const { actions: { openSSAInterestModal: openSSAModal, openSolaraInterestModal: openSolaraModal } } = useModalManager();
 
   const handleCtaClick = () => {
     if (product.cta.action === 'openSSAModal') {

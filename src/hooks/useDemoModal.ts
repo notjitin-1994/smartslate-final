@@ -1,15 +1,14 @@
-'use client';
+import { useState } from 'react';
 
-import { create } from 'zustand';
+export function useDemoModal() {
+  const [isOpen, setIsOpen] = useState(false);
 
-interface DemoModalStore {
-  isOpen: boolean;
-  openModal: () => void;
-  closeModal: () => void;
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
+
+  return {
+    isOpen,
+    openModal,
+    closeModal,
+  };
 }
-
-export const useDemoModal = create<DemoModalStore>((set) => ({
-  isOpen: false,
-  openModal: () => set({ isOpen: true }),
-  closeModal: () => set({ isOpen: false }),
-}));

@@ -1,15 +1,14 @@
-'use client';
+import { useState } from 'react';
 
-import { create } from 'zustand';
+export function useCaseStudyModal() {
+  const [isOpen, setIsOpen] = useState(false);
 
-interface CaseStudyModalStore {
-  isOpen: boolean;
-  openModal: () => void;
-  closeModal: () => void;
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
+
+  return {
+    isOpen,
+    openModal,
+    closeModal,
+  };
 }
-
-export const useCaseStudyModal = create<CaseStudyModalStore>((set) => ({
-  isOpen: false,
-  openModal: () => set({ isOpen: true }),
-  closeModal: () => set({ isOpen: false }),
-}));

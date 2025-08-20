@@ -23,10 +23,8 @@ import {
   EventAvailable,
   Description,
   AutoGraph,
+  TrendingUp,
 } from '@mui/icons-material';
-import CaseStudyModal from '@/components/landing/CaseStudyRequestsModal';
-import { useCaseStudyModal } from '@/hooks/useCaseStudyModal';
-import { useDemoModal } from '@/hooks/useDemoModal';
 
 const PartnersSection = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -373,6 +371,8 @@ const RatingStars = styled(Box)(({ theme }) => ({
 
 interface PartnersProps {
   openDemoModal: () => void;
+  openCaseStudyModal?: () => void;
+  openPartnerModal: (type: 'institution' | 'business' | 'technology' | 'consulting' | 'research') => void;
 }
 
 type PartnerType = 'institutions' | 'businesses';
@@ -422,13 +422,11 @@ const partnerLogos = [
   { name: 'IIM Bangalore', type: 'institution' },
 ];
 
-export default function Partners({ openDemoModal }: PartnersProps) {
+export default function Partners({ openDemoModal, openCaseStudyModal, openPartnerModal }: PartnersProps) {
   const [revealed, setRevealed] = useState<Partial<Record<PartnerType, boolean>>>({
     institutions: true, // Default expanded
   });
   const [animateLogos, setAnimateLogos] = useState(false);
-  const { isOpen, openModal, closeModal } = useCaseStudyModal();
-  const { openModal: openDemo } = useDemoModal();
 
   // Add refs and inView hooks for animations
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -557,11 +555,41 @@ export default function Partners({ openDemoModal }: PartnersProps) {
                         endIcon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                         </svg>}
-                         onClick={openDemo}
+                         onClick={openDemoModal}
                       >
                         Schedule Demo
                       </SecondaryCTAButton>
                     </CTAWrapper>
+                    
+                    {/* Partnership Opportunities */}
+                    <Box sx={{ mt: 4 }}>
+                      <Typography variant="h6" sx={{ mb: 3, fontWeight: 600, color: 'primary.main' }}>
+                        Partnership Opportunities
+                      </Typography>
+                      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(3, 1fr)' }, gap: 2 }}>
+                        <SecondaryCTAButton
+                          onClick={() => openPartnerModal('institution')}
+                          startIcon={<School />}
+                          sx={{ justifyContent: 'center' }}
+                        >
+                          Educational Partnership
+                        </SecondaryCTAButton>
+                        <SecondaryCTAButton
+                          onClick={() => openPartnerModal('technology')}
+                          startIcon={<AutoAwesome />}
+                          sx={{ justifyContent: 'center' }}
+                        >
+                          Technology Partnership
+                        </SecondaryCTAButton>
+                        <SecondaryCTAButton
+                          onClick={() => openPartnerModal('consulting')}
+                          startIcon={<TrendingUp />}
+                          sx={{ justifyContent: 'center' }}
+                        >
+                          Consulting Partnership
+                        </SecondaryCTAButton>
+                      </Box>
+                    </Box>
                   </motion.div>
                 </ContentBody>
               </Collapse>
@@ -704,11 +732,41 @@ export default function Partners({ openDemoModal }: PartnersProps) {
                       </PrimaryCTAButton>
                       <SecondaryCTAButton 
                         startIcon={<AutoGraph aria-hidden="true" className="icon-anim icon-float" />}
-                         onClick={openModal}
+                        onClick={openCaseStudyModal}
                       >
                         View Case Studies
                       </SecondaryCTAButton>
                     </CTAWrapper>
+                    
+                    {/* Partnership Opportunities */}
+                    <Box sx={{ mt: 4 }}>
+                      <Typography variant="h6" sx={{ mb: 3, fontWeight: 600, color: 'primary.main' }}>
+                        Partnership Opportunities
+                      </Typography>
+                      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(3, 1fr)' }, gap: 2 }}>
+                        <SecondaryCTAButton
+                          onClick={() => openPartnerModal('business')}
+                          startIcon={<Business />}
+                          sx={{ justifyContent: 'center' }}
+                        >
+                          Business Partnership
+                        </SecondaryCTAButton>
+                        <SecondaryCTAButton
+                          onClick={() => openPartnerModal('technology')}
+                          startIcon={<AutoAwesome />}
+                          sx={{ justifyContent: 'center' }}
+                        >
+                          Technology Partnership
+                        </SecondaryCTAButton>
+                        <SecondaryCTAButton
+                          onClick={() => openPartnerModal('research')}
+                          startIcon={<Groups />}
+                          sx={{ justifyContent: 'center' }}
+                        >
+                          Research Partnership
+                        </SecondaryCTAButton>
+                      </Box>
+                    </Box>
                   </motion.div>
                 </ContentBody>
               </Collapse>
@@ -716,8 +774,6 @@ export default function Partners({ openDemoModal }: PartnersProps) {
           </motion.div>
         </AccordionWrapper>
       </Container>
-      
-      <CaseStudyModal isOpen={isOpen} onClose={closeModal} />
     </PartnersSection>
   );
 }

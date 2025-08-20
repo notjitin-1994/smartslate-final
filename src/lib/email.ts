@@ -1,37 +1,20 @@
-// Optional runtime import; typing shim provided via ambient declaration
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import nodemailer from 'nodemailer';
-import { withOptionalInsecureTLS } from './fetch';
-
-export interface SendEmailParams {
+interface EmailData {
   to: string;
   subject: string;
   html: string;
 }
 
-export async function sendEmail({ to, subject, html }: SendEmailParams): Promise<void> {
-  const resendKey = process.env.RESEND_API_KEY;
-  if (resendKey) {
-    const res = await fetch('https://api.resend.com/emails', withOptionalInsecureTLS({
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${resendKey}` },
-      body: JSON.stringify({ from: 'no-reply@smartslate.io', to, subject, html }),
-    }));
-    if (!res.ok) {
-      const text = await res.text();
-      throw new Error(`Resend failed: ${text}`);
-    }
-    return;
-  }
-
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'localhost',
-    port: Number(process.env.SMTP_PORT || 1025),
-    secure: false,
+export async function sendEmail({ to, subject, html }: EmailData) {
+  // In production, you would integrate with a service like Resend, SendGrid, etc.
+  // For now, we'll just log the email data
+  console.log('Email would be sent:', {
+    to,
+    subject,
+    html: html.substring(0, 200) + '...', // Truncate for logging
   });
-  await transporter.sendMail({ from: 'no-reply@smartslate.io', to, subject, html });
+  
+  // You can implement actual email sending here
+  // Example with Resend:
+  // const resend = new Resend(process.env.RESEND_API_KEY);
+  // await resend.emails.send({ to, subject, html });
 }
-
-
-

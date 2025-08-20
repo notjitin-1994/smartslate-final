@@ -1,9 +1,17 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 export default function SolaraInfographic() {
+  const [mounted, setMounted] = useState(false);
   const reduced = useReducedMotion();
+  
+  // Prevent hydration mismatch by only rendering after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const features = [
     { name: 'Polaris', icon: '●', angle: 0 },
     { name: 'Constellation', icon: '●', angle: 60 },
@@ -12,6 +20,50 @@ export default function SolaraInfographic() {
     { name: 'Nebula', icon: '●', angle: 240 },
     { name: 'Spectrum', icon: '●', angle: 300 },
   ];
+
+  // Show static fallback until mounted to prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <div className="relative w-full h-full min-h-[420px] flex items-center justify-center">
+        <div className="relative">
+          {/* Static center core */}
+          <div
+            className="rounded-full flex items-center justify-center"
+            style={{
+              width: '10rem',
+              height: '10rem',
+              background: 'radial-gradient(60% 60% at 50% 50%, var(--primary-accent) 0%, var(--primary-accent-dark) 100%)',
+              boxShadow: '0 0 60px rgba(79,70,229,0.4), 0 0 120px rgba(79,70,229,0.2)',
+            }}
+          />
+          
+          {/* Static orbiting nodes */}
+          {features.map((feature, index) => {
+            const x = Math.cos((feature.angle * Math.PI) / 180);
+            const y = Math.sin((feature.angle * Math.PI) / 180);
+            const radius = 88;
+            
+            return (
+              <div
+                key={feature.name}
+                className="absolute"
+                style={{
+                  left: '50%',
+                  top: '50%',
+                  transform: `translate(calc(-50% + ${x * radius}px), calc(-50% + ${y * radius}px))`,
+                }}
+              >
+                <div className="glass-effect p-3 md:p-4 rounded-xl flex flex-col items-center justify-center min-w-[54px] md:min-w-[76px]" style={{ border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <span className="text-base md:text-lg mb-1" style={{ color: 'var(--primary-accent)' }}>{feature.icon}</span>
+                  <span className="text-[10px] font-medium text-primary-accent hidden md:block">{feature.name}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full h-full min-h-[420px] flex items-center justify-center">
@@ -88,7 +140,6 @@ function OrbitingNode({ feature, index, reduced }: { feature: { name: string; ic
         </div>
       </motion.div>
 
-
       <style jsx>{`
         @media (min-width: 768px) {
           .absolute.left-1\\/2.top-1\\/2 {
@@ -139,21 +190,28 @@ function Beams({ features, reduced }: { features: { angle: number }[]; reduced: 
 
 function Starfield() {
   const reduced = useReducedMotion();
-  // Deterministic pseudo-random generator to avoid SSR/client mismatches
-  const pseudoRandom = (seed: number) => {
-    const x = Math.sin(seed * 12.9898) * 43758.5453;
-    return x - Math.floor(x);
-  };
-  const stars = Array.from({ length: 14 }).map((_, i) => ({
-    id: i,
-    left: `${pseudoRandom(i + 1) * 100}%`,
-    top: `${pseudoRandom(i + 101) * 100}%`,
-    delay: i * 0.2,
-  }));
+  
+  // Pre-defined static positions to avoid hydration issues
+  const staticStars = [
+    { id: 0, left: '5.72%', top: '7.89%', delay: 0 },
+    { id: 1, left: '17.90%', top: '4.71%', delay: 0.2 },
+    { id: 2, left: '89.43%', top: '12.35%', delay: 0.4 },
+    { id: 3, left: '76.82%', top: '88.91%', delay: 0.6 },
+    { id: 4, left: '23.45%', top: '91.22%', delay: 0.8 },
+    { id: 5, left: '91.78%', top: '45.67%', delay: 1.0 },
+    { id: 6, left: '8.34%', top: '56.78%', delay: 1.2 },
+    { id: 7, left: '45.67%', top: '23.45%', delay: 1.4 },
+    { id: 8, left: '67.89%', top: '78.90%', delay: 1.6 },
+    { id: 9, left: '34.56%', top: '67.89%', delay: 1.8 },
+    { id: 10, left: '78.90%', top: '34.56%', delay: 2.0 },
+    { id: 11, left: '12.34%', top: '89.01%', delay: 2.2 },
+    { id: 12, left: '56.78%', top: '12.34%', delay: 2.4 },
+    { id: 13, left: '89.01%', top: '56.78%', delay: 2.6 },
+  ];
 
   return (
     <>
-      {stars.map((s) => (
+      {staticStars.map((s) => (
         <motion.div
           key={`star-${s.id}`}
           initial={{ opacity: 0 }}
@@ -164,7 +222,6 @@ function Starfield() {
             width: '3px',
             height: '3px',
             left: s.left,
-
             top: s.top,
             background: 'radial-gradient(circle, rgba(255,255,255,0.9), rgba(255,255,255,0) 60%)'
           }}
@@ -253,6 +310,7 @@ function Nebula({ reduced }: { reduced: boolean }) {
 
 function Constellations() {
   const reduced = useReducedMotion();
+  
   return (
     <svg className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden>
       <defs>

@@ -29,13 +29,34 @@ export async function POST(request: NextRequest) {
     // Store in database using Supabase service role to bypass RLS
     try {
       const supabase = getSupabaseService();
+      
+      // First, check if the table exists
+      const { error: tableCheckError } = await supabase
+        .from('solara_interest_modal')
+        .select('id')
+        .limit(1);
+      
+      if (tableCheckError) {
+        console.error('Table check error:', tableCheckError);
+        if (tableCheckError.code === '42P01') {
+          console.error('Table solara_interest_modal does not exist. Please run the database setup script.');
+          return NextResponse.json(
+            { 
+              error: 'Database not configured. Please contact support.',
+              details: 'Table solara_interest_modal does not exist'
+            },
+            { status: 500 }
+          );
+        }
+      }
+      
       const { data, error } = await supabase
         .from('solara_interest_modal')
         .insert({
           name: body.name,
           email: body.email,
           phone: body.phone || null,
-          company: body.company || null,
+          company: body.company || 'Individual',
           role: body.role || null,
           department: body.department || null,
           company_size: body.companySize || null,
@@ -62,6 +83,7 @@ export async function POST(request: NextRequest) {
           competitive_analysis: body.competitiveAnalysis || null,
           how_did_you_hear: body.howDidYouHear || null,
           additional_notes: body.additionalNotes || null,
+          privacy_consent: body.privacyConsent || false,
           ip_address: request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || null,
           user_agent: request.headers.get('user-agent') || null,
         })
@@ -71,7 +93,7 @@ export async function POST(request: NextRequest) {
       if (error) {
         console.error('Supabase insert error:', error);
         return NextResponse.json(
-          { error: 'Failed to save Solara inquiry' },
+          { error: 'Failed to save Solara inquiry', details: error.message },
           { status: 500 }
         );
       }
@@ -138,16 +160,18 @@ export async function POST(request: NextRequest) {
           leadId: leadId,
           createdAt: createdAt
         },
-        { status: 201 }
+        { status: 200 }
       );
 
     } catch (dbError) {
       console.error('Database insert failed:', dbError);
       return NextResponse.json(
-        { error: 'Failed to save Solara interest' },
+        { error: 'Failed to save Solara inquiry' },
         { status: 500 }
       );
     }
+
+
 
   } catch (error) {
     console.error('Error processing Solara interest:', error);

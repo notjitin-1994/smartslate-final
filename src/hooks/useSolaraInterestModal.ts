@@ -1,13 +1,14 @@
-import { create } from 'zustand';
+import { useState } from 'react';
 
-interface SolaraInterestModalState {
-  isOpen: boolean;
-  openModal: () => void;
-  closeModal: () => void;
+export function useSolaraInterestModal() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
+
+  return {
+    isOpen,
+    openModal,
+    closeModal,
+  };
 }
-
-export const useSolaraInterestModal = create<SolaraInterestModalState>((set) => ({
-  isOpen: false,
-  openModal: () => set({ isOpen: true }),
-  closeModal: () => set({ isOpen: false }),
-}));

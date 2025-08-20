@@ -1,13 +1,13 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { useSolaraInterestModal } from '@/hooks/useSolaraInterestModal';
+import { useModalManager } from '@/hooks/useModalManager';
 import { useState, FormEvent } from 'react';
 import Modal from '@/components/ui/Modal';
 import FormField from '@/components/ui/FormField';
 
 export default function SolaraInterestModal() {
-  const { isOpen, closeModal } = useSolaraInterestModal();
+  const { modalStates: { solaraInterest: isOpen }, actions: { closeSolaraInterestModal: closeModal } } = useModalManager();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     // Step 1: Contact & Professional Information
@@ -206,7 +206,7 @@ export default function SolaraInterestModal() {
     }, 3000);
   };
 
-  const updateFormData = (field: string, value: string | string[]) => {
+  const updateFormData = (field: string, value: string | string[] | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
     if (errors[field]) {

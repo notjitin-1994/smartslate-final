@@ -52,6 +52,17 @@ const nextConfig: NextConfig = {
         source: "/favicon.ico",
         destination: "/images/courses/swirl.png?v=favicon4",
       },
+      // Rewrite app.smartslate.io to /app route
+      {
+        source: "/",
+        destination: "/app",
+        has: [
+          {
+            type: 'host',
+            value: 'app.smartslate.io',
+          },
+        ],
+      },
     ];
   },
   async redirects() {

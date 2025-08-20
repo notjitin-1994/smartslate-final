@@ -1,88 +1,98 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseService } from '@/lib/supabase';
 import { sendEmail } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json().catch(() => ({}));
-    const title: string = body?.title || 'Partner/Collaboration Inquiry';
-    const collaborationType: string = body?.collaborationType || 'general';
-    const data: Record<string, unknown> = body?.data || {};
+    const body = await request.json();
+    
+    // Validate required fields
+    const requiredFields = ['name', 'email', 'company', 'organizationSize', 'partnershipGoals'];
+    for (const field of requiredFields) {
+      if (!body[field]) {
+        return NextResponse.json(
+          { error: `Missing required field: ${field}` },
+          { status: 400 }
+        );
+      }
+    }
 
-    // Minimal validation
-    const email = typeof data?.email === 'string' ? String(data.email) : '';
-    const name = typeof data?.name === 'string' ? String(data.name) : '';
+    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email)) {
+    if (!emailRegex.test(body.email)) {
       return NextResponse.json(
-        { error: 'A valid email is required' },
+        { error: 'Invalid email format' },
         { status: 400 }
       );
     }
 
-    // Store in database using Supabase service role to bypass RLS
-    const supabase = getSupabaseService();
-    const { data: insertData, error } = await supabase
-      .from('partner_inquiries')
-      .insert({
-        title: title,
-        collaboration_type: collaborationType,
-        name: name,
-        email: email,
-        company: typeof data?.company === 'string' ? String(data.company) : null,
-        role: typeof data?.role === 'string' ? String(data.role) : null,
-        phone: typeof data?.phone === 'string' ? String(data.phone) : null,
-        fund: typeof data?.fund === 'string' ? String(data.fund) : null,
-        linkedin_url: typeof data?.linkedin === 'string' ? String(data.linkedin) : (typeof data?.linkedin_url === 'string' ? String(data.linkedin_url) : null),
-        github_url: typeof data?.github === 'string' ? String(data.github) : (typeof data?.github_url === 'string' ? String(data.github_url) : null),
-        source: typeof body?.source === 'string' ? body.source : 'collaborate-page',
-        status: 'new',
-        tags: Array.isArray(body?.tags) ? body.tags : null,
-        data: data,
-        ip_address: request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || null,
-        user_agent: request.headers.get('user-agent') || null,
-      })
-      .select('id, created_at')
-      .single();
+    // Format the email content
+    const emailContent = `
+New Partnership Request
 
-    if (error) {
-      console.error('Supabase insert error:', error);
-      return NextResponse.json(
-        { error: 'Failed to save partner inquiry' },
-        { status: 500 }
-      );
-    }
+Contact Information:
+- Name: ${body.name}
+- Email: ${body.email}
+- Phone: ${body.phone || 'Not provided'}
+- Company: ${body.company}
+- Role: ${body.role || 'Not provided'}
+- Industry: ${body.industry || 'Not provided'}
 
-    const leadId = insertData.id;
-    const createdAt = insertData.created_at;
+Organization Details:
+- Size: ${body.organizationSize}
+- Timeline: ${body.timeline || 'Not specified'}
+- Current Initiatives: ${body.currentInitiatives || 'Not provided'}
 
-    // Notify team
-    const to = process.env.LEADS_EMAIL_TO || 'hello@smartslate.io';
-    const subject = `Partner Inquiry: ${title} [${collaborationType}] (${name || 'Unknown'})`;
-    const html = `
-      <h2>New Partner/Collaboration Inquiry</h2>
-      <p><strong>Request ID:</strong> ${leadId}</p>
-      <p><strong>Submitted:</strong> ${createdAt}</p>
-      <p><strong>Source:</strong> Partner Contact Modal</p>
-      <p><strong>Type:</strong> ${collaborationType}</p>
-      <hr/>
-      <pre style="white-space:pre-wrap;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;">${JSON.stringify({ title, data }, null, 2)}</pre>
+Partnership Details:
+- Type: ${body.partnershipType}
+- Goals: ${body.partnershipGoals.join(', ')}
+- Budget: ${body.budget || 'Not specified'}
+- Preferred Contact: ${body.preferredContact}
+- Follow-up Requested: ${body.followUp}
+
+Additional Information:
+- Specific Needs: ${body.specificNeeds || 'Not provided'}
+
+Submitted at: ${new Date().toISOString()}
     `;
-    // Fire-and-forget
-    sendEmail({ to, subject, html }).catch((err) => console.error('Failed to send partner inquiry email', err));
+
+    // Send email notification
+    await sendEmail({
+      to: process.env.PARTNERSHIP_EMAIL || 'partnerships@smartslate.com',
+      subject: `New Partnership Request - ${body.partnershipType} - ${body.company}`,
+      html: emailContent.replace(/\n/g, '<br>'),
+    });
+
+    // Send confirmation email to the user
+    const confirmationContent = `
+Dear ${body.name},
+
+Thank you for your interest in partnering with Smartslate!
+
+We have received your partnership request and our team will review it within 2 business days. We'll get back to you at ${body.email} with next steps and to schedule a consultation if requested.
+
+In the meantime, if you have any urgent questions, please don't hesitate to reach out to us.
+
+Best regards,
+The Smartslate Partnership Team
+    `;
+
+    await sendEmail({
+      to: body.email,
+      subject: 'Partnership Request Received - Smartslate',
+      html: confirmationContent.replace(/\n/g, '<br>'),
+    });
 
     return NextResponse.json(
-      {
-        success: true,
-        message: 'Inquiry submitted successfully',
-        requestId: leadId,
-        createdAt,
-      },
-      { status: 201 }
+      { message: 'Partnership request submitted successfully' },
+      { status: 200 }
     );
+
   } catch (error) {
-    console.error('Error processing partner inquiry:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error('Error processing partnership request:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
   }
 }
 

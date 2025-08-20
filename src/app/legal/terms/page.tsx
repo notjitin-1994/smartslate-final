@@ -40,7 +40,7 @@ export default function TermsOfService() {
                 By accessing and using Smartslate's learning management platform and related services ("Services"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
               </p>
               <p className="text-secondary leading-relaxed">
-                These Terms of Service ("Terms") govern your use of the Services provided by Smartslate Technologies Pvt. Ltd. ("Smartslate," "we," "our," or "us"). These Terms constitute a legally binding agreement between you and Smartslate.
+                These Terms of Service ("Terms") govern your use of the Services provided by Smartslate Learning ("Smartslate," "we," "our," or "us"). These Terms constitute a legally binding agreement between you and Smartslate.
               </p>
             </section>
 
@@ -260,7 +260,7 @@ export default function TermsOfService() {
               <div className="bg-background-surface rounded-lg p-6 border border-border">
                 <div className="space-y-2 text-secondary">
                   <p><strong>Email:</strong> jitin@smartslate.io</p>
-                  <p><strong>Address:</strong> Smartslate Technologies Pvt. Ltd.</p>
+                  <p><strong>Address:</strong> Smartslate Learning</p>
                   <p className="ml-4">India</p>
                   <p><strong>Phone:</strong> +91 9008898642</p>
                 </div>
@@ -271,7 +271,7 @@ export default function TermsOfService() {
             <div className="border-t border-border pt-8 mt-12">
               <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                 <p className="text-sm text-secondary">
-                  © {new Date().getFullYear()} Smartslate Technologies Pvt. Ltd. All rights reserved.
+                  © {new Date().getFullYear()} Smartslate Learning. All rights reserved.
                 </p>
                 <div className="flex gap-6 text-sm">
                   <Link href="/legal/privacy" className="text-primary-accent hover:underline">

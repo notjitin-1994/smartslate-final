@@ -1,12 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
-import { AuthProvider } from "@/contexts/AuthContext";
+import { ModalProvider } from "@/components/providers/ModalProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 import TrackClient from "@/components/providers/TrackClient";
 import PWAClient from "@/components/providers/PWAClient";
-import OAuthCodeRouter from "@/components/providers/OAuthCodeRouter";
 import WaitlistModal from "@/components/ui/WaitlistModal";
 import "./globals.css";
 import { Suspense } from "react";
@@ -86,10 +85,11 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet" />
       </head>
       <body>
-        <AuthProvider>
-          <ThemeProvider>
+        <ThemeProvider>
+          <ModalProvider>
             <Header />
             <main className="main-content">
               {children}
@@ -98,11 +98,10 @@ export default function RootLayout({
             <Suspense fallback={null}>
               <TrackClient />
               <PWAClient />
-              <OAuthCodeRouter />
             </Suspense>
             <WaitlistModal />
-          </ThemeProvider>
-        </AuthProvider>
+          </ModalProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

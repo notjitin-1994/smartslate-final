@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Container, Grid, IconButton, Link as MuiLink, Typography } from '@mui/material';
+import { Box, Container, IconButton, Link as MuiLink, Typography } from '@mui/material';
 import { useTheme, styled } from '@mui/material/styles';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -69,9 +69,15 @@ export default function Footer() {
   return (
     <FooterWrapper>
       <FooterContent maxWidth="lg">
-        <Grid container spacing={4}>
+        <Box 
+          sx={{ 
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '2fr 1fr 1fr 1fr 1fr' },
+            gap: 4 
+          }}
+        >
           {/* Company Info */}
-          <Grid item xs={12} sm={6} md={4} component="div">
+          <Box>
             <LogoWrapper>
               <Link href="/" aria-label="Smartslate home" style={{ textDecoration: 'none' }}>
                 <Image
@@ -102,44 +108,44 @@ export default function Footer() {
                 <FaYoutube />
               </SocialIcon>
             </Box>
-          </Grid>
+          </Box>
           
           {/* Quick Links */}
-          <Grid item xs={6} sm={4} md={2} component="div">
+          <Box>
             <SectionTitle variant="h6">Product</SectionTitle>
             <FooterLink href="/features" component={Link}>Features</FooterLink>
             <FooterLink href="/pricing" component={Link}>Pricing</FooterLink>
             <FooterLink href="/templates" component={Link}>Templates</FooterLink>
             <FooterLink href="/updates" component={Link}>Updates</FooterLink>
-          </Grid>
+          </Box>
           
           {/* Resources */}
-          <Grid item xs={6} sm={4} md={2} component="div">
+          <Box>
             <SectionTitle variant="h6">Resources</SectionTitle>
             <FooterLink href="/blog" component={Link}>Blog</FooterLink>
             <FooterLink href="/tutorials" component={Link}>Tutorials</FooterLink>
             <FooterLink href="/docs" component={Link}>Documentation</FooterLink>
             <FooterLink href="/support" component={Link}>Help Center</FooterLink>
-          </Grid>
+          </Box>
           
           {/* Company */}
-          <Grid item xs={6} sm={4} md={2} component="div">
+          <Box>
             <SectionTitle variant="h6">Company</SectionTitle>
             <FooterLink href="/about" component={Link}>About Us</FooterLink>
             <FooterLink href="/careers" component={Link}>Careers</FooterLink>
             <FooterLink href="/contact" component={Link}>Contact</FooterLink>
             <FooterLink href="/partners" component={Link}>Partners</FooterLink>
-          </Grid>
+          </Box>
           
           {/* Legal */}
-          <Grid item xs={6} sm={4} md={2} component="div">
+          <Box>
             <SectionTitle variant="h6">Legal</SectionTitle>
-            <FooterLink href="/privacy" component={Link}>Privacy Policy</FooterLink>
-            <FooterLink href="/terms" component={Link}>Terms of Service</FooterLink>
+            <FooterLink href="/legal/privacy" component={Link}>Privacy Policy</FooterLink>
+            <FooterLink href="/legal/terms" component={Link}>Terms of Service</FooterLink>
             <FooterLink href="/cookies" component={Link}>Cookie Policy</FooterLink>
             <FooterLink href="/gdpr" component={Link}>GDPR</FooterLink>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
         
         {/* Copyright */}
         <Box sx={{ 

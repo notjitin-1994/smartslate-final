@@ -19,10 +19,7 @@ import {
   CurrencyRupee,
 } from '@mui/icons-material';
 import Accordion from '@/components/ui/Accordion';
-import { useSSAInterestModal } from '@/hooks/useSSAInterestModal';
-import { useSolaraInterestModal } from '@/hooks/useSolaraInterestModal';
-import SSAInterestModal from '@/components/products/SSAInterestModal';
-import SolaraInterestModal from '@/components/products/SolaraInterestModal';
+
 
 const FrameworkSection = styled(Box)(({ theme }) => ({
   padding: `${theme.spacing(10)} 0`,
@@ -190,6 +187,8 @@ const AnimateText = styled('span', {
 
 interface FrameworkProps {
   onRevealNext: () => void;
+  openSSAModal: () => void;
+  openSolaraModal: () => void;
 }
 
 type StepId = 'ignite' | 'architecture' | 'solara';
@@ -251,7 +250,7 @@ const frameworkSteps = [
   },
 ];
 
-export default function Framework({ onRevealNext }: FrameworkProps) {
+export default function Framework({ onRevealNext, openSSAModal, openSolaraModal }: FrameworkProps) {
   const [activeStep, setActiveStep] = useState<StepId>('ignite');
   const stepEndIcons = {
     ignite: <School aria-hidden="true" className="icon-anim icon-float" />,
@@ -259,10 +258,6 @@ export default function Framework({ onRevealNext }: FrameworkProps) {
     solara: <AutoAwesome aria-hidden="true" className="icon-anim icon-pulse" />,
   } as const;
   const [animateTransform, setAnimateTransform] = useState(false);
-  
-  // Add modal hooks
-  const { openModal: openSSAModal } = useSSAInterestModal();
-  const { openModal: openSolaraModal } = useSolaraInterestModal();
   
   // Add refs and inView hooks for animations
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -565,9 +560,6 @@ export default function Framework({ onRevealNext }: FrameworkProps) {
         </Box>
       </Container>
 
-      {/* Add the modals */}
-      <SSAInterestModal />
-      <SolaraInterestModal />
     </FrameworkSection>
   );
 }
