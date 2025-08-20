@@ -48,12 +48,6 @@ export default function DifferenceHero() {
               description="At Smartslate, we don't just deliver training—we architect learning ecosystems that evolve with your organization. Our approach transcends conventional boundaries, creating experiences that resonate, results that matter, and transformations that last."
         accentWords={['Smartslate', 'transformative', 'learning ecosystems']}
       showScrollIndicator={true}
-    >
-      <Link href="/smartslate-testimony" style={{ textDecoration: 'none' }}>
-        <CTAButton variant="contained" size="large">
-          Discover Our AI-Human Journey
-        </CTAButton>
-      </Link>
-    </StandardHero>
+    />
   );
 }

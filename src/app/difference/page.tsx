@@ -5,7 +5,7 @@ import DifferenceHero from "@/components/difference/DifferenceHero";
 import ComparisonSection from "@/components/difference/ComparisonSection";
 import KeyDifferentiators from "@/components/difference/KeyDifferentiators";
 import TransformationJourney from "@/components/difference/TransformationJourney";
-import ImpactMetrics from "@/components/difference/ImpactMetrics";
+
 import CTASection from "@/components/difference/CTASection";
 import { 
   PageWrapper, 
@@ -42,12 +42,7 @@ export default function DifferencePage() {
         </Container>
       </SectionWrapper>
 
-      {/* Impact Metrics */}
-      <SectionWrapper sx={BackgroundVariants.secondary}>
-        <Container maxWidth="lg">
-          <ImpactMetrics />
-        </Container>
-      </SectionWrapper>
+
 
       {/* Call to Action */}
       <SectionWrapper>

@@ -61,7 +61,7 @@ export default function ComparisonSection() {
                       <Typography
                         variant="h6"
                         sx={{
-                          color: 'text.secondary',
+                          color: '#ef4444',
                           fontSize: '0.875rem',
                           fontWeight: 600,
                           textTransform: 'uppercase',
@@ -71,7 +71,7 @@ export default function ComparisonSection() {
                       >
                         Traditional Approach
                       </Typography>
-                      <CardTitle>
+                      <CardTitle sx={{ color: '#ef4444' }}>
                         {item.traditional}
                       </CardTitle>
                     </Box>
