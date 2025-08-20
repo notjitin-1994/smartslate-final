@@ -1,133 +1,164 @@
 'use client';
 
-import { Box, Container, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Box, Container, Grid, IconButton, Link as MuiLink, Typography } from '@mui/material';
+import { useTheme, styled } from '@mui/material/styles';
 import Image from 'next/image';
 import Link from 'next/link';
+import { FaTwitter, FaLinkedin, FaGithub, FaYoutube } from 'react-icons/fa';
+
+const currentYear = new Date().getFullYear();
 
 const FooterWrapper = styled('footer')(({ theme }) => ({
-  marginTop: theme.spacing(0.02),
+  backgroundColor: theme.palette.background.paper,
   borderTop: `1px solid ${theme.palette.divider}`,
-  padding: `${theme.spacing(0.8)} 0`,
-  backgroundColor: 'transparent',
+  padding: theme.spacing(6, 0),
+  marginTop: 'auto',
 }));
 
 const FooterContent = styled(Container)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
-  gap: theme.spacing(3),
-  textAlign: 'center',
+  gap: theme.spacing(4),
 }));
 
 const LogoWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center',
-  opacity: 0.8,
-  transition: 'opacity 0.2s ease',
+  marginBottom: theme.spacing(2),
   '&:hover': {
-    opacity: 1,
+    opacity: 0.9,
   },
 }));
 
-const FooterText = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: theme.spacing(1.5),
-  [theme.breakpoints.up('sm')]: {
-    flexDirection: 'row',
-    gap: theme.spacing(3),
-  },
-}));
-
-const Tagline = styled(Typography)(({ theme }) => ({
+const SectionTitle = styled(Typography)(({ theme }) => ({
+  fontWeight: 600,
+  marginBottom: theme.spacing(2),
+  color: theme.palette.text.primary,
   fontSize: '1rem',
+}));
+
+
+const FooterLink = styled(({ component, ...props }: any) => (
+  <MuiLink component={component} {...props} />
+))(({ theme }) => ({
+  display: 'block',
   color: theme.palette.text.secondary,
-  fontWeight: 400,
-  [theme.breakpoints.down('sm')]: {
-    fontSize: '0.9rem',
+  marginBottom: theme.spacing(1),
+  textDecoration: 'none',
+  transition: 'color 0.2s ease',
+  fontSize: '0.9rem',
+  '&:hover': {
+    color: theme.palette.primary.main,
+    textDecoration: 'none',
   },
 }));
 
-const Copyright = styled(Typography)(({ theme }) => ({
-  fontSize: '0.875rem',
-  color: theme.palette.text.disabled,
-  [theme.breakpoints.down('sm')]: {
-    fontSize: '0.8rem',
+const SocialIcon = styled(IconButton)(({ theme }) => ({
+  color: theme.palette.text.secondary,
+  border: `1px solid ${theme.palette.divider}`,
+  '&:hover': {
+    backgroundColor: theme.palette.action.hover,
+    color: theme.palette.primary.main,
   },
-}));
-
-const Divider = styled('span')(({ theme }) => ({
-  display: 'none',
-  color: theme.palette.text.disabled,
-  [theme.breakpoints.up('sm')]: {
-    display: 'inline',
-  },
-}));
+})) as typeof IconButton;
 
 export default function Footer() {
+  const theme = useTheme();
   const currentYear = new Date().getFullYear();
 
   return (
     <FooterWrapper>
       <FooterContent maxWidth="lg">
-        <LogoWrapper>
-          <Link href="/" aria-label="Smartslate home">
-            <Image
-              src="/logo.png"
-              alt="Smartslate Logo"
-              width={140}
-              height={34}
-              quality={45}
-              sizes="(max-width: 640px) 112px, 140px"
-              loading="lazy"
-              style={{ height: 'auto' }}
-            />
-            <span className="sr-only">Smartslate</span>
-          </Link>
-        </LogoWrapper>
-
-        <FooterText>
-          <Tagline variant="body2">
-            Revolutionizing the way the World learns.
-          </Tagline>
-          <Divider>•</Divider>
-          <Copyright variant="body2">
-            © {currentYear} Smartslate. All rights reserved.
-          </Copyright>
-        </FooterText>
+        <Grid container spacing={4}>
+          {/* Company Info */}
+          <Grid item xs={12} sm={6} md={4} component="div">
+            <LogoWrapper>
+              <Link href="/" aria-label="Smartslate home" style={{ textDecoration: 'none' }}>
+                <Image
+                  src="/logo.png"
+                  alt="Smartslate Logo"
+                  width={160}
+                  height={40}
+                  quality={100}
+                  loading="lazy"
+                  style={{ height: 'auto' }}
+                />
+              </Link>
+            </LogoWrapper>
+            <Typography variant="body1" color="text.secondary" sx={{ my: 2 }}>
+              Revolutionizing the way the world learns through innovative educational technology.
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 2, mt: 3 }}>
+              <SocialIcon component="a" href="https://twitter.com" target="_blank" rel="noopener">
+                <FaTwitter />
+              </SocialIcon>
+              <SocialIcon component="a" href="https://linkedin.com" target="_blank" rel="noopener">
+                <FaLinkedin />
+              </SocialIcon>
+              <SocialIcon component="a" href="https://github.com" target="_blank" rel="noopener">
+                <FaGithub />
+              </SocialIcon>
+              <SocialIcon component="a" href="https://youtube.com" target="_blank" rel="noopener">
+                <FaYoutube />
+              </SocialIcon>
+            </Box>
+          </Grid>
+          
+          {/* Quick Links */}
+          <Grid item xs={6} sm={4} md={2} component="div">
+            <SectionTitle variant="h6">Product</SectionTitle>
+            <FooterLink href="/features" component={Link}>Features</FooterLink>
+            <FooterLink href="/pricing" component={Link}>Pricing</FooterLink>
+            <FooterLink href="/templates" component={Link}>Templates</FooterLink>
+            <FooterLink href="/updates" component={Link}>Updates</FooterLink>
+          </Grid>
+          
+          {/* Resources */}
+          <Grid item xs={6} sm={4} md={2} component="div">
+            <SectionTitle variant="h6">Resources</SectionTitle>
+            <FooterLink href="/blog" component={Link}>Blog</FooterLink>
+            <FooterLink href="/tutorials" component={Link}>Tutorials</FooterLink>
+            <FooterLink href="/docs" component={Link}>Documentation</FooterLink>
+            <FooterLink href="/support" component={Link}>Help Center</FooterLink>
+          </Grid>
+          
+          {/* Company */}
+          <Grid item xs={6} sm={4} md={2} component="div">
+            <SectionTitle variant="h6">Company</SectionTitle>
+            <FooterLink href="/about" component={Link}>About Us</FooterLink>
+            <FooterLink href="/careers" component={Link}>Careers</FooterLink>
+            <FooterLink href="/contact" component={Link}>Contact</FooterLink>
+            <FooterLink href="/partners" component={Link}>Partners</FooterLink>
+          </Grid>
+          
+          {/* Legal */}
+          <Grid item xs={6} sm={4} md={2} component="div">
+            <SectionTitle variant="h6">Legal</SectionTitle>
+            <FooterLink href="/privacy" component={Link}>Privacy Policy</FooterLink>
+            <FooterLink href="/terms" component={Link}>Terms of Service</FooterLink>
+            <FooterLink href="/cookies" component={Link}>Cookie Policy</FooterLink>
+            <FooterLink href="/gdpr" component={Link}>GDPR</FooterLink>
+          </Grid>
+        </Grid>
         
-        {/* Legal Links */}
-        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'center' }}>
-          <Link 
-            href="/legal/privacy" 
-            style={{ 
-              color: 'rgba(176, 197, 198, 0.8)', 
-              textDecoration: 'none', 
-              fontSize: '0.875rem',
-              transition: 'color 0.2s ease'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.color = '#a7dadb'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(176, 197, 198, 0.8)'}
-          >
-            Privacy Policy
-          </Link>
-          <span style={{ color: 'rgba(176, 197, 198, 0.4)' }}>•</span>
-          <Link 
-            href="/legal/terms" 
-            style={{ 
-              color: 'rgba(176, 197, 198, 0.8)', 
-              textDecoration: 'none', 
-              fontSize: '0.875rem',
-              transition: 'color 0.2s ease'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.color = '#a7dadb'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(176, 197, 198, 0.8)'}
-          >
-            Terms of Service
-          </Link>
+        {/* Copyright */}
+        <Box sx={{ 
+          mt: 6, 
+          pt: 3, 
+          borderTop: `1px solid ${theme.palette.divider}`,
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 2,
+          textAlign: { xs: 'center', sm: 'left' }
+        }}>
+          <Typography variant="body2" color="text.secondary">
+            © {currentYear} Smartslate. All rights reserved.
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Made with ❤️ for better education
+          </Typography>
         </Box>
       </FooterContent>
     </FooterWrapper>

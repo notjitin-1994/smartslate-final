@@ -12,7 +12,6 @@ import { useUserRoles } from '@/hooks/useUserRoles';
 import dynamic from 'next/dynamic';
 const MobileMenu = dynamic(() => import('./MobileMenu'), { ssr: false });
 const AnimatedHamburgerButton = dynamic(() => import('./MobileMenu').then(m => m.AnimatedHamburgerButton), { ssr: false });
-import { useAuthModal } from '@/hooks/useAuthModal';
 import { getSupabaseBrowser } from '@/lib/supabase-browser';
 
 const HeaderWrapper = styled('header', {
@@ -133,13 +132,13 @@ const CTAButton = styled(Button)(({ theme }) => ({
 
 
 export default function Header() {
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [userMenuAnchor, setUserMenuAnchor] = useState<null | HTMLElement>(null);
   const { isAuthenticated, user, logout, token } = useAuth();
   const { isOwner } = useUserRoles();
-  const router = useRouter();
-  const { open, isOpen } = useAuthModal();
+
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [avatarImgError, setAvatarImgError] = useState(false);
 
@@ -281,7 +280,7 @@ export default function Header() {
                 </Avatar>
               </IconButton>
             ) : (
-              <CTAButton variant="contained" onClick={() => open('signup')}>
+              <CTAButton variant="contained" onClick={() => router.push('/login?tab=signup')}>
                 Get Started
               </CTAButton>
             )}
@@ -376,12 +375,6 @@ export default function Header() {
         </MenuItem>
       </Menu>
 
-      {/* Auth Modal root - lazy load only when opened */}
-      {isOpen ? <LazyAuthModal /> : null}
     </>
   );
 }
-
-const LazyAuthModal = dynamic(() => import('@/components/auth/AuthModal'), {
-  ssr: false,
-});

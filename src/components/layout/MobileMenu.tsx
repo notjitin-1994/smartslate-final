@@ -10,7 +10,6 @@ import { useRouter } from 'next/navigation';
 
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserRoles } from '@/hooks/useUserRoles';
-import { useAuthModal } from '@/hooks/useAuthModal';
 
 // Styled components
 const MobileMenuButton = styled(motion.button)(({ theme }) => ({
@@ -241,7 +240,7 @@ export default function MobileMenu({ open, onClose, navItems }: MobileMenuProps)
   const { isAuthenticated, user, logout } = useAuth();
   const { isOwner } = useUserRoles();
   const router = useRouter();
-  const { open: openAuth } = useAuthModal();
+
 
   const userInitials = (name?: string) => {
     if (!name) return 'U';
@@ -433,7 +432,7 @@ export default function MobileMenu({ open, onClose, navItems }: MobileMenuProps)
               ) : (
                 <MobileCTAButton 
                   variant="contained" 
-                  onClick={() => handleAuthAction(() => openAuth('signup'))}
+                  onClick={() => handleAuthAction(() => router.push('/login?tab=signup'))}
                   custom={0}
                   variants={buttonVariants}
                   initial="hidden"
