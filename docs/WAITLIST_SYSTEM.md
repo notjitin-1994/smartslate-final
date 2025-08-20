@@ -63,7 +63,7 @@ A reusable button component that triggers the waitlist modal.
 
 ### 3. useWaitlistModal Hook
 
-A Zustand-based hook for managing the waitlist modal state.
+A custom hook for managing the waitlist modal state.
 
 **Location**: `src/hooks/useWaitlistModal.ts`
 
@@ -101,251 +101,270 @@ A Zustand-based hook for managing the waitlist modal state.
 - `learningFormat`: Preferred learning format
 - `experienceLevel`: User's experience level
 - `teamSize`: Size of user's team
-- `budgetRange`: Budget range
-- `timeline`: Implementation timeline
-- `referralSource`: How user found the platform
-- `howDidYouHear`: Additional referral information
-- `additionalInfo`: Any additional notes
-
-**Response**:
-```json
-{
-  "success": true,
-  "message": "Waitlist submission successful",
-  "leadId": "uuid",
-  "createdAt": "timestamp"
-}
-```
+- `budgetRange`: Budget range for the solution
+- `timeline`: Expected timeline for implementation
+- `referralSource`: How the user heard about Smartslate
+- `additionalInfo`: Any additional information
 
 ## Database Schema
 
-The system expects a `waitlist_leads` table in Supabase with the following structure:
+### Table: `waitlist_leads`
 
+The waitlist submissions are stored in the `waitlist_leads` table in Supabase.
+
+**Fields**:
 ```sql
 CREATE TABLE waitlist_leads (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  
-  -- Contact Information
   name TEXT NOT NULL,
   email TEXT NOT NULL,
   phone TEXT,
   company TEXT,
-  
-  -- Professional Context
   role TEXT,
   industry TEXT,
   company_size TEXT,
   location TEXT,
-  
-  -- Waitlist Details
   source TEXT NOT NULL,
   course_name TEXT,
   interest_level TEXT DEFAULT 'high',
   learning_goals TEXT,
-  preferred_start_date TEXT,
+  preferred_start_date DATE,
   learning_format TEXT,
   experience_level TEXT,
-  
-  -- Business Context
   team_size TEXT,
   budget_range TEXT,
   timeline TEXT,
   referral_source TEXT,
-  
-  -- Additional Information
   additional_info TEXT,
   how_did_you_hear TEXT,
-  
-  -- Analytics
   ip_address INET,
-  user_agent TEXT
+  user_agent TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 ```
 
 ## Usage Examples
 
-### Basic Button Usage
+### Basic Waitlist Button
 
 ```tsx
 import WaitlistButton from '@/components/ui/WaitlistButton';
 
-// Simple waitlist button
 <WaitlistButton 
-  source="General Interest"
-  variant="primary"
-  size="md"
-/>
-
-// Course-specific waitlist button
-<WaitlistButton 
-  source="AI Course"
-  courseName="AI Foundations: Concept to Application"
-  variant="secondary"
+  source="homepage-hero" 
+  variant="primary" 
   size="lg"
 >
-  Join AI Course Waitlist
+  Join Waitlist
 </WaitlistButton>
 ```
 
-### Using the Hook Directly
+### Course-Specific Waitlist
+
+```tsx
+<WaitlistButton 
+  source="ai-foundations-course" 
+  courseName="AI Foundations"
+  variant="outline"
+>
+  Get Early Access
+</WaitlistButton>
+```
+
+### Custom Waitlist Modal
 
 ```tsx
 import { useWaitlistModal } from '@/hooks/useWaitlistModal';
 
-function MyComponent() {
+const MyComponent = () => {
   const { openModal } = useWaitlistModal();
-
+  
   const handleWaitlistClick = () => {
-    openModal('Product Launch', 'Smartslate Platform');
+    openModal('custom-source', 'Custom Course');
   };
-
+  
   return (
     <button onClick={handleWaitlistClick}>
-      Get Early Access
+      Join Custom Waitlist
     </button>
   );
-}
+};
 ```
-
-### Custom Integration
-
-```tsx
-import { useWaitlistModal } from '@/hooks/useWaitlistModal';
-
-function CourseCard({ course }) {
-  const { openModal } = useWaitlistModal();
-
-  return (
-    <div className="course-card">
-      <h3>{course.title}</h3>
-      <p>{course.description}</p>
-      <button 
-        onClick={() => openModal('Course Page', course.title)}
-        className="waitlist-btn"
-      >
-        Join Waitlist
-      </button>
-    </div>
-  );
-}
-```
-
-## Styling and Theming
-
-The waitlist system uses the existing design system with:
-
-- **Colors**: Primary and secondary accent colors from the theme
-- **Typography**: Consistent font sizes and weights
-- **Spacing**: Standard spacing scale (4, 6, 8, etc.)
-- **Animations**: Framer Motion for smooth transitions
-- **Responsiveness**: Mobile-first design with breakpoint-based layouts
 
 ## Email Notifications
 
-When a user submits the waitlist form:
+### Automatic Notifications
 
-1. **Lead Data**: Stored in the database
-2. **Email Sent**: Notification sent to the team (configured via `LEADS_EMAIL_TO` env var)
-3. **Email Content**: Includes all form data organized in sections
-4. **Subject Line**: Format: "Waitlist Lead: {source} - {name}"
+When a waitlist submission is received:
 
-## Admin Features
+1. **Lead is stored** in the database
+2. **Email notification** is sent to the team
+3. **Confirmation** is shown to the user
 
-### Viewing Waitlist Leads
+### Email Template
 
-All waitlist submissions are stored in the `waitlist_leads` table and can be viewed through:
+The email includes:
+- Lead ID and submission timestamp
+- All form field data
+- Source and course context
+- Business context information
+- IP address and user agent for tracking
 
-- Supabase dashboard
-- Admin API endpoints (if implemented)
-- Database queries
+### Email Configuration
 
-### Analytics
-
-The system tracks:
-- **Source attribution**: Where each lead came from
-- **Course/product interest**: What users are interested in
-- **Geographic data**: User locations
-- **Company information**: Business context
-- **Timing**: When users want to start
-
-## Configuration
-
-### Environment Variables
-
+Set the recipient email via environment variable:
 ```bash
-# Required for email notifications
 LEADS_EMAIL_TO=hello@smartslate.io
-
-# Supabase configuration (already configured)
-SUPABASE_URL=your_supabase_url
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 ```
 
-### Database Setup
+## Form Validation
 
-1. Create the `waitlist_leads` table in your Supabase database
-2. Ensure the service role has insert permissions
-3. Set up any necessary RLS policies
+### Client-Side Validation
 
-## Best Practices
+- **Required fields**: Name, email, and source are mandatory
+- **Email format**: Validates email address format
+- **Field types**: Ensures proper data types for each field
 
-### Source Naming
+### Server-Side Validation
 
-Use descriptive, consistent source names:
-- `"Homepage Hero"`
-- `"Course Page - AI Foundations"`
-- `"Product Page - Solara"`
-- `"Blog Post - AI Skills"`
+- **Input sanitization**: All inputs are sanitized
+- **Database constraints**: Database-level validation
+- **Error handling**: Comprehensive error responses
 
-### Course/Product Names
+## Styling and Design
 
-Use the exact, user-facing names:
-- `"AI Foundations: Concept to Application"`
-- `"Advanced DevOps & Cloud Engineering"`
-- `"Solara Learning Platform"`
+### Design System Integration
 
-### Button Placement
+The waitlist system follows the Smartslate design system:
 
-- **Primary CTAs**: Use large, primary variant buttons
-- **Secondary CTAs**: Use medium, secondary variant buttons
-- **Inline CTAs**: Use small, outline variant buttons
+- **Glass morphism**: Consistent with overall design
+- **Color palette**: Uses brand colors and accents
+- **Typography**: Follows established font hierarchy
+- **Spacing**: Consistent with design system spacing
+
+### Responsive Design
+
+- **Mobile-first**: Optimized for mobile devices
+- **Breakpoint adaptation**: Responsive across all screen sizes
+- **Touch-friendly**: Optimized for touch interactions
+
+## Testing
+
+### Test Page
+
+A dedicated test page is available at `/waitlist-example` for testing:
+
+- Form functionality
+- Validation behavior
+- Modal interactions
+- Responsive design
+
+### Testing Checklist
+
+When testing the waitlist system:
+
+- [ ] Form submission works correctly
+- [ ] Validation errors display properly
+- [ ] Success state shows confirmation
+- [ ] Email notifications are sent
+- [ ] Database records are created
+- [ ] Responsive design works on all devices
+- [ ] Accessibility features function correctly
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Modal not opening**: Check that `WaitlistModal` is included in the layout
-2. **Form submission fails**: Verify the API endpoint is accessible and database is configured
-3. **Styling issues**: Ensure Tailwind CSS is properly configured
-4. **Email not sending**: Check `LEADS_EMAIL_TO` environment variable
+1. **Form not submitting**
+   - Check browser console for errors
+   - Verify all required fields are filled
+   - Ensure network connectivity
+
+2. **Email not received**
+   - Check `LEADS_EMAIL_TO` environment variable
+   - Verify email service configuration
+   - Check spam/junk folders
+
+3. **Database errors**
+   - Run `npm run setup:database` to ensure tables exist
+   - Check Supabase connection
+   - Verify environment variables
 
 ### Debug Mode
 
-Enable debug logging by checking browser console and server logs for:
-- Form validation errors
-- API request/response details
-- Database connection issues
+Enable debug logging by setting:
+```bash
+NODE_ENV=development
+```
 
 ## Future Enhancements
 
-Potential improvements for the waitlist system:
+### Planned Features
 
-1. **A/B Testing**: Different form layouts and questions
-2. **Progressive Profiling**: Multi-step form with conditional questions
-3. **Integration**: CRM integration, marketing automation
-4. **Analytics**: Conversion tracking, funnel analysis
-5. **Personalization**: Dynamic content based on source/course
-6. **Follow-up**: Automated email sequences for waitlist members
+- **A/B Testing**: Test different form layouts and copy
+- **Progressive Profiling**: Collect additional information over time
+- **Integration**: Connect with CRM and marketing tools
+- **Analytics**: Advanced lead tracking and conversion metrics
+- **Personalization**: Dynamic forms based on user behavior
 
-## Support
+### Technical Improvements
 
-For questions or issues with the waitlist system:
+- **Performance**: Optimize form loading and submission
+- **Caching**: Implement smart caching strategies
+- **Security**: Add rate limiting and bot protection
+- **Accessibility**: Enhance screen reader support
 
-1. Check this documentation
-2. Review the example page at `/waitlist-example`
-3. Examine the component source code
-4. Check browser console and server logs
-5. Contact the development team
+## Security Considerations
+
+### Data Protection
+
+- **Input sanitization**: All user inputs are sanitized
+- **SQL injection protection**: Uses parameterized queries
+- **XSS prevention**: Next.js built-in protection
+- **Data encryption**: Supabase provides encryption at rest
+
+### Privacy Compliance
+
+- **GDPR compliance**: Data handling follows privacy regulations
+- **Data retention**: Configurable data retention policies
+- **User consent**: Clear consent for data collection
+- **Right to deletion**: Users can request data removal
+
+## Performance Optimization
+
+### Loading Optimization
+
+- **Lazy loading**: Modal loads only when needed
+- **Code splitting**: Components are code-split automatically
+- **Bundle optimization**: Minimal bundle impact
+
+### Database Performance
+
+- **Indexed queries**: Database queries are optimized
+- **Connection pooling**: Efficient database connections
+- **Query optimization**: Minimal database load
+
+## Monitoring and Analytics
+
+### Key Metrics
+
+Track these metrics for the waitlist system:
+
+- **Conversion rate**: Form completion percentage
+- **Drop-off points**: Where users abandon the form
+- **Submission volume**: Daily/weekly submission counts
+- **Source effectiveness**: Which sources generate most leads
+
+### Monitoring Tools
+
+- **Supabase Dashboard**: Database performance and usage
+- **Email delivery**: Email service monitoring
+- **Error tracking**: Form submission errors
+- **Performance metrics**: Page load and form performance
+
+---
+
+This documentation is maintained by the development team and should be updated as the system evolves.
 
 

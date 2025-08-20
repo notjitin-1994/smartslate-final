@@ -93,7 +93,7 @@ export const productConfigs: Record<string, Partial<ProductConfig>> = {
   },
   production: {
     environment: {
-      showComingSoonProducts: false,
+      showComingSoonProducts: true, // Changed from false to true to show Solara
       enableProductPreviews: false,
       enableBetaFeatures: false,
     },

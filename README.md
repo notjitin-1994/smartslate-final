@@ -1,145 +1,199 @@
-## LMS Phase 1
-
-- Backend removed (prepping for AWS). Prisma models and REST endpoints have been removed.
-
-Setup
-- Create `.env` for AWS Cognito and AWS database when ready. No local backend steps required yet.
-
 # SmartSlate
 
-Modern Next.js application with full-stack capabilities: authentication, RBAC, lead capture, analytics tracking, and admin APIs.
+Modern Next.js application for SmartSlate's learning platform with lead capture, product showcase, and marketing pages.
 
-### Features
-- Next.js 15 (App Router), React 19, Tailwind 4, MUI 7, Zustand
-- Prepared for AWS (Cognito/Auth and AWS-managed DB). Old Prisma/Neon removed.
-- Role-based access control (RBAC) with config-driven permissions
-- Lead capture APIs (Course waitlist, Solara, SSA, Case studies, Partner)
-- Anonymous analytics tracking (identify + pageview/interaction events)
-- Admin APIs for courses, leads, metrics, and system role seeding
+## Features
 
-### Tech stack
-- **Framework**: Next.js 15 (app directory)
-- **UI**: Tailwind CSS 4, Material UI 7, Framer Motion
-- **State**: Zustand
-- **Data**: Supabase Postgres + Prisma
- 
-## Status
-This repo has migrated from a local Prisma/Neon backend to Supabase-managed Postgres and Supabase Auth. Some Prisma packages remain in dev dependencies but schema migrations are now performed via SQL scripts under `scripts/` and lightweight `pg` connections in `src/lib/db.ts`.
+- **Next.js 14** with App Router and TypeScript
+- **Supabase Integration** for database and authentication
+- **Lead Capture System** for various business inquiries
+- **Product Showcase** with interactive modals and forms
+- **Responsive Design** with Tailwind CSS and Material-UI
+- **PWA Ready** with service worker and manifest
+- **SEO Optimized** with metadata and structured data
 
-## Environment
-Set the following in `.env.local` (or your host’s env). See `docs/ENVIRONMENT.md` for details.
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS, Material-UI
+- **Database**: Supabase Postgres
+- **Authentication**: Supabase Auth
+- **State Management**: React hooks and context
+- **Animations**: Framer Motion
+- **Deployment**: Vercel-ready
+
+## Project Structure
 
 ```
-# Supabase
-SUPABASE_URL="https://YOUR_PROJECT_REF.supabase.co"
-SUPABASE_ANON_KEY="your-anon-key"
-NEXT_PUBLIC_SUPABASE_URL="https://YOUR_PROJECT_REF.supabase.co"
-NEXT_PUBLIC_SUPABASE_ANON_KEY="your-anon-key"
-# Optional explicit JWKS URL (otherwise auto-discovered):
-# SUPABASE_JWKS_URL="https://YOUR_PROJECT_REF.supabase.co/auth/v1/keys"
-
-# Database (Supabase Postgres)
-# Pooled (runtime):
-DATABASE_URL="postgresql://postgres:YOUR_PASSWORD@db.YOUR_PROJECT_REF.supabase.co:6543/postgres?pgbouncer=true&connection_limit=1"
-
-# Optional HMAC secret for local dev
-# JWT_SECRET=replace-with-strong-secret
+src/
+├── app/                    # Next.js App Router pages
+│   ├── api/               # API routes for lead capture
+│   ├── difference/        # Difference page
+│   ├── partner/           # Partner page
+│   ├── products/          # Products showcase
+│   └── legal/             # Privacy and terms pages
+├── components/            # React components
+│   ├── landing/           # Landing page components
+│   ├── products/          # Product-related components
+│   ├── difference/        # Difference page components
+│   ├── layout/            # Header, footer, navigation
+│   └── ui/                # Reusable UI components
+├── hooks/                 # Custom React hooks
+├── lib/                   # Utilities and configurations
+│   ├── config/            # Product configurations
+│   ├── data/              # Static data and types
+│   ├── types/             # TypeScript type definitions
+│   └── utils/             # Helper functions
+└── public/                # Static assets
 ```
 
-Notes:
-- Admin API usage and RBAC-protected routes expect a Bearer token. Verification uses Supabase JWKS (auto) or `SUPABASE_JWT_SECRET`/`JWT_SECRET` fallback.
+## Environment Setup
 
-## Local development
-1) Install deps
-```
-npm install
-```
-2) Configure `.env.local` (see above) and ensure Supabase Postgres is reachable
-3) Apply database schema (run SQL migrations)
-```
-# Example: create core tables (run individual scripts as needed)
-npx tsx scripts/migrate-user-profiles-table.ts
-npx tsx scripts/migrate-ssa-table.ts
-npx tsx scripts/migrate-solara-table.ts
-npx tsx scripts/migrate-demo-table.ts
-npx tsx scripts/migrate-consultation-table.ts
-```
-4) Start the dev server
-```
-npm run dev
-# http://localhost:3000
-```
-Optional utilities:
-```
-# Diagnose JWKS config
-npm run diag:jwks
-```
-
-## API overview
-**Auth**
-- POST `/api/auth/signup` → Upserts user in local DB; optionally provisions in Neon Auth if configured
-
-**RBAC and guards**
-- `src/config/rbac.ts` defines roles/permissions
-- Protected handlers use `withPermission`/`withAuth` from `src/middleware/rbac.ts`
-- Bearer JWT is verified in `src/lib/auth.ts`
-
-**Admin APIs** (Bearer token required; permissions indicated)
-- POST `/api/admin/courses` → create/update course (`course:create`)
-- PATCH `/api/admin/courses` → publish/unpublish (`course:publish`)
-- DELETE `/api/admin/courses?slug=…` → delete (`course:delete`)
-- GET `/api/admin/leads` → latest leads (`lead:read`)
-- GET `/api/admin/metrics` → counts (`metrics:read`)
-- POST `/api/admin/system` → seed/sync roles (`settings:write`)
-
-**Leads** (public endpoints)
-- POST `/api/leads/course-waitlist`
-- POST `/api/leads/solara`
-- POST `/api/leads/ssa`
-- POST `/api/leads/case-study`
-- POST `/api/leads/partner`
-
-**Tracking** (anonymous)
-- POST `/api/track/identify` → ensures anon cookie and record
-- POST `/api/track/event` → `type: 'pageview' | 'interaction'` with payload
-
-### Example: calling an admin route
-Provide a Bearer token that your verifier accepts (JWKS or HMAC secret), e.g.:
+Create a `.env.local` file with the following variables:
 
 ```bash
-curl -X POST \
-  -H "Authorization: Bearer <your-jwt>" \
-  -H "Content-Type: application/json" \
-  -d '{"slug":"ai-foundations","title":"AI Foundations","description":"…"}' \
-  http://localhost:3000/api/admin/courses
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL="https://oyjslszrygcajdpwgxbe.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="your-anon-key"
+SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
+
+# Email Configuration (optional)
+LEADS_EMAIL_TO="hello@smartslate.io"
+
+# Database URLs (if using direct connections)
+DATABASE_URL="postgresql://postgres:password@db.project.supabase.co:5432/postgres"
+DIRECT_URL="postgresql://postgres:password@db.project.supabase.co:5432/postgres"
 ```
+
+## Getting Started
+
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Set up environment variables**
+   - Copy `.env.local.example` to `.env.local`
+   - Fill in your Supabase credentials
+
+3. **Set up database tables**
+   ```bash
+   npm run setup:database
+   ```
+
+4. **Start development server**
+   ```bash
+   npm run dev
+   ```
+
+5. **Open your browser**
+   - Navigate to `http://localhost:3000`
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run type-check` - Run TypeScript type checking
+- `npm run setup:database` - Set up database tables
+
+## API Endpoints
+
+### Lead Capture APIs
+
+- `POST /api/leads/waitlist` - Course waitlist submissions
+- `POST /api/leads/solara` - Solara product interest
+- `POST /api/leads/ssa` - SSA product interest
+- `POST /api/leads/case-study` - Case study requests
+- `POST /api/leads/consultation` - Consultation requests
+- `POST /api/leads/demo` - Demo requests
+- `POST /api/leads/partner` - Partnership inquiries
+
+### Database Management
+
+- `POST /api/setup-database` - Initialize database tables
+- `GET /api/check-database` - Check database connection
+
+## Database Schema
+
+The application uses the following main tables:
+
+- `waitlist_leads` - Course waitlist submissions
+- `solara_interest_modal` - Solara product interest
+- `ssa_interest_modal` - SSA product interest
+- `case_study_requests` - Case study inquiries
+- `consultation_requests` - Consultation bookings
+- `demo_requests` - Demo scheduling
+- `partner_inquiries` - Partnership requests
+
+## Components
+
+### Landing Page
+- Hero section with animated content
+- Talent paradox explanation
+- Case study showcase
+- ROI calculator
+- Partner testimonials
+
+### Products
+- Interactive product showcase
+- Interest capture modals
+- Product filtering and search
+- Detailed product information
+
+### Difference Page
+- Company comparison
+- Impact metrics
+- Key differentiators
+- Transformation journey
+
+## Styling and Design
+
+- **Tailwind CSS** for utility-first styling
+- **Material-UI** for component library
+- **Custom CSS** for specific animations and effects
+- **Responsive design** for all device sizes
+- **Dark/light theme** support
+
+## Performance
+
+- **Image optimization** with Next.js Image component
+- **Code splitting** with dynamic imports
+- **Lazy loading** for components and images
+- **Service worker** for offline functionality
+- **SEO optimization** with metadata and structured data
 
 ## Deployment
-- Build: `npm run build`
-- Start: `npm start`
-- Ensure env vars and database are configured in your host. Run the SQL migration scripts on first deploy.
 
-## Documentation
-- `docs/ENVIRONMENT.md` for env details
-- `docs/COMPONENT_LIBRARY.md` UI patterns
-- `docs/GET_STARTED_MODAL.md` auth modal behavior
-- `docs/STYLING_GUIDE.md` design system
-- `docs/api.http` manual API request examples
-- `docs/API.md` overview of API endpoints and payloads (generated/maintained)
+1. **Build the application**
+   ```bash
+   npm run build
+   ```
 
-## Documentation Automation
-Typed API + code documentation can be generated with [TypeDoc].
+2. **Deploy to your hosting platform**
+   - Vercel (recommended for Next.js)
+   - Netlify
+   - AWS Amplify
+   - Self-hosted
 
-Scripts:
-```
-# Generate API docs to docs/api/
-npm run docs:build
+3. **Set environment variables** in your hosting platform
 
-# Preview generated docs locally (optional)
-npm run docs:serve
-```
+4. **Run database setup** on first deployment
 
-CI (optional): A GitHub Actions workflow in `.github/workflows/docs.yml` builds and publishes docs to GitHub Pages on pushes to `main`. Configure Pages in your repo settings.
+## Contributing
 
-## Security
-- Do not commit secrets. Use environment variables managed by your hosting provider.
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## License
+
+This project is proprietary to SmartSlate. All rights reserved.
+
+## Support
+
+For support and questions, contact the development team or refer to the documentation in the `docs/` folder.

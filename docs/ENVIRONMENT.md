@@ -1,29 +1,101 @@
-Environment Configuration
+# Environment Configuration
 
-Overview
-This repository is a Next.js app with RBAC-protected admin APIs, Prisma, and tracking. It now uses Supabase for Postgres.
+## Overview
 
-Environment variables
-- DATABASE_URL — runtime connection (use Supabase pooled URL via pgBouncer)
-- DIRECT_URL — migrations connection (use direct Postgres URL)
-- SUPABASE_URL — Supabase project URL (e.g., https://YOUR_REF.supabase.co)
-- SUPABASE_ANON_KEY — public anon key used by server-side client
-- NEXT_PUBLIC_SUPABASE_URL — public URL used by browser client
-- NEXT_PUBLIC_SUPABASE_ANON_KEY — public anon key used by browser client
-- SUPABASE_SERVICE_ROLE_KEY — Optional for server-side service actions (required for profile avatar uploads and name mirroring)
-- SUPABASE_JWKS_URL — Optional override; otherwise auto-discovers `${SUPABASE_URL}/auth/v1/keys`
-- JWT_SECRET — Optional fallback HMAC secret for local dev
+This repository is a Next.js application with Supabase integration for database and authentication. It provides lead capture capabilities and product showcase functionality.
 
-Storage
-- Avatar uploads use the `avatars` storage bucket (public). The bucket is auto-created by the server upload route if missing.
+## Environment Variables
 
-Local development
-1) Install dependencies: `npm install`
-2) Configure `.env.local` with Supabase variables above
-3) Run DB setup scripts if needed: `npm run migrate:user-profiles` (creates `app.user_profiles`)
-4) Start the dev server: `npm run dev` and open `http://localhost:3000`
+### Required Variables
 
-Production guidance
-- Configure DATABASE_URL (pooled) and DIRECT_URL (direct) from Supabase
-- Apply SQL migrations (e.g., `scripts/create_user_profiles.sql`) during deploy
+```bash
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL="https://oyjslszrygcajdpwgxbe.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="your-anon-key"
+SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
+```
+
+### Optional Variables
+
+```bash
+# Email Configuration
+LEADS_EMAIL_TO="hello@smartslate.io"
+
+# Database URLs (if using direct connections)
+DATABASE_URL="postgresql://postgres:password@db.project.supabase.co:5432/postgres"
+DIRECT_URL="postgresql://postgres:password@db.project.supabase.co:5432/postgres"
+```
+
+## Supabase Setup
+
+1. **Create a Supabase project** at [supabase.com](https://supabase.com)
+2. **Get your project credentials** from the project settings
+3. **Set up your environment variables** in `.env.local`
+
+## Database Tables
+
+The application automatically creates the following tables when you run the setup script:
+
+- `waitlist_leads` - Course waitlist submissions
+- `solara_interest_modal` - Solara product interest
+- `ssa_interest_modal` - SSA product interest
+- `case_study_requests` - Case study inquiries
+- `consultation_requests` - Consultation bookings
+- `demo_requests` - Demo scheduling
+- `partner_inquiries` - Partnership requests
+
+## Local Development
+
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Configure environment**
+   - Copy `.env.local.example` to `.env.local`
+   - Fill in your Supabase credentials
+
+3. **Set up database**
+   ```bash
+   npm run setup:database
+   ```
+
+4. **Start development server**
+   ```bash
+   npm run dev
+   ```
+
+## Production Deployment
+
+1. **Set environment variables** in your hosting platform
+2. **Ensure Supabase project** is accessible from your production domain
+3. **Run database setup** on first deployment
+4. **Configure CORS** if needed in Supabase settings
+
+## Security Considerations
+
+- **Never commit** `.env.local` to version control
+- **Use environment variables** in production hosting
+- **Restrict Supabase access** to your production domains
+- **Monitor API usage** through Supabase dashboard
+
+## Troubleshooting
+
+### Database Connection Issues
+
+- Verify your Supabase project is active
+- Check your database credentials
+- Ensure your IP is not blocked by Supabase
+
+### Environment Variable Issues
+
+- Verify all required variables are set
+- Check for typos in variable names
+- Ensure `.env.local` is in the project root
+
+### Supabase Service Role Key
+
+- This key has elevated permissions
+- Use only for server-side operations
+- Never expose in client-side code
 

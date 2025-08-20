@@ -1,4 +1,3 @@
-- Instructor UI components to be added in Phase 2: ModuleList, LessonList, LessonEditor (TipTap), FileUploadButton (UploadThing), Progress bar (shadcn/ui)
 # SmartSlate Component Library
 
 ## 📚 Overview
@@ -10,7 +9,7 @@ This document catalogs all reusable components in the SmartSlate design system, 
 ### Header
 **Location**: `src/components/layout/Header.tsx`
 
-**Description**: Fixed floating header with glassmorphism effect, responsive navigation, mobile menu, and integrated "Get Started" modal trigger.
+**Description**: Fixed floating header with glassmorphism effect, responsive navigation, mobile menu, and integrated modal triggers.
 
 **Usage**:
 ```tsx
@@ -25,6 +24,7 @@ import Header from '@/components/layout/Header';
 - Mobile-responsive hamburger menu
 - Smooth scroll on navigation
 - Logo with hover effects
+- Modal trigger buttons
 
 ### Footer
 **Location**: `src/components/layout/Footer.tsx`
@@ -39,281 +39,470 @@ import Footer from '@/components/layout/Footer';
 <Footer />
 ```
 
+### MobileMenu
+**Location**: `src/components/layout/MobileMenu.tsx`
+
+**Description**: Responsive mobile navigation menu with smooth animations.
+
+**Features**:
+- Slide-in animation
+- Touch-friendly navigation
+- Modal integration
+- Responsive design
+
 ## 🎨 UI Components
 
-### Glass Container
-**Pattern**: Reusable glass morphism container
+### StandardHero
+**Location**: `src/components/ui/StandardHero.tsx`
+
+**Description**: Reusable hero section component with title, subtitle, description, and accent word highlighting.
+
+**Usage**:
+```tsx
+import StandardHero from '@/components/ui/StandardHero';
+
+<StandardHero
+  title="Your Title"
+  subtitle="Your subtitle"
+  description="Your description"
+  accentWords={['key', 'words']}
+  showScrollIndicator={true}
+>
+  <YourCTAButton />
+</StandardHero>
+```
+
+**Props**:
+- `title`: Main heading
+- `subtitle`: Secondary heading
+- `description`: Body text
+- `accentWords`: Array of words to highlight
+- `showScrollIndicator`: Show scroll down indicator
+- `children`: CTA buttons or other content
+
+### Modal
+**Location**: `src/components/ui/Modal.tsx`
+
+**Description**: Reusable modal component with backdrop and animations.
+
+**Usage**:
+```tsx
+import Modal from '@/components/ui/Modal';
+
+<Modal
+  open={isOpen}
+  onClose={handleClose}
+  title="Modal Title"
+>
+  <ModalContent />
+</Modal>
+```
+
+### FormField
+**Location**: `src/components/ui/FormField.tsx`
+
+**Description**: Standardized form input field with validation and styling.
+
+**Usage**:
+```tsx
+import FormField from '@/components/ui/FormField';
+
+<FormField
+  label="Email"
+  name="email"
+  type="email"
+  required
+  error={errors.email}
+/>
+```
+
+### WaitlistButton
+**Location**: `src/components/ui/WaitlistButton.tsx`
+
+**Description**: Specialized button for waitlist submissions with loading states.
+
+**Usage**:
+```tsx
+import WaitlistButton from '@/components/ui/WaitlistButton';
+
+<WaitlistButton
+  onClick={handleWaitlist}
+  loading={isLoading}
+  variant="contained"
+/>
+```
+
+### DemoButton
+**Location**: `src/components/ui/DemoButton.tsx`
+
+**Description**: Button component for demo requests with integrated modal functionality.
+
+**Usage**:
+```tsx
+import DemoButton from '@/components/ui/DemoButton';
+
+<DemoButton
+  onClick={openDemoModal}
+  variant="outlined"
+  size="large"
+/>
+```
+
+## 🏠 Landing Page Components
+
+### Hero
+**Location**: `src/components/landing/Hero.tsx`
+
+**Description**: Main landing page hero section with animated content and CTA buttons.
+
+**Features**:
+- Animated text reveal
+- Accent word highlighting
+- Scroll indicator
+- CTA button integration
+
+### Framework
+**Location**: `src/components/landing/Framework.tsx`
+
+**Description**: Framework explanation section with visual elements.
+
+### TalentParadox
+**Location**: `src/components/landing/TalentParadox.tsx`
+
+**Description**: Section explaining the talent paradox with interactive elements.
+
+### CaseStudyModal
+**Location**: `src/components/landing/CaseStudyModal.tsx`
+
+**Description**: Modal for case study requests with comprehensive form.
+
+**Features**:
+- Multi-step form
+- Field validation
+- File upload support
+- Email integration
+
+### ConsultationModal
+**Location**: `src/components/landing/ConsultationModal.tsx`
+
+**Description**: Modal for consultation booking with scheduling options.
+
+**Features**:
+- Date and time selection
+- Attendee management
+- Challenge identification
+- Business context collection
+
+### DemoModal
+**Location**: `src/components/landing/DemoModal.tsx`
+
+**Description**: Modal for product demonstration requests.
+
+**Features**:
+- Product selection
+- Team size input
+- Challenge description
+- Timeline specification
+
+### PartnerModal
+**Location**: `src/components/landing/PartnerModal.tsx`
+
+**Description**: Modal for partnership inquiries.
+
+**Features**:
+- Partnership type selection
+- Company information
+- Target market definition
+- Partnership goals
+
+### Partners
+**Location**: `src/components/landing/Partners.tsx`
+
+**Description**: Partner showcase section with logos and testimonials.
+
+### ROICalculator
+**Location**: `src/components/landing/ROICalculator.tsx`
+
+**Description**: Interactive ROI calculator for learning investments.
+
+**Features**:
+- Cost input fields
+- Benefit calculations
+- Visual charts
+- Export functionality
+
+## 🛍️ Product Components
+
+### ProductSection
+**Location**: `src/components/products/ProductSection.tsx`
+
+**Description**: Main product showcase component with responsive design.
+
+**Features**:
+- Responsive layout
+- Animation triggers
+- CTA integration
+- Status indicators
+
+### ProductList
+**Location**: `src/components/products/ProductList.tsx`
+
+**Description**: Grid layout for displaying multiple products.
+
+### ProductFilter
+**Location**: `src/components/products/ProductFilter.tsx`
+
+**Description**: Filtering and search functionality for products.
+
+### Hero (Products)
+**Location**: `src/components/products/Hero.tsx`
+
+**Description**: Product page hero section with filtering options.
+
+### Product Modals
+- **SolaraInterestModal**: `src/components/products/SolaraInterestModal.tsx`
+- **SSAInterestModal**: `src/components/products/SSAInterestModal.tsx`
+
+**Description**: Specialized modals for product interest capture.
+
+### Infographics
+- **SolaraInfographic**: `src/components/products/SolaraInfographic.tsx`
+- **SSAInfographic**: `src/components/products/SSAInfographic.tsx`
+- **IgniteInfographic**: `src/components/products/IgniteInfographic.tsx`
+- **StrategicSkillsInfographic**: `src/components/products/StrategicSkillsInfographic.tsx`
+
+**Description**: Visual representations of product features and benefits.
+
+## 🔄 Difference Page Components
+
+### DifferenceHero
+**Location**: `src/components/difference/DifferenceHero.tsx`
+
+**Description**: Hero section for the difference page.
+
+### ComparisonSection
+**Location**: `src/components/difference/ComparisonSection.tsx`
+
+**Description**: Company comparison table or chart.
+
+### KeyDifferentiators
+**Location**: `src/components/difference/KeyDifferentiators.tsx`
+
+**Description**: Highlighted key differentiators.
+
+### ImpactMetrics
+**Location**: `src/components/difference/ImpactMetrics.tsx`
+
+**Description**: Metrics showing impact and results.
+
+### TransformationJourney
+**Location**: `src/components/difference/TransformationJourney.tsx`
+
+**Description**: Visual representation of transformation process.
+
+### CTASection
+**Location**: `src/components/difference/CTASection.tsx`
+
+**Description**: Call-to-action section.
+
+## 🎭 Provider Components
+
+### ModalProvider
+**Location**: `src/components/providers/ModalProvider.tsx`
+
+**Description**: Context provider for modal state management.
+
+**Usage**:
+```tsx
+import { ModalProvider } from '@/components/providers/ModalProvider';
+
+<ModalProvider>
+  <YourApp />
+</ModalProvider>
+```
+
+### ThemeProvider
+**Location**: `src/components/providers/ThemeProvider.tsx`
+
+**Description**: Material-UI theme provider with custom theme.
+
+### PWAClient
+**Location**: `src/components/providers/PWAClient.tsx`
+
+**Description**: PWA functionality provider.
+
+### TrackClient
+**Location**: `src/components/providers/TrackClient.tsx`
+
+**Description**: Analytics tracking provider.
+
+## 🎨 Styling Components
+
+### LandingStyles
+**Location**: `src/components/landing/styles/LandingStyles.tsx`
+
+**Description**: Styled components for landing page elements.
+
+**Components**:
+- `FadeInContent`: Animated content wrapper
+- `PrimaryButton`: Primary CTA button
+- `SecondaryButton`: Secondary action button
+- `GlassContainer`: Glass morphism container
+
+### DifferenceStyles
+**Location**: `src/components/difference/styles/DifferenceStyles.tsx`
+
+**Description**: Styled components for difference page elements.
+
+## 🎯 Icons
+
+### ProductIcons
+**Location**: `src/components/icons/ProductIcons.tsx`
+
+**Description**: Icon components for products and features.
+
+## 📱 PWA Components
+
+### Manifest
+**Location**: `src/app/manifest.ts`
+
+**Description**: PWA manifest configuration.
+
+### Service Worker
+**Location**: `public/sw.js`
+
+**Description**: Service worker for offline functionality.
+
+## 🎨 Design Patterns
+
+### Glass Morphism
+Consistent glass morphism effect across components:
 
 ```tsx
-const GlassContainer = styled(Box)(({ theme }) => ({
+const glassEffect = {
   backgroundColor: 'rgba(255, 255, 255, 0.02)',
   backdropFilter: 'blur(12px)',
-  WebkitBackdropFilter: 'blur(12px)',
   border: '1px solid rgba(255, 255, 255, 0.08)',
-  borderRadius: theme.spacing(2),
-  padding: theme.spacing(4),
-  transition: 'all 0.3s ease',
-  '&:hover': {
-    backgroundColor: 'rgba(255, 255, 255, 0.04)',
-    boxShadow: '0 10px 30px rgba(167, 218, 219, 0.2)',
-  },
-}));
+  borderRadius: '16px',
+};
 ```
 
-### Primary Button
-**Pattern**: Call-to-action button with hover effects
+### Animation Classes
+CSS classes for consistent animations:
+
+```css
+.icon-anim {
+  transition: all 0.3s ease;
+}
+
+.icon-bounce-y {
+  animation: bounceY 2s infinite;
+}
+```
+
+### Responsive Design
+Mobile-first responsive design patterns:
 
 ```tsx
-const PrimaryButton = styled(Button)(({ theme }) => ({
-  backgroundColor: theme.palette.secondary.main,
-  color: '#ffffff',
-  padding: `${theme.spacing(1.5)} ${theme.spacing(4)}`,
-  fontSize: '1.1rem',
-  fontWeight: 600,
-  borderRadius: theme.spacing(1),
-  textTransform: 'none',
-  transition: 'all 0.3s ease',
-  position: 'relative',
-  overflow: 'hidden',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: -100,
-    width: '100%',
-    height: '100%',
-    background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
-    transition: 'left 0.5s ease',
-  },
-  '&:hover': {
-    backgroundColor: theme.palette.secondary.dark,
-    transform: 'translateY(-2px)',
-    boxShadow: '0 8px 20px rgba(79, 70, 229, 0.3)',
-    '&::before': {
-      left: '100%',
-    },
-  },
-}));
+// Mobile overlay with desktop side-by-side
+<div className="md:hidden">
+  {/* Mobile layout */}
+</div>
+<div className="hidden md:flex">
+  {/* Desktop layout */}
+</div>
 ```
 
-### Secondary Button
-**Pattern**: Outlined button for secondary actions
+## 📋 Usage Guidelines
+
+### Component Import Pattern
+```tsx
+// Use absolute imports from src/
+import ComponentName from '@/components/path/ComponentName';
+```
+
+### Props Interface
+Always define TypeScript interfaces for component props:
 
 ```tsx
-const SecondaryButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.primary.main,
-  padding: `${theme.spacing(1.5)} ${theme.spacing(4)}`,
-  fontSize: '1.1rem',
-  fontWeight: 600,
-  borderRadius: theme.spacing(1),
-  textTransform: 'none',
-  border: '2px solid rgba(167, 218, 219, 0.3)',
-  backgroundColor: 'transparent',
-  transition: 'all 0.3s ease',
-  '&:hover': {
-    borderColor: theme.palette.primary.main,
-    backgroundColor: 'rgba(167, 218, 219, 0.1)',
-    transform: 'translateY(-2px)',
-  },
-}));
+interface ComponentProps {
+  title: string;
+  description?: string;
+  onClick: () => void;
+}
 ```
 
-### Stats Card
-**Pattern**: Interactive statistics display card
+### Error Handling
+Include error boundaries and loading states:
 
 ```tsx
-const StatsCard = styled(Box)(({ theme }) => ({
-  backgroundColor: 'rgba(255, 255, 255, 0.02)',
-  backdropFilter: 'blur(12px)',
-  border: '1px solid rgba(255, 255, 255, 0.08)',
-  borderRadius: theme.spacing(2),
-  padding: theme.spacing(4),
-  textAlign: 'center',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer',
-  '&:hover': {
-    transform: 'translateY(-4px)',
-    backgroundColor: 'rgba(255, 255, 255, 0.04)',
-    boxShadow: '0 10px 30px rgba(167, 218, 219, 0.2)',
-  },
-}));
+const Component = ({ data, loading, error }: ComponentProps) => {
+  if (loading) return <LoadingSpinner />;
+  if (error) return <ErrorMessage error={error} />;
+  
+  return <ComponentContent data={data} />;
+};
 ```
 
-## 🎬 Animation Components
+### Accessibility
+Ensure components meet accessibility standards:
 
-### Fade In Animation
-**Pattern**: Reveal content on scroll or trigger
+- Proper ARIA labels
+- Keyboard navigation support
+- Screen reader compatibility
+- Color contrast compliance
+
+## 🚀 Performance Considerations
+
+### Lazy Loading
+Use dynamic imports for large components:
 
 ```tsx
-const FadeInContent = styled(Box)<{ delay: number; isVisible: boolean }>(
-  ({ theme, delay, isVisible }) => ({
-    opacity: isVisible ? 1 : 0,
-    transform: isVisible ? 'translateY(0)' : 'translateY(15px)',
-    transition: `opacity 0.6s ease-out ${delay}ms, transform 0.6s ease-out ${delay}ms`,
-  })
-);
-
-// Usage
-<FadeInContent delay={1000} isVisible={isVisible}>
-  <Typography>Animated content</Typography>
-</FadeInContent>
+const HeavyComponent = dynamic(() => import('./HeavyComponent'), {
+  loading: () => <LoadingSpinner />,
+});
 ```
 
-### Animated Word
-**Pattern**: Staggered text animation
+### Memoization
+Memoize expensive components and callbacks:
 
 ```tsx
-const AnimatedWord = styled('span')<{ delay: number; isVisible: boolean }>(
-  ({ theme, delay, isVisible }) => ({
-    display: 'inline-block',
-    opacity: isVisible ? 1 : 0,
-    transform: isVisible ? 'translateX(0)' : 'translateX(-20px)',
-    transition: `all 0.6s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`,
-  })
-);
+const MemoizedComponent = React.memo(Component);
+const memoizedCallback = useCallback(() => {}, [dependencies]);
 ```
 
-## 📊 Data Display Components
-
-### Progress Bar
-**Pattern**: Visual progress indicator
+### Image Optimization
+Use Next.js Image component for optimized images:
 
 ```tsx
-const ProgressBar = styled(LinearProgress)(({ theme }) => ({
-  height: 3,
-  backgroundColor: 'rgba(167, 218, 219, 0.1)',
-  borderRadius: theme.spacing(0.5),
-  '& .MuiLinearProgress-bar': {
-    backgroundColor: theme.palette.primary.main,
-    borderRadius: theme.spacing(0.5),
-  },
-}));
+import Image from 'next/image';
+
+<Image
+  src="/path/to/image.jpg"
+  alt="Description"
+  width={400}
+  height={300}
+  priority={isAboveFold}
+/>
 ```
 
-### Navigation Dots
-**Pattern**: Section navigation indicator
+## 🔧 Development Workflow
 
-```tsx
-const Dot = styled(Box)<{ active: boolean }>(({ theme, active }) => ({
-  width: 12,
-  height: 12,
-  borderRadius: '50%',
-  backgroundColor: active ? theme.palette.primary.main : 'transparent',
-  border: `2px solid ${active ? theme.palette.primary.main : 'rgba(167, 218, 219, 0.3)'}`,
-  cursor: 'pointer',
-  transition: 'all 0.3s ease',
-  '&:hover': {
-    backgroundColor: active ? theme.palette.primary.main : 'rgba(167, 218, 219, 0.2)',
-    transform: 'scale(1.2)',
-  },
-}));
-```
+### Component Creation
+1. Create component file in appropriate directory
+2. Define TypeScript interface for props
+3. Implement component with accessibility in mind
+4. Add to component library documentation
+5. Test across different screen sizes
 
-## 🎯 Interactive Components
+### Styling Approach
+- Use Tailwind CSS for utility classes
+- Create styled components for complex patterns
+- Maintain consistent spacing and typography
+- Follow design system color palette
 
-### Scroll Indicator
-**Pattern**: Animated scroll prompt
-
-```tsx
-const ScrollIndicator = styled(IconButton)(({ theme }) => ({
-  position: 'absolute',
-  bottom: theme.spacing(4),
-  left: '50%',
-  transform: 'translateX(-50%)',
-  color: theme.palette.primary.main,
-  backgroundColor: 'rgba(167, 218, 219, 0.1)',
-  border: '2px solid rgba(167, 218, 219, 0.3)',
-  animation: 'pulse 2s infinite',
-  '&:hover': {
-    backgroundColor: 'rgba(167, 218, 219, 0.2)',
-  },
-}));
-```
-
-## 📱 Responsive Patterns
-
-### Mobile Menu Panel
-**Pattern**: Slide-in mobile navigation
-
-```tsx
-const MobileMenuPanel = styled(Box)<{ open: boolean }>(({ theme, open }) => ({
-  position: 'fixed',
-  top: 0,
-  right: 0,
-  width: '80%',
-  maxWidth: 320,
-  height: '100%',
-  backgroundColor: 'rgba(13, 27, 42, 0.95)',
-  backdropFilter: 'blur(20px)',
-  transform: open ? 'translateX(0)' : 'translateX(100%)',
-  transition: 'transform 0.3s ease',
-  boxShadow: '-4px 0 24px rgba(0, 0, 0, 0.3)',
-}));
-```
-
-## 🔧 Utility Components
-
-### Section Wrapper
-**Pattern**: Consistent section spacing and styling
-
-```tsx
-const Section = styled(Box)(({ theme }) => ({
-  padding: `${theme.spacing(10)} 0`,
-  backgroundColor: 'transparent',
-  borderTop: `1px solid ${theme.palette.divider}`,
-  [theme.breakpoints.down('md')]: {
-    padding: `${theme.spacing(6)} 0`,
-  },
-}));
-```
-
-### Container Extension
-**Pattern**: Consistent max-width container
-
-```tsx
-const CustomContainer = styled(Container)(({ theme }) => ({
-  maxWidth: 1200,
-  [theme.breakpoints.down('sm')]: {
-    padding: theme.spacing(2),
-  },
-}));
-```
-
-## 🎨 Theme Integration
-
-All components should use the theme object for consistency:
-
-```tsx
-// Good
-backgroundColor: theme.palette.primary.main
-padding: theme.spacing(2)
-
-// Bad
-backgroundColor: '#a7dadb'
-padding: '16px'
-```
-
-## 📋 Component Checklist
-
-When creating new components, ensure:
-
-- [ ] Uses theme values for colors and spacing
-- [ ] Has proper TypeScript types
-- [ ] Includes hover/focus states
-- [ ] Is responsive
-- [ ] Has ARIA labels where needed
-- [ ] Follows the glass morphism design pattern
-- [ ] Includes smooth transitions
-- [ ] Is documented in this library
-
-## 🚀 Usage Tips
-
-1. **Import from correct paths**: Use `@/components/` for absolute imports
-2. **Compose components**: Build complex UIs by combining atomic components
-3. **Maintain consistency**: Always use existing patterns before creating new ones
-4. **Performance**: Use `React.memo` for expensive components
-5. **Accessibility**: Test with keyboard navigation
-
----
-
-This component library is continuously evolving. Please add new patterns as they are created.
+### Testing Strategy
+- Unit tests for component logic
+- Integration tests for component interactions
+- Visual regression tests for UI consistency
+- Accessibility testing with screen readers

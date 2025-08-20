@@ -8,7 +8,6 @@ import ProductList from "@/components/products/ProductList";
 import SSAInterestModal from "@/components/products/SSAInterestModal";
 import SolaraInterestModal from "@/components/products/SolaraInterestModal";
 import { productRegistry } from '@/lib/data/products';
-import { getProductConfig, getFilteredProducts } from '@/lib/config/productConfig';
 import { Product } from '@/lib/types/products';
 import { useModalManager } from '@/hooks/useModalManager';
 
@@ -18,17 +17,13 @@ const PageWrapper = styled(Box)(({ theme }) => ({
 }));
 
 export default function ProductsPage() {
-  // Get configuration for current environment
-  const config = getProductConfig(process.env.NODE_ENV || 'development');
-  
   // Get modal manager for global state
   const { modalStates } = useModalManager();
   
-  // Get all active products and apply configuration filters
+  // Get all active products directly without complex filtering
   const allProducts = useMemo(() => {
-    const activeProducts = productRegistry.getActiveProducts();
-    return getFilteredProducts(activeProducts, config);
-  }, [config]);
+    return productRegistry.getActiveProducts();
+  }, []);
 
   return (
     <PageWrapper>

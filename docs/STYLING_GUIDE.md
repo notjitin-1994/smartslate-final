@@ -2,53 +2,61 @@
 
 ## 🎨 Design System Overview
 
-This guide documents the SmartSlate design system and provides guidelines for maintaining visual consistency across the application.
+This guide documents the SmartSlate design system and provides guidelines for maintaining visual consistency across the application using Tailwind CSS and Material-UI.
 
 ## 📐 Design Principles
 
 1. **Glassmorphism**: Use subtle transparency and backdrop blur for depth
-2. **Consistent Spacing**: Follow the spacing scale for all components
-3. **Smooth Animations**: Use easing functions for natural motion
+2. **Consistent Spacing**: Follow Tailwind's spacing scale for all components
+3. **Smooth Animations**: Use Framer Motion and CSS transitions for natural motion
 4. **Accessibility First**: Ensure proper contrast and focus states
+5. **Mobile-First**: Design for mobile devices first, then enhance for larger screens
 
 ## 🎨 Color Palette
 
 ### Brand Colors
 ```css
---primary-accent: #a7dadb;          /* Main brand color - Cyan */
---primary-accent-light: #d0edf0;    /* Light variant */
---primary-accent-dark: #7bc5c7;     /* Dark variant */
+/* Primary brand color - Cyan */
+--primary-accent: #a7dadb;
+--primary-accent-light: #d0edf0;
+--primary-accent-dark: #7bc5c7;
 
---secondary-accent: #4F46E5;        /* Action color - Purple */
---secondary-accent-light: #7C69F5;  /* Light variant */
---secondary-accent-dark: #3730A3;   /* Dark variant */
+/* Action color - Purple */
+--secondary-accent: #4F46E5;
+--secondary-accent-light: #7C69F5;
+--secondary-accent-dark: #3730A3;
 ```
 
 ### Background Colors
 ```css
---background-dark: #020C1B;         /* Main background */
---background-paper: #0d1b2a;        /* Elevated surfaces */
---background-surface: #142433;      /* Card backgrounds */
+/* Main background */
+--background-dark: #020C1B;
+--background-paper: #0d1b2a;
+--background-surface: #142433;
 ```
 
 ### Text Colors
 ```css
---text-primary: #e0e0e0;           /* Primary text */
---text-secondary: #b0c5c6;         /* Secondary text */
---text-disabled: #7a8a8b;          /* Disabled text */
+/* Primary text */
+--text-primary: #e0e0e0;
+--text-secondary: #b0c5c6;
+--text-disabled: #7a8a8b;
 ```
 
 ## 📏 Spacing System
 
-Use consistent spacing throughout the application:
+Use Tailwind CSS spacing classes consistently:
 
 ```css
---space-xs: 4px;    /* Tight spacing */
---space-sm: 8px;    /* Small elements */
---space-md: 16px;   /* Default spacing */
---space-lg: 24px;   /* Section spacing */
---space-xl: 32px;   /* Large spacing */
---space-xxl: 64px;  /* Hero sections */
+/* Tailwind spacing scale */
+p-1    /* 4px */
+p-2    /* 8px */
+p-3    /* 12px */
+p-4    /* 16px */
+p-6    /* 24px */
+p-8    /* 32px */
+p-12   /* 48px */
+p-16   /* 64px */
 ```
 
 ## 🎭 Typography
@@ -57,226 +65,333 @@ Use consistent spacing throughout the application:
 - **Headings**: Quicksand (700 weight)
 - **Body**: Lato (400, 500, 700 weights)
 
-### Font Sizes
-- **Hero Title**: 2.5rem (mobile) → 4rem (desktop)
-- **Section Title**: 2rem (mobile) → 3rem (desktop)
-- **Body Text**: 1.125rem with 1.8 line-height
-- **Small Text**: 0.875rem
+### Font Sizes (Tailwind Classes)
+- **Hero Title**: `text-4xl md:text-6xl` (2.25rem → 3.75rem)
+- **Section Title**: `text-3xl md:text-5xl` (1.875rem → 3rem)
+- **Body Text**: `text-lg` (1.125rem) with `leading-relaxed`
+- **Small Text**: `text-sm` (0.875rem)
 
 ## 🌟 Component Patterns
 
 ### Glass Effect
 ```css
 .glass-effect {
-  background-color: var(--glass-bg);
-  backdrop-filter: var(--blur-md);
-  -webkit-backdrop-filter: var(--blur-md);
-  border: 1px solid var(--glass-border);
+  @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl;
+}
+
+.glass-effect-strong {
+  @apply bg-white/10 backdrop-blur-2xl border border-white/20 rounded-2xl;
 }
 ```
 
 ### Primary Button
 ```css
 .primary-button {
-  background-color: var(--secondary-accent);
-  color: #ffffff;
-  padding: 12px 32px;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.primary-button:hover {
-  background-color: var(--secondary-accent-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+  @apply bg-secondary-accent text-white px-8 py-3 rounded-lg font-semibold;
+  @apply transition-all duration-300 ease-in-out;
+  @apply hover:bg-secondary-accent-dark hover:-translate-y-1;
+  @apply hover:shadow-lg hover:shadow-secondary-accent/30;
 }
 ```
 
 ### Card Component
 ```css
 .card {
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 32px;
-  transition: all 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 30px rgba(167, 218, 219, 0.2);
+  @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6;
+  @apply transition-all duration-300 ease-in-out;
+  @apply hover:bg-white/10 hover:shadow-xl;
 }
 ```
 
-## 🎬 Animations
+## 🎨 Tailwind CSS Usage
 
-### Standard Easing Functions
-```css
---transition-fast: all 0.2s ease-in-out;
---transition-medium: all 0.3s ease-in-out;
---transition-slow: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+### Utility-First Approach
+Use Tailwind utility classes for consistent styling:
+
+```tsx
+// Good - Using Tailwind utilities
+<div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
+  <h2 className="text-2xl font-bold text-white mb-4">Title</h2>
+  <p className="text-gray-300 leading-relaxed">Content</p>
+</div>
+
+// Avoid - Custom CSS when utilities exist
+<div className="custom-card">
+  <h2 className="custom-title">Title</h2>
+  <p className="custom-text">Content</p>
+</div>
 ```
 
-### Common Animations
+### Responsive Design
+Use Tailwind's responsive prefixes:
+
+```tsx
+<div className="
+  text-center md:text-left
+  p-4 md:p-6 lg:p-8
+  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3
+">
+  {/* Content */}
+</div>
+```
+
+### Custom CSS Variables
+Define custom properties in your CSS for brand colors:
+
 ```css
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+:root {
+  --primary-accent: #a7dadb;
+  --secondary-accent: #4F46E5;
 }
 
-@keyframes slideUp {
-  from { 
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to { 
-    transform: translateY(0);
-    opacity: 1;
-  }
+/* Use in Tailwind config */
+```
+
+## 🎭 Material-UI Integration
+
+### Theme Customization
+Extend Material-UI theme with custom colors:
+
+```tsx
+import { createTheme } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#a7dadb',
+      light: '#d0edf0',
+      dark: '#7bc5c7',
+    },
+    secondary: {
+      main: '#4F46E5',
+      light: '#7C69F5',
+      dark: '#3730A3',
+    },
+    background: {
+      default: '#020C1B',
+      paper: '#0d1b2a',
+    },
+    text: {
+      primary: '#e0e0e0',
+      secondary: '#b0c5c6',
+    },
+  },
+  typography: {
+    fontFamily: 'Lato, sans-serif',
+    h1: {
+      fontFamily: 'Quicksand, sans-serif',
+      fontWeight: 700,
+    },
+    h2: {
+      fontFamily: 'Quicksand, sans-serif',
+      fontWeight: 700,
+    },
+  },
+});
+```
+
+### Styled Components
+Use Material-UI's styled API for complex components:
+
+```tsx
+import { styled } from '@mui/material/styles';
+import { Box, Button } from '@mui/material';
+
+const GlassContainer = styled(Box)(({ theme }) => ({
+  backgroundColor: 'rgba(255, 255, 255, 0.05)',
+  backdropFilter: 'blur(20px)',
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+  borderRadius: theme.spacing(2),
+  padding: theme.spacing(3),
+  transition: 'all 0.3s ease',
+  '&:hover': {
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    transform: 'translateY(-2px)',
+  },
+}));
+
+const PrimaryButton = styled(Button)(({ theme }) => ({
+  backgroundColor: theme.palette.secondary.main,
+  color: '#ffffff',
+  padding: `${theme.spacing(1.5)} ${theme.spacing(4)}`,
+  fontSize: '1.1rem',
+  fontWeight: 600,
+  borderRadius: theme.spacing(1),
+  textTransform: 'none',
+  transition: 'all 0.3s ease',
+  '&:hover': {
+    backgroundColor: theme.palette.secondary.dark,
+    transform: 'translateY(-2px)',
+    boxShadow: '0 8px 20px rgba(79, 70, 229, 0.3)',
+  },
+}));
+```
+
+## 🎬 Animation Guidelines
+
+### Framer Motion
+Use Framer Motion for complex animations:
+
+```tsx
+import { motion } from 'framer-motion';
+
+const FadeInContent = ({ children, delay = 0 }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, delay }}
+  >
+    {children}
+  </motion.div>
+);
+```
+
+### CSS Transitions
+Use CSS transitions for simple animations:
+
+```css
+.transition-all {
+  @apply transition-all duration-300 ease-in-out;
 }
 
-@keyframes scaleIn {
-  from { 
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  to { 
-    transform: scale(1);
-    opacity: 1;
-  }
+.hover-lift {
+  @apply transition-transform duration-300 ease-in-out;
+  @apply hover:-translate-y-1;
+}
+```
+
+### Animation Classes
+Define reusable animation classes:
+
+```css
+@keyframes bounceY {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.icon-bounce-y {
+  animation: bounceY 2s infinite;
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out;
 }
 ```
 
 ## 📱 Responsive Design
 
-### Breakpoints
-- **xs**: 0-599px
-- **sm**: 600-959px
-- **md**: 960-1279px
-- **lg**: 1280-1919px
-- **xl**: 1920px+
+### Breakpoint Strategy
+Use Tailwind's responsive breakpoints:
 
-### Mobile-First Approach
-```css
-/* Mobile styles (default) */
-.component {
-  padding: 16px;
-  font-size: 1rem;
-}
-
-/* Tablet and up */
-@media (min-width: 600px) {
-  .component {
-    padding: 24px;
-    font-size: 1.125rem;
-  }
-}
-
-/* Desktop and up */
-@media (min-width: 1280px) {
-  .component {
-    padding: 32px;
-    font-size: 1.25rem;
-  }
-}
+```tsx
+// Mobile first approach
+<div className="
+  w-full                    /* Mobile: full width */
+  md:w-1/2                 /* Tablet: half width */
+  lg:w-1/3                 /* Desktop: third width */
+  xl:w-1/4                 /* Large desktop: quarter width */
+">
+  {/* Content */}
+</div>
 ```
 
-## ♿ Accessibility Guidelines
+### Mobile-First Layouts
+Design for mobile, then enhance for larger screens:
 
-1. **Focus States**: All interactive elements must have visible focus indicators
-2. **Color Contrast**: Maintain WCAG AA compliance (4.5:1 for normal text)
-3. **ARIA Labels**: Use descriptive labels for screen readers
-4. **Keyboard Navigation**: Ensure all features are keyboard accessible
-
-## 🛠️ Utility Classes
-
-### Text Utilities
-```css
-.text-gradient {
-  background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.accent {
-  color: var(--primary-accent);
-  font-weight: 700;
-}
+```tsx
+// Mobile overlay, desktop side-by-side
+<div className="md:hidden">
+  {/* Mobile layout */}
+</div>
+<div className="hidden md:flex">
+  {/* Desktop layout */}
+</div>
 ```
 
-### Effect Utilities
-```css
-.glow-effect {
-  box-shadow: 0 0 30px rgba(167, 218, 219, 0.2);
-}
+## 🎨 Component Styling Patterns
 
-.glass-effect-strong {
-  background-color: var(--container-bg);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--border-color);
-}
-```
+### Form Fields
+Use consistent form styling:
 
-## 🎯 Best Practices
-
-1. **Consistency**: Always use design tokens instead of hardcoded values
-2. **Performance**: Use `will-change` sparingly and remove after animations
-3. **Semantic HTML**: Use appropriate HTML elements for better accessibility
-4. **Progressive Enhancement**: Ensure the site works without JavaScript
-5. **Testing**: Test on multiple devices and screen sizes
-
-## 📦 Component Architecture
-
-### Styled Components Pattern
-```typescript
-const StyledComponent = styled(Box)(({ theme }) => ({
-  // Base styles
-  padding: theme.spacing(2),
-  
-  // Responsive styles
-  [theme.breakpoints.up('md')]: {
-    padding: theme.spacing(4),
+```tsx
+const FormField = styled(TextField)(({ theme }) => ({
+  '& .MuiOutlinedInput-root': {
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    backdropFilter: 'blur(10px)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    borderRadius: theme.spacing(1),
+    '&:hover': {
+      borderColor: theme.palette.primary.main,
+    },
+    '&.Mui-focused': {
+      borderColor: theme.palette.primary.main,
+      boxShadow: `0 0 0 2px ${theme.palette.primary.main}20`,
+    },
   },
-  
-  // Interactive states
-  '&:hover': {
-    transform: 'translateY(-2px)',
-  },
-  
-  // Child elements
-  '& .child-element': {
-    color: theme.palette.primary.main,
+  '& .MuiInputLabel-root': {
+    color: theme.palette.text.secondary,
   },
 }));
 ```
 
-### Theme Extension
-When adding new design tokens, update both the CSS variables and Material-UI theme:
+### Modal Styling
+Consistent modal appearance:
 
-```typescript
-// In theme configuration
-createTheme({
-  palette: {
-    primary: {
-      main: '#a7dadb',
-    },
+```tsx
+const StyledModal = styled(Modal)(({ theme }) => ({
+  '& .MuiPaper-root': {
+    backgroundColor: 'rgba(13, 27, 42, 0.95)',
+    backdropFilter: 'blur(20px)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    borderRadius: theme.spacing(2),
+    color: theme.palette.text.primary,
   },
-  spacing: 8, // Base spacing unit
-});
+}));
 ```
 
-## 🔄 Migration Guide
+## 🔧 Development Workflow
 
-When updating existing components:
+### CSS Organization
+1. **Tailwind utilities first** - Use built-in classes when possible
+2. **Styled components** - For complex, reusable components
+3. **Custom CSS** - Only for unique animations or complex layouts
+4. **CSS modules** - For component-specific styles
 
-1. Replace hardcoded colors with CSS variables
-2. Use spacing tokens instead of arbitrary values
-3. Apply glass effects where appropriate
-4. Ensure responsive behavior follows the system
-5. Add proper transitions and hover states
+### Naming Conventions
+- Use kebab-case for CSS classes
+- Use camelCase for JavaScript/TypeScript
+- Prefix custom classes with component name when needed
 
----
+### Performance Considerations
+- Minimize custom CSS
+- Use Tailwind's purge feature in production
+- Optimize animations for 60fps
+- Use `will-change` sparingly
 
-This guide is a living document. Please update it when adding new patterns or modifying the design system.
+## 📋 Style Checklist
+
+When styling components, ensure:
+
+- [ ] Uses Tailwind utilities when possible
+- [ ] Follows responsive design principles
+- [ ] Maintains consistent spacing
+- [ ] Includes hover/focus states
+- [ ] Meets accessibility contrast requirements
+- [ ] Uses theme colors and spacing
+- [ ] Includes smooth transitions
+- [ ] Works across all breakpoints
+
+## 🚀 Best Practices
+
+1. **Consistency**: Use the same patterns across similar components
+2. **Performance**: Prefer CSS-in-JS over external stylesheets for dynamic styles
+3. **Maintainability**: Keep styles close to components
+4. **Accessibility**: Ensure proper contrast ratios and focus states
+5. **Testing**: Test styles across different devices and browsers
+
+## 📚 Resources
+
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [Material-UI Documentation](https://mui.com/material-ui/)
+- [Framer Motion Documentation](https://www.framer.com/motion/)
+- [CSS Custom Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)

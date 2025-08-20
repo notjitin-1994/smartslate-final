@@ -10,6 +10,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "setup:database": "tsx src/lib/database-setup.ts",
     "postbuild": "next-sitemap",
     "seo:report": "mkdir -p reports && npx --yes lighthouse http://localhost:3000 --output html --output-path ./reports/lh.html --chrome-flags='--headless'",
     "seo:ci": "npm run seo:report"
