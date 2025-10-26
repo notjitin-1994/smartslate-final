@@ -1,4 +1,4 @@
-'use client';
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import { Box, Container, Typography, Grid } from '@mui/material';
@@ -24,6 +24,8 @@ import {
   EmojiObjects,
   Rocket,
   Lightbulb,
+  BlurOn,
+  Palette,
 } from '@mui/icons-material';
 import StandardHero from '@/components/ui/StandardHero';
 import {
@@ -254,6 +256,30 @@ export default function FeaturesPage() {
       ],
       comingSoon: true,
     },
+    {
+      icon: BlurOn,
+      title: 'Solara Nebula',
+      description: 'Provide intelligent, personalized tutoring support that adapts to each learner\'s pace and style with real-time guidance.',
+      features: [
+        'Personalized AI tutoring',
+        'Adaptive learning support',
+        'Real-time guidance and assistance',
+        'Learner pace and style adaptation',
+      ],
+      comingSoon: true,
+    },
+    {
+      icon: Palette,
+      title: 'Solara Spectrum',
+      description: 'Reveal deep insights into your learning effectiveness by analyzing complex data and presenting it with clarity.',
+      features: [
+        'Learning effectiveness analytics',
+        'Complex data analysis',
+        'Clear insight visualization',
+        'Performance pattern recognition',
+      ],
+      comingSoon: true,
+    },
   ];
 
   const learningFeatures = [
@@ -325,10 +351,10 @@ export default function FeaturesPage() {
       {/* Hero Section */}
       <Box ref={heroRef}>
         <StandardHero
-          title="Powerful Features for Modern Learning"
-          subtitle="Transform how you design, develop, and deliver world-class learning experiences with Smartslate's comprehensive platform."
-          description="From AI-powered needs analysis to intelligent content authoring, Smartslate provides everything you need to build a future-ready workforce."
-          accentWords={['Powerful', 'Modern Learning', 'AI-powered', 'future-ready']}
+          title="Solara — The Intelligent Learning Universe"
+          subtitle="Where artificial intelligence meets pedagogical excellence to create transformative learning experiences that adapt, evolve, and inspire."
+          description="Solara is not just another learning platform—it's a complete ecosystem that reimagines every facet of learning design and delivery. From stakeholder requirements to personalized learning journeys, Solara orchestrates the entire learning lifecycle with unprecedented intelligence and efficiency."
+          accentWords={['Intelligent', 'Universe', 'transformative', 'ecosystem', 'orchestrates']}
         >
           <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap', marginTop: '24px' }}>
             <PrimaryButton
@@ -337,7 +363,7 @@ export default function FeaturesPage() {
               onClick={modalActions.openDemoModal}
               endIcon={<Rocket className="icon-anim icon-float" />}
             >
-              Request a Demo
+              Experience Solara
             </PrimaryButton>
           </div>
         </StandardHero>
