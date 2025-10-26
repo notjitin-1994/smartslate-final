@@ -11,8 +11,6 @@ export interface ModalStates {
   partner: boolean;
   jobApplication: boolean;
   culture: boolean;
-  cookieConsent: boolean;
-  cookieSettings: boolean;
 }
 
 export interface ModalActions {
@@ -32,10 +30,6 @@ export interface ModalActions {
   closeJobApplicationModal: () => void;
   openCultureModal: () => void;
   closeCultureModal: () => void;
-  openCookieConsentModal: () => void;
-  closeCookieConsentModal: () => void;
-  openCookieSettingsModal: () => void;
-  closeCookieSettingsModal: () => void;
 }
 
 interface ModalContextType {
@@ -67,8 +61,6 @@ export function ModalProvider({ children }: ModalProviderProps) {
     partner: false,
     jobApplication: false,
     culture: false,
-    cookieConsent: false,
-    cookieSettings: false,
   });
 
   const openDemoModal = useCallback(() => {
@@ -135,21 +127,6 @@ export function ModalProvider({ children }: ModalProviderProps) {
     setModalStates(prev => ({ ...prev, culture: false }));
   }, []);
 
-  const openCookieConsentModal = useCallback(() => {
-    setModalStates(prev => ({ ...prev, cookieConsent: true }));
-  }, []);
-
-  const closeCookieConsentModal = useCallback(() => {
-    setModalStates(prev => ({ ...prev, cookieConsent: false }));
-  }, []);
-
-  const openCookieSettingsModal = useCallback(() => {
-    setModalStates(prev => ({ ...prev, cookieSettings: true }));
-  }, []);
-
-  const closeCookieSettingsModal = useCallback(() => {
-    setModalStates(prev => ({ ...prev, cookieSettings: false }));
-  }, []);
 
   const value: ModalContextType = {
     modalStates,
@@ -170,10 +147,6 @@ export function ModalProvider({ children }: ModalProviderProps) {
       closeJobApplicationModal,
       openCultureModal,
       closeCultureModal,
-      openCookieConsentModal,
-      closeCookieConsentModal,
-      openCookieSettingsModal,
-      closeCookieSettingsModal,
     },
   };
 

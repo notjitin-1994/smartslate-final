@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     
     // Check if required tables exist
     const tables = ['ssa_interest_modal', 'solara_interest_modal'];
-    const tableStatus = {};
+    const tableStatus: Record<string, 'missing' | 'error' | 'exists'> = {};
     
     for (const tableName of tables) {
       try {
@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
     
     const missingTables = Object.entries(tableStatus)
       .filter(([_, status]) => status === 'missing')
-      .map(([tableName, _]) => tableName);
+      .map(([tableName]) => tableName);
     
     if (missingTables.length > 0) {
       return NextResponse.json({
