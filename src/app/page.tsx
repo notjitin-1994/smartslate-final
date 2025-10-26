@@ -13,7 +13,7 @@ import CaseStudyModal from '@/components/landing/CaseStudyModal';
 import ConsultationModal from '@/components/landing/ConsultationModal';
 import SSAInterestModal from '@/components/products/SSAInterestModal';
 import SolaraInterestModal from '@/components/products/SolaraInterestModal';
-import NavigationDots from '@/components/landing/NavigationDots';
+
 import { PageWrapper, SectionWrapper } from '@/components/landing/styles/LandingStyles';
 import { useLandingPage } from '@/hooks/useLandingPage';
 import { useModalManager } from '@/hooks/useModalManager';
@@ -24,10 +24,7 @@ export default function Home() {
 
   return (
     <PageWrapper>
-      <NavigationDots 
-        currentSection={state.currentSection} 
-        onSectionClick={actions.scrollToSection} 
-      />
+
 
       <Box id="hero" ref={(el: HTMLDivElement | null) => { refs.sectionsRef.current[0] = el; }}>
         <Hero 

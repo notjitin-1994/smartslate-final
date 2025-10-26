@@ -546,7 +546,7 @@ export default function Partners({ openDemoModal, openCaseStudyModal, openPartne
                     transition={{ duration: 0.6, ease: "easeOut", delay: 0.6 }}
                   >
                     <CTAWrapper>
-                      <Link href="/courses" passHref>
+                      <Link href="/courses">
                         <PrimaryCTAButton endIcon={<School aria-hidden="true" className="icon-anim icon-float" />}>
                           {content.institutions.cta}
                         </PrimaryCTAButton>

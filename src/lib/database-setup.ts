@@ -7,6 +7,40 @@ export async function setupDatabase() {
   
   // Try to create tables using direct SQL
   const createTablesSQL = `
+    -- Create unified modal_submissions table
+    CREATE TABLE IF NOT EXISTS modal_submissions (
+      id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+      modal_type TEXT NOT NULL,
+      name TEXT,
+      email TEXT,
+      phone TEXT,
+      company TEXT,
+      role TEXT,
+      form_data JSONB NOT NULL DEFAULT '{}'::jsonb,
+      ip_address INET,
+      user_agent TEXT,
+      referrer TEXT,
+      utm_source TEXT,
+      utm_medium TEXT,
+      utm_campaign TEXT,
+      status TEXT DEFAULT 'new' CHECK (status IN ('new', 'contacted', 'qualified', 'converted', 'closed', 'spam')),
+      priority TEXT DEFAULT 'normal' CHECK (priority IN ('low', 'normal', 'high', 'urgent')),
+      assigned_to TEXT,
+      assigned_at TIMESTAMP WITH TIME ZONE,
+      internal_notes TEXT,
+      follow_up_date TIMESTAMP WITH TIME ZONE,
+      last_contacted_at TIMESTAMP WITH TIME ZONE,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+      updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_modal_submissions_modal_type ON modal_submissions(modal_type);
+    CREATE INDEX IF NOT EXISTS idx_modal_submissions_email ON modal_submissions(email);
+    CREATE INDEX IF NOT EXISTS idx_modal_submissions_status ON modal_submissions(status);
+    CREATE INDEX IF NOT EXISTS idx_modal_submissions_created_at ON modal_submissions(created_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_modal_submissions_priority ON modal_submissions(priority);
+    CREATE INDEX IF NOT EXISTS idx_modal_submissions_form_data ON modal_submissions USING gin(form_data);
+
     -- Create case_study_requests table
     CREATE TABLE IF NOT EXISTS case_study_requests (
       id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -246,8 +280,9 @@ export async function setupDatabase() {
       
       // Try to create tables one by one by attempting inserts
       const tables = [
+        'modal_submissions',
         'case_study_requests',
-        'consultation_requests', 
+        'consultation_requests',
         'demo_requests',
         'solara_interest_modal',
         'ssa_interest_modal',

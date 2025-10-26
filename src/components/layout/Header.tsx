@@ -177,7 +177,7 @@ export default function Header() {
           <LogoLink href="/">
             <Image
               src="/logo.png"
-              alt="SmartSlate"
+              alt="Smartslate"
               width={160}
               height={40}
               priority
@@ -194,9 +194,11 @@ export default function Header() {
               ))}
             </DesktopNav>
 
-            <CTAButton variant="contained" onClick={() => window.open('https://app.smartslate.io', '_blank')}>
-              Get Started
-            </CTAButton>
+            <Link href="/get-started" passHref legacyBehavior>
+              <CTAButton variant="contained">
+                Get Started
+              </CTAButton>
+            </Link>
 
             <AnimatedHamburgerButton
               open={mobileMenuOpen}

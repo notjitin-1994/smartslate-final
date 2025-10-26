@@ -1,431 +1,992 @@
-import { Metadata } from 'next';
+'use client';
+
+import { useState, useRef } from 'react';
+import { Box, Container, Typography, Grid } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { motion, useInView } from 'framer-motion';
 import Link from 'next/link';
+import StandardHero from '@/components/ui/StandardHero';
+import {
+  PageWrapper,
+  SectionWrapper,
+  ContentCard,
+  AccentText,
+  AnimatedChip,
+} from '@/components/landing/styles/LandingStyles';
+import {
+  Shield,
+  DataObject,
+  Lock,
+  Person,
+  Public,
+  Update,
+  ContactSupport,
+  Gavel,
+  Security,
+  Storage,
+  Language,
+  ChildCare,
+  Email,
+  Phone,
+  Business,
+  CheckCircle,
+} from '@mui/icons-material';
 
-export const metadata: Metadata = {
-  title: 'Privacy Policy | Smartslate',
-  description: 'Smartslate Privacy Policy - Learn how we collect, use, and protect your personal information in compliance with Indian data protection laws.',
-  keywords: 'privacy policy, data protection, personal information, Smartslate, Indian law',
-};
+// Styled Components
+const PrivacySection = styled(Box)(({ theme }) => ({
+  padding: `${theme.spacing(10)} 0`,
+  backgroundColor: theme.palette.background.default,
+  position: 'relative',
+  overflow: 'hidden',
+}));
 
-export default function PrivacyPolicy() {
+const SectionCard = styled(ContentCard)(() => ({
+  height: '100%',
+  minHeight: 'auto',
+  display: 'flex',
+  flexDirection: 'column',
+}));
+
+const IconWrapper = styled(Box)(({ theme }) => ({
+  width: 56,
+  height: 56,
+  borderRadius: theme.spacing(2),
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  background: 'linear-gradient(135deg, rgba(167, 218, 219, 0.15), rgba(79, 70, 229, 0.1))',
+  border: '1px solid rgba(167, 218, 219, 0.3)',
+  marginBottom: theme.spacing(3),
+  transition: 'all 0.3s ease',
+  '& .MuiSvgIcon-root': {
+    fontSize: '2rem',
+    color: theme.palette.primary.main,
+  },
+}));
+
+const SectionHeader = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'flex-start',
+  gap: theme.spacing(2),
+  marginBottom: theme.spacing(3),
+}));
+
+const FeatureItem = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'flex-start',
+  gap: theme.spacing(1.5),
+  marginBottom: theme.spacing(1.5),
+  '& .MuiSvgIcon-root': {
+    color: theme.palette.primary.main,
+    fontSize: '0.875rem',
+    marginTop: theme.spacing(0.5),
+    flexShrink: 0,
+  },
+}));
+
+const HighlightBox = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(3),
+  backgroundColor: 'rgba(167, 218, 219, 0.05)',
+  backdropFilter: 'blur(10px)',
+  border: '1px solid rgba(167, 218, 219, 0.2)',
+  borderRadius: theme.spacing(2),
+  marginTop: theme.spacing(3),
+}));
+
+const InfoSubCard = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(2.5),
+  backgroundColor: 'rgba(255, 255, 255, 0.02)',
+  backdropFilter: 'blur(8px)',
+  border: '1px solid rgba(167, 218, 219, 0.12)',
+  borderRadius: theme.spacing(1.5),
+  marginBottom: theme.spacing(2),
+  transition: 'all 0.3s ease',
+  '&:hover': {
+    backgroundColor: 'rgba(167, 218, 219, 0.05)',
+    borderColor: 'rgba(167, 218, 219, 0.25)',
+  },
+  '&:last-child': {
+    marginBottom: 0,
+  },
+}));
+
+const ContactMethodCard = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.spacing(2),
+  padding: theme.spacing(2),
+  backgroundColor: 'rgba(255, 255, 255, 0.02)',
+  backdropFilter: 'blur(8px)',
+  border: '1px solid rgba(167, 218, 219, 0.12)',
+  borderRadius: theme.spacing(1.5),
+  marginBottom: theme.spacing(1.5),
+  '& .MuiSvgIcon-root': {
+    fontSize: '1.25rem',
+    color: theme.palette.primary.main,
+  },
+  '&:last-child': {
+    marginBottom: 0,
+  },
+}));
+
+const LastUpdatedBadge = styled(Box)(({ theme }) => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: theme.spacing(1),
+  padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
+  backgroundColor: 'rgba(79, 70, 229, 0.15)',
+  border: '1px solid rgba(79, 70, 229, 0.3)',
+  borderRadius: theme.spacing(3),
+  marginTop: theme.spacing(2),
+  '& .MuiSvgIcon-root': {
+    fontSize: '1rem',
+    color: theme.palette.secondary.main,
+  },
+}));
+
+const StyledLink = styled(Link)(({ theme }) => ({
+  color: theme.palette.primary.main,
+  textDecoration: 'none',
+  fontWeight: 600,
+  transition: 'all 0.2s ease',
+  '&:hover': {
+    color: theme.palette.primary.light,
+    textDecoration: 'underline',
+  },
+  '&:focus-visible': {
+    outline: `3px solid ${theme.palette.primary.main}`,
+    outlineOffset: '2px',
+    borderRadius: '4px',
+  },
+}));
+
+export default function PrivacyPolicyPage() {
+  const [currentDate] = useState(new Date().toLocaleDateString('en-IN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }));
+
+  const section1Ref = useRef<HTMLDivElement>(null);
+  const section2Ref = useRef<HTMLDivElement>(null);
+  const section3Ref = useRef<HTMLDivElement>(null);
+  const section4Ref = useRef<HTMLDivElement>(null);
+
+  const section1InView = useInView(section1Ref, { once: true, amount: 0.2 });
+  const section2InView = useInView(section2Ref, { once: true, amount: 0.2 });
+  const section3InView = useInView(section3Ref, { once: true, amount: 0.2 });
+  const section4InView = useInView(section4Ref, { once: true, amount: 0.2 });
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background-paper to-background-surface">
-      {/* Enhanced Header with Brand Elements */}
-      <div 
-        className="relative bg-gradient-to-r from-background-paper to-background-surface border-b border-border/50 animate-fade-in"
+    <PageWrapper>
+      {/* Hero Section */}
+      <StandardHero
+        title="Privacy Policy"
+        subtitle="Your privacy is our priority"
+        description="At Smartslate, we respect your privacy while providing innovative AI-powered learning solutions. This policy explains how we collect, use, and protect your personal information in compliance with Indian data protection laws."
+        accentWords={['Privacy', 'Priority', 'Protect']}
       >
-        {/* Background Brand Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-10 right-10 w-32 h-32 bg-brand-primary/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-10 left-10 w-24 h-24 bg-brand-secondary/10 rounded-full blur-2xl animate-pulse"></div>
-        </div>
-        
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
-          <div className="flex items-center gap-6 mb-6">
-            <Link 
-              href="/"
-              className="group flex items-center gap-3 text-brand-primary hover:text-brand-primary-light transition-all duration-300 hover:scale-105"
-            >
-              <div className="p-2 rounded-full bg-brand-primary/10 group-hover:bg-brand-primary/20 transition-colors duration-300">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </div>
-              <span className="font-medium">Back to Home</span>
-            </Link>
-          </div>
-          
-          <div className="animate-slide-up">
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-brand-primary to-brand-primary-light bg-clip-text text-transparent mb-4">
-              Privacy Policy
-            </h1>
-            <p className="text-xl text-text-secondary max-w-2xl">
-              Your privacy is fundamental to our mission. We're committed to transparency and protecting your data with the highest standards of security.
-            </p>
-            <div className="flex items-center gap-4 mt-6">
-              <div className="flex items-center gap-2 text-text-secondary">
-                <div className="w-2 h-2 bg-brand-primary rounded-full"></div>
-                <span className="text-sm">Last updated: {new Date().toLocaleDateString('en-IN', { 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
-                })}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+        <LastUpdatedBadge>
+          <Update />
+          <Typography variant="caption" sx={{ fontWeight: 600, color: 'secondary.light' }}>
+            Last updated: {currentDate}
+          </Typography>
+        </LastUpdatedBadge>
+      </StandardHero>
 
-      {/* Enhanced Content with Modern Cards */}
-      <div 
-        className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16"
-      >
-        <div className="grid gap-8">
-          
-          {/* Introduction Section */}
-          <section 
-            className="bg-gradient-to-br from-background-paper/80 to-background-surface/80 rounded-3xl p-8 border border-border/30 backdrop-blur-sm shadow-brand-lg hover:shadow-brand-xl transition-all duration-500 hover:scale-[1.02] animate-fade-in"
-          >
-            <div className="flex items-start gap-4 mb-6">
-              <div className="p-3 rounded-2xl bg-brand-primary/20 text-brand-primary">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div>
-                <h2 className="text-3xl font-bold text-text-primary mb-4">1. Introduction</h2>
-                <p className="text-text-secondary leading-relaxed text-lg mb-4">
-                  Smartslate ("we," "our," or "us") is committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our learning management platform and related services.
-                </p>
-                <p className="text-text-secondary leading-relaxed text-lg">
-                  This policy complies with the Information Technology Act, 2000, the Information Technology (Reasonable Security Practices and Procedures and Sensitive Personal Data or Information) Rules, 2011, and other applicable Indian data protection laws and regulations.
-                </p>
-              </div>
-            </div>
-          </section>
+      {/* Section 1: Introduction & Information Collection */}
+      <SectionWrapper className="visible">
+        <PrivacySection ref={section1Ref}>
+          <Container maxWidth="lg">
+            <Box sx={{ mb: 6 }}>
+              <AnimatedChip label="Privacy Overview" sx={{ mb: 3 }} />
+              <Typography variant="h3" sx={{ mb: 2, fontSize: { xs: '2rem', md: '2.5rem' } }}>
+                Understanding Our <AccentText>Privacy Commitment</AccentText>
+              </Typography>
+            </Box>
 
-          {/* Information Collection Section */}
-          <section 
-            className="bg-gradient-to-br from-background-paper/80 to-background-surface/80 rounded-3xl p-8 border border-border/30 backdrop-blur-sm shadow-brand-lg hover:shadow-brand-xl transition-all duration-500 hover:scale-[1.02] animate-fade-in"
-          >
-            <div className="flex items-start gap-4 mb-8">
-              <div className="p-3 rounded-2xl bg-brand-secondary/20 text-brand-secondary">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <div className="flex-1">
-                <h2 className="text-3xl font-bold text-text-primary mb-6">2. Information We Collect</h2>
-                
-                <div className="space-y-8">
-                  <div>
-                    <h3 className="text-xl font-semibold text-brand-primary mb-4 flex items-center gap-2">
-                      <div className="w-2 h-2 bg-brand-primary rounded-full"></div>
-                      2.1 Personal Information
-                    </h3>
-                    <p className="text-text-secondary leading-relaxed mb-4">
-                      We may collect the following personal information:
-                    </p>
-                    <div className="grid md:grid-cols-2 gap-3">
-                      {[
-                        'Name, email address, and contact information',
-                        'Company name, job title, and professional details',
-                        'Profile information and preferences',
-                        'Payment and billing information',
-                        'Communication preferences and marketing consent'
-                      ].map((item, index) => (
-                        <div key={index} className="flex items-center gap-3 p-3 rounded-xl bg-background-surface/50 border border-border/20 hover:border-brand-primary/30 transition-colors duration-300">
-                          <div className="w-1.5 h-1.5 bg-brand-primary rounded-full"></div>
-                          <span className="text-text-secondary">{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+            <Grid container spacing={4}>
+              {/* Introduction */}
+              <Grid size={{ xs: 12, md: 6 }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={section1InView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+                  transition={{ duration: 0.8 }}
+                  style={{ height: '100%' }}
+                >
+                  <SectionCard>
+                    <SectionHeader>
+                      <IconWrapper>
+                        <Shield />
+                      </IconWrapper>
+                      <Box>
+                        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+                          1. Introduction
+                        </Typography>
+                      </Box>
+                    </SectionHeader>
+                    <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8, mb: 2 }}>
+                      <strong>Smartslate Learning</strong> (&quot;Smartslate,&quot; &quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) operates an AI-powered learning platform that generates personalized learning blueprints and provides educational services.
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8, mb: 2 }}>
+                      By using our Services, you acknowledge that you have read, understood, and agree to this Privacy Policy. If you do not agree with this policy, you must not use our Services.
+                    </Typography>
+                    <HighlightBox>
+                      <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8, fontSize: '0.875rem' }}>
+                        <strong>Legal Compliance:</strong> This policy complies with the Information Technology Act, 2000, the IT (Reasonable Security Practices) Rules, 2011, and other applicable Indian data protection laws.
+                      </Typography>
+                    </HighlightBox>
+                  </SectionCard>
+                </motion.div>
+              </Grid>
 
-                  <div>
-                    <h3 className="text-xl font-semibold text-brand-primary mb-4 flex items-center gap-2">
-                      <div className="w-2 h-2 bg-brand-primary rounded-full"></div>
-                      2.2 Usage Information
-                    </h3>
-                    <p className="text-text-secondary leading-relaxed mb-4">
-                      We automatically collect certain information when you use our services:
-                    </p>
-                    <div className="grid md:grid-cols-2 gap-3">
-                      {[
-                        'Log data (IP address, browser type, access times)',
-                        'Device information and identifiers',
-                        'Usage patterns and learning progress',
-                        'Course interactions and completion data',
-                        'Performance analytics and user behavior'
-                      ].map((item, index) => (
-                        <div key={index} className="flex items-center gap-3 p-3 rounded-xl bg-background-surface/50 border border-border/20 hover:border-brand-primary/30 transition-colors duration-300">
-                          <div className="w-1.5 h-1.5 bg-brand-primary rounded-full"></div>
-                          <span className="text-text-secondary">{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+              {/* Information Collection */}
+              <Grid size={{ xs: 12, md: 6 }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={section1InView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  style={{ height: '100%' }}
+                >
+                  <SectionCard>
+                    <SectionHeader>
+                      <IconWrapper>
+                        <DataObject />
+                      </IconWrapper>
+                      <Box>
+                        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+                          2. Information We Collect
+                        </Typography>
+                      </Box>
+                    </SectionHeader>
 
-                  <div>
-                    <h3 className="text-xl font-semibold text-brand-primary mb-4 flex items-center gap-2">
-                      <div className="w-2 h-2 bg-brand-primary rounded-full"></div>
-                      2.3 Cookies and Tracking Technologies
-                    </h3>
-                    <p className="text-text-secondary leading-relaxed">
-                      We use cookies, web beacons, and similar technologies to enhance your experience, analyze usage patterns, and provide personalized content. You can control cookie settings through your browser preferences.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+                    <InfoSubCard>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'primary.main', mb: 1.5 }}>
+                        2.1 Information You Provide
+                      </Typography>
+                      <FeatureItem>
+                        <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: 'primary.main', mt: 1 }} />
+                        <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                          Account information (name, email, password)
+                        </Typography>
+                      </FeatureItem>
+                      <FeatureItem>
+                        <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: 'primary.main', mt: 1 }} />
+                        <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                          Professional details (company, role, industry)
+                        </Typography>
+                      </FeatureItem>
+                      <FeatureItem>
+                        <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: 'primary.main', mt: 1 }} />
+                        <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                          Learning preferences and questionnaire responses
+                        </Typography>
+                      </FeatureItem>
+                      <FeatureItem>
+                        <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: 'primary.main', mt: 1 }} />
+                        <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                          Payment information for subscriptions
+                        </Typography>
+                      </FeatureItem>
+                    </InfoSubCard>
 
-          {/* How We Use Information Section */}
-          <section 
-            className="bg-gradient-to-br from-background-paper/80 to-background-surface/80 rounded-3xl p-8 border border-border/30 backdrop-blur-sm shadow-brand-lg hover:shadow-brand-xl transition-all duration-500 hover:scale-[1.02] animate-fade-in"
-          >
-            <div className="flex items-start gap-4 mb-6">
-              <div className="p-3 rounded-2xl bg-green-500/20 text-green-400">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div>
-                <h2 className="text-3xl font-bold text-text-primary mb-4">3. How We Use Your Information</h2>
-                <p className="text-text-secondary leading-relaxed mb-6">
-                  We use the collected information for the following purposes:
-                </p>
-                <div className="grid md:grid-cols-2 gap-4">
-                  {[
-                    'Providing and maintaining our learning platform',
-                    'Personalizing your learning experience and content recommendations',
-                    'Processing payments and managing subscriptions',
-                    'Communicating with you about our services and updates',
-                    'Analyzing usage patterns to improve our platform',
-                    'Ensuring security and preventing fraud',
-                    'Complying with legal obligations and regulations'
-                  ].map((item, index) => (
-                    <div key={index} className="flex items-center gap-3 p-4 rounded-xl bg-background-surface/50 border border-border/20 hover:border-green-500/30 transition-all duration-300 hover:scale-105">
-                      <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                      <span className="text-text-secondary">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
+                    <InfoSubCard>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'primary.main', mb: 1.5 }}>
+                        2.2 Automatically Collected Data
+                      </Typography>
+                      <FeatureItem>
+                        <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: 'secondary.main', mt: 1 }} />
+                        <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                          Device and browser information
+                        </Typography>
+                      </FeatureItem>
+                      <FeatureItem>
+                        <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: 'secondary.main', mt: 1 }} />
+                        <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                          Usage patterns and interaction metrics
+                        </Typography>
+                      </FeatureItem>
+                      <FeatureItem>
+                        <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: 'secondary.main', mt: 1 }} />
+                        <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                          Learning progress and performance data
+                        </Typography>
+                      </FeatureItem>
+                      <FeatureItem>
+                        <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: 'secondary.main', mt: 1 }} />
+                        <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                          Cookies and tracking technologies
+                        </Typography>
+                      </FeatureItem>
+                    </InfoSubCard>
+                  </SectionCard>
+                </motion.div>
+              </Grid>
+            </Grid>
+          </Container>
+        </PrivacySection>
+      </SectionWrapper>
 
-          {/* Information Sharing Section */}
-          <section 
-            className="bg-gradient-to-br from-background-paper/80 to-background-surface/80 rounded-3xl p-8 border border-border/30 backdrop-blur-sm shadow-brand-lg hover:shadow-brand-xl transition-all duration-500 hover:scale-[1.02] animate-fade-in"
-          >
-            <div className="flex items-start gap-4 mb-6">
-              <div className="p-3 rounded-2xl bg-orange-500/20 text-orange-400">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
-                </svg>
-              </div>
-              <div>
-                <h2 className="text-3xl font-bold text-text-primary mb-4">4. Information Sharing and Disclosure</h2>
-                <p className="text-text-secondary leading-relaxed mb-6">
-                  We do not sell, trade, or rent your personal information to third parties. We may share your information in the following circumstances:
-                </p>
-                <div className="space-y-4">
-                  {[
-                    { title: 'Service Providers', desc: 'With trusted third-party service providers who assist in operating our platform' },
-                    { title: 'Legal Requirements', desc: 'When required by law, court order, or government regulation' },
-                    { title: 'Business Transfers', desc: 'In connection with a merger, acquisition, or sale of assets' },
-                    { title: 'Consent', desc: 'With your explicit consent for specific purposes' },
-                    { title: 'Safety and Security', desc: 'To protect our rights, property, or safety, or that of our users' }
-                  ].map((item, index) => (
-                    <div key={index} className="p-4 rounded-xl bg-background-surface/50 border border-border/20 hover:border-orange-500/30 transition-all duration-300">
-                      <h4 className="font-semibold text-brand-primary mb-2">{item.title}</h4>
-                      <p className="text-text-secondary">{item.desc}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
+      {/* Section 2: How We Use Information & Sharing */}
+      <SectionWrapper className="visible">
+        <PrivacySection ref={section2Ref}>
+          <Container maxWidth="lg">
+            <Box sx={{ mb: 6 }}>
+              <AnimatedChip label="Data Usage" sx={{ mb: 3 }} />
+              <Typography variant="h3" sx={{ mb: 2, fontSize: { xs: '2rem', md: '2.5rem' } }}>
+                How We Use and <AccentText>Share Your Data</AccentText>
+              </Typography>
+            </Box>
 
-          {/* Data Security Section */}
-          <section 
-            className="bg-gradient-to-br from-background-paper/80 to-background-surface/80 rounded-3xl p-8 border border-border/30 backdrop-blur-sm shadow-brand-lg hover:shadow-brand-xl transition-all duration-500 hover:scale-[1.02] animate-fade-in"
-          >
-            <div className="flex items-start gap-4 mb-6">
-              <div className="p-3 rounded-2xl bg-blue-500/20 text-blue-400">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </div>
-              <div>
-                <h2 className="text-3xl font-bold text-text-primary mb-4">5. Data Security</h2>
-                <p className="text-text-secondary leading-relaxed mb-6">
-                  We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. These measures include:
-                </p>
-                <div className="grid md:grid-cols-2 gap-4">
-                  {[
-                    'Encryption of data in transit and at rest',
-                    'Regular security assessments and updates',
-                    'Access controls and authentication mechanisms',
-                    'Employee training on data protection practices',
-                    'Incident response and breach notification procedures'
-                  ].map((item, index) => (
-                    <div key={index} className="flex items-center gap-3 p-4 rounded-xl bg-background-surface/50 border border-border/20 hover:border-blue-500/30 transition-all duration-300 hover:scale-105">
-                      <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                      <span className="text-text-secondary">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
+            <Grid container spacing={4}>
+              {/* How We Use Information */}
+              <Grid size={{ xs: 12, md: 6 }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={section2InView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+                  transition={{ duration: 0.8 }}
+                  style={{ height: '100%' }}
+                >
+                  <SectionCard>
+                    <SectionHeader>
+                      <IconWrapper>
+                        <Lock />
+                      </IconWrapper>
+                      <Box>
+                        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+                          3. How We Use Your Information
+                        </Typography>
+                      </Box>
+                    </SectionHeader>
+                    <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8, mb: 3, fontSize: '0.875rem' }}>
+                      We use your information for the following purposes:
+                    </Typography>
 
-          {/* Your Rights Section */}
-          <section 
-            className="bg-gradient-to-br from-background-paper/80 to-background-surface/80 rounded-3xl p-8 border border-border/30 backdrop-blur-sm shadow-brand-lg hover:shadow-brand-xl transition-all duration-500 hover:scale-[1.02] animate-fade-in"
-          >
-            <div className="flex items-start gap-4 mb-6">
-              <div className="p-3 rounded-2xl bg-purple-500/20 text-purple-400">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              </div>
-              <div>
-                <h2 className="text-3xl font-bold text-text-primary mb-4">7. Your Rights and Choices</h2>
-                <p className="text-text-secondary leading-relaxed mb-6">
-                  You have the following rights regarding your personal information:
-                </p>
-                <div className="grid md:grid-cols-2 gap-4 mb-6">
-                  {[
-                    { title: 'Access', desc: 'Request access to your personal information' },
-                    { title: 'Correction', desc: 'Request correction of inaccurate or incomplete information' },
-                    { title: 'Deletion', desc: 'Request deletion of your personal information' },
-                    { title: 'Portability', desc: 'Request a copy of your data in a portable format' },
-                    { title: 'Objection', desc: 'Object to processing of your personal information' },
-                    { title: 'Withdrawal', desc: 'Withdraw consent for data processing' }
-                  ].map((item, index) => (
-                    <div key={index} className="p-4 rounded-xl bg-background-surface/50 border border-border/20 hover:border-purple-500/30 transition-all duration-300 hover:scale-105">
-                      <h4 className="font-semibold text-brand-primary mb-2">{item.title}</h4>
-                      <p className="text-text-secondary text-sm">{item.desc}</p>
-                    </div>
-                  ))}
-                </div>
-                <div className="p-6 rounded-2xl bg-gradient-to-r from-brand-primary/10 to-brand-secondary/10 border border-brand-primary/20">
-                  <p className="text-text-secondary leading-relaxed">
-                    To exercise these rights, please contact us at{' '}
-                    <a href="mailto:jitin@smartslate.io" className="text-brand-primary hover:text-brand-primary-light underline transition-colors duration-300">
-                      jitin@smartslate.io
-                    </a>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
+                    <FeatureItem>
+                      <CheckCircle sx={{ fontSize: '1rem !important' }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Providing and improving our AI-powered Services
+                      </Typography>
+                    </FeatureItem>
+                    <FeatureItem>
+                      <CheckCircle sx={{ fontSize: '1rem !important' }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Generating personalized learning blueprints
+                      </Typography>
+                    </FeatureItem>
+                    <FeatureItem>
+                      <CheckCircle sx={{ fontSize: '1rem !important' }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Processing transactions and managing subscriptions
+                      </Typography>
+                    </FeatureItem>
+                    <FeatureItem>
+                      <CheckCircle sx={{ fontSize: '1rem !important' }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Communicating about your account and Services
+                      </Typography>
+                    </FeatureItem>
+                    <FeatureItem>
+                      <CheckCircle sx={{ fontSize: '1rem !important' }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Ensuring platform security and preventing fraud
+                      </Typography>
+                    </FeatureItem>
+                    <FeatureItem>
+                      <CheckCircle sx={{ fontSize: '1rem !important' }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Complying with legal obligations
+                      </Typography>
+                    </FeatureItem>
 
-          {/* Contact Information Section */}
-          <section 
-            className="bg-gradient-to-br from-background-paper/80 to-background-surface/80 rounded-3xl p-8 border border-border/30 backdrop-blur-sm shadow-brand-lg hover:shadow-brand-xl transition-all duration-500 hover:scale-[1.02] animate-fade-in"
-          >
-            <div className="flex items-start gap-4 mb-6">
-              <div className="p-3 rounded-2xl bg-brand-primary/20 text-brand-primary">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <div className="flex-1">
-                <h2 className="text-3xl font-bold text-text-primary mb-6">11. Contact Us</h2>
-                <p className="text-text-secondary leading-relaxed mb-6">
-                  If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:
-                </p>
-                
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="p-6 rounded-2xl bg-gradient-to-r from-background-surface to-background-paper border border-border/30 hover:border-brand-primary/30 transition-all duration-300">
-                    <h3 className="text-xl font-semibold text-brand-primary mb-4">Company Information</h3>
-                    <div className="space-y-3 text-text-secondary">
-                      <div className="flex items-center gap-3">
-                        <div className="w-2 h-2 bg-brand-primary rounded-full"></div>
-                        <span><strong>Company:</strong> Smartslate Learning</span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <div className="w-2 h-2 bg-brand-primary rounded-full"></div>
-                        <span><strong>Location:</strong> India</span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <div className="w-2 h-2 bg-brand-primary rounded-full"></div>
-                        <span><strong>Phone:</strong> +91 9008898642</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="p-6 rounded-2xl bg-gradient-to-r from-background-surface to-background-paper border border-border/30 hover:border-brand-primary/30 transition-all duration-300">
-                    <h3 className="text-xl font-semibold text-brand-primary mb-4">Grievance Officer</h3>
-                    <div className="space-y-3 text-text-secondary">
-                      <div className="flex items-center gap-3">
-                        <div className="w-2 h-2 bg-brand-primary rounded-full"></div>
-                        <span><strong>Name:</strong> Jitin Nair</span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <div className="w-2 h-2 bg-brand-primary rounded-full"></div>
-                        <span><strong>Email:</strong> jitin@smartslate.io</span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <div className="w-2 h-2 bg-brand-primary rounded-full"></div>
-                        <span><strong>Response Time:</strong> Within 30 days</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+                    <HighlightBox>
+                      <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.primary', display: 'block', mb: 1 }}>
+                        Legal Basis for Processing
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7, fontSize: '0.875rem' }}>
+                        We process your information based on your consent, contractual necessity, legitimate interests, and legal obligations.
+                      </Typography>
+                    </HighlightBox>
+                  </SectionCard>
+                </motion.div>
+              </Grid>
 
-          {/* Additional Sections - Simplified for UX */}
-          <section 
-            className="bg-gradient-to-br from-background-paper/80 to-background-surface/80 rounded-3xl p-8 border border-border/30 backdrop-blur-sm shadow-brand-lg hover:shadow-brand-xl transition-all duration-500 hover:scale-[1.02] animate-fade-in"
-          >
-            <div className="space-y-8">
-              <div>
-                <h2 className="text-2xl font-bold text-text-primary mb-4">6. Data Retention</h2>
-                <p className="text-text-secondary leading-relaxed">
-                  We retain your personal information only for as long as necessary to fulfill the purposes outlined in this Privacy Policy, comply with legal obligations, resolve disputes, and enforce our agreements. When we no longer need your information, we will securely delete or anonymize it.
-                </p>
-              </div>
-              
-              <div>
-                <h2 className="text-2xl font-bold text-text-primary mb-4">8. International Data Transfers</h2>
-                <p className="text-text-secondary leading-relaxed">
-                  Your personal information may be transferred to and processed in countries other than India. We ensure that such transfers comply with applicable data protection laws and implement appropriate safeguards to protect your information.
-                </p>
-              </div>
-              
-              <div>
-                <h2 className="text-2xl font-bold text-text-primary mb-4">9. Children's Privacy</h2>
-                <p className="text-text-secondary leading-relaxed">
-                  Our services are not intended for children under the age of 13. We do not knowingly collect personal information from children under 13. If you believe we have collected information from a child under 13, please contact us immediately.
-                </p>
-              </div>
-              
-              <div>
-                <h2 className="text-2xl font-bold text-text-primary mb-4">10. Changes to This Privacy Policy</h2>
-                <p className="text-text-secondary leading-relaxed">
-                  We may update this Privacy Policy from time to time. We will notify you of any material changes by posting the new policy on our website and updating the "Last updated" date. Your continued use of our services after such changes constitutes acceptance of the updated policy.
-                </p>
-              </div>
-            </div>
-          </section>
-        </div>
+              {/* Information Sharing */}
+              <Grid size={{ xs: 12, md: 6 }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={section2InView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  style={{ height: '100%' }}
+                >
+                  <SectionCard>
+                    <SectionHeader>
+                      <IconWrapper>
+                        <Public />
+                      </IconWrapper>
+                      <Box>
+                        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+                          4. Information Sharing
+                        </Typography>
+                      </Box>
+                    </SectionHeader>
+                    <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8, mb: 3, fontSize: '0.875rem' }}>
+                      We may share your information in limited circumstances:
+                    </Typography>
 
-        {/* Enhanced Footer */}
-        <div 
-          className="border-t border-border/30 pt-12 mt-16 animate-fade-in"
-        >
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
-            <div className="text-center sm:text-left">
-              <p className="text-text-secondary mb-2">
-                © {new Date().getFullYear()} Smartslate Learning. All rights reserved.
-              </p>
-              <p className="text-sm text-text-disabled">
-                Committed to protecting your privacy and data security
-              </p>
-            </div>
-            <div className="flex gap-6 text-sm">
-              <Link 
-                href="/legal/terms" 
-                className="text-brand-primary hover:text-brand-primary-light underline transition-colors duration-300 hover:scale-105"
+                    <InfoSubCard>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'primary.main', mb: 1 }}>
+                        Service Providers
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem', lineHeight: 1.7 }}>
+                        Third-party providers for hosting, analytics, and payment processing.
+                      </Typography>
+                    </InfoSubCard>
+
+                    <InfoSubCard>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'primary.main', mb: 1 }}>
+                        AI Service Providers
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem', lineHeight: 1.7 }}>
+                        AI services (including Anthropic Claude) for generating learning content.
+                      </Typography>
+                    </InfoSubCard>
+
+                    <InfoSubCard>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'primary.main', mb: 1 }}>
+                        Legal Requirements
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem', lineHeight: 1.7 }}>
+                        When required by law, court order, or government regulation.
+                      </Typography>
+                    </InfoSubCard>
+
+                    <InfoSubCard>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'primary.main', mb: 1 }}>
+                        Business Transfers
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem', lineHeight: 1.7 }}>
+                        In connection with mergers, acquisitions, or asset sales.
+                      </Typography>
+                    </InfoSubCard>
+
+                    <HighlightBox>
+                      <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7, fontSize: '0.875rem' }}>
+                        <strong>Important:</strong> We do not sell your personal information to third parties for marketing purposes.
+                      </Typography>
+                    </HighlightBox>
+                  </SectionCard>
+                </motion.div>
+              </Grid>
+            </Grid>
+          </Container>
+        </PrivacySection>
+      </SectionWrapper>
+
+      {/* Section 3: Security, Rights & Data Retention */}
+      <SectionWrapper className="visible">
+        <PrivacySection ref={section3Ref}>
+          <Container maxWidth="lg">
+            <Box sx={{ mb: 6 }}>
+              <AnimatedChip label="Security & Rights" sx={{ mb: 3 }} />
+              <Typography variant="h3" sx={{ mb: 2, fontSize: { xs: '2rem', md: '2.5rem' } }}>
+                Your Data <AccentText>Security and Rights</AccentText>
+              </Typography>
+            </Box>
+
+            <Grid container spacing={4}>
+              {/* Data Security */}
+              <Grid size={{ xs: 12, md: 6 }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={section3InView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+                  transition={{ duration: 0.8 }}
+                  style={{ height: '100%' }}
+                >
+                  <SectionCard>
+                    <SectionHeader>
+                      <IconWrapper>
+                        <Security />
+                      </IconWrapper>
+                      <Box>
+                        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+                          5. Data Security
+                        </Typography>
+                      </Box>
+                    </SectionHeader>
+                    <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8, mb: 3, fontSize: '0.875rem' }}>
+                      We implement comprehensive security measures to protect your information:
+                    </Typography>
+
+                    <FeatureItem>
+                      <CheckCircle sx={{ fontSize: '1rem !important' }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Encryption of data in transit and at rest
+                      </Typography>
+                    </FeatureItem>
+                    <FeatureItem>
+                      <CheckCircle sx={{ fontSize: '1rem !important' }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Access controls and authentication mechanisms
+                      </Typography>
+                    </FeatureItem>
+                    <FeatureItem>
+                      <CheckCircle sx={{ fontSize: '1rem !important' }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Regular security assessments and testing
+                      </Typography>
+                    </FeatureItem>
+                    <FeatureItem>
+                      <CheckCircle sx={{ fontSize: '1rem !important' }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Employee training on data protection
+                      </Typography>
+                    </FeatureItem>
+                    <FeatureItem>
+                      <CheckCircle sx={{ fontSize: '1rem !important' }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Incident response and breach notification procedures
+                      </Typography>
+                    </FeatureItem>
+
+                    <HighlightBox>
+                      <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.primary', display: 'block', mb: 1 }}>
+                        Security Disclaimer
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7, fontSize: '0.875rem' }}>
+                        While we implement reasonable security measures, no system is completely secure. You are responsible for maintaining the confidentiality of your account credentials.
+                      </Typography>
+                    </HighlightBox>
+                  </SectionCard>
+                </motion.div>
+              </Grid>
+
+              {/* Your Rights */}
+              <Grid size={{ xs: 12, md: 6 }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={section3InView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  style={{ height: '100%' }}
+                >
+                  <SectionCard>
+                    <SectionHeader>
+                      <IconWrapper>
+                        <Person />
+                      </IconWrapper>
+                      <Box>
+                        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+                          6. Your Rights and Choices
+                        </Typography>
+                      </Box>
+                    </SectionHeader>
+                    <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8, mb: 3, fontSize: '0.875rem' }}>
+                      Subject to applicable law, you have the following rights:
+                    </Typography>
+
+                    <InfoSubCard>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'primary.main', mb: 0.5 }}>
+                        Access
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Request access to your personal information
+                      </Typography>
+                    </InfoSubCard>
+
+                    <InfoSubCard>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'primary.main', mb: 0.5 }}>
+                        Correction
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Request correction of inaccurate information
+                      </Typography>
+                    </InfoSubCard>
+
+                    <InfoSubCard>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'primary.main', mb: 0.5 }}>
+                        Deletion
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Request deletion of your personal information
+                      </Typography>
+                    </InfoSubCard>
+
+                    <InfoSubCard>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'primary.main', mb: 0.5 }}>
+                        Portability
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Request a copy in machine-readable format
+                      </Typography>
+                    </InfoSubCard>
+
+                    <HighlightBox>
+                      <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.primary', display: 'block', mb: 1 }}>
+                        Exercise Your Rights
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7, fontSize: '0.875rem' }}>
+                        To exercise these rights, contact us at{' '}
+                        <StyledLink href="mailto:jitin@smartslate.io">
+                          jitin@smartslate.io
+                        </StyledLink>
+                        . We will respond within the timeframes required by law.
+                      </Typography>
+                    </HighlightBox>
+                  </SectionCard>
+                </motion.div>
+              </Grid>
+
+              {/* Data Retention */}
+              <Grid size={{ xs: 12, md: 6 }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={section3InView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+                  transition={{ duration: 0.8, delay: 0.3 }}
+                  style={{ height: '100%' }}
+                >
+                  <SectionCard>
+                    <SectionHeader>
+                      <IconWrapper>
+                        <Storage />
+                      </IconWrapper>
+                      <Box>
+                        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+                          7. Data Retention
+                        </Typography>
+                      </Box>
+                    </SectionHeader>
+                    <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8, mb: 3, fontSize: '0.875rem' }}>
+                      We retain your information as long as necessary to fulfill the purposes outlined in this policy:
+                    </Typography>
+
+                    <FeatureItem>
+                      <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: 'primary.main', mt: 1 }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Account information: While your account is active
+                      </Typography>
+                    </FeatureItem>
+                    <FeatureItem>
+                      <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: 'primary.main', mt: 1 }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Learning data: To provide and improve Services
+                      </Typography>
+                    </FeatureItem>
+                    <FeatureItem>
+                      <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: 'primary.main', mt: 1 }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Transaction records: As required by law
+                      </Typography>
+                    </FeatureItem>
+
+                    <HighlightBox>
+                      <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7, fontSize: '0.875rem' }}>
+                        When no longer needed, we delete or anonymize your information in a manner that prevents reconstruction.
+                      </Typography>
+                    </HighlightBox>
+                  </SectionCard>
+                </motion.div>
+              </Grid>
+
+              {/* International Transfers */}
+              <Grid size={{ xs: 12, md: 6 }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={section3InView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                  style={{ height: '100%' }}
+                >
+                  <SectionCard>
+                    <SectionHeader>
+                      <IconWrapper>
+                        <Language />
+                      </IconWrapper>
+                      <Box>
+                        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+                          8. International Data Transfers
+                        </Typography>
+                      </Box>
+                    </SectionHeader>
+                    <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8, mb: 3, fontSize: '0.875rem' }}>
+                      Your information may be transferred to and processed outside India. We ensure compliance through:
+                    </Typography>
+
+                    <FeatureItem>
+                      <CheckCircle sx={{ fontSize: '1rem !important' }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Standard contractual clauses for transfers
+                      </Typography>
+                    </FeatureItem>
+                    <FeatureItem>
+                      <CheckCircle sx={{ fontSize: '1rem !important' }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Appropriate safeguards to protect your data
+                      </Typography>
+                    </FeatureItem>
+                    <FeatureItem>
+                      <CheckCircle sx={{ fontSize: '1rem !important' }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Compliance with applicable data protection laws
+                      </Typography>
+                    </FeatureItem>
+
+                    <HighlightBox>
+                      <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7, fontSize: '0.875rem' }}>
+                        By using our Services, you consent to transfers to countries outside India, including those with different data protection standards.
+                      </Typography>
+                    </HighlightBox>
+                  </SectionCard>
+                </motion.div>
+              </Grid>
+            </Grid>
+          </Container>
+        </PrivacySection>
+      </SectionWrapper>
+
+      {/* Section 4: Children's Privacy, Changes & Contact */}
+      <SectionWrapper className="visible">
+        <PrivacySection ref={section4Ref}>
+          <Container maxWidth="lg">
+            <Box sx={{ mb: 6 }}>
+              <AnimatedChip label="Additional Information" sx={{ mb: 3 }} />
+              <Typography variant="h3" sx={{ mb: 2, fontSize: { xs: '2rem', md: '2.5rem' } }}>
+                Important <AccentText>Legal Information</AccentText>
+              </Typography>
+            </Box>
+
+            <Grid container spacing={4}>
+              {/* Children's Privacy */}
+              <Grid size={{ xs: 12, md: 6 }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={section4InView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+                  transition={{ duration: 0.8 }}
+                  style={{ height: '100%' }}
+                >
+                  <SectionCard>
+                    <SectionHeader>
+                      <IconWrapper>
+                        <ChildCare />
+                      </IconWrapper>
+                      <Box>
+                        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+                          9. Children&apos;s Privacy
+                        </Typography>
+                      </Box>
+                    </SectionHeader>
+                    <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8, mb: 2, fontSize: '0.875rem' }}>
+                      Our Services are not intended for children under the age of 18. We do not knowingly collect personal information from children under 18.
+                    </Typography>
+                    <HighlightBox sx={{ backgroundColor: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+                      <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7, fontSize: '0.875rem' }}>
+                        If you are a parent or guardian and believe your child has provided us with personal information, please contact us immediately at{' '}
+                        <StyledLink href="mailto:jitin@smartslate.io">
+                          jitin@smartslate.io
+                        </StyledLink>
+                        . We will take steps to delete such information from our records.
+                      </Typography>
+                    </HighlightBox>
+                  </SectionCard>
+                </motion.div>
+              </Grid>
+
+              {/* Policy Changes */}
+              <Grid size={{ xs: 12, md: 6 }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={section4InView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  style={{ height: '100%' }}
+                >
+                  <SectionCard>
+                    <SectionHeader>
+                      <IconWrapper>
+                        <Update />
+                      </IconWrapper>
+                      <Box>
+                        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+                          10. Changes to This Policy
+                        </Typography>
+                      </Box>
+                    </SectionHeader>
+                    <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8, mb: 3, fontSize: '0.875rem' }}>
+                      We may update this Privacy Policy from time to time. When we do:
+                    </Typography>
+
+                    <FeatureItem>
+                      <CheckCircle sx={{ fontSize: '1rem !important' }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        We will post the updated policy on our website
+                      </Typography>
+                    </FeatureItem>
+                    <FeatureItem>
+                      <CheckCircle sx={{ fontSize: '1rem !important' }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        We will update the &quot;Last updated&quot; date
+                      </Typography>
+                    </FeatureItem>
+                    <FeatureItem>
+                      <CheckCircle sx={{ fontSize: '1rem !important' }} />
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
+                        Material changes may be notified via email
+                      </Typography>
+                    </FeatureItem>
+
+                    <HighlightBox>
+                      <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7, fontSize: '0.875rem' }}>
+                        Your continued use of Services after changes constitutes acceptance. We encourage you to review this policy periodically.
+                      </Typography>
+                    </HighlightBox>
+                  </SectionCard>
+                </motion.div>
+              </Grid>
+
+              {/* Contact Information */}
+              <Grid size={{ xs: 12, md: 6 }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={section4InView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+                  transition={{ duration: 0.8, delay: 0.3 }}
+                  style={{ height: '100%' }}
+                >
+                  <SectionCard>
+                    <SectionHeader>
+                      <IconWrapper>
+                        <ContactSupport />
+                      </IconWrapper>
+                      <Box>
+                        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+                          11. Contact Us
+                        </Typography>
+                      </Box>
+                    </SectionHeader>
+                    <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8, mb: 3, fontSize: '0.875rem' }}>
+                      For questions or requests regarding this Privacy Policy or our data practices:
+                    </Typography>
+
+                    <Box sx={{ mb: 2 }}>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'primary.main', mb: 2 }}>
+                        Data Protection Officer
+                      </Typography>
+                      <ContactMethodCard>
+                        <Person />
+                        <Box>
+                          <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', fontSize: '0.75rem' }}>
+                            Name
+                          </Typography>
+                          <Typography variant="body2" sx={{ fontWeight: 600, fontSize: '0.875rem' }}>
+                            Jitin Nair
+                          </Typography>
+                        </Box>
+                      </ContactMethodCard>
+                      <ContactMethodCard>
+                        <Email />
+                        <Box>
+                          <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', fontSize: '0.75rem' }}>
+                            Email
+                          </Typography>
+                          <StyledLink href="mailto:jitin@smartslate.io">
+                            jitin@smartslate.io
+                          </StyledLink>
+                        </Box>
+                      </ContactMethodCard>
+                      <ContactMethodCard>
+                        <Phone />
+                        <Box>
+                          <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', fontSize: '0.75rem' }}>
+                            Phone
+                          </Typography>
+                          <StyledLink href="tel:+919008898642">
+                            +91 9008898642
+                          </StyledLink>
+                        </Box>
+                      </ContactMethodCard>
+                      <ContactMethodCard>
+                        <Business />
+                        <Box>
+                          <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', fontSize: '0.75rem' }}>
+                            Company
+                          </Typography>
+                          <Typography variant="body2" sx={{ fontWeight: 600, fontSize: '0.875rem' }}>
+                            Smartslate Learning, India
+                          </Typography>
+                        </Box>
+                      </ContactMethodCard>
+                    </Box>
+
+                    <HighlightBox>
+                      <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7, fontSize: '0.875rem' }}>
+                        <strong>Response Time:</strong> We will respond to your inquiries within 30 days.
+                      </Typography>
+                    </HighlightBox>
+                  </SectionCard>
+                </motion.div>
+              </Grid>
+
+              {/* Dispute Resolution */}
+              <Grid size={{ xs: 12, md: 6 }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={section4InView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                  style={{ height: '100%' }}
+                >
+                  <SectionCard>
+                    <SectionHeader>
+                      <IconWrapper>
+                        <Gavel />
+                      </IconWrapper>
+                      <Box>
+                        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+                          12. Dispute Resolution
+                        </Typography>
+                      </Box>
+                    </SectionHeader>
+                    <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8, mb: 2, fontSize: '0.875rem' }}>
+                      If you have concerns about how we handle your personal information, please contact us first at{' '}
+                      <StyledLink href="mailto:jitin@smartslate.io">
+                        jitin@smartslate.io
+                      </StyledLink>
+                      . We will investigate and respond to your concerns.
+                    </Typography>
+                    <HighlightBox sx={{ backgroundColor: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+                      <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7, fontSize: '0.875rem' }}>
+                        If we cannot resolve your concern, you may have the right to lodge a complaint with the appropriate data protection authority in India.
+                      </Typography>
+                    </HighlightBox>
+                  </SectionCard>
+                </motion.div>
+              </Grid>
+            </Grid>
+
+            {/* Footer Links */}
+            <Box sx={{ borderTop: '1px solid rgba(167, 218, 219, 0.1)', pt: 6, mt: 8, textAlign: 'center' }}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={section4InView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
               >
-                Terms of Service
-              </Link>
-              <Link 
-                href="/" 
-                className="text-brand-primary hover:text-brand-primary-light underline transition-colors duration-300 hover:scale-105"
-              >
-                Back to Home
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                  © {new Date().getFullYear()} Smartslate Learning. All rights reserved.
+                </Typography>
+                <Typography variant="caption" color="text.disabled" sx={{ display: 'block', mb: 3 }}>
+                  Committed to protecting your privacy and data security
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 3, justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <StyledLink href="/legal/terms">
+                    Terms of Service
+                  </StyledLink>
+                  <StyledLink href="/">
+                    Back to Home
+                  </StyledLink>
+                  <StyledLink href="/contact">
+                    Contact Us
+                  </StyledLink>
+                </Box>
+              </motion.div>
+            </Box>
+          </Container>
+        </PrivacySection>
+      </SectionWrapper>
+    </PageWrapper>
   );
 }

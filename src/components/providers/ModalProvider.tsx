@@ -9,6 +9,10 @@ export interface ModalStates {
   ssaInterest: boolean;
   solaraInterest: boolean;
   partner: boolean;
+  jobApplication: boolean;
+  culture: boolean;
+  cookieConsent: boolean;
+  cookieSettings: boolean;
 }
 
 export interface ModalActions {
@@ -24,6 +28,14 @@ export interface ModalActions {
   closeSolaraInterestModal: () => void;
   openPartnerModal: (type: 'institution' | 'business' | 'technology' | 'consulting' | 'research') => void;
   closePartnerModal: () => void;
+  openJobApplicationModal: (jobTitle?: string) => void;
+  closeJobApplicationModal: () => void;
+  openCultureModal: () => void;
+  closeCultureModal: () => void;
+  openCookieConsentModal: () => void;
+  closeCookieConsentModal: () => void;
+  openCookieSettingsModal: () => void;
+  closeCookieSettingsModal: () => void;
 }
 
 interface ModalContextType {
@@ -53,6 +65,10 @@ export function ModalProvider({ children }: ModalProviderProps) {
     ssaInterest: false,
     solaraInterest: false,
     partner: false,
+    jobApplication: false,
+    culture: false,
+    cookieConsent: false,
+    cookieSettings: false,
   });
 
   const openDemoModal = useCallback(() => {
@@ -103,6 +119,38 @@ export function ModalProvider({ children }: ModalProviderProps) {
     setModalStates(prev => ({ ...prev, partner: false }));
   }, []);
 
+  const openJobApplicationModal = useCallback((jobTitle?: string) => {
+    setModalStates(prev => ({ ...prev, jobApplication: true }));
+  }, []);
+
+  const closeJobApplicationModal = useCallback(() => {
+    setModalStates(prev => ({ ...prev, jobApplication: false }));
+  }, []);
+
+  const openCultureModal = useCallback(() => {
+    setModalStates(prev => ({ ...prev, culture: true }));
+  }, []);
+
+  const closeCultureModal = useCallback(() => {
+    setModalStates(prev => ({ ...prev, culture: false }));
+  }, []);
+
+  const openCookieConsentModal = useCallback(() => {
+    setModalStates(prev => ({ ...prev, cookieConsent: true }));
+  }, []);
+
+  const closeCookieConsentModal = useCallback(() => {
+    setModalStates(prev => ({ ...prev, cookieConsent: false }));
+  }, []);
+
+  const openCookieSettingsModal = useCallback(() => {
+    setModalStates(prev => ({ ...prev, cookieSettings: true }));
+  }, []);
+
+  const closeCookieSettingsModal = useCallback(() => {
+    setModalStates(prev => ({ ...prev, cookieSettings: false }));
+  }, []);
+
   const value: ModalContextType = {
     modalStates,
     actions: {
@@ -118,6 +166,14 @@ export function ModalProvider({ children }: ModalProviderProps) {
       closeSolaraInterestModal,
       openPartnerModal,
       closePartnerModal,
+      openJobApplicationModal,
+      closeJobApplicationModal,
+      openCultureModal,
+      closeCultureModal,
+      openCookieConsentModal,
+      closeCookieConsentModal,
+      openCookieSettingsModal,
+      closeCookieSettingsModal,
     },
   };
 

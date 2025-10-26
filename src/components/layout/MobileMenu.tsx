@@ -234,7 +234,7 @@ export default function MobileMenu({ open, onClose, navItems }: MobileMenuProps)
             <LogoContainer>
               <Image
                 src="/logo.png"
-                alt="SmartSlate"
+                alt="Smartslate"
                 width={100}
                 height={26}
                 priority
@@ -262,18 +262,19 @@ export default function MobileMenu({ open, onClose, navItems }: MobileMenuProps)
             </MobileNav>
 
             <Box sx={{ mt: 'auto', pt: 2 }}>
-              <MobileCTAButton 
-                variant="contained" 
-                onClick={() => window.open('https://app.smartslate.io', '_blank')}
-                sx={{
-                  backgroundColor: 'secondary.main',
-                  '&:hover': {
-                    backgroundColor: 'secondary.dark',
-                  }
-                }}
-              >
-                Get Started
-              </MobileCTAButton>
+              <Link href="/get-started" passHref legacyBehavior>
+                <MobileCTAButton
+                  variant="contained"
+                  sx={{
+                    backgroundColor: 'secondary.main',
+                    '&:hover': {
+                      backgroundColor: 'secondary.dark',
+                    }
+                  }}
+                >
+                  Get Started
+                </MobileCTAButton>
+              </Link>
             </Box>
           </MobileMenuPanel>
         </>

@@ -9,7 +9,7 @@ The SmartSlate API provides endpoints for lead capture, database management, and
 ## Base URL
 
 - **Development**: `http://localhost:3000`
-- **Production**: `https://yourdomain.com`
+- **Production**: `https://app.smartslate.io`
 
 ## Authentication
 
