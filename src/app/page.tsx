@@ -220,7 +220,7 @@ export default function Home() {
                         }
                       }}
                     >
-                      Try Polaris Free
+                      Start Free Forever
                     </Button>
                     <Button
                       variant="outlined"
@@ -999,89 +999,7 @@ export default function Home() {
               </Grid>
             </motion.div>
 
-            {/* Enhanced Testimonial */}
-            <motion.div variants={fadeInUp}>
-              <Box
-                sx={{
-                  p: { xs: 4, md: 5 },
-                  background: 'rgba(79, 70, 229, 0.08)',
-                  backdropFilter: 'blur(32px) saturate(180%)',
-                  WebkitBackdropFilter: 'blur(32px) saturate(180%)',
-                  border: '2px solid rgba(79, 70, 229, 0.3)',
-                  borderRadius: 4,
-                  mb: 7,
-                  boxShadow: '0 20px 60px rgba(79, 70, 229, 0.2), inset 0 2px 0 rgba(79, 70, 229, 0.2)',
-                  position: 'relative',
-                  overflow: 'hidden'
-                }}
-              >
-                {/* Quote Icon */}
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    top: 20,
-                    left: 30,
-                    fontSize: '120px',
-                    color: 'rgba(79, 70, 229, 0.1)',
-                    fontFamily: 'Georgia, serif',
-                    lineHeight: 1,
-                    fontWeight: 700
-                  }}
-                >
-                  &ldquo;
-                </Box>
-
-                <Box sx={{ position: 'relative', zIndex: 1 }}>
-                  <Typography
-                    variant="h5"
-                    sx={{
-                      color: 'text.primary',
-                      lineHeight: 1.7,
-                      mb: 4,
-                      fontWeight: 500,
-                      fontSize: { xs: '1.125rem', md: '1.375rem' },
-                      fontStyle: 'italic'
-                    }}
-                  >
-                    &quot;I was skeptical at first. How could AI understand the nuanced conversations I have with stakeholders?
-                    But Polaris doesn&apos;t just transcribe—<Box component="span" sx={{ color: '#4F46E5', fontWeight: 700 }}>it THINKS</Box>.
-                    It caught three critical business objectives I would have missed in my first requirements doc. The executive summary
-                    it generated was better than what I would have written after six weeks of meetings. My VP asked if I&apos;d hired a consultant.
-                    <br /><br />
-                    Now, I use Polaris on every project. I&apos;ve reclaimed 30 hours per month. My team is designing, not documenting.
-                    And our stakeholders? They love the clarity and speed.&quot;
-                  </Typography>
-
-                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems={{ xs: 'flex-start', sm: 'center' }}>
-                    <Box
-                      sx={{
-                        width: '60px',
-                        height: '60px',
-                        borderRadius: '50%',
-                        background: '#4F46E5',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexShrink: 0
-                      }}
-                    >
-                      <Verified sx={{ color: '#fff', fontSize: '2rem' }} />
-                    </Box>
-                    <Box>
-                      <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 800, mb: 0.5 }}>
-                        Sarah Chen
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: '#4F46E5', fontWeight: 700, mb: 0.25 }}>
-                        Senior Learning Experience Designer
-                      </Typography>
-                      <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                        Fortune 100 Financial Services Company
-                      </Typography>
-                    </Box>
-                  </Stack>
-                </Box>
-              </Box>
-            </motion.div>
+            
 
             {/* Compelling CTA Section */}
             <motion.div variants={fadeInUp}>
@@ -1118,9 +1036,11 @@ export default function Home() {
                     lineHeight: 1.7
                   }}
                 >
-                  Join 5,000+ instructional designers and L&D leaders who have transformed their workflow with Polaris.
+                  Experience the future of learning design—where AI handles the complexity and you focus on creativity.
                   <br />
-                  Start your free trial today. No credit card required.
+                  <Box component="span" sx={{ color: '#10b981', fontWeight: 700 }}>
+                    Start free, stay free.
+                  </Box> Unlock powerful features the moment you sign up—no credit card, no trials, just instant access.
                 </Typography>
 
                 <Stack
@@ -1156,7 +1076,7 @@ export default function Home() {
                       }
                     }}
                   >
-                    Start Free Trial
+                    Get Started Free
                   </Button>
                   <Button
                     variant="outlined"
@@ -1188,7 +1108,7 @@ export default function Home() {
                 <Stack direction="row" spacing={3} justifyContent="center" sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                     <CheckCircle sx={{ fontSize: '1.25rem', color: '#10b981' }} />
-                    <span>Free 14-day trial</span>
+                    <span>Free tier forever</span>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                     <CheckCircle sx={{ fontSize: '1.25rem', color: '#10b981' }} />
@@ -1196,7 +1116,7 @@ export default function Home() {
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                     <CheckCircle sx={{ fontSize: '1.25rem', color: '#10b981' }} />
-                    <span>Cancel anytime</span>
+                    <span>Instant access</span>
                   </Box>
                 </Stack>
               </Box>
@@ -1319,8 +1239,8 @@ export default function Home() {
                     textAlign: 'left'
                   }}
                 >
-                  Traditional requirements gathering is killing your velocity. While you schedule meetings,
-                  Polaris users are already building.
+                  Traditional requirements gathering is killing your velocity. Stop wasting time in meetings—
+                  start building with AI-powered intelligence.
                 </Typography>
               </Box>
             </motion.div>
@@ -1584,10 +1504,10 @@ export default function Home() {
                     lineHeight: 1.6
                   }}
                 >
-                  While you&apos;re coordinating calendars, Polaris users have their blueprints done.
+                  While you&apos;re coordinating calendars, you could have your blueprints done.
                   <br />
                   <Box component="span" sx={{ color: '#a7dadb', fontWeight: 700 }}>
-                    Join them today.
+                    Start building today.
                   </Box>
                 </Typography>
 
@@ -1623,7 +1543,7 @@ export default function Home() {
                       }
                     }}
                   >
-                    Start Building Today
+                    Start Free—Build Now
                   </Button>
                   <Button
                     variant="outlined"
@@ -1657,7 +1577,7 @@ export default function Home() {
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <CheckCircle sx={{ color: '#10b981', fontSize: '1.5rem' }} />
                       <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600 }}>
-                        Free 14-day trial
+                        Free tier forever
                       </Typography>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -1669,7 +1589,7 @@ export default function Home() {
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <CheckCircle sx={{ color: '#10b981', fontSize: '1.5rem' }} />
                       <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600 }}>
-                        Setup in 5 minutes
+                        Instant access—start in minutes
                       </Typography>
                     </Box>
                   </Stack>
@@ -1919,7 +1839,7 @@ export default function Home() {
                           }
                         }}
                       >
-                        Reserve Your Spot
+                        Explore Solara Learning Engine
                       </Button>
                     </Box>
                   </Box>
@@ -2331,8 +2251,11 @@ export default function Home() {
                       textAlign: 'left'
                     }}
                   >
-                    Join the waitlist for early access to Solara Polaris and be among the first
-                    to experience the future of learning design. Transform weeks of analysis into minutes.
+                    <Box component="span" sx={{ color: '#10b981', fontWeight: 700 }}>
+                      Free tier. Full power. Forever.
+                    </Box>{' '}
+                    Transform your learning workflow with the most advanced AI-powered design platform.
+                    No credit card. No trials. Just sign up and start building.
                   </Typography>
                   <Stack
                     direction={{ xs: 'column', sm: 'row' }}
@@ -2384,10 +2307,10 @@ export default function Home() {
                         <CheckCircle sx={{ color: '#a7dadb', fontSize: '2rem' }} />
                         <Box>
                           <Typography variant="body1" sx={{ fontWeight: 600, color: 'text.primary' }}>
-                            No Credit Card Required
+                            Free Tier Forever
                           </Typography>
                           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                            Start with our free tier
+                            Full access—no trials, no limits
                           </Typography>
                         </Box>
                       </Box>
@@ -2395,10 +2318,10 @@ export default function Home() {
                         <Speed sx={{ color: '#a7dadb', fontSize: '2rem' }} />
                         <Box>
                           <Typography variant="body1" sx={{ fontWeight: 600, color: 'text.primary' }}>
-                            Instant Setup
+                            Instant Activation
                           </Typography>
                           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                            Start analyzing in minutes
+                            Sign up and start creating immediately
                           </Typography>
                         </Box>
                       </Box>
@@ -2406,10 +2329,10 @@ export default function Home() {
                         <Analytics sx={{ color: '#a7dadb', fontSize: '2rem' }} />
                         <Box>
                           <Typography variant="body1" sx={{ fontWeight: 600, color: 'text.primary' }}>
-                            Full Platform Access
+                            Premium Features Included
                           </Typography>
                           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                            All features during beta
+                            Access powerful tools from day one
                           </Typography>
                         </Box>
                       </Box>
