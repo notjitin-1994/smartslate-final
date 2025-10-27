@@ -10,11 +10,11 @@ const HeroSection = styled(Box)(({ theme }) => ({
   minHeight: 'auto', // Remove fixed height constraint
   display: 'flex',
   alignItems: 'center',
-  padding: `${theme.spacing(30)} 0`, // Increased top padding for header clearance
+  padding: `${theme.spacing(18)} 0`, // Increased top padding for header clearance
   overflow: 'hidden',
   backgroundColor: theme.palette.background.default,
   [theme.breakpoints.down('sm')]: {
-    padding: `${theme.spacing(18)} 0`, // Increased top padding for header clearance
+    padding: `${theme.spacing(10.8)} 0`, // Increased top padding for header clearance
   },
   // Remove the problematic radial-gradient from ::before
   // and use individual positioned elements instead

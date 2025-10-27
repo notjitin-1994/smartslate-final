@@ -29,7 +29,7 @@ import {
 const PartnersSection = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   color: theme.palette.text.primary,
-  padding: `${theme.spacing(10)} 0`,
+  padding: `${theme.spacing(3.6)} 0`,
   position: 'relative',
   overflow: 'hidden',
   '&::before': {
@@ -46,18 +46,18 @@ const PartnersSection = styled(Box)(({ theme }) => ({
 
 const SectionHeaderWrapper = styled(Box)(({ theme }) => ({
   textAlign: 'left',
-  marginBottom: theme.spacing(8),
+  marginBottom: theme.spacing(4.8),
   position: 'relative',
 }));
 
 const AccordionWrapper = styled(Box)(({ theme }) => ({
-  marginBottom: theme.spacing(8),
+  marginBottom: theme.spacing(4.8),
   display: 'grid',
-  gap: theme.spacing(3),
+  gap: theme.spacing(1.8),
 }));
 
 const Subsection = styled(Box)(({ theme }) => ({
-  borderRadius: theme.spacing(2.5),
+  borderRadius: theme.spacing(1.5),
   overflow: 'hidden',
   background: 'rgba(255, 255, 255, 0.02)',
   backdropFilter: 'blur(16px)',
@@ -76,7 +76,7 @@ const SectionHeaderButton = styled(Button, {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: theme.spacing(4),
+  padding: theme.spacing(2.4),
   borderRadius: 0,
   transition: 'all 0.3s ease',
   width: '100%',
@@ -114,13 +114,13 @@ const HeaderContent = styled(Box)(({ theme }) => ({
   flexGrow: 1,
   display: 'flex',
   alignItems: 'center',
-  gap: theme.spacing(3),
+  gap: theme.spacing(1.8),
 }));
 
 const SectionIcon = styled(Box)(({ theme }) => ({
   width: 64,
   height: 64,
-  borderRadius: theme.spacing(2),
+  borderRadius: theme.spacing(1.2),
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -135,7 +135,7 @@ const SectionIcon = styled(Box)(({ theme }) => ({
 
 const IconWrapper = styled(Box)(({ theme }) => ({
   flexShrink: 0,
-  marginLeft: theme.spacing(3),
+  marginLeft: theme.spacing(1.8),
   color: theme.palette.primary.main,
   transition: 'transform 0.3s ease-in-out',
   cursor: 'pointer',
@@ -145,23 +145,23 @@ const IconWrapper = styled(Box)(({ theme }) => ({
 }));
 
 const ContentBody = styled(Box)(({ theme }) => ({
-  padding: `${theme.spacing(0)} ${theme.spacing(4)} ${theme.spacing(4)}`,
+  padding: `${theme.spacing(0)} ${theme.spacing(2.4)} ${theme.spacing(2.4)}`,
 }));
 
 const BenefitsList = styled('ul')(({ theme }) => ({
   listStyle: 'none',
   padding: 0,
-  margin: `0 0 ${theme.spacing(4)} 0`,
+  margin: `0 0 ${theme.spacing(2.4)} 0`,
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-  gap: theme.spacing(3),
+  gap: theme.spacing(1.8),
 }));
 
 const BenefitItem = styled('li')(({ theme }) => ({
   display: 'flex',
   alignItems: 'flex-start',
-  gap: theme.spacing(2),
-  padding: theme.spacing(2.5),
+  gap: theme.spacing(1.2),
+  padding: theme.spacing(1.5),
   borderRadius: theme.spacing(1.5),
   background: 'rgba(0, 0, 0, 0.2)',
   border: '1px solid rgba(255, 255, 255, 0.05)',
@@ -195,9 +195,9 @@ const TestimonialCard = styled(Box)(({ theme }) => ({
   backdropFilter: 'blur(10px)',
   WebkitBackdropFilter: 'blur(10px)',
   border: '1px solid rgba(255, 255, 255, 0.08)',
-  borderRadius: theme.spacing(2),
-  padding: theme.spacing(3),
-  marginBottom: theme.spacing(4),
+  borderRadius: theme.spacing(1.2),
+  padding: theme.spacing(1.8),
+  marginBottom: theme.spacing(2.4),
   position: 'relative',
   overflow: 'hidden',
   '&::before': {
@@ -218,21 +218,21 @@ const QuoteIcon = styled(FormatQuote)(({ theme }) => ({
   color: theme.palette.primary.main,
   opacity: 0.3,
   position: 'absolute',
-  top: theme.spacing(2),
-  right: theme.spacing(2),
+  top: theme.spacing(1.2),
+  right: theme.spacing(1.2),
 }));
 
 const TestimonialAuthor = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  gap: theme.spacing(2),
-  marginTop: theme.spacing(2),
+  gap: theme.spacing(1.2),
+  marginTop: theme.spacing(1.2),
 }));
 
 const TestimonialDisclaimer = styled(Typography)(({ theme }) => ({
   position: 'absolute',
   bottom: theme.spacing(0),
-  left: theme.spacing(2),
+  left: theme.spacing(1.2),
   fontSize: '0.75rem',
   color: 'rgba(255, 255, 255, 0.5)',
   fontStyle: 'italic',
@@ -240,27 +240,27 @@ const TestimonialDisclaimer = styled(Typography)(({ theme }) => ({
 }));
 
 const CTAWrapper = styled(Box)(({ theme }) => ({
-  marginTop: theme.spacing(6),
+  marginTop: theme.spacing(3.6),
   display: 'flex',
-  gap: theme.spacing(3),
+  gap: theme.spacing(1.8),
   flexWrap: 'wrap',
   justifyContent: 'flex-start',
   [theme.breakpoints.down('sm')]: {
     flexDirection: 'column',
-    gap: theme.spacing(2),
+    gap: theme.spacing(1.2),
   },
 }));
 
 const CTAButton = styled(Button)(({ theme }) => ({
-  padding: `${theme.spacing(1.5)} ${theme.spacing(3.5)}`,
+  padding: `${theme.spacing(0.9)} ${theme.spacing(2.1)}`,
   fontSize: '1rem',
   fontWeight: 600,
-  borderRadius: theme.spacing(1),
+  borderRadius: theme.spacing(0.6),
   cursor: 'pointer',
   transition: 'all 0.3s ease',
   display: 'inline-flex',
   alignItems: 'center',
-  gap: theme.spacing(1),
+  gap: theme.spacing(0.6),
   border: '2px solid transparent',
   textTransform: 'none',
   position: 'relative',
@@ -333,10 +333,10 @@ const PartnerLogos = styled(Box)(({ theme }) => ({
   flexWrap: 'wrap',
   justifyContent: 'center',
   alignItems: 'center',
-  gap: theme.spacing(4),
-  marginTop: theme.spacing(6),
-  padding: theme.spacing(4),
-  borderRadius: theme.spacing(2),
+  gap: theme.spacing(2.4),
+  marginTop: theme.spacing(3.6),
+  padding: theme.spacing(2.4),
+  borderRadius: theme.spacing(1.2),
   background: 'rgba(255, 255, 255, 0.02)',
   border: '1px solid rgba(255, 255, 255, 0.05)',
 }));
@@ -366,7 +366,7 @@ const RatingStars = styled(Box)(({ theme }) => ({
   display: 'flex',
   gap: 2,
   color: '#FFB400',
-  marginTop: theme.spacing(1),
+  marginTop: theme.spacing(0.6),
 }));
 
 interface PartnersProps {

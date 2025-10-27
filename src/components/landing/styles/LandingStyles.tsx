@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 
 // Section Wrappers
 export const Section = styled(Box)(({ theme }) => ({
-  padding: `${theme.spacing(10)} 0`,
+  padding: `${theme.spacing(6)} 0`,
   backgroundColor: 'transparent',
   position: 'relative',
   overflow: 'hidden',
@@ -37,12 +37,12 @@ export const PageWrapper = styled(Box)(({ theme }) => ({
 // Navigation Components
 export const NavigationDots = styled(Box)(({ theme }) => ({
   position: 'fixed',
-  right: theme.spacing(4),
+  right: theme.spacing(2.4),
   top: '50%',
   transform: 'translateY(-50%)',
   display: 'flex',
   flexDirection: 'column',
-  gap: theme.spacing(2),
+  gap: theme.spacing(1.2),
   zIndex: 100,
   [theme.breakpoints.down('md')]: {
     display: 'none',
@@ -79,7 +79,7 @@ export const Dot = styled(Box, {
 // Section Headers
 export const SectionHeader = styled(Box)(({ theme }) => ({
   textAlign: 'left',
-  marginBottom: theme.spacing(10),
+  marginBottom: theme.spacing(6),
   position: 'relative',
 }));
 
@@ -88,8 +88,8 @@ export const ContentCard = styled(Paper)(({ theme }) => ({
   background: 'rgba(255, 255, 255, 0.02)',
   backdropFilter: 'blur(16px)',
   WebkitBackdropFilter: 'blur(16px)',
-  borderRadius: theme.spacing(2.5),
-  padding: theme.spacing(6),
+  borderRadius: theme.spacing(1.5),
+  padding: theme.spacing(3.6),
   border: '1px solid rgba(255, 255, 255, 0.08)',
   height: '100%',
   display: 'flex',
@@ -133,7 +133,7 @@ export const ContentCard = styled(Paper)(({ theme }) => ({
     },
   },
   [theme.breakpoints.down('md')]: {
-    padding: theme.spacing(4),
+    padding: theme.spacing(2.4),
   },
 }));
 
@@ -141,7 +141,7 @@ export const ContentCard = styled(Paper)(({ theme }) => ({
 export const PrimaryButton = styled(Button)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
   color: '#ffffff',
-  padding: `${theme.spacing(1.5)} ${theme.spacing(3)}`,
+  padding: `${theme.spacing(0.9)} ${theme.spacing(1.8)}`,
   fontSize: '1rem',
   fontWeight: 600,
   borderRadius: 4,
@@ -168,7 +168,7 @@ export const PrimaryButton = styled(Button)(({ theme }) => ({
     },
   },
   [theme.breakpoints.down('sm')]: {
-    padding: `${theme.spacing(1.5)} ${theme.spacing(2.5)}`,
+    padding: `${theme.spacing(0.9)} ${theme.spacing(1.5)}`,
     fontSize: '0.9rem',
   },
 }));
@@ -185,8 +185,8 @@ export const SectionButton = styled(Button, {
   border: `1px solid ${active ? 'rgba(167, 218, 219, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
   borderLeft: `4px solid ${active ? theme.palette.primary.main : 'transparent'}`,
   color: active ? theme.palette.text.primary : theme.palette.text.secondary,
-  padding: `${theme.spacing(2.5)} ${theme.spacing(3)}`,
-  borderRadius: theme.spacing(1.5),
+  padding: `${theme.spacing(1.5)} ${theme.spacing(1.8)}`,
+  borderRadius: theme.spacing(0.9),
   textAlign: 'left',
   fontSize: '1rem',
   fontWeight: active ? 600 : 500,
@@ -194,7 +194,7 @@ export const SectionButton = styled(Button, {
   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   display: 'flex',
   alignItems: 'center',
-  gap: theme.spacing(2.5),
+  gap: theme.spacing(1.5),
   width: '100%',
   justifyContent: 'flex-start',
   textTransform: 'none',
@@ -230,7 +230,7 @@ export const SectionButton = styled(Button, {
   },
   [theme.breakpoints.down('md')]: {
     fontSize: '0.875rem',
-    padding: `${theme.spacing(1.5)} ${theme.spacing(2)}`,
+    padding: `${theme.spacing(0.9)} ${theme.spacing(1.2)}`,
   },
 }));
 
@@ -252,8 +252,8 @@ export const AnimatedChip = styled(Chip)(({ theme }) => ({
 export const GridLayout = styled(Box)(({ theme }) => ({
   display: 'grid',
   gridTemplateColumns: '0.8fr 1.2fr',
-  gap: theme.spacing(6),
-  marginBottom: theme.spacing(10),
+  gap: theme.spacing(3.6),
+  marginBottom: theme.spacing(6),
   [theme.breakpoints.down('lg')]: {
     display: 'none',
   },
@@ -261,7 +261,7 @@ export const GridLayout = styled(Box)(({ theme }) => ({
 
 export const LeftPanel = styled(Box)(({ theme }) => ({
   position: 'sticky',
-  top: `calc(100px + ${theme.spacing(4)})`,
+  top: `calc(100px + ${theme.spacing(2.4)})`,
   alignSelf: 'start',
   [theme.breakpoints.down('lg')]: {
     position: 'static',
@@ -275,24 +275,24 @@ export const DataVisualization = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  marginTop: theme.spacing(4),
-  padding: theme.spacing(4),
-  borderRadius: theme.spacing(2),
+  marginTop: theme.spacing(2.4),
+  padding: theme.spacing(2.4),
+  borderRadius: theme.spacing(1.2),
   background: 'rgba(0, 0, 0, 0.2)',
   border: '1px solid rgba(255, 255, 255, 0.05)',
   position: 'relative',
   minHeight: 350,
   [theme.breakpoints.down('md')]: {
     minHeight: 250,
-    padding: theme.spacing(2),
+    padding: theme.spacing(1.2),
   },
 }));
 
 export const StatCard = styled(Box)(({ theme }) => ({
   textAlign: 'left',
-  padding: theme.spacing(3),
+  padding: theme.spacing(1.8),
   background: 'rgba(255, 255, 255, 0.02)',
-  borderRadius: theme.spacing(2),
+  borderRadius: theme.spacing(1.2),
   border: '1px solid rgba(255, 255, 255, 0.08)',
   transition: 'all 0.3s ease',
   cursor: 'pointer',
@@ -307,7 +307,7 @@ export const StatNumber = styled(Typography)(({ theme }) => ({
   fontSize: '2.5rem',
   fontWeight: 700,
   color: theme.palette.primary.main,
-  marginBottom: theme.spacing(0.5),
+  marginBottom: theme.spacing(0.3),
   [theme.breakpoints.down('sm')]: {
     fontSize: '2rem',
   },
@@ -317,7 +317,7 @@ export const StatNumber = styled(Typography)(({ theme }) => ({
 export const ProgressBar = styled(Box)<{ value: number }>(({ theme, value }) => ({
   width: '100%',
   height: 12,
-  borderRadius: theme.spacing(1),
+  borderRadius: theme.spacing(0.6),
   background: 'rgba(255, 255, 255, 0.05)',
   border: '1px solid rgba(255, 255, 255, 0.08)',
   overflow: 'hidden',
@@ -330,7 +330,7 @@ export const ProgressBar = styled(Box)<{ value: number }>(({ theme, value }) => 
     height: '100%',
     width: `${value}%`,
     background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-    borderRadius: theme.spacing(1),
+    borderRadius: theme.spacing(0.6),
     transition: 'width 1s cubic-bezier(0.4, 0, 0.2, 1)',
   },
 }));
@@ -340,19 +340,19 @@ export const MobileAccordionWrapper = styled(Box)(({ theme }) => ({
   display: 'none',
   [theme.breakpoints.down('lg')]: {
     display: 'block',
-    marginBottom: theme.spacing(6),
+    marginBottom: theme.spacing(3.6),
   },
 }));
 
 export const MobileAccordionSection = styled(Box)(({ theme }) => ({
-  borderRadius: theme.spacing(2.5),
+  borderRadius: theme.spacing(1.5),
   overflow: 'hidden',
   background: 'rgba(255, 255, 255, 0.02)',
   backdropFilter: 'blur(16px)',
   WebkitBackdropFilter: 'blur(16px)',
   border: '1px solid rgba(255, 255, 255, 0.08)',
   transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-  marginBottom: theme.spacing(3),
+  marginBottom: theme.spacing(1.8),
   '&:hover': {
     background: 'rgba(255, 255, 255, 0.03)',
     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
@@ -365,7 +365,7 @@ export const MobileAccordionButton = styled(Button, {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: theme.spacing(3),
+  padding: theme.spacing(1.8),
   borderRadius: 0,
   transition: 'all 0.3s ease',
   width: '100%',
@@ -403,13 +403,13 @@ export const MobileAccordionHeader = styled(Box)(({ theme }) => ({
   flexGrow: 1,
   display: 'flex',
   alignItems: 'center',
-  gap: theme.spacing(2),
+  gap: theme.spacing(1.2),
 }));
 
 export const MobileAccordionIcon = styled(Box)(({ theme }) => ({
   width: 48,
   height: 48,
-  borderRadius: theme.spacing(1.5),
+  borderRadius: theme.spacing(0.9),
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -424,7 +424,7 @@ export const MobileAccordionIcon = styled(Box)(({ theme }) => ({
 
 export const MobileAccordionToggle = styled(Box)(({ theme }) => ({
   flexShrink: 0,
-  marginLeft: theme.spacing(2),
+  marginLeft: theme.spacing(1.2),
   color: theme.palette.primary.main,
   transition: 'transform 0.3s ease-in-out',
   cursor: 'pointer',
@@ -434,7 +434,7 @@ export const MobileAccordionToggle = styled(Box)(({ theme }) => ({
 }));
 
 export const MobileAccordionContent = styled(Box)(({ theme }) => ({
-  padding: `${theme.spacing(0)} ${theme.spacing(3)} ${theme.spacing(3)}`,
+  padding: `${theme.spacing(0)} ${theme.spacing(1.8)} ${theme.spacing(1.8)}`,
 }));
 
 // Animation Components

@@ -22,7 +22,7 @@ import Accordion from '@/components/ui/Accordion';
 
 
 const FrameworkSection = styled(Box)(({ theme }) => ({
-  padding: `${theme.spacing(10)} 0`,
+  padding: `${theme.spacing(6)} 0`,
   backgroundColor: theme.palette.background.default,
   position: 'relative',
   overflow: 'hidden',
@@ -30,24 +30,24 @@ const FrameworkSection = styled(Box)(({ theme }) => ({
 
 const SectionHeader = styled(Box)(({ theme }) => ({
   textAlign: 'left',
-  marginBottom: theme.spacing(10),
+  marginBottom: theme.spacing(6),
   position: 'relative',
 }));
 
 const InteractiveLayout = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  gap: theme.spacing(6),
+  gap: theme.spacing(3.6),
   [theme.breakpoints.down('md')]: {
-    gap: theme.spacing(4),
+    gap: theme.spacing(2.4),
   },
 }));
 
 const ProductShowcase = styled(Box)(({ theme }) => ({
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-  gap: theme.spacing(4),
-  marginBottom: theme.spacing(6),
+  gap: theme.spacing(2.4),
+  marginBottom: theme.spacing(3.6),
   [theme.breakpoints.down('lg')]: {
     gridTemplateColumns: '1fr',
   },
@@ -64,7 +64,7 @@ const ProductCard = styled(Box, {
   WebkitBackdropFilter: 'blur(16px)',
   border: `2px solid ${active ? 'rgba(167, 218, 219, 0.4)' : 'rgba(255, 255, 255, 0.08)'}`,
   borderRadius: theme.spacing(3),
-  padding: theme.spacing(4),
+  padding: theme.spacing(2.4),
   cursor: 'pointer',
   transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
   transform: active ? 'translateY(-8px) scale(1.02)' : 'translateY(0)',
@@ -99,13 +99,13 @@ const ProductHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'flex-start',
   justifyContent: 'space-between',
-  marginBottom: theme.spacing(3),
+  marginBottom: theme.spacing(1.8),
 }));
 
 const ProductIcon = styled(Box)(({ theme }) => ({
   width: 56,
   height: 56,
-  borderRadius: theme.spacing(2),
+  borderRadius: theme.spacing(1.2),
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -119,8 +119,8 @@ const ProductIcon = styled(Box)(({ theme }) => ({
 }));
 
 const ProductBadge = styled(Box)(({ theme }) => ({
-  padding: `${theme.spacing(0.5)} ${theme.spacing(1.5)}`,
-  borderRadius: theme.spacing(2),
+  padding: `${theme.spacing(0.3)} ${theme.spacing(0.9)}`,
+  borderRadius: theme.spacing(1.2),
   fontSize: '0.75rem',
   fontWeight: 600,
   textTransform: 'uppercase',
@@ -131,22 +131,22 @@ const ProductBadge = styled(Box)(({ theme }) => ({
 }));
 
 const ProductContent = styled(Box)(({ theme }) => ({
-  marginBottom: theme.spacing(3),
+  marginBottom: theme.spacing(1.8),
 }));
 
 const FeatureList = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  gap: theme.spacing(2),
-  marginBottom: theme.spacing(3),
+  gap: theme.spacing(1.2),
+  marginBottom: theme.spacing(1.8),
 }));
 
 const FeatureItem = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  gap: theme.spacing(2),
-  padding: theme.spacing(1.5),
-  borderRadius: theme.spacing(1),
+  gap: theme.spacing(1.2),
+  padding: theme.spacing(0.9),
+  borderRadius: theme.spacing(0.6),
   background: 'rgba(0, 0, 0, 0.2)',
   border: '1px solid rgba(255, 255, 255, 0.05)',
   transition: 'all 0.3s ease',

@@ -5,10 +5,10 @@ import { Box, Button, Container } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 import Link from 'next/link';
+import { AnimatedHamburgerButton } from './MobileMenu';
 import dynamic from 'next/dynamic';
 
 const MobileMenu = dynamic(() => import('./MobileMenu'), { ssr: false });
-const AnimatedHamburgerButton = dynamic(() => import('./MobileMenu').then(m => m.AnimatedHamburgerButton), { ssr: false });
 
 const HeaderWrapper = styled('header', {
   shouldForwardProp: (prop) => prop !== 'hide'
@@ -165,6 +165,7 @@ export default function Header() {
 
   const navItems = [
     { label: 'Products', href: '/products' },
+    { label: 'Vision', href: '/vision' },
     { label: 'Difference', href: '/difference' },
     { label: 'Partner', href: '/partner' },
   ];
@@ -194,7 +195,7 @@ export default function Header() {
               ))}
             </DesktopNav>
 
-            <Link href="/get-started" passHref legacyBehavior>
+            <Link href="/get-started" style={{ textDecoration: 'none' }}>
               <CTAButton variant="contained">
                 Get Started
               </CTAButton>

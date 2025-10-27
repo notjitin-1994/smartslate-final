@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>https://smartslate.io/products</loc><lastmod>2025-10-27T05:59:22.876Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://smartslate.io/cookies</loc><lastmod>2025-10-27T05:59:22.876Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://smartslate.io/pricing</loc><lastmod>2025-10-27T05:59:22.876Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://smartslate.io/partner</loc><lastmod>2025-10-27T05:59:22.876Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://smartslate.io/about</loc><lastmod>2025-10-27T05:59:22.876Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://smartslate.io/contact</loc><lastmod>2025-10-27T05:59:22.876Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://smartslate.io/careers</loc><lastmod>2025-10-27T05:59:22.876Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://smartslate.io/legal/privacy</loc><lastmod>2025-10-27T05:59:22.876Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://smartslate.io/features</loc><lastmod>2025-10-27T05:59:22.876Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://smartslate.io/legal/terms</loc><lastmod>2025-10-27T05:59:22.876Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://smartslate.io/manifest.webmanifest</loc><lastmod>2025-10-27T05:59:22.876Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://smartslate.io/ignite</loc><lastmod>2025-10-27T05:59:22.876Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://smartslate.io/courses</loc><lastmod>2025-10-27T05:59:22.876Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://smartslate.io/difference</loc><lastmod>2025-10-27T05:59:22.876Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://smartslate.io</loc><lastmod>2025-10-27T05:59:22.876Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://smartslate.io/get-started</loc><lastmod>2025-10-27T05:59:22.876Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://smartslate.io/vision</loc><lastmod>2025-10-27T09:30:13.212Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://smartslate.io/difference</loc><lastmod>2025-10-27T09:30:13.213Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://smartslate.io/pricing</loc><lastmod>2025-10-27T09:30:13.213Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://smartslate.io/partner</loc><lastmod>2025-10-27T09:30:13.213Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://smartslate.io/get-started</loc><lastmod>2025-10-27T09:30:13.213Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://smartslate.io/courses</loc><lastmod>2025-10-27T09:30:13.213Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://smartslate.io/manifest.webmanifest</loc><lastmod>2025-10-27T09:30:13.213Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://smartslate.io/products</loc><lastmod>2025-10-27T09:30:13.213Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://smartslate.io</loc><lastmod>2025-10-27T09:30:13.213Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://smartslate.io/contact</loc><lastmod>2025-10-27T09:30:13.213Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://smartslate.io/legal/privacy</loc><lastmod>2025-10-27T09:30:13.213Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://smartslate.io/cookies</loc><lastmod>2025-10-27T09:30:13.213Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://smartslate.io/features</loc><lastmod>2025-10-27T09:30:13.213Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://smartslate.io/about</loc><lastmod>2025-10-27T09:30:13.213Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://smartslate.io/legal/terms</loc><lastmod>2025-10-27T09:30:13.213Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://smartslate.io/ignite</loc><lastmod>2025-10-27T09:30:13.213Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://smartslate.io/careers</loc><lastmod>2025-10-27T09:30:13.213Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 </urlset>

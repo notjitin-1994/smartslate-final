@@ -313,8 +313,8 @@ export default function ProductSectionRevamped({
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
                 {product.cta.link ? (
-                  <Link href={product.cta.link} passHref legacyBehavior>
-                    <CTAButton component="a">
+                  <Link href={product.cta.link} style={{ textDecoration: 'none' }}>
+                    <CTAButton>
                       {product.cta.text}
                       {product.cta.icon}
                     </CTAButton>

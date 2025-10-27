@@ -14,15 +14,15 @@ import { Suspense } from "react";
 export const metadata: Metadata = {
   metadataBase: new URL('https://smartslate.io'),
   title: {
-    default: "Smartslate — Build Your Future-Ready Workforce",
+    default: "Smartslate: Introducing Solara Learning Engine",
     template: "%s | Smartslate",
   },
-  description: "Revolutionizing the way the World learns. Bridge the skills gap with Smartslate's innovative learning solutions.",
-  keywords: "learning, workforce development, skills training, AI education, LMS, corporate training",
+  description: "6 weeks of stakeholder meetings → 1 week with Polaris. Stop wasting 70% of your time aligning requirements. AI-powered needs analysis generates comprehensive learning blueprints while you focus on design.",
+  keywords: "learning, workforce development, skills training, AI education, LMS, corporate training, instructional design, learning experience design, needs analysis, AI-powered learning, learning blueprints",
   authors: [{ name: "Smartslate Team" }],
   openGraph: {
-    title: "Smartslate — Build Your Future-Ready Workforce",
-    description: "Revolutionizing the way the World learns.",
+    title: "Smartslate: Introducing Solara Learning Engine",
+    description: "6 weeks of stakeholder meetings → 1 week with Polaris. AI-powered needs analysis that transforms how you build learning experiences.",
     type: "website",
     locale: "en_US",
     url: "https://smartslate.io",
@@ -32,14 +32,14 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Smartslate — Build Your Future-Ready Workforce"
+        alt: "Smartslate: Introducing Solara Learning Engine"
       }
     ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "Smartslate — Build Your Future-Ready Workforce",
-    description: "Revolutionizing the way the World learns.",
+    title: "Smartslate: Introducing Solara Learning Engine",
+    description: "6 weeks of stakeholder meetings → 1 week with Polaris. AI-powered needs analysis that transforms how you build learning experiences.",
     images: ["/og-image.png"]
   },
   manifest: "/manifest.webmanifest",

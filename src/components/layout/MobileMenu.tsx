@@ -262,7 +262,7 @@ export default function MobileMenu({ open, onClose, navItems }: MobileMenuProps)
             </MobileNav>
 
             <Box sx={{ mt: 'auto', pt: 2 }}>
-              <Link href="/get-started" passHref legacyBehavior>
+              <Link href="/get-started" style={{ textDecoration: 'none' }}>
                 <MobileCTAButton
                   variant="contained"
                   sx={{

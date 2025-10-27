@@ -26,7 +26,7 @@ import {
 
 
 const ROISection = styled(Box)(({ theme }) => ({
-  padding: `${theme.spacing(10)} 0`,
+  padding: `${theme.spacing(3.6)} 0`,
   position: 'relative',
   overflow: 'hidden',
   '&::before': {
@@ -43,7 +43,7 @@ const ROISection = styled(Box)(({ theme }) => ({
 
 const SectionHeader = styled(Box)(({ theme }) => ({
   maxWidth: '100%',
-  margin: `0 0 ${theme.spacing(8)} 0`,
+  margin: `0 0 ${theme.spacing(4.8)} 0`,
   textAlign: 'left',
   position: 'relative',
 }));
@@ -53,8 +53,8 @@ const CalculatorWrapper = styled(Paper)(({ theme }) => ({
   backdropFilter: 'blur(20px)',
   WebkitBackdropFilter: 'blur(20px)',
   border: '1px solid rgba(255, 255, 255, 0.08)',
-  borderRadius: theme.spacing(3),
-  padding: `${theme.spacing(6)} ${theme.spacing(8)}`,
+  borderRadius: theme.spacing(1.8),
+  padding: `${theme.spacing(3.6)} ${theme.spacing(4.8)}`,
   minHeight: 550,
   display: 'flex',
   flexDirection: 'column',
@@ -74,7 +74,7 @@ const CalculatorWrapper = styled(Paper)(({ theme }) => ({
     pointerEvents: 'none',
   },
   [theme.breakpoints.down('md')]: {
-    padding: theme.spacing(4),
+    padding: theme.spacing(2.4),
   },
 }));
 
@@ -83,13 +83,13 @@ const PersonaCard = styled(Button)(({ theme }) => ({
   backdropFilter: 'blur(10px)',
   WebkitBackdropFilter: 'blur(10px)',
   border: '1px solid rgba(255, 255, 255, 0.08)',
-  borderRadius: theme.spacing(2.5),
-  padding: theme.spacing(5),
+  borderRadius: theme.spacing(1.5),
+  padding: theme.spacing(3),
   textAlign: 'left',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
-  gap: theme.spacing(2),
+  gap: theme.spacing(1.2),
   transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
   cursor: 'pointer',
   width: '100%',
@@ -130,11 +130,11 @@ const MetricCard = styled(Paper)(({ theme }) => ({
   backdropFilter: 'blur(12px)',
   WebkitBackdropFilter: 'blur(12px)',
   border: '1px solid rgba(255, 255, 255, 0.08)',
-  borderRadius: theme.spacing(2),
-  padding: theme.spacing(4),
+  borderRadius: theme.spacing(1.2),
+  padding: theme.spacing(2.4),
   display: 'flex',
   flexDirection: 'column',
-  gap: theme.spacing(2),
+  gap: theme.spacing(1.2),
   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   position: 'relative',
   overflow: 'hidden',
@@ -223,14 +223,14 @@ const StyledSlider = styled(Slider)(({ theme }) => ({
 const BackButton = styled(Button)(({ theme }) => ({
   display: 'inline-flex',
   alignItems: 'center',
-  gap: theme.spacing(1),
+  gap: theme.spacing(0.6),
   fontSize: '0.95rem',
   fontWeight: 600,
   color: theme.palette.text.secondary,
   background: 'rgba(255, 255, 255, 0.02)',
   border: '1px solid rgba(255, 255, 255, 0.08)',
-  borderRadius: theme.spacing(1),
-  padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
+  borderRadius: theme.spacing(0.6),
+  padding: `${theme.spacing(0.6)} ${theme.spacing(1.2)}`,
   cursor: 'pointer',
   transition: 'all 0.3s ease',
   '&:hover': {
