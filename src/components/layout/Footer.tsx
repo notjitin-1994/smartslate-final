@@ -61,7 +61,7 @@ export default function Footer() {
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '2fr 1fr 1fr 1fr' },
+            gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '2fr 1fr 1fr 1fr 1fr' },
             gap: 4
           }}
         >
@@ -84,12 +84,19 @@ export default function Footer() {
               Revolutionizing the way the world learns through innovative educational technology.
             </Typography>
           </Box>
-          
+
           {/* Quick Links */}
           <Box>
-            <SectionTitle variant="h6">Product</SectionTitle>
-            <FooterLink href="/features">Features</FooterLink>
-            <FooterLink href="/pricing">Pricing</FooterLink>
+            <SectionTitle variant="h6">Products</SectionTitle>
+            <FooterLink href="/features">Solara: Features</FooterLink>
+            <FooterLink href="/pricing">Solara: Pricing</FooterLink>
+          </Box>
+
+          {/* Services */}
+          <Box>
+            <SectionTitle variant="h6">Services</SectionTitle>
+            <FooterLink href="/ignite">Ignite</FooterLink>
+            <FooterLink href="/products">Strategic Skills Architecture</FooterLink>
           </Box>
 
           {/* Company */}

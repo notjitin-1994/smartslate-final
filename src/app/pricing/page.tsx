@@ -45,6 +45,9 @@ import {
 } from '@/components/landing/styles/LandingStyles';
 import DemoModal from '@/components/landing/DemoModal';
 import { useModalManager } from '@/hooks/useModalManager';
+import { CurrencyProvider, useCurrency } from '@/contexts/CurrencyContext';
+import CurrencyToggle from '@/components/pricing/CurrencyToggle';
+import { formatPriceWithPeriod, formatAnnualSavings } from '@/utils/formatPrice';
 
 // Styled Components
 const TabsContainer = styled(Box)(({ theme }) => ({
@@ -147,17 +150,6 @@ const PricingCard = styled(Card, {
   overflow: 'visible',
   opacity: comingSoon ? 0.7 : 1,
   marginTop: '16px',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: featured ? '5px' : '3px',
-    background: featured
-      ? `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`
-      : 'transparent',
-  },
   '&:hover': {
     transform: comingSoon ? 'none' : 'translateY(-8px)',
     borderColor: comingSoon ? 'rgba(255, 255, 255, 0.08)' : theme.palette.primary.main,
@@ -434,7 +426,7 @@ const polarisPricing = [
     highlighted: ['5 generations/month', '5 saved (rolls over 12 months)'],
     limits: [],
     featured: false,
-    cta: 'Get Started Free',
+    cta: 'Get Started for Free',
     ctaLink: 'https://polaris.smartslate.io/auth/signup',
     badge: 'BEST FOR BEGINNERS',
   },
@@ -453,7 +445,7 @@ const polarisPricing = [
     highlighted: ['20 generations/month', '20 saved (rolls over 12 months)'],
     limits: [],
     featured: true,
-    cta: 'Start Free Trial',
+    cta: 'Get Started for Free',
     ctaLink: 'https://polaris.smartslate.io/auth/signup',
     popular: true,
   },
@@ -471,7 +463,7 @@ const polarisPricing = [
     highlighted: ['40 generations/month', '40 saved (480/year with rollover)'],
     limits: [],
     featured: false,
-    cta: 'Start Free Trial',
+    cta: 'Get Started for Free',
     ctaLink: 'https://polaris.smartslate.io/auth/signup',
     badge: 'PROFESSIONAL',
   },
@@ -500,7 +492,7 @@ const teamPricing = [
     highlighted: ['5 generations/user/month', '5 saved (rolls over 12 months)'],
     limits: [],
     featured: false,
-    cta: 'Start Team Trial',
+    cta: 'Reach Out',
     ctaLink: '/contact',
   },
   {
@@ -526,7 +518,7 @@ const teamPricing = [
     limits: [],
     featured: true,
     popular: true,
-    cta: 'Contact Sales',
+    cta: 'Reach Out',
     ctaLink: '/contact',
   },
   {
@@ -536,8 +528,8 @@ const teamPricing = [
     seatRange: '16–50 seats',
     minSeats: 16,
     maxSeats: 50,
-    maxStarmapGenerationsPerUser: 50,
-    maxStarmapsPerUser: 50,
+    maxStarmapGenerationsPerUser: 40,
+    maxStarmapsPerUser: 40,
     description: 'Enterprise-grade solution for large L&D organizations',
     features: [
       'Everything in Fleet',
@@ -549,16 +541,17 @@ const teamPricing = [
       'SLA with uptime guarantee',
       'Training & workshops',
     ],
-    highlighted: ['50 generations/user/month', '50 saved (rolls over 12 months)'],
+    highlighted: ['40 generations/user/month', '40 saved (rolls over 12 months)'],
     limits: [],
     featured: false,
-    cta: 'Contact Enterprise Sales',
+    cta: 'Reach Out',
     ctaLink: '/contact',
   },
 ];
 
-export default function PricingPage() {
+function PricingPageContent() {
   const { modalStates, actions: modalActions } = useModalManager();
+  const { currency, exchangeRate, formatPrice } = useCurrency();
   const [activeTab, setActiveTab] = useState(0);
   const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly');
   const annualMultiplier = 0.8; // 20% discount
@@ -709,8 +702,12 @@ export default function PricingPage() {
                           </Box>
                         </Box>
 
-                        {/* Billing Toggle */}
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 4 }}>
+                        {/* Billing and Currency Toggles */}
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', flexWrap: 'wrap', gap: 2, mt: 4 }}>
+                          {/* Currency Toggle */}
+                          <CurrencyToggle />
+
+                          {/* Billing Toggle */}
                           <Box sx={{
                             display: 'inline-flex',
                             p: 0.5,
@@ -818,18 +815,36 @@ export default function PricingPage() {
                                       </Typography>
 
                                       <PriceTag>
-                                        <Typography variant="h3" sx={{ fontWeight: 700, color: 'primary.main' }}>
-                                          ${billing === 'monthly' ? plan.priceMonthly : Math.ceil(plan.priceMonthly * annualMultiplier)}
-                                        </Typography>
-                                        <Typography variant="body1" sx={{ color: 'text.secondary', ml: 1 }}>
-                                          /month
-                                        </Typography>
+                                        <motion.div
+                                          key={`${currency}-${billing}-${plan.tier}`}
+                                          initial={{ opacity: 0, y: -10 }}
+                                          animate={{ opacity: 1, y: 0 }}
+                                          transition={{ duration: 0.3 }}
+                                          style={{ display: 'flex', alignItems: 'baseline' }}
+                                        >
+                                          <Typography variant="h3" sx={{ fontWeight: 700, color: 'primary.main' }}>
+                                            {formatPriceWithPeriod(
+                                              billing === 'monthly' ? plan.priceMonthly : Math.ceil(plan.priceMonthly * annualMultiplier),
+                                              { currency, exchangeRate, showSymbol: true },
+                                              'monthly'
+                                            ).replace('/month', '')}
+                                          </Typography>
+                                          <Typography variant="body1" sx={{ color: 'text.secondary', ml: 1 }}>
+                                            /month
+                                          </Typography>
+                                        </motion.div>
                                       </PriceTag>
 
                                       {billing === 'annual' && (
-                                        <Typography variant="body2" sx={{ color: 'success.main', textAlign: 'left', mb: 2, fontWeight: 600 }}>
-                                          Save ${Math.ceil(plan.priceMonthly * annualSavings * 12)}/year
-                                        </Typography>
+                                        <motion.div
+                                          initial={{ opacity: 0, scale: 0.95 }}
+                                          animate={{ opacity: 1, scale: 1 }}
+                                          transition={{ duration: 0.3, delay: 0.1 }}
+                                        >
+                                          <Typography variant="body2" sx={{ color: 'success.main', textAlign: 'left', mb: 2, fontWeight: 600 }}>
+                                            Save {formatAnnualSavings(plan.priceMonthly, { currency, exchangeRate })}/year
+                                          </Typography>
+                                        </motion.div>
                                       )}
 
                                       <StarmapAllowance>
@@ -950,18 +965,36 @@ export default function PricingPage() {
                                       />
 
                                       <PriceTag>
-                                        <Typography variant="h3" sx={{ fontWeight: 700, color: 'primary.main' }}>
-                                          ${billing === 'monthly' ? plan.pricePerSeatMonthly : Math.ceil(plan.pricePerSeatMonthly * annualMultiplier)}
-                                        </Typography>
-                                        <Typography variant="body1" sx={{ color: 'text.secondary', ml: 1 }}>
-                                          /seat/month
-                                        </Typography>
+                                        <motion.div
+                                          key={`${currency}-${billing}-${plan.tier}-team`}
+                                          initial={{ opacity: 0, y: -10 }}
+                                          animate={{ opacity: 1, y: 0 }}
+                                          transition={{ duration: 0.3 }}
+                                          style={{ display: 'flex', alignItems: 'baseline' }}
+                                        >
+                                          <Typography variant="h3" sx={{ fontWeight: 700, color: 'primary.main' }}>
+                                            {formatPriceWithPeriod(
+                                              billing === 'monthly' ? plan.pricePerSeatMonthly : Math.ceil(plan.pricePerSeatMonthly * annualMultiplier),
+                                              { currency, exchangeRate, showSymbol: true },
+                                              'seat'
+                                            ).replace('/seat/month', '')}
+                                          </Typography>
+                                          <Typography variant="body1" sx={{ color: 'text.secondary', ml: 1 }}>
+                                            /seat/month
+                                          </Typography>
+                                        </motion.div>
                                       </PriceTag>
 
                                       {billing === 'annual' && (
-                                        <Typography variant="body2" sx={{ color: 'success.main', textAlign: 'left', mb: 2, fontWeight: 600 }}>
-                                          Save 20% annually
-                                        </Typography>
+                                        <motion.div
+                                          initial={{ opacity: 0, scale: 0.95 }}
+                                          animate={{ opacity: 1, scale: 1 }}
+                                          transition={{ duration: 0.3, delay: 0.1 }}
+                                        >
+                                          <Typography variant="body2" sx={{ color: 'success.main', textAlign: 'left', mb: 2, fontWeight: 600 }}>
+                                            Save 20% annually
+                                          </Typography>
+                                        </motion.div>
                                       )}
 
                                       <StarmapAllowance>
@@ -1205,5 +1238,13 @@ export default function PricingPage() {
       {/* Modals */}
       <DemoModal isOpen={modalStates.demo} onClose={modalActions.closeDemoModal} />
     </PageWrapper>
+  );
+}
+
+export default function PricingPage() {
+  return (
+    <CurrencyProvider>
+      <PricingPageContent />
+    </CurrencyProvider>
   );
 }
