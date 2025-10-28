@@ -96,9 +96,9 @@ export async function POST(request: NextRequest) {
 
       // Send notification email to enterprise sales team
       const to = process.env.LEADS_EMAIL_TO || 'hello@smartslate.io';
-      const subject = `SSA Interest: ${body.company} (${body.name})`;
+      const subject = `Strategic Skills Architecture Interest: ${body.company} (${body.name})`;
       const html = `
-        <h2>New SSA Interest Submission</h2>
+        <h2>New Strategic Skills Architecture Interest Submission</h2>
         <p><strong>Lead ID:</strong> ${leadId}</p>
         <p><strong>Name:</strong> ${body.name}</p>
         <p><strong>Email:</strong> ${body.email}</p>
@@ -127,16 +127,16 @@ export async function POST(request: NextRequest) {
         <p>${body.specificOutcomes}</p>
         <hr>
         <p><strong>Submitted:</strong> ${createdAt}</p>
-        <p><strong>Source:</strong> SSA Interest Modal</p>
+        <p><strong>Source:</strong> Strategic Skills Architecture Interest Modal</p>
       `;
 
       // Fire-and-forget email; don't block response on failures
-      sendEmail({ to, subject, html }).catch((err) => console.error('Failed to send SSA email', err));
+      sendEmail({ to, subject, html }).catch((err) => console.error('Failed to send Strategic Skills Architecture email', err));
 
       return NextResponse.json(
         { 
           success: true, 
-          message: 'SSA inquiry submitted successfully',
+          message: 'Strategic Skills Architecture inquiry submitted successfully',
           leadId: leadId,
           createdAt: createdAt
         },

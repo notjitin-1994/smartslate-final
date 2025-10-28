@@ -187,8 +187,6 @@ const AnimateText = styled('span', {
 
 interface FrameworkProps {
   onRevealNext: () => void;
-  openSSAModal: () => void;
-  openSolaraModal: () => void;
 }
 
 type StepId = 'ignite' | 'architecture' | 'solara';
@@ -229,7 +227,7 @@ const frameworkSteps = [
       { icon: Hub, title: 'Seamless Integration', description: 'Works with your existing HRMS and workflows' },
     ],
     badge: 'Enterprise',
-    buttonText: 'Set up SSA',
+    buttonText: 'Explore Strategic Skills Architecture',
     href: '/solutions',
   },
   {
@@ -250,7 +248,7 @@ const frameworkSteps = [
   },
 ];
 
-export default function Framework({ onRevealNext, openSSAModal, openSolaraModal }: FrameworkProps) {
+export default function Framework({ onRevealNext }: FrameworkProps) {
   const [activeStep, setActiveStep] = useState<StepId>('ignite');
   const stepEndIcons = {
     ignite: <School aria-hidden="true" className="icon-anim icon-float" />,
@@ -281,11 +279,11 @@ export default function Framework({ onRevealNext, openSSAModal, openSolaraModal 
       // Navigate to courses page
       window.location.href = '/courses';
     } else if (stepId === 'architecture') {
-      // Open SSA modal
-      openSSAModal();
+      // Link to contact page for Strategic Skills Architecture
+      window.location.href = '/contact';
     } else if (stepId === 'solara') {
-      // Open Solara modal
-      openSolaraModal();
+      // Link to contact page for Solara
+      window.location.href = '/contact';
     }
   };
 

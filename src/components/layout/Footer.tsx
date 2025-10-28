@@ -56,7 +56,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <FooterWrapper>
+    <FooterWrapper data-footer-version="2.0">
       <FooterContent maxWidth="lg">
         <Box
           sx={{
@@ -96,7 +96,7 @@ export default function Footer() {
           <Box>
             <SectionTitle variant="h6">Services</SectionTitle>
             <FooterLink href="/ignite">Ignite</FooterLink>
-            <FooterLink href="/products">Strategic Skills Architecture</FooterLink>
+            <FooterLink href="/strategic-skills-architecture">Strategic Skills Architecture</FooterLink>
           </Box>
 
           {/* Company */}
