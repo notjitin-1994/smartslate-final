@@ -957,33 +957,6 @@ export default function PrivacyPolicyPage() {
                 </motion.div>
               </Grid>
             </Grid>
-
-            {/* Footer Links */}
-            <Box sx={{ borderTop: '1px solid rgba(167, 218, 219, 0.1)', pt: 6, mt: 8, textAlign: 'center' }}>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={section4InView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-              >
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                  © {new Date().getFullYear()} Smartslate Learning. All rights reserved.
-                </Typography>
-                <Typography variant="caption" color="text.disabled" sx={{ display: 'block', mb: 3 }}>
-                  Committed to protecting your privacy and data security
-                </Typography>
-                <Box sx={{ display: 'flex', gap: 3, justifyContent: 'center', flexWrap: 'wrap' }}>
-                  <StyledLink href="/legal/terms">
-                    Terms of Service
-                  </StyledLink>
-                  <StyledLink href="/">
-                    Back to Home
-                  </StyledLink>
-                  <StyledLink href="/contact">
-                    Contact Us
-                  </StyledLink>
-                </Box>
-              </motion.div>
-            </Box>
           </Container>
         </PrivacySection>
       </SectionWrapper>

@@ -3,17 +3,26 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Box, Typography } from '@mui/material';
-import { 
-  SectionTitle, 
-  SectionSubtitle, 
-  ComparisonGrid, 
+import { MenuBook, Description, Build, Bolt, EmojiEvents } from '@mui/icons-material';
+import {
+  SectionTitle,
+  SectionSubtitle,
+  ComparisonGrid,
   ContentCard,
   IconWrapper,
   CardTitle,
   CardDescription,
   ResponsiveContainer
 } from './styles/DifferenceStyles';
-import { comparisonData, iconMap, animationConfig } from '@/lib/data/differencePage';
+import { comparisonData, animationConfig } from '@/lib/data/differencePage';
+
+const iconComponentMap: Record<string, React.ReactElement> = {
+  content: <MenuBook sx={{ fontSize: 28 }} />,
+  materials: <Description sx={{ fontSize: 28 }} />,
+  application: <Build sx={{ fontSize: 28 }} />,
+  skills: <Bolt sx={{ fontSize: 28 }} />,
+  certification: <EmojiEvents sx={{ fontSize: 28 }} />,
+};
 
 export default function ComparisonSection() {
   const { ref, inView } = useInView({
@@ -52,8 +61,8 @@ export default function ComparisonSection() {
                 custom={index}
               >
                 <ContentCard>
-                  <IconWrapper>
-                    <span style={{ fontSize: '1.5rem' }}>{iconMap[item.icon]}</span>
+                  <IconWrapper sx={{ color: 'primary.main', display: 'flex', alignItems: 'center' }}>
+                    {iconComponentMap[item.icon]}
                   </IconWrapper>
                   
                   <Box sx={{ flex: 1 }}>

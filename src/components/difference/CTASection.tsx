@@ -57,7 +57,7 @@ export default function CTASection() {
           </Typography>
         </motion.div>
 
-        {/* Action Buttons */}
+        {/* Why Choose Smartslate */}
         <motion.div
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
@@ -66,58 +66,13 @@ export default function CTASection() {
         >
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', sm: 'row' },
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 3,
-              mb: 6
-            }}
-          >
-            <Link href={ctaSectionData.primaryAction.href} style={{ textDecoration: 'none' }}>
-              <CTAButton variant={ctaSectionData.primaryAction.variant} size="large">
-                {ctaSectionData.primaryAction.label}
-              </CTAButton>
-            </Link>
-
-            {ctaSectionData.secondaryAction && (
-              <Link href={ctaSectionData.secondaryAction.href} style={{ textDecoration: 'none' }}>
-                <CTAButton 
-                  variant={ctaSectionData.secondaryAction.variant} 
-                  size="large"
-                  sx={{
-                    backgroundColor: 'transparent',
-                    color: 'primary.main',
-                    border: '2px solid',
-                    borderColor: 'primary.main',
-                    '&:hover': {
-                      backgroundColor: 'rgba(167, 218, 219, 0.1)',
-                      borderColor: 'primary.light',
-                    }
-                  }}
-                >
-                  {ctaSectionData.secondaryAction.label}
-                </CTAButton>
-              </Link>
-            )}
-          </Box>
-        </motion.div>
-
-        {/* Additional Information */}
-        <motion.div
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          variants={animationConfig.fadeIn}
-          transition={{ delay: 0.6 }}
-        >
-          <Box
-            sx={{
               p: 4,
               background: 'linear-gradient(135deg, rgba(167, 218, 219, 0.08), rgba(79, 70, 229, 0.04))',
               backdropFilter: 'blur(16px)',
               borderRadius: 3,
               border: '2px solid rgba(167, 218, 219, 0.2)',
-              textAlign: 'center'
+              textAlign: 'center',
+              mb: 6
             }}
           >
             <Typography
@@ -178,6 +133,51 @@ export default function CTASection() {
                 </Box>
               ))}
             </Box>
+          </Box>
+        </motion.div>
+
+        {/* Action Buttons */}
+        <motion.div
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          variants={animationConfig.fadeIn}
+          transition={{ delay: 0.6 }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' },
+              alignItems: { xs: 'center', sm: 'flex-start' },
+              justifyContent: 'flex-start',
+              gap: 3
+            }}
+          >
+            <Link href={ctaSectionData.primaryAction.href} style={{ textDecoration: 'none' }}>
+              <CTAButton variant={ctaSectionData.primaryAction.variant} size="large">
+                {ctaSectionData.primaryAction.label}
+              </CTAButton>
+            </Link>
+
+            {ctaSectionData.secondaryAction && (
+              <Link href={ctaSectionData.secondaryAction.href} style={{ textDecoration: 'none' }}>
+                <CTAButton
+                  variant={ctaSectionData.secondaryAction.variant}
+                  size="large"
+                  sx={{
+                    backgroundColor: 'transparent',
+                    color: 'primary.main',
+                    border: '2px solid',
+                    borderColor: 'primary.main',
+                    '&:hover': {
+                      backgroundColor: 'rgba(167, 218, 219, 0.1)',
+                      borderColor: 'primary.light',
+                    }
+                  }}
+                >
+                  {ctaSectionData.secondaryAction.label}
+                </CTAButton>
+              </Link>
+            )}
           </Box>
         </motion.div>
       </ResponsiveContainer>

@@ -3,10 +3,11 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Box, Typography } from '@mui/material';
-import { 
-  SectionTitle, 
-  SectionSubtitle, 
-  JourneyGrid, 
+import { Search, Architecture, Build, RocketLaunch, TrendingUp } from '@mui/icons-material';
+import {
+  SectionTitle,
+  SectionSubtitle,
+  JourneyGrid,
   JourneyCard,
   CardTitle,
   CardDescription,
@@ -15,6 +16,14 @@ import {
   Divider
 } from './styles/DifferenceStyles';
 import { transformationJourneyData, animationConfig } from '@/lib/data/differencePage';
+
+const iconMap: Record<string, React.ReactElement> = {
+  Search: <Search sx={{ fontSize: 32 }} />,
+  Architecture: <Architecture sx={{ fontSize: 32 }} />,
+  Build: <Build sx={{ fontSize: 32 }} />,
+  RocketLaunch: <RocketLaunch sx={{ fontSize: 32 }} />,
+  TrendingUp: <TrendingUp sx={{ fontSize: 32 }} />,
+};
 
 // ============================================================================
 // JOURNEY STEP COMPONENT
@@ -30,8 +39,8 @@ function JourneyStepComponent({ step, index, totalSteps }: JourneyStepProps) {
   return (
     <JourneyCard phase={step.phase}>
       <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 3 }}>
-        <Box sx={{ fontSize: '2rem' }}>
-          {step.icon}
+        <Box sx={{ color: 'primary.main', display: 'flex', alignItems: 'center' }}>
+          {iconMap[step.icon]}
         </Box>
         <Box sx={{ flex: 1 }}>
           <CardTitle>
@@ -206,7 +215,7 @@ export default function TransformationJourney() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      color: 'white',
+                      color: '#000000',
                       fontWeight: 600,
                       fontSize: '0.875rem'
                     }}

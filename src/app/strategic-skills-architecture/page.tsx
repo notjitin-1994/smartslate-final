@@ -52,11 +52,11 @@ const HeroSection = styled(Box)(({ theme }) => ({
 }));
 
 const SectionWrapper = styled(Box)(({ theme }) => ({
-  padding: `${theme.spacing(16)} 0`,
+  padding: `${theme.spacing(6.5)} 0`,
   position: 'relative',
   backgroundColor: theme.palette.background.default,
   [theme.breakpoints.down('md')]: {
-    padding: `${theme.spacing(12)} 0`,
+    padding: `${theme.spacing(5)} 0`,
   },
 }));
 
@@ -1256,7 +1256,7 @@ export default function StrategicSkillsArchitecturePage() {
           borderBottom: '1px solid rgba(167, 218, 219, 0.2)',
         })}
       >
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
           <Box sx={{ textAlign: 'left' }}>
             <Typography
               variant="h2"

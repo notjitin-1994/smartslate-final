@@ -3,10 +3,11 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Box, Typography, Chip } from '@mui/material';
-import { 
-  SectionTitle, 
-  SectionSubtitle, 
-  DifferentiatorsGrid, 
+import { Psychology, Business, TrackChanges } from '@mui/icons-material';
+import {
+  SectionTitle,
+  SectionSubtitle,
+  DifferentiatorsGrid,
   ContentCard,
   IconWrapper,
   CardTitle,
@@ -15,6 +16,12 @@ import {
   Badge
 } from './styles/DifferenceStyles';
 import { keyDifferentiatorsData, animationConfig } from '@/lib/data/differencePage';
+
+const iconMap: Record<string, React.ReactElement> = {
+  Psychology: <Psychology sx={{ fontSize: 32 }} />,
+  Business: <Business sx={{ fontSize: 32 }} />,
+  TrackChanges: <TrackChanges sx={{ fontSize: 32 }} />,
+};
 
 export default function KeyDifferentiators() {
   const { ref, inView } = useInView({
@@ -54,8 +61,8 @@ export default function KeyDifferentiators() {
               >
                 <ContentCard>
                   <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 3 }}>
-                    <IconWrapper sx={{ fontSize: '2rem' }}>
-                      {differentiator.icon}
+                    <IconWrapper sx={{ display: 'flex', alignItems: 'center', color: 'primary.main' }}>
+                      {iconMap[differentiator.icon]}
                     </IconWrapper>
                     <Box sx={{ flex: 1 }}>
                       <CardTitle>

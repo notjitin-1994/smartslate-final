@@ -165,9 +165,8 @@ export default function Header() {
 
   const navItems = [
     { label: 'Products', href: '/products' },
+    { label: 'Pricing', href: '/pricing' },
     { label: 'Vision', href: '/vision' },
-    { label: 'Difference', href: '/difference' },
-    { label: 'Partner', href: '/partner' },
   ];
 
   return (

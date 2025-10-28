@@ -5,6 +5,7 @@ import { Box, Container, Typography, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { RocketLaunch } from '@mui/icons-material';
 import { productRegistry } from '@/lib/data/products';
 
 const PageWrapper = styled(Box)(({ theme }) => ({
@@ -384,13 +385,13 @@ export default function GetStartedPage() {
   };
 
   const handleSolaraCtaClick = () => {
-    // Redirect to app.smartslate.io
-    window.open('https://app.smartslate.io', '_blank');
+    // Redirect to solara.smartslate.io
+    window.open('https://solara.smartslate.io', '_blank');
   };
 
   const handleIgniteCtaClick = () => {
-    // Navigate to courses page
-    router.push('/courses');
+    // Navigate to ignite page
+    router.push('/ignite');
   };
 
   return (
@@ -484,27 +485,101 @@ export default function GetStartedPage() {
                 )}
 
                 <ProductHeading>{products.solara?.heading}</ProductHeading>
-                <ProductTagline>Ready to experience the future of learning?</ProductTagline>
+                <ProductTagline>The complete AI-powered learning lifecycle</ProductTagline>
                 <ProductDescription>
-                  Get instant access to our AI-powered learning platform. Create your account, explore intelligent features,
-                  and start your personalized learning journey today.
+                  From initial needs analysis to measurable outcomes, Solara&apos;s integrated suite transforms how learning is designed, delivered, and optimized. Experience the full power of AI across every stage of the learning journey.
                 </ProductDescription>
 
                 <FeaturesList>
-                  {products.solara?.features.slice(0, 3).map((feature, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.1 * (index + 1) }}
-                      viewport={{ once: true }}
-                    >
-                      <FeatureItem>
-                        <FeatureIcon>{feature.icon}</FeatureIcon>
-                        <FeatureText dangerouslySetInnerHTML={{ __html: feature.text }} />
-                      </FeatureItem>
-                    </motion.div>
-                  ))}
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    viewport={{ once: true }}
+                  >
+                    <FeatureItem>
+                      <FeatureIcon>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                      </FeatureIcon>
+                      <FeatureText>
+                        <strong>Polaris - Blueprint Generation:</strong> Transform ideas into launch-ready learning blueprints in hours, not weeks. AI-driven needs analysis captures 100% of requirements with zero revision cycles.
+                      </FeatureText>
+                    </FeatureItem>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    viewport={{ once: true }}
+                  >
+                    <FeatureItem>
+                      <FeatureIcon>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z" />
+                        </svg>
+                      </FeatureIcon>
+                      <FeatureText>
+                        <strong>Constellation - Content Architecture:</strong> Intelligently structures complex content into coherent learning pathways. Creates logical sequences that maximize comprehension and retention.
+                      </FeatureText>
+                    </FeatureItem>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    viewport={{ once: true }}
+                  >
+                    <FeatureItem>
+                      <FeatureIcon>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                      </FeatureIcon>
+                      <FeatureText>
+                        <strong>Nova - AI Content Authoring:</strong> Turns subject matter expertise into engaging learning experiences. Generates production-ready content that matches your brand voice and pedagogical standards.
+                      </FeatureText>
+                    </FeatureItem>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    viewport={{ once: true }}
+                  >
+                    <FeatureItem>
+                      <FeatureIcon>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                      </FeatureIcon>
+                      <FeatureText>
+                        <strong>Orbit - Adaptive Delivery:</strong> Personalizes every learner&apos;s journey based on their unique needs, pace, and progress. Real-time adaptation ensures optimal engagement and outcomes.
+                      </FeatureText>
+                    </FeatureItem>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.5 }}
+                    viewport={{ once: true }}
+                  >
+                    <FeatureItem>
+                      <FeatureIcon>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                      </FeatureIcon>
+                      <FeatureText>
+                        <strong>Spectrum - Learning Intelligence:</strong> Transforms data into actionable insights that drive measurable outcomes. Predict trends, identify gaps, and optimize learning strategies with AI-powered analytics.
+                      </FeatureText>
+                    </FeatureItem>
+                  </motion.div>
                 </FeaturesList>
 
                 <motion.div
@@ -514,8 +589,8 @@ export default function GetStartedPage() {
                   viewport={{ once: true }}
                 >
                   <CTAButton onClick={handleSolaraCtaClick}>
-                    Sign up/Login
-                    {products.solara?.cta.icon}
+                    Explore Solara Learning Engine
+                    <RocketLaunch />
                   </CTAButton>
                 </motion.div>
               </motion.div>
@@ -727,7 +802,7 @@ export default function GetStartedPage() {
                   viewport={{ once: true }}
                 >
                   <CTAButton onClick={handleIgniteCtaClick}>
-                    Explore our Courses
+                    Explore Ignite Series
                     {products.ignite?.cta.icon}
                   </CTAButton>
                 </motion.div>
@@ -781,9 +856,9 @@ export default function GetStartedPage() {
                   transition={{ duration: 0.6, delay: 0.4 }}
                   viewport={{ once: true }}
                 >
-                  <Link href="/contact" passHref style={{ textDecoration: 'none' }}>
+                  <Link href="/strategic-skills-architecture" passHref style={{ textDecoration: 'none' }}>
                     <CTAButton>
-                      Set up your Strategic Skills Architecture
+                      Explore Strategic Skills Architecture
                       {products.ssa?.cta.icon}
                     </CTAButton>
                   </Link>

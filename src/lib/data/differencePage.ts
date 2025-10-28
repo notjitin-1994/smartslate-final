@@ -113,7 +113,7 @@ export const keyDifferentiatorsData: KeyDifferentiator[] = [
     id: 'ai-powered-personalization',
     title: 'AI-Powered Personalization',
     description: 'Our advanced AI algorithms create truly personalized learning experiences that adapt to each individual\'s needs, pace, and learning style.',
-    icon: '🤖',
+    icon: 'Psychology',
     features: [
       'Adaptive learning paths',
       'Real-time progress tracking',
@@ -126,7 +126,7 @@ export const keyDifferentiatorsData: KeyDifferentiator[] = [
     id: 'industry-integration',
     title: 'Industry Integration',
     description: 'Direct partnerships with leading companies ensure our curriculum stays current with real-world industry demands and emerging technologies.',
-    icon: '🏢',
+    icon: 'Business',
     features: [
       'Industry expert collaboration',
       'Current technology integration',
@@ -139,7 +139,7 @@ export const keyDifferentiatorsData: KeyDifferentiator[] = [
     id: 'outcome-focused',
     title: 'Outcome-Focused Approach',
     description: 'Every learning experience is designed with measurable outcomes in mind, ensuring tangible results that translate to career advancement.',
-    icon: '🎯',
+    icon: 'TrackChanges',
     features: [
       'Clear learning objectives',
       'Measurable skill development',
@@ -155,7 +155,7 @@ export const transformationJourneyData: JourneyStep[] = [
     id: 'discovery-phase',
     title: 'Discovery & Assessment',
     description: 'We begin by understanding your organization\'s unique challenges, goals, and current learning landscape.',
-    icon: '🔍',
+    icon: 'Search',
     duration: '1-2 weeks',
     outcomes: [
       'Comprehensive needs analysis',
@@ -169,7 +169,7 @@ export const transformationJourneyData: JourneyStep[] = [
     id: 'design-phase',
     title: 'Strategic Design',
     description: 'Our learning architects design a customized solution that aligns with your organizational objectives.',
-    icon: '🎨',
+    icon: 'Architecture',
     duration: '2-3 weeks',
     outcomes: [
       'Custom learning strategy',
@@ -183,7 +183,7 @@ export const transformationJourneyData: JourneyStep[] = [
     id: 'development-phase',
     title: 'Content Development',
     description: 'We create engaging, interactive content that combines cutting-edge technology with proven learning methodologies.',
-    icon: '⚡',
+    icon: 'Build',
     duration: '4-6 weeks',
     outcomes: [
       'Interactive learning modules',
@@ -197,7 +197,7 @@ export const transformationJourneyData: JourneyStep[] = [
     id: 'deployment-phase',
     title: 'Seamless Deployment',
     description: 'Our team ensures smooth implementation with comprehensive training and ongoing support.',
-    icon: '🚀',
+    icon: 'RocketLaunch',
     duration: '1-2 weeks',
     outcomes: [
       'System integration',
@@ -211,7 +211,7 @@ export const transformationJourneyData: JourneyStep[] = [
     id: 'optimization-phase',
     title: 'Continuous Optimization',
     description: 'We continuously monitor, analyze, and optimize your learning ecosystem for maximum impact.',
-    icon: '📈',
+    icon: 'TrendingUp',
     duration: 'Ongoing',
     outcomes: [
       'Performance analytics',
@@ -230,7 +230,7 @@ export const impactMetricsData: ImpactMetric[] = [
     value: '94',
     unit: '%',
     description: 'Average learner engagement across all programs',
-    icon: '📊',
+    icon: 'BarChart',
     category: 'engagement',
     trend: 'up'
   },
@@ -240,7 +240,7 @@ export const impactMetricsData: ImpactMetric[] = [
     value: '87',
     unit: '%',
     description: 'Program completion rate vs industry average of 45%',
-    icon: '✅',
+    icon: 'CheckCircle',
     category: 'performance',
     trend: 'up'
   },
@@ -250,7 +250,7 @@ export const impactMetricsData: ImpactMetric[] = [
     value: '3.2',
     unit: 'x',
     description: 'Average skill improvement multiplier',
-    icon: '🚀',
+    icon: 'RocketLaunch',
     category: 'performance',
     trend: 'up'
   },
@@ -260,7 +260,7 @@ export const impactMetricsData: ImpactMetric[] = [
     value: '4.8',
     unit: '/5',
     description: 'Average learner satisfaction rating',
-    icon: '⭐',
+    icon: 'Star',
     category: 'satisfaction',
     trend: 'up'
   },
@@ -270,7 +270,7 @@ export const impactMetricsData: ImpactMetric[] = [
     value: '73',
     unit: '%',
     description: 'Learners who advanced in their careers within 6 months',
-    icon: '📈',
+    icon: 'TrendingUp',
     category: 'growth',
     trend: 'up'
   },
@@ -280,7 +280,7 @@ export const impactMetricsData: ImpactMetric[] = [
     value: '60',
     unit: '%',
     description: 'Reduction in time to achieve job competency',
-    icon: '⏱️',
+    icon: 'Schedule',
     category: 'performance',
     trend: 'up'
   }
@@ -324,11 +324,6 @@ export const ctaSectionData: CTASection = {
     label: 'Start Your Transformation',
     href: '/contact',
     variant: 'contained'
-  },
-  secondaryAction: {
-    label: 'View Case Studies',
-    href: '/case-studies',
-    variant: 'outlined'
   }
 };
 
@@ -337,11 +332,11 @@ export const ctaSectionData: CTASection = {
 // ============================================================================
 
 export const iconMap = {
-  content: '📚',
-  materials: '📝',
-  application: '🔧',
-  skills: '⚡',
-  certification: '🏆',
+  content: 'MenuBook',
+  materials: 'Description',
+  application: 'Build',
+  skills: 'Bolt',
+  certification: 'EmojiEvents',
 } as const;
 
 // ============================================================================

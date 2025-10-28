@@ -607,24 +607,6 @@ export default function TermsOfService() {
                   </motion.div>
                 </Grid>
               </Grid>
-
-              {/* Footer Note */}
-              <Box sx={{ mt: 8, textAlign: 'center' }}>
-                <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
-                  <strong>Last updated:</strong> {new Date().toLocaleDateString('en-IN')}
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  © {new Date().getFullYear()} Smartslate Learning. All rights reserved.
-                </Typography>
-                <Box sx={{ mt: 2 }}>
-                  <Link href="/legal/privacy" style={{ color: '#a7dadb', textDecoration: 'none', marginRight: '2rem' }}>
-                    Privacy Policy
-                  </Link>
-                  <Link href="/" style={{ color: '#a7dadb', textDecoration: 'none' }}>
-                    Back to Home
-                  </Link>
-                </Box>
-              </Box>
             </motion.div>
           </Container>
         </TermsSection>

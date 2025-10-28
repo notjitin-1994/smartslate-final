@@ -978,7 +978,7 @@ export default function IgnitePage() {
           borderBottom: '1px solid rgba(167, 218, 219, 0.2)',
         })}
       >
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
           <Box sx={{ textAlign: 'left' }}>
             <Typography
               variant="h2"

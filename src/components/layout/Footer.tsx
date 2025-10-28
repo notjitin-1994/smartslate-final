@@ -51,6 +51,22 @@ const FooterLink = styled(Link)(({ theme }) => ({
   },
 }));
 
+const CompanyLink = styled(Link)(({ theme }) => ({
+  display: 'block',
+  color: theme.palette.text.secondary,
+  marginBottom: theme.spacing(1),
+  textDecoration: 'none',
+  transition: 'all 0.2s ease',
+  fontSize: '0.9rem',
+  cursor: 'pointer',
+  textShadow: '0 0 8px rgba(167, 218, 219, 0.3)',
+  '&:hover': {
+    color: theme.palette.primary.main,
+    textDecoration: 'none',
+    textShadow: '0 0 12px rgba(167, 218, 219, 0.5)',
+  },
+}));
+
 export default function Footer() {
   const theme = useTheme();
   const currentYear = new Date().getFullYear();
@@ -102,10 +118,10 @@ export default function Footer() {
           {/* Company */}
           <Box>
             <SectionTitle variant="h6">Company</SectionTitle>
-            <FooterLink href="/difference">About Us</FooterLink>
-            <FooterLink href="/careers">Careers</FooterLink>
-            <FooterLink href="/contact">Contact</FooterLink>
-            <FooterLink href="/partner">Partners</FooterLink>
+            <CompanyLink href="/difference">The Smartslate Difference</CompanyLink>
+            <CompanyLink href="/contact">Reach out</CompanyLink>
+            <CompanyLink href="/careers">Work for Smartslate</CompanyLink>
+            <CompanyLink href="/partner">Partner with us</CompanyLink>
           </Box>
 
           {/* Legal */}

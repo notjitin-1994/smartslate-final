@@ -1,1247 +1,848 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { Box, Container, Card, CardContent, Typography, Button, Chip, List, ListItem, ListItemText, ListItemIcon, Divider, Tabs, Tab } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
-import StandardHero from '@/components/ui/StandardHero';
+import { useState } from 'react';
 import Link from 'next/link';
-import {
-  Check,
-  Star,
-  TrendingUp,
-  Support,
-  Security,
-  AutoAwesome,
-  Layers,
-  SmartToy,
-  Speed,
-  CloudSync,
-  People,
-  BarChart,
-  Lock,
-  EmojiObjects,
-  Rocket,
-  AccessTime,
-  Storage,
-  Api,
-  Settings,
-  VerifiedUser,
-  Assessment,
-  Schedule,
-  GroupWork,
-  MessageOutlined,
-  Insights
-} from '@mui/icons-material';
-import {
-  PageWrapper,
-  SectionWrapper,
-  ContentCard,
-  PrimaryButton,
-  AccentText,
-  AnimatedChip,
-  StatCard,
-  StatNumber,
-} from '@/components/landing/styles/LandingStyles';
-import { CurrencyProvider, useCurrency } from '@/contexts/CurrencyContext';
-import CurrencyToggle from '@/components/pricing/CurrencyToggle';
-import { formatPriceWithPeriod, formatAnnualSavings } from '@/utils/formatPrice';
-
-// Styled Components
-const TabsContainer = styled(Box)(({ theme }) => ({
-  position: 'relative',
-  marginBottom: theme.spacing(6),
-  background: 'rgba(255, 255, 255, 0.02)',
-  backdropFilter: 'blur(16px)',
-  borderRadius: theme.spacing(2),
-  border: '1px solid rgba(255, 255, 255, 0.08)',
-  padding: theme.spacing(1),
-  overflow: 'hidden',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: '2px',
-    background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-  },
-}));
-
-const StyledTabs = styled(Tabs)(({ theme }) => ({
-  minHeight: 'auto',
-  '& .MuiTabs-flexContainer': {
-    gap: theme.spacing(1),
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  },
-  '& .MuiTabs-indicator': {
-    display: 'none',
-  },
-}));
-
-const StyledTab = styled(Tab)(({ theme }) => ({
-  minHeight: '56px',
-  padding: theme.spacing(1.5, 3),
-  borderRadius: theme.spacing(1.5),
-  textTransform: 'none',
-  fontSize: '0.9375rem',
-  fontWeight: 600,
-  color: theme.palette.text.secondary,
-  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-  position: 'relative',
-  overflow: 'hidden',
-  minWidth: 'auto',
-  flex: '1 1 auto',
-  maxWidth: '200px',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: 'transparent',
-    transition: 'all 0.3s ease',
-    zIndex: -1,
-  },
-  '&:hover': {
-    color: theme.palette.primary.main,
-    background: 'rgba(167, 218, 219, 0.08)',
-  },
-  '&.Mui-selected': {
-    color: theme.palette.primary.main,
-    background: 'rgba(167, 218, 219, 0.15)',
-    border: `1px solid ${theme.palette.primary.main}`,
-    boxShadow: `0 4px 12px rgba(167, 218, 219, 0.2)`,
-    '&::before': {
-      background: 'linear-gradient(135deg, rgba(167, 218, 219, 0.1), rgba(79, 70, 229, 0.05))',
-    },
-  },
-  [theme.breakpoints.down('md')]: {
-    padding: theme.spacing(1, 2),
-    fontSize: '0.875rem',
-    minWidth: 'auto',
-    flex: '1 1 calc(50% - 8px)',
-    maxWidth: 'none',
-  },
-}));
-
-const PricingCard = styled(Card, {
-  shouldForwardProp: (prop) => prop !== 'featured' && prop !== 'comingSoon',
-})<{ featured?: boolean; comingSoon?: boolean }>(({ theme, featured, comingSoon }) => ({
-  height: '100%',
-  backgroundColor: featured
-    ? 'rgba(167, 218, 219, 0.05)'
-    : 'rgba(255, 255, 255, 0.02)',
-  backdropFilter: 'blur(16px)',
-  WebkitBackdropFilter: 'blur(16px)',
-  border: featured
-    ? `2px solid ${theme.palette.primary.main}`
-    : `1px solid rgba(255, 255, 255, 0.08)`,
-  borderRadius: '20px',
-  position: 'relative',
-  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-  boxShadow: featured
-    ? '0 20px 60px rgba(167, 218, 219, 0.3)'
-    : '0 8px 32px rgba(0, 0, 0, 0.2)',
-  overflow: 'visible',
-  opacity: comingSoon ? 0.7 : 1,
-  marginTop: '16px',
-  '&:hover': {
-    transform: comingSoon ? 'none' : 'translateY(-8px)',
-    borderColor: comingSoon ? 'rgba(255, 255, 255, 0.08)' : theme.palette.primary.main,
-    boxShadow: comingSoon
-      ? '0 8px 32px rgba(0, 0, 0, 0.2)'
-      : '0 24px 60px rgba(167, 218, 219, 0.25)',
-    '& .badge-container': {
-      transform: 'scale(1.05)',
-      boxShadow: '0 12px 32px rgba(167, 218, 219, 0.6)',
-    },
-  },
-}));
-
-const FeaturedBadge = styled(motion.div)(({ theme }) => ({
-  position: 'absolute',
-  top: -16,
-  right: 20,
-  background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
-  color: '#000000',
-  fontWeight: 800,
-  fontSize: '0.75rem',
-  padding: '8px 16px',
-  borderRadius: '20px',
-  boxShadow: '0 8px 24px rgba(167, 218, 219, 0.5)',
-  zIndex: 10,
-  display: 'flex',
-  alignItems: 'center',
-  gap: '6px',
-  letterSpacing: '0.5px',
-  textTransform: 'uppercase',
-  backdropFilter: 'blur(8px)',
-  border: `1px solid rgba(255, 255, 255, 0.2)`,
-  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    inset: 0,
-    borderRadius: '20px',
-    padding: '1px',
-    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4), transparent)',
-    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-    WebkitMaskComposite: 'xor',
-    maskComposite: 'exclude',
-  },
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    bottom: '-8px',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    width: 0,
-    height: 0,
-    borderLeft: '8px solid transparent',
-    borderRight: '8px solid transparent',
-    borderTop: `8px solid ${theme.palette.primary.main}`,
-  },
-}));
-
-const PopularChoiceBadge = styled(motion.div)(({ theme }) => ({
-  position: 'absolute',
-  top: -16,
-  right: 20,
-  background: `linear-gradient(135deg, ${theme.palette.secondary.main}, ${theme.palette.secondary.dark})`,
-  color: '#ffffff',
-  fontWeight: 800,
-  fontSize: '0.75rem',
-  padding: '8px 16px',
-  borderRadius: '20px',
-  boxShadow: '0 8px 24px rgba(79, 70, 229, 0.5)',
-  zIndex: 10,
-  display: 'flex',
-  alignItems: 'center',
-  gap: '6px',
-  letterSpacing: '0.5px',
-  textTransform: 'uppercase',
-  backdropFilter: 'blur(8px)',
-  border: `1px solid rgba(255, 255, 255, 0.2)`,
-  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    inset: 0,
-    borderRadius: '20px',
-    padding: '1px',
-    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4), transparent)',
-    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-    WebkitMaskComposite: 'xor',
-    maskComposite: 'exclude',
-  },
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    bottom: '-8px',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    width: 0,
-    height: 0,
-    borderLeft: '8px solid transparent',
-    borderRight: '8px solid transparent',
-    borderTop: `8px solid ${theme.palette.secondary.main}`,
-  },
-}));
-
-const ComingSoonBadge = styled(motion.div)(({ theme }) => ({
-  position: 'absolute',
-  top: -12,
-  right: 20,
-  background: `linear-gradient(135deg, ${theme.palette.secondary.main}, ${theme.palette.secondary.dark})`,
-  color: '#ffffff',
-  fontWeight: 800,
-  fontSize: '0.75rem',
-  padding: '8px 16px',
-  borderRadius: '20px',
-  boxShadow: '0 8px 24px rgba(79, 70, 229, 0.5)',
-  zIndex: 10,
-  display: 'flex',
-  alignItems: 'center',
-  gap: '6px',
-  letterSpacing: '0.5px',
-  textTransform: 'uppercase',
-  backdropFilter: 'blur(8px)',
-  border: `1px solid rgba(255, 255, 255, 0.2)`,
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    inset: 0,
-    borderRadius: '20px',
-    padding: '1px',
-    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4), transparent)',
-    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-    WebkitMaskComposite: 'xor',
-    maskComposite: 'exclude',
-  },
-}));
-
-const PriceTag = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'baseline',
-  justifyContent: 'center',
-  marginBottom: theme.spacing(3),
-  marginTop: theme.spacing(2),
-}));
-
-const StarmapAllowance = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: theme.spacing(1),
-  padding: theme.spacing(1.5, 2),
-  marginBottom: theme.spacing(2),
-  background: 'linear-gradient(135deg, rgba(167, 218, 219, 0.08), rgba(79, 70, 229, 0.05))',
-  border: '1px solid rgba(167, 218, 219, 0.2)',
-  borderRadius: theme.spacing(1.5),
-  textAlign: 'center',
-}));
-
-const ComingSoonCard = styled(motion.div)(({ theme }) => ({
-  background: 'rgba(255, 255, 255, 0.02)',
-  backdropFilter: 'blur(16px)',
-  borderRadius: theme.spacing(3),
-  padding: theme.spacing(6),
-  border: '1px solid rgba(79, 70, 229, 0.2)',
-  textAlign: 'center',
-  minHeight: '400px',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  position: 'relative',
-  overflow: 'hidden',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: '3px',
-    background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-  },
-}));
-
-// Product Icons
-const ProductIcons = {
-  polaris: <Star sx={{ fontSize: '3rem' }} />,
-  constellation: <Layers sx={{ fontSize: '3rem' }} />,
-  nova: <AutoAwesome sx={{ fontSize: '3rem' }} />,
-  orbit: <Speed sx={{ fontSize: '3rem' }} />,
-  nebula: <MessageOutlined sx={{ fontSize: '3rem' }} />,
-  spectrum: <Insights sx={{ fontSize: '3rem' }} />,
-};
-
-// Tab Data
-interface ProductTab {
-  id: string;
-  label: string;
-  shortName: string;
-  description: string;
-  icon: JSX.Element;
-  status: 'live' | 'coming-soon';
-  expectedLaunch?: string;
-}
-
-const productTabs: ProductTab[] = [
-  {
-    id: 'polaris',
-    label: 'Solara Polaris',
-    shortName: 'Polaris',
-    description: 'AI-Powered Learning Blueprint Generator',
-    icon: ProductIcons.polaris,
-    status: 'live',
-  },
-  {
-    id: 'constellation',
-    label: 'Solara Constellation',
-    shortName: 'Constellation',
-    description: 'Content-to-Blueprint Automation',
-    icon: ProductIcons.constellation,
-    status: 'coming-soon',
-    expectedLaunch: 'Q2 2026',
-  },
-  {
-    id: 'nova',
-    label: 'Solara Nova',
-    shortName: 'Nova',
-    description: 'AI-Assisted Content Authoring',
-    icon: ProductIcons.nova,
-    status: 'coming-soon',
-    expectedLaunch: 'Q3 2026',
-  },
-  {
-    id: 'orbit',
-    label: 'Solara Orbit',
-    shortName: 'Orbit',
-    description: 'Personalized Learning Delivery',
-    icon: ProductIcons.orbit,
-    status: 'coming-soon',
-    expectedLaunch: 'Q4 2026',
-  },
-  {
-    id: 'nebula',
-    label: 'Solara Nebula',
-    shortName: 'Nebula',
-    description: 'Intelligent Learning Assistant',
-    icon: ProductIcons.nebula,
-    status: 'coming-soon',
-    expectedLaunch: 'Q1 2027',
-  },
-  {
-    id: 'spectrum',
-    label: 'Solara Spectrum',
-    shortName: 'Spectrum',
-    description: 'Advanced Learning Analytics',
-    icon: ProductIcons.spectrum,
-    status: 'coming-soon',
-    expectedLaunch: 'Q2 2027',
-  },
-];
-
-// Polaris pricing plans (existing data)
-const polarisPricing = [
-  {
-    tier: 'Explorer',
-    subtitle: 'Perfect for getting started',
-    priceMonthly: 19,
-    maxStarmapGenerations: 5,
-    maxStarmaps: 5,
-    description: 'Perfect for individuals exploring Solara-powered learning design',
-    features: [
-      'Solara-powered blueprint generation',
-      'Professional templates & formatting',
-      'Export to PDF & Word',
-      'Community support',
-    ],
-    highlighted: ['5 generations/month', '5 saved (rolls over 12 months)'],
-    limits: [],
-    featured: false,
-    cta: 'Get Started for Free',
-    ctaLink: 'https://polaris.smartslate.io/auth/signup',
-    badge: 'BEST FOR BEGINNERS',
-  },
-  {
-    tier: 'Navigator',
-    subtitle: 'For professionals & creators',
-    priceMonthly: 39,
-    maxStarmapGenerations: 20,
-    maxStarmaps: 20,
-    description: 'For individual L&D professionals who need more capacity',
-    features: [
-      'Everything in Explorer',
-      'Save $1.85 per generation (49% cheaper)',
-      'Priority support (24h response)',
-    ],
-    highlighted: ['20 generations/month', '20 saved (rolls over 12 months)'],
-    limits: [],
-    featured: true,
-    cta: 'Get Started for Free',
-    ctaLink: 'https://polaris.smartslate.io/auth/signup',
-    popular: true,
-  },
-  {
-    tier: 'Voyager',
-    subtitle: 'For power users & consultants',
-    priceMonthly: 79,
-    maxStarmapGenerations: 40,
-    maxStarmaps: 40,
-    description: 'For power users who need more generation and storage capacity',
-    features: [
-      'Everything in Navigator',
-      'Save $1.78 per generation (47% cheaper)',
-    ],
-    highlighted: ['40 generations/month', '40 saved (480/year with rollover)'],
-    limits: [],
-    featured: false,
-    cta: 'Get Started for Free',
-    ctaLink: 'https://polaris.smartslate.io/auth/signup',
-    badge: 'PROFESSIONAL',
-  },
-];
-
-// Team pricing plans (existing data)
-const teamPricing = [
-  {
-    tier: 'Crew',
-    subtitle: 'Small teams, big impact',
-    pricePerSeatMonthly: 24,
-    seatRange: '2–5 seats',
-    minSeats: 2,
-    maxSeats: 5,
-    maxStarmapGenerationsPerUser: 5,
-    maxStarmapsPerUser: 5,
-    description: 'Perfect for small teams just getting started with collaborative learning design',
-    features: [
-      'Shared team workspace',
-      'Real-time collaboration',
-      'Role-based permissions',
-      'Team analytics dashboard',
-      'Bulk export to Word & PDF',
-      'Priority email support',
-    ],
-    highlighted: ['5 generations/user/month', '5 saved (rolls over 12 months)'],
-    limits: [],
-    featured: false,
-    cta: 'Reach Out',
-    ctaLink: '/contact',
-  },
-  {
-    tier: 'Fleet',
-    subtitle: 'Scale your operations',
-    pricePerSeatMonthly: 64,
-    seatRange: '6–15 seats',
-    minSeats: 6,
-    maxSeats: 15,
-    maxStarmapGenerationsPerUser: 20,
-    maxStarmapsPerUser: 10,
-    description: 'For growing L&D teams scaling their learning programs',
-    features: [
-      'Everything in Crew',
-      'SSO with OAuth/SAML',
-      'Advanced user management',
-      'Priority support SLA (4h response)',
-      'Custom onboarding session',
-      'Advanced team analytics',
-      'Audit logs',
-    ],
-    highlighted: ['20 generations/user/month', '10 saved (rolls over 12 months)'],
-    limits: [],
-    featured: true,
-    popular: true,
-    cta: 'Reach Out',
-    ctaLink: '/contact',
-  },
-  {
-    tier: 'Armada',
-    subtitle: 'Department & organization scale',
-    pricePerSeatMonthly: 129,
-    seatRange: '16–50 seats',
-    minSeats: 16,
-    maxSeats: 50,
-    maxStarmapGenerationsPerUser: 40,
-    maxStarmapsPerUser: 40,
-    description: 'Enterprise-grade solution for large L&D organizations',
-    features: [
-      'Everything in Fleet',
-      'Dedicated success manager',
-      'Quarterly business reviews',
-      'Custom integrations & API',
-      'Advanced security controls',
-      'Custom usage alerts',
-      'SLA with uptime guarantee',
-      'Training & workshops',
-    ],
-    highlighted: ['40 generations/user/month', '40 saved (rolls over 12 months)'],
-    limits: [],
-    featured: false,
-    cta: 'Reach Out',
-    ctaLink: '/contact',
-  },
-];
-
-function PricingPageContent() {
-  const { currency, exchangeRate, formatPrice } = useCurrency();
-  const [activeTab, setActiveTab] = useState(0);
-  const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly');
-  const annualMultiplier = 0.8; // 20% discount
-  const annualSavings = 0.2; // 20% savings
-
-  const heroRef = useRef<HTMLDivElement>(null);
-  const pricingRef = useRef<HTMLDivElement>(null);
-  const featuresRef = useRef<HTMLDivElement>(null);
-
-  const pricingInView = useInView(pricingRef, { once: true, amount: 0.2 });
-  const featuresInView = useInView(featuresRef, { once: true, amount: 0.2 });
-
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setActiveTab(newValue);
-  };
-
-  const activeProduct = productTabs[activeTab];
-
-  return (
-    <PageWrapper>
-      {/* Hero Section */}
-      <Box ref={heroRef}>
-        <StandardHero
-          title="One Platform. Every Stage of Learning. Unlimited Potential."
-          subtitle="Unified pricing for the complete Solara Learning Engine"
-          description="From ideation to impact, Solara transforms learning at every touchpoint. Choose a product. Start a revolution. Our pricing adapts to how you grow—because transforming learning shouldn't mean breaking budgets."
-          accentWords={['Platform', 'Learning', 'Potential']}
-        >
-          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap', mt: 3 }}>
-            <Link href="/contact" passHref style={{ textDecoration: 'none' }}>
-              <PrimaryButton
-                variant="contained"
-                size="large"
-                endIcon={<Rocket className="icon-anim icon-float" />}
-              >
-                Explore Solara Solutions
-              </PrimaryButton>
-            </Link>
-            <Button
-              component={Link}
-              href="https://polaris.smartslate.io/auth/signup"
-              variant="outlined"
-              size="large"
-              sx={{
-                borderColor: 'primary.main',
-                color: 'primary.main',
-                '&:hover': {
-                  borderColor: 'primary.light',
-                  backgroundColor: 'rgba(167, 218, 219, 0.08)',
-                }
-              }}
-            >
-              Start with Polaris
-            </Button>
-          </Box>
-        </StandardHero>
-      </Box>
-
-      {/* Pricing Section with Tabs */}
-      <SectionWrapper className="visible" ref={pricingRef}>
-        <Box sx={{ py: 10, backgroundColor: 'background.default' }}>
-          <Container maxWidth="lg">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={pricingInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{ duration: 0.8 }}
-            >
-              <Box sx={{ textAlign: 'left', mb: 6 }}>
-                <AnimatedChip label="Solara Product Suite" sx={{ mb: 3 }} />
-                <Typography variant="h3" sx={{ mb: 2, fontSize: { xs: '2rem', md: '2.5rem' } }}>
-                  Choose Your <AccentText>Solara Product</AccentText>
-                </Typography>
-                <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1.125rem', maxWidth: '800px', mb: 4 }}>
-                  Select from our suite of AI-powered learning products. Each designed to transform a specific aspect of your learning and development workflow.
-                </Typography>
-              </Box>
-
-              {/* Product Tabs */}
-              <TabsContainer>
-                <StyledTabs
-                  value={activeTab}
-                  onChange={handleTabChange}
-                  variant="scrollable"
-                  scrollButtons="auto"
-                  allowScrollButtonsMobile
-                >
-                  {productTabs.map((product, index) => (
-                    <StyledTab
-                      key={product.id}
-                      label={
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                          <Box sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            '& svg': { fontSize: '1.25rem' }
-                          }}>
-                            {product.icon}
-                          </Box>
-                          <Box sx={{ textAlign: 'left' }}>
-                            <Typography variant="body2" sx={{ fontWeight: 600, lineHeight: 1.2 }}>
-                              {product.shortName}
-                            </Typography>
-                            {product.status === 'live' && (
-                              <Typography variant="caption" sx={{ color: 'success.main', fontSize: '0.625rem', fontWeight: 700 }}>
-                                LIVE
-                              </Typography>
-                            )}
-                          </Box>
-                        </Box>
-                      }
-                    />
-                  ))}
-                </StyledTabs>
-              </TabsContainer>
-
-              {/* Tab Content */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeTab}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {activeProduct.status === 'live' ? (
-                    // Polaris Pricing Content
-                    <>
-                      <Box sx={{ textAlign: 'left', mb: 4 }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                          <Box sx={{
-                            width: 64,
-                            height: 64,
-                            borderRadius: 2,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            background: 'linear-gradient(135deg, rgba(167, 218, 219, 0.15), rgba(79, 70, 229, 0.1))',
-                            border: '1px solid rgba(167, 218, 219, 0.3)',
-                          }}>
-                            {activeProduct.icon}
-                          </Box>
-                          <Box>
-                            <Typography variant="h4" sx={{ fontWeight: 700, color: 'primary.main' }}>
-                              {activeProduct.label}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              {activeProduct.description}
-                            </Typography>
-                          </Box>
-                        </Box>
-
-                        {/* Billing and Currency Toggles */}
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', flexWrap: 'wrap', gap: 2, mt: 4 }}>
-                          {/* Currency Toggle */}
-                          <CurrencyToggle />
-
-                          {/* Billing Toggle */}
-                          <Box sx={{
-                            display: 'inline-flex',
-                            p: 0.5,
-                            backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                            borderRadius: '12px',
-                            border: '1px solid rgba(255, 255, 255, 0.1)',
-                            position: 'relative',
-                          }}>
-                            <Button
-                              onClick={() => setBilling('monthly')}
-                              sx={{
-                                px: 3,
-                                py: 1,
-                                borderRadius: '8px',
-                                fontWeight: 600,
-                                fontSize: '0.875rem',
-                                backgroundColor: billing === 'monthly' ? 'rgba(167, 218, 219, 0.15)' : 'transparent',
-                                color: billing === 'monthly' ? 'primary.main' : 'text.secondary',
-                                border: billing === 'monthly' ? '1px solid' : 'none',
-                                borderColor: billing === 'monthly' ? 'primary.main' : 'transparent',
-                                '&:hover': {
-                                  backgroundColor: billing === 'monthly' ? 'rgba(167, 218, 219, 0.2)' : 'rgba(255, 255, 255, 0.05)',
-                                },
-                              }}
-                            >
-                              Monthly
-                            </Button>
-                            <Button
-                              onClick={() => setBilling('annual')}
-                              sx={{
-                                px: 3,
-                                py: 1,
-                                borderRadius: '8px',
-                                fontWeight: 600,
-                                fontSize: '0.875rem',
-                                backgroundColor: billing === 'annual' ? 'rgba(167, 218, 219, 0.15)' : 'transparent',
-                                color: billing === 'annual' ? 'primary.main' : 'text.secondary',
-                                border: billing === 'annual' ? '1px solid' : 'none',
-                                borderColor: billing === 'annual' ? 'primary.main' : 'transparent',
-                                '&:hover': {
-                                  backgroundColor: billing === 'annual' ? 'rgba(167, 218, 219, 0.2)' : 'rgba(255, 255, 255, 0.05)',
-                                },
-                              }}
-                            >
-                              Annual
-                              <Chip
-                                label="SAVE 20%"
-                                size="small"
-                                sx={{
-                                  ml: 1,
-                                  height: '20px',
-                                  fontSize: '0.65rem',
-                                  fontWeight: 700,
-                                  backgroundColor: 'success.main',
-                                  color: '#fff',
-                                }}
-                              />
-                            </Button>
-                          </Box>
-                        </Box>
-                      </Box>
-
-                      {/* Individual Plans */}
-                      <Box sx={{ mb: 8 }}>
-                        <Typography variant="h5" sx={{ mb: 4, fontWeight: 700 }}>
-                          Individual Plans
-                        </Typography>
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4, mx: -2 }}>
-                          {polarisPricing.map((plan, index) => (
-                            <Box key={plan.tier} sx={{
-                              width: { xs: '100%', md: 'calc(33.333% - 32px)' },
-                              p: 2,
-                              boxSizing: 'border-box'
-                            }}>
-                              <motion.div
-                                initial={{ opacity: 0, y: 40 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: 0.1 + (index * 0.1) }}
-                                style={{ height: '100%' }}
-                              >
-                                <PricingCard featured={plan.featured}>
-                                  {plan.popular && (
-                                    <FeaturedBadge
-                                      className="badge-container"
-                                      initial={{ opacity: 0, scale: 0.8, y: -20 }}
-                                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                                      transition={{ duration: 0.5, delay: 0.2 }}
-                                      whileHover={{
-                                        scale: 1.05,
-                                        boxShadow: '0 12px 32px rgba(167, 218, 219, 0.6)'
-                                      }}
-                                    >
-                                      <Star sx={{ fontSize: '0.875rem' }} />
-                                      MOST POPULAR
-                                    </FeaturedBadge>
-                                  )}
-
-                                  <CardContent sx={{ p: 4, height: '100%', display: 'flex', flexDirection: 'column' }}>
-                                    <Box sx={{ textAlign: 'left', mb: 3 }}>
-                                      <Typography variant="overline" sx={{ color: 'text.secondary', fontWeight: 600 }}>
-                                        {plan.subtitle}
-                                      </Typography>
-                                      <Typography variant="h4" sx={{ mt: 1, mb: 1, fontWeight: 700, color: 'text.primary' }}>
-                                        {plan.tier}
-                                      </Typography>
-
-                                      <PriceTag>
-                                        <motion.div
-                                          key={`${currency}-${billing}-${plan.tier}`}
-                                          initial={{ opacity: 0, y: -10 }}
-                                          animate={{ opacity: 1, y: 0 }}
-                                          transition={{ duration: 0.3 }}
-                                          style={{ display: 'flex', alignItems: 'baseline' }}
-                                        >
-                                          <Typography variant="h3" sx={{ fontWeight: 700, color: 'primary.main' }}>
-                                            {formatPriceWithPeriod(
-                                              billing === 'monthly' ? plan.priceMonthly : Math.ceil(plan.priceMonthly * annualMultiplier),
-                                              { currency, exchangeRate, showSymbol: true },
-                                              'monthly'
-                                            ).replace('/month', '')}
-                                          </Typography>
-                                          <Typography variant="body1" sx={{ color: 'text.secondary', ml: 1 }}>
-                                            /month
-                                          </Typography>
-                                        </motion.div>
-                                      </PriceTag>
-
-                                      {billing === 'annual' && (
-                                        <motion.div
-                                          initial={{ opacity: 0, scale: 0.95 }}
-                                          animate={{ opacity: 1, scale: 1 }}
-                                          transition={{ duration: 0.3, delay: 0.1 }}
-                                        >
-                                          <Typography variant="body2" sx={{ color: 'success.main', textAlign: 'left', mb: 2, fontWeight: 600 }}>
-                                            Save {formatAnnualSavings(plan.priceMonthly, { currency, exchangeRate })}/year
-                                          </Typography>
-                                        </motion.div>
-                                      )}
-
-                                      <StarmapAllowance>
-                                        <Star sx={{ fontSize: '1.25rem', color: 'primary.main' }} />
-                                        <Box>
-                                          <Typography variant="body2" sx={{ fontWeight: 700, color: 'text.primary', lineHeight: 1.2 }}>
-                                            {billing === 'monthly'
-                                              ? `${plan.maxStarmapGenerations} Starmaps/month`
-                                              : `${plan.maxStarmapGenerations * 12} Starmaps/year`
-                                            }
-                                          </Typography>
-                                          <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.75rem' }}>
-                                            {plan.maxStarmaps} saved (12-month rollover)
-                                          </Typography>
-                                        </Box>
-                                      </StarmapAllowance>
-
-                                      <Typography variant="body2" sx={{ color: 'text.secondary', minHeight: 48 }}>
-                                        {plan.description}
-                                      </Typography>
-                                    </Box>
-
-                                    <List sx={{ mb: 3, flex: 1 }}>
-                                      {plan.features.map((feature, featureIndex) => (
-                                        <ListItem key={featureIndex} sx={{ py: 0.5, px: 0 }}>
-                                          <ListItemIcon sx={{ minWidth: 32, color: 'primary.main' }}>
-                                            <Check fontSize="small" />
-                                          </ListItemIcon>
-                                          <ListItemText
-                                            primary={feature}
-                                            primaryTypographyProps={{
-                                              variant: 'body2',
-                                              color: 'text.secondary',
-                                              sx: { fontSize: '0.875rem' }
-                                            }}
-                                          />
-                                        </ListItem>
-                                      ))}
-                                    </List>
-
-                                    <Button
-                                      component={Link}
-                                      href={plan.ctaLink}
-                                      variant={plan.featured ? 'contained' : 'outlined'}
-                                      color={plan.featured ? 'secondary' : 'primary'}
-                                      size="large"
-                                      fullWidth
-                                      sx={{
-                                        py: 1.5,
-                                        fontWeight: 600,
-                                      }}
-                                    >
-                                      {plan.cta}
-                                    </Button>
-                                  </CardContent>
-                                </PricingCard>
-                              </motion.div>
-                            </Box>
-                          ))}
-                        </Box>
-                      </Box>
-
-                      <Divider sx={{ my: 8, borderColor: 'rgba(167, 218, 219, 0.2)' }} />
-
-                      {/* Team Plans */}
-                      <Box>
-                        <Typography variant="h5" sx={{ mb: 4, fontWeight: 700 }}>
-                          Team Plans
-                        </Typography>
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4, mx: -2 }}>
-                          {teamPricing.map((plan, index) => (
-                            <Box key={plan.tier} sx={{
-                              width: { xs: '100%', md: 'calc(33.333% - 32px)' },
-                              p: 2,
-                              boxSizing: 'border-box'
-                            }}>
-                              <motion.div
-                                initial={{ opacity: 0, y: 40 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: 0.3 + (index * 0.1) }}
-                                style={{ height: '100%' }}
-                              >
-                                <PricingCard featured={plan.featured}>
-                                  {plan.popular && (
-                                    <PopularChoiceBadge
-                                      className="badge-container"
-                                      initial={{ opacity: 0, scale: 0.8, y: -20 }}
-                                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                                      transition={{ duration: 0.5, delay: 0.2 }}
-                                      whileHover={{
-                                        scale: 1.05,
-                                        boxShadow: '0 12px 32px rgba(79, 70, 229, 0.6)'
-                                      }}
-                                    >
-                                      <Star sx={{ fontSize: '0.875rem' }} />
-                                      POPULAR CHOICE
-                                    </PopularChoiceBadge>
-                                  )}
-
-                                  <CardContent sx={{ p: 4, height: '100%', display: 'flex', flexDirection: 'column' }}>
-                                    <Box sx={{ textAlign: 'left', mb: 3 }}>
-                                      <Typography variant="overline" sx={{ color: 'text.secondary', fontWeight: 600 }}>
-                                        {plan.subtitle}
-                                      </Typography>
-                                      <Typography variant="h4" sx={{ mt: 1, mb: 1, fontWeight: 700, color: 'text.primary' }}>
-                                        {plan.tier}
-                                      </Typography>
-
-                                      <Chip
-                                        label={plan.seatRange}
-                                        size="small"
-                                        sx={{
-                                          mb: 2,
-                                          backgroundColor: 'rgba(167, 218, 219, 0.15)',
-                                          color: 'primary.main',
-                                          fontWeight: 600,
-                                        }}
-                                      />
-
-                                      <PriceTag>
-                                        <motion.div
-                                          key={`${currency}-${billing}-${plan.tier}-team`}
-                                          initial={{ opacity: 0, y: -10 }}
-                                          animate={{ opacity: 1, y: 0 }}
-                                          transition={{ duration: 0.3 }}
-                                          style={{ display: 'flex', alignItems: 'baseline' }}
-                                        >
-                                          <Typography variant="h3" sx={{ fontWeight: 700, color: 'primary.main' }}>
-                                            {formatPriceWithPeriod(
-                                              billing === 'monthly' ? plan.pricePerSeatMonthly : Math.ceil(plan.pricePerSeatMonthly * annualMultiplier),
-                                              { currency, exchangeRate, showSymbol: true },
-                                              'seat'
-                                            ).replace('/seat/month', '')}
-                                          </Typography>
-                                          <Typography variant="body1" sx={{ color: 'text.secondary', ml: 1 }}>
-                                            /seat/month
-                                          </Typography>
-                                        </motion.div>
-                                      </PriceTag>
-
-                                      {billing === 'annual' && (
-                                        <motion.div
-                                          initial={{ opacity: 0, scale: 0.95 }}
-                                          animate={{ opacity: 1, scale: 1 }}
-                                          transition={{ duration: 0.3, delay: 0.1 }}
-                                        >
-                                          <Typography variant="body2" sx={{ color: 'success.main', textAlign: 'left', mb: 2, fontWeight: 600 }}>
-                                            Save 20% annually
-                                          </Typography>
-                                        </motion.div>
-                                      )}
-
-                                      <StarmapAllowance>
-                                        <Star sx={{ fontSize: '1.25rem', color: 'primary.main' }} />
-                                        <Box>
-                                          <Typography variant="body2" sx={{ fontWeight: 700, color: 'text.primary', lineHeight: 1.2 }}>
-                                            {billing === 'monthly'
-                                              ? `${plan.maxStarmapGenerationsPerUser * plan.minSeats}–${plan.maxStarmapGenerationsPerUser * plan.maxSeats} Starmaps/month`
-                                              : `${plan.maxStarmapGenerationsPerUser * plan.minSeats * 12}–${plan.maxStarmapGenerationsPerUser * plan.maxSeats * 12} Starmaps/year`
-                                            }
-                                          </Typography>
-                                          <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.75rem' }}>
-                                            {plan.maxStarmapGenerationsPerUser}/user · {plan.maxStarmapsPerUser} saved/user
-                                          </Typography>
-                                        </Box>
-                                      </StarmapAllowance>
-
-                                      <Typography variant="body2" sx={{ color: 'text.secondary', minHeight: 48 }}>
-                                        {plan.description}
-                                      </Typography>
-                                    </Box>
-
-                                    <List sx={{ mb: 3, flex: 1 }}>
-                                      {plan.features.map((feature, featureIndex) => (
-                                        <ListItem key={featureIndex} sx={{ py: 0.5, px: 0 }}>
-                                          <ListItemIcon sx={{ minWidth: 32, color: 'primary.main' }}>
-                                            <Check fontSize="small" />
-                                          </ListItemIcon>
-                                          <ListItemText
-                                            primary={feature}
-                                            primaryTypographyProps={{
-                                              variant: 'body2',
-                                              color: 'text.secondary',
-                                              sx: { fontSize: '0.875rem' }
-                                            }}
-                                          />
-                                        </ListItem>
-                                      ))}
-                                    </List>
-
-                                    <Button
-                                      component={Link}
-                                      href={plan.ctaLink}
-                                      variant={plan.featured ? 'contained' : 'outlined'}
-                                      color={plan.featured ? 'secondary' : 'primary'}
-                                      size="large"
-                                      fullWidth
-                                      sx={{
-                                        py: 1.5,
-                                        fontWeight: 600,
-                                      }}
-                                    >
-                                      {plan.cta}
-                                    </Button>
-                                  </CardContent>
-                                </PricingCard>
-                              </motion.div>
-                            </Box>
-                          ))}
-                        </Box>
-                      </Box>
-                    </>
-                  ) : (
-                    // Coming Soon Content
-                    <ComingSoonCard
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <Box sx={{
-                        width: 100,
-                        height: 100,
-                        margin: '0 auto 32px',
-                        borderRadius: 3,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        background: 'linear-gradient(135deg, rgba(167, 218, 219, 0.15), rgba(79, 70, 229, 0.1))',
-                        border: '1px solid rgba(167, 218, 219, 0.3)',
-                      }}>
-                        {activeProduct.icon}
-                      </Box>
-
-                      <Chip
-                        label="COMING SOON"
-                        sx={{
-                          mb: 3,
-                          backgroundColor: 'rgba(79, 70, 229, 0.15)',
-                          color: 'secondary.light',
-                          fontWeight: 700,
-                          fontSize: '0.875rem',
-                          padding: '8px 16px',
-                          height: 'auto',
-                        }}
-                      />
-
-                      <Typography variant="h3" sx={{ mb: 2, fontWeight: 700, color: 'primary.main' }}>
-                        {activeProduct.label}
-                      </Typography>
-
-                      <Typography variant="h6" sx={{ mb: 3, color: 'text.secondary', fontWeight: 500 }}>
-                        {activeProduct.description}
-                      </Typography>
-
-                      <Typography variant="body1" color="text.secondary" sx={{ mb: 4, maxWidth: 600 }}>
-                        We&apos;re building the future of learning technology. {activeProduct.label} will transform how you approach learning and development.
-                      </Typography>
-
-                      <Box sx={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 1,
-                        px: 3,
-                        py: 1.5,
-                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
-                        borderRadius: 2,
-                        border: '1px solid rgba(79, 70, 229, 0.2)',
-                      }}>
-                        <AccessTime sx={{ fontSize: '1.25rem', color: 'secondary.main' }} />
-                        <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.primary' }}>
-                          Expected Launch: {activeProduct.expectedLaunch}
-                        </Typography>
-                      </Box>
-
-                      <Box sx={{ mt: 4 }}>
-                        <Link href="/contact" passHref style={{ textDecoration: 'none' }}>
-                          <PrimaryButton
-                            variant="contained"
-                            size="large"
-                            endIcon={<Rocket />}
-                          >
-                            Join Waitlist
-                          </PrimaryButton>
-                        </Link>
-                      </Box>
-
-                      <Typography variant="body2" color="text.secondary" sx={{ mt: 3 }}>
-                        Be among the first to experience the future of learning
-                      </Typography>
-                    </ComingSoonCard>
-                  )}
-                </motion.div>
-              </AnimatePresence>
-            </motion.div>
-          </Container>
-        </Box>
-      </SectionWrapper>
-
-      {/* Features Comparison */}
-      <SectionWrapper className="visible" ref={featuresRef}>
-        <Box sx={{ py: 10, backgroundColor: 'background.default' }}>
-          <Container maxWidth="lg">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={featuresInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{ duration: 0.8 }}
-            >
-              <Box sx={{ textAlign: 'left', mb: 6 }}>
-                <Typography variant="h3" sx={{ mb: 3, fontSize: { xs: '2rem', md: '2.5rem' } }}>
-                  All Plans Include <AccentText>These Features</AccentText>
-                </Typography>
-              </Box>
-
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3, mx: -1.5 }}>
-                {[
-                  { icon: <AutoAwesome />, title: 'Solara-Powered Generation', description: 'Advanced AI with intelligent processing' },
-                  { icon: <Security />, title: 'Enterprise Security', description: 'Bank-level encryption and data protection' },
-                  { icon: <CloudSync />, title: 'Auto-Save', description: 'Never lose your progress with automatic saves' },
-                  { icon: <Assessment />, title: 'Comprehensive Blueprints', description: 'Executive summaries, objectives, and KPIs' },
-                  { icon: <Schedule />, title: 'Quick Generation', description: 'Complete blueprints in 2-3 minutes' },
-                  { icon: <VerifiedUser />, title: 'Data Privacy', description: 'Your data never used for AI training' },
-                ].map((feature, index) => (
-                  <Box key={index} sx={{
-                    width: { xs: '100%', sm: 'calc(50% - 24px)', md: 'calc(33.333% - 24px)' },
-                    p: 1.5,
-                    boxSizing: 'border-box'
-                  }}>
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={featuresInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
-                      transition={{ duration: 0.6, delay: 0.1 + (index * 0.1) }}
-                    >
-                      <ContentCard sx={{ textAlign: 'left', minHeight: 200 }}>
-                        <Box sx={{ color: 'primary.main', mb: 2 }}>
-                          {feature.icon}
-                        </Box>
-                        <Typography variant="h6" sx={{ mb: 1, fontWeight: 700 }}>
-                          {feature.title}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {feature.description}
-                        </Typography>
-                      </ContentCard>
-                    </motion.div>
-                  </Box>
-                ))}
-              </Box>
-            </motion.div>
-          </Container>
-        </Box>
-      </SectionWrapper>
-
-      {/* FAQ / CTA Section */}
-      <SectionWrapper className="visible">
-        <Box sx={{ py: 10, backgroundColor: 'background.default' }}>
-          <Container maxWidth="lg">
-            <Box sx={{ textAlign: 'left' }}>
-              <Typography variant="h4" sx={{ mb: 2, fontWeight: 700 }}>
-                Questions About Pricing?
-              </Typography>
-              <Typography variant="body1" color="text.secondary" sx={{ mb: 4, fontSize: '1.125rem' }}>
-                Our team is here to help you find the perfect plan for your organization.
-              </Typography>
-
-              <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-start', flexWrap: 'wrap' }}>
-                <Button
-                  component={Link}
-                  href="/contact"
-                  variant="contained"
-                  color="secondary"
-                  size="large"
-                  sx={{ px: 4, py: 1.5 }}
-                >
-                  Contact Sales
-                </Button>
-                <Button
-                  component={Link}
-                  href="/features"
-                  variant="outlined"
-                  color="primary"
-                  size="large"
-                  sx={{ px: 4, py: 1.5 }}
-                >
-                  View All Features
-                </Button>
-              </Box>
-            </Box>
-          </Container>
-        </Box>
-      </SectionWrapper>
-
-    </PageWrapper>
-  );
-}
+import CurrencyToggle, { Currency } from '@/components/pricing/CurrencyToggle';
+import ApplicationTabs from '@/components/pricing/ApplicationTabs';
 
 export default function PricingPage() {
+  const [currency, setCurrency] = useState<Currency>('USD');
+  const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'annual'>('monthly');
+  const [activeFilter, setActiveFilter] = useState('all');
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+
+  const pricing = {
+    individual: {
+      explorer: { USD: 19, INR: 1599, starmaps: 5 },
+      navigator: { USD: 39, INR: 3299, starmaps: 25 },
+      voyager: { USD: 79, INR: 6699, starmaps: 50 }
+    },
+    team: {
+      crew: { USD: 24, INR: 1999, blueprints: 10 },
+      fleet: { USD: 64, INR: 5399, blueprints: 30 },
+      armada: { USD: 129, INR: 10899, blueprints: 60 }
+    }
+  };
+
+  const faqs = [
+    {
+      category: 'billing',
+      question: 'Do my unused Starmaps expire?',
+      answer: 'Never, as long as you maintain an active subscription. Your saved Starmaps accumulate month over month, building a permanent library. Think of it like a gym membership where you actually get to keep the muscle you\'ve built. Your monthly generations refresh on the 1st of each month, and any Starmaps you save remain in your library indefinitely.'
+    },
+    {
+      category: 'features',
+      question: 'What\'s the difference between "generations" and "saved Starmaps"?',
+      answer: 'Generations are your monthly creation limit — how many new AI-powered learning blueprints you can create each month. Saved Starmaps is your storage library — how many you can keep and access anytime. For example, Navigator gives you 25 new generations each month, and you can save up to 25 Starmaps in your library that roll over and accumulate.'
+    },
+    {
+      category: 'billing',
+      question: 'What happens if I upgrade or downgrade my plan?',
+      answer: 'When you upgrade, your saved Starmaps remain, and you start receiving your new, higher monthly allocation immediately. When you downgrade, you keep all saved Starmaps — you just receive fewer new generations each month going forward. Your library is always yours.'
+    },
+    {
+      category: 'features',
+      question: 'Is there a maximum number of Starmaps I can save?',
+      answer: 'Yes, to ensure system performance: Explorer can save up to 5 Starmaps (60 with rollover over 12 months), Navigator up to 25 Starmaps (300 with 12-month accumulation), and Voyager up to 50 saved Starmaps (600 with 12-month accumulation). Team plans have shared pools: Crew (10/user), Fleet (30/user), Armada (60/user).'
+    },
+    {
+      category: 'billing',
+      question: 'What happens if I cancel my subscription?',
+      answer: 'If you cancel, you\'ll have 30 days to download or use your saved Starmaps. We\'ll send you reminders before your access expires. Simply reactivate before the 30-day window closes to retain your full library. We want you to keep what you\'ve built.'
+    },
+    {
+      category: 'billing',
+      question: 'Is there a free trial available?',
+      answer: 'Yes! All plans come with a 14-day free trial with 3 Starmap generations included. No credit card required to start. If you subscribe after your trial, those 3 Starmaps roll over into your library — they don\'t disappear!'
+    },
+    {
+      category: 'support',
+      question: 'How does team collaboration work?',
+      answer: 'Team plans include shared workspaces where members can collaborate in real-time. You can set role-based permissions, share templates, and work together on Starmaps. The team shares a collective pool of monthly generations and saved Starmaps that grows each month.'
+    },
+    {
+      category: 'features',
+      question: 'Can I export my Starmaps?',
+      answer: 'All plans include export to PDF. Navigator and above can export to Word and PDF formats with advanced formatting. We\'re also working on API access for Voyager users to integrate with other tools in your workflow.'
+    }
+  ];
+
+  const filteredFaqs = activeFilter === 'all' ? faqs : faqs.filter(faq => faq.category === activeFilter);
+
+  // Format numbers according to currency
+  const formatNumber = (num: number, curr: Currency) => {
+    if (curr === 'USD') {
+      // USD: Standard comma formatting (1,000 | 10,000 | 100,000 | 1,000,000)
+      return num.toLocaleString('en-US');
+    } else {
+      // INR: Indian numbering system (1,000 | 10,000 | 1,00,000 | 10,00,000)
+      return num.toLocaleString('en-IN');
+    }
+  };
+
+  // Calculate price based on billing period (annual gets ~17% discount, billed annually)
+  const getPrice = (monthlyPrice: number) => {
+    if (billingPeriod === 'annual') {
+      return Math.round(monthlyPrice * 10); // 10 months price for 12 months
+    }
+    return monthlyPrice;
+  };
+
+  // Calculate the effective monthly rate when billed annually
+  const getEffectiveMonthlyRate = (monthlyPrice: number) => {
+    const annualPrice = monthlyPrice * 10;
+    return Math.round((annualPrice / 12) * 100) / 100; // Round to 2 decimal places
+  };
+
+  // Format price with currency symbol
+  const formatPrice = (price: number, curr: Currency) => {
+    const formatted = formatNumber(price, curr);
+    return curr === 'USD' ? `$${formatted}` : `₹${formatted}`;
+  };
+
+  const getPriceLabel = () => {
+    if (billingPeriod === 'annual') {
+      return '/year';
+    }
+    return '/month';
+  };
+
   return (
-    <CurrencyProvider>
-      <PricingPageContent />
-    </CurrencyProvider>
+    <div className="min-h-screen bg-[rgb(2,12,27)] text-[rgb(224,224,224)]">
+      {/* Hero Section */}
+      <section className="pt-24 pb-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left Column */}
+            <div>
+              {/* Badge */}
+              <div className="inline-block px-4 py-2 mb-6 rounded-full border border-[rgb(167,218,219)] bg-[rgba(167,218,219,0.1)] text-sm font-semibold text-[rgb(167,218,219)]">
+                <span className="text-[rgb(255,215,0)]" style={{ textShadow: '0 0 10px rgba(255,215,0,0.5), 0 0 20px rgba(255,215,0,0.3)' }}>Solara</span> Learning Engine
+              </div>
+
+              {/* Headline */}
+              <h1 className="font-['Quicksand'] text-6xl leading-tight font-bold mb-6 text-[rgb(224,224,224)]">
+                One Platform. Every Stage of Learning. <span className="text-[rgb(167,218,219)]">Unlimited Potential.</span>
+              </h1>
+
+              {/* Subheadline */}
+              <p className="text-lg leading-relaxed mb-6 text-[rgb(167,218,219)] font-semibold">
+                Flexible pricing that grows with your learning transformation
+              </p>
+
+              {/* Body Copy */}
+              <p className="text-lg leading-relaxed mb-8 text-[rgb(176,197,198)]">
+                From ideation to impact, Solara transforms learning at every touchpoint. Choose a product. Start a revolution. Our pricing adapts to how you grow—because transforming learning shouldn't mean breaking budgets.
+              </p>
+
+              {/* CTA Buttons */}
+              <div className="flex items-center gap-4 mb-12 flex-wrap">
+                <Link href="https://solara.smartslate.io" className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-lg text-base font-semibold bg-[rgb(79,70,229)] text-[rgb(224,224,224)] transition-all duration-300 hover:bg-[rgb(99,90,249)] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(79,70,229,0.4)]">
+                  Explore Solara Solutions
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </Link>
+                <Link href="https://smartslate-solara.vercel.app" className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-lg text-base font-semibold bg-transparent text-[rgb(167,218,219)] border border-[rgb(167,218,219)] transition-all duration-300 hover:bg-[rgba(167,218,219,0.1)] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(167,218,219,0.3)]">
+                  Start with Polaris
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+
+              {/* Stats Cards */}
+              <div className="flex gap-6 flex-wrap">
+                {[
+                  {
+                    value: '15x',
+                    label: 'Faster Launch',
+                    icon: <svg className="w-6 h-6 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                  },
+                  {
+                    value: 'Zero',
+                    label: 'Revisions',
+                    icon: <svg className="w-6 h-6 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  },
+                  {
+                    value: '100%',
+                    label: 'Accurate',
+                    icon: <svg className="w-6 h-6 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  }
+                ].map((stat, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-[rgba(167,218,219,0.15)]">
+                      {stat.icon}
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-[rgb(167,218,219)]">{stat.value}</div>
+                      <div className="text-sm text-[rgb(176,197,198)]">{stat.label}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right Column - Process Infographic */}
+            <div className="relative p-8 rounded-2xl border border-[rgba(167,218,219,0.2)] bg-[rgba(167,218,219,0.05)]">
+              <div className="mb-6">
+                <h3 className="text-lg font-bold text-[rgb(224,224,224)] mb-2">Complete Learning Lifecycle</h3>
+                <p className="text-xs text-[rgb(176,197,198)]">From ideation to measurable impact</p>
+              </div>
+              <div className="space-y-4">
+                {[
+                  {
+                    number: '01',
+                    title: 'Ideate & Architect',
+                    description: 'Strategic planning and blueprint design',
+                    icon: <svg className="w-5 h-5 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                  },
+                  {
+                    number: '02',
+                    title: 'Build & Create',
+                    description: 'AI-powered content development',
+                    icon: <svg className="w-5 h-5 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+                  },
+                  {
+                    number: '03',
+                    title: 'Deploy & Optimize',
+                    description: 'Launch, track, and measure outcomes',
+                    icon: <svg className="w-5 h-5 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                  }
+                ].map((step, index) => (
+                  <div key={index}>
+                    <div className="flex items-start gap-4 p-4 rounded-xl border border-white/10 bg-white/[0.03]">
+                      <div className="flex items-center justify-center w-12 h-12 flex-shrink-0 rounded-lg bg-[rgba(167,218,219,0.15)]">
+                        {step.icon}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xs font-bold text-[rgb(167,218,219)]">{step.number}</span>
+                          <span className="text-sm font-bold text-[rgb(224,224,224)]">{step.title}</span>
+                        </div>
+                        <div className="text-xs text-[rgb(176,197,198)]">{step.description}</div>
+                      </div>
+                    </div>
+                    {index < 2 && (
+                      <div className="flex justify-center my-2">
+                        <svg className="w-6 h-6 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+              {/* Decorative blurs */}
+              <div className="absolute -top-4 -right-4 w-24 h-24 rounded-full bg-[rgba(167,218,219,0.1)] blur-[48px]"></div>
+              <div className="absolute -bottom-4 -left-4 w-32 h-32 rounded-full bg-[rgba(79,70,229,0.1)] blur-[48px]"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Application Tabs Section */}
+      <section className="pt-6 pb-2 px-4 border-t border-[rgba(167,218,219,0.1)]">
+        <div className="max-w-6xl mx-auto">
+          <ApplicationTabs />
+        </div>
+      </section>
+
+      {/* Polaris Description Section */}
+      <section className="pt-12 pb-20 px-4 relative overflow-hidden">
+        <div className="max-w-6xl mx-auto relative">
+          {/* Background decorative elements */}
+          <div className="absolute -top-20 -right-20 w-64 h-64 bg-[rgba(79,70,229,0.08)] rounded-full blur-[120px] pointer-events-none"></div>
+          <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-[rgba(167,218,219,0.06)] rounded-full blur-[120px] pointer-events-none"></div>
+
+          {/* Content Container */}
+          <div className="relative">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full border border-[rgba(167,218,219,0.3)] bg-[rgba(167,218,219,0.1)] backdrop-blur-sm">
+              <svg className="w-4 h-4 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              <span className="text-sm font-bold text-[rgb(167,218,219)] tracking-wide">
+                Learning Blueprint: Powered by <span className="text-[rgb(255,215,0)]" style={{ textShadow: '0 0 10px rgba(255,215,0,0.5), 0 0 20px rgba(255,215,0,0.3)' }}>Solara</span>
+              </span>
+            </div>
+
+            {/* Heading and Description */}
+            <div className="mb-12">
+              <h2 className="font-['Quicksand'] text-5xl lg:text-6xl font-bold mb-6 text-[rgb(224,224,224)] leading-tight">
+                Transform Ideas into{' '}
+                <span className="text-[rgb(167,218,219)]">Launch-Ready Blueprints</span>{' '}
+                in Hours
+              </h2>
+              <p className="text-lg leading-relaxed text-[rgb(176,197,198)] mb-8 max-w-4xl">
+                Polaris eliminates weeks of planning with AI-driven blueprint generation. From stakeholder interviews to production-ready documentation, we automate the entire learning design process.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[rgba(167,218,219,0.08)] border border-[rgba(167,218,219,0.2)]">
+                  <svg className="w-5 h-5 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="text-sm font-semibold text-[rgb(224,224,224)]">No revision cycles</span>
+                </div>
+                <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[rgba(167,218,219,0.08)] border border-[rgba(167,218,219,0.2)]">
+                  <svg className="w-5 h-5 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="text-sm font-semibold text-[rgb(224,224,224)]">No misalignment</span>
+                </div>
+                <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[rgba(167,218,219,0.08)] border border-[rgba(167,218,219,0.2)]">
+                  <svg className="w-5 h-5 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="text-sm font-semibold text-[rgb(224,224,224)]">Delivered in 1 hour</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Every Plan Includes - Feature Grid */}
+            <div>
+              <h3 className="font-['Quicksand'] text-3xl font-bold mb-8 text-[rgb(167,218,219)]">Every Plan Includes</h3>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[
+                  {
+                    title: '15x Faster Time-to-Launch',
+                    description: 'Cut weeks of planning down to hours. Launch learning programs at unprecedented speed',
+                    icon: <svg className="w-6 h-6 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                  },
+                  {
+                    title: '1-Hour Blueprint Delivery',
+                    description: 'Complete, production-ready learning blueprints generated in under 60 minutes',
+                    icon: <svg className="w-6 h-6 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  },
+                  {
+                    title: 'Zero Revision Cycles',
+                    description: 'First draft is final. AI-powered accuracy eliminates endless back-and-forth revisions',
+                    icon: <svg className="w-6 h-6 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+                  },
+                  {
+                    title: '100% Requirements Captured',
+                    description: 'Nothing falls through the cracks. Every stakeholder need documented and addressed',
+                    icon: <svg className="w-6 h-6 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>
+                  },
+                  {
+                    title: 'Perfect Stakeholder Alignment',
+                    description: 'Get buy-in faster with blueprints that speak to every stakeholder perspective',
+                    icon: <svg className="w-6 h-6 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                  },
+                  {
+                    title: 'Production-Ready Documentation',
+                    description: 'Polished, professional blueprints ready to present to leadership on day one',
+                    icon: <svg className="w-6 h-6 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                  },
+                  {
+                    title: 'Automated Gap Analysis',
+                    description: 'AI identifies missing requirements and potential issues before they become problems',
+                    icon: <svg className="w-6 h-6 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                  },
+                  {
+                    title: 'Business-to-Learning Translation',
+                    description: 'Transforms business objectives into actionable learning outcomes automatically',
+                    icon: <svg className="w-6 h-6 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                  },
+                  {
+                    title: 'Multi-Format Export',
+                    description: 'Download blueprints in PDF, Word, or JSON. Share instantly with any stakeholder',
+                    icon: <svg className="w-6 h-6 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" /></svg>
+                  }
+                ].map((feature, index) => (
+                  <div key={index} className="flex flex-col items-start p-6 rounded-2xl border border-[rgba(167,218,219,0.1)] bg-white/[0.02] transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(167,218,219,0.3)] hover:bg-[rgba(167,218,219,0.05)]">
+                    <div className="flex items-center justify-center w-12 h-12 mb-4 rounded-xl bg-[rgba(167,218,219,0.15)] transition-all duration-300 hover:scale-110 hover:bg-[rgba(167,218,219,0.25)]">
+                      {feature.icon}
+                    </div>
+                    <h3 className="text-lg font-bold mb-2 text-[rgb(224,224,224)]">{feature.title}</h3>
+                    <p className="text-sm leading-relaxed text-[rgb(176,197,198)]">{feature.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Individual Plans Section */}
+      <section className="py-16 px-4">
+        <div className="max-w-6xl mx-auto">
+          {/* Toggles Container */}
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+            <h2 className="font-['Quicksand'] text-4xl font-bold text-[rgb(167,218,219)]">Individual Plans</h2>
+
+            <div className="flex flex-wrap items-center gap-4">
+              {/* Billing Period Toggle */}
+              <div className="inline-flex p-1 rounded-lg border border-white/10 bg-white/5">
+                <button
+                  onClick={() => setBillingPeriod('monthly')}
+                  className={`px-4 py-2 rounded-md text-sm font-semibold transition-all duration-300 ${
+                    billingPeriod === 'monthly'
+                      ? 'border border-[rgb(167,218,219)] bg-[rgba(167,218,219,0.15)] text-[rgb(167,218,219)]'
+                      : 'border-none bg-transparent text-[rgb(176,197,198)] hover:bg-white/5'
+                  }`}
+                >
+                  Monthly
+                </button>
+                <button
+                  onClick={() => setBillingPeriod('annual')}
+                  className={`px-4 py-2 rounded-md text-sm font-semibold transition-all duration-300 ${
+                    billingPeriod === 'annual'
+                      ? 'border border-[rgb(167,218,219)] bg-[rgba(167,218,219,0.15)] text-[rgb(167,218,219)]'
+                      : 'border-none bg-transparent text-[rgb(176,197,198)] hover:bg-white/5'
+                  }`}
+                >
+                  Annual
+                  <span className="ml-1.5 text-xs text-[rgb(16,185,129)]">Save 17%</span>
+                </button>
+              </div>
+
+              {/* Currency Toggle */}
+              <CurrencyToggle currency={currency} onCurrencyChange={setCurrency} />
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Explorer */}
+            <div className="flex flex-col h-full p-8 rounded-2xl border border-white/[0.08] bg-white/[0.02] shadow-lg transition-transform duration-300 hover:-translate-y-2">
+              <div className="text-2xl font-bold mb-2 text-[rgb(224,224,224)]">Explorer</div>
+              <div className="text-sm font-semibold text-[rgb(176,197,198)] mb-6">PERFECT FOR GETTING STARTED</div>
+
+              <div className="mb-6">
+                <div className="text-4xl font-bold text-[rgb(167,218,219)]">
+                  {formatPrice(
+                    getPrice(currency === 'USD' ? pricing.individual.explorer.USD : pricing.individual.explorer.INR),
+                    currency
+                  )}
+                  <span className="text-lg text-[rgb(176,197,198)]">{getPriceLabel()}</span>
+                </div>
+                {billingPeriod === 'annual' && (
+                  <div className="text-xs text-[rgb(176,197,198)] mt-1">
+                    {formatPrice(
+                      getEffectiveMonthlyRate(currency === 'USD' ? pricing.individual.explorer.USD : pricing.individual.explorer.INR),
+                      currency
+                    )}/month billed annually
+                  </div>
+                )}
+              </div>
+
+              <div className="p-4 mb-6 rounded-lg border border-white/5 bg-white/[0.03]">
+                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.individual.explorer.starmaps} Starmaps/month</div>
+                <div className="text-xs text-[rgb(176,197,198)]">Unused roll over for 12 months with 5 saved</div>
+              </div>
+
+              <div className="text-sm mb-6 text-[rgb(167,218,219)]">Start here before upgrading to higher tiers</div>
+
+              <Link href="https://polaris.smartslate.io" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full px-6 py-3 mb-8 rounded-md text-sm font-semibold bg-[rgb(79,70,229)] text-[rgb(224,224,224)] transition-all duration-300 hover:opacity-90">
+                Get Started
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </Link>
+
+              <ul className="mt-auto space-y-4">
+                {[
+                  '15x Faster Time-to-Launch',
+                  '1-Hour Blueprint Delivery',
+                  'Zero Revision Cycles',
+                  '100% Requirements Captured',
+                  'Perfect Stakeholder Alignment',
+                  'Production-Ready Documentation',
+                  'Automated Gap Analysis',
+                  'Business-to-Learning Translation',
+                  'Multi-Format Export'
+                ].map((feature, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <svg className="w-5 h-5 flex-shrink-0 mt-0.5 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-sm text-[rgb(224,224,224)]">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Navigator - Most Popular */}
+            <div className="relative flex flex-col h-full p-8 rounded-2xl border border-[rgba(79,70,229,0.3)] bg-[rgba(79,70,229,0.15)] shadow-lg transition-transform duration-300 hover:-translate-y-2">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-[rgb(167,218,219)] text-xs font-extrabold uppercase text-[rgb(2,12,27)]">
+                MOST POPULAR
+              </div>
+
+              <div className="text-2xl font-bold mb-2 text-[rgb(224,224,224)]">Navigator</div>
+              <div className="text-sm font-semibold text-[rgb(176,197,198)] mb-6">FOR PROFESSIONALS & CREATORS</div>
+
+              <div className="mb-6">
+                <div className="text-4xl font-bold text-[rgb(167,218,219)]">
+                  {formatPrice(
+                    getPrice(currency === 'USD' ? pricing.individual.navigator.USD : pricing.individual.navigator.INR),
+                    currency
+                  )}
+                  <span className="text-lg text-[rgb(176,197,198)]">{getPriceLabel()}</span>
+                </div>
+                {billingPeriod === 'annual' && (
+                  <div className="text-xs text-[rgb(176,197,198)] mt-1">
+                    {formatPrice(
+                      getEffectiveMonthlyRate(currency === 'USD' ? pricing.individual.navigator.USD : pricing.individual.navigator.INR),
+                      currency
+                    )}/month billed annually
+                  </div>
+                )}
+              </div>
+
+              <div className="p-4 mb-6 rounded-lg border border-white/5 bg-white/[0.03]">
+                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.individual.navigator.starmaps} Starmaps/month</div>
+                <div className="text-xs text-[rgb(176,197,198)]">Unused roll over for 12 months with 25 saved</div>
+              </div>
+
+              <div className="text-sm mb-6 text-[rgb(167,218,219)]">5x more starmaps per month</div>
+
+              <Link href="https://polaris.smartslate.io" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full px-6 py-3 mb-8 rounded-md text-sm font-semibold bg-[rgb(79,70,229)] text-[rgb(224,224,224)] transition-all duration-300 hover:opacity-90">
+                Get Started
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </Link>
+
+              <ul className="mt-auto space-y-4">
+                {[
+                  'Everything in Explorer',
+                  'Priority support (24h response)'
+                ].map((feature, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <svg className="w-5 h-5 flex-shrink-0 mt-0.5 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-sm text-[rgb(224,224,224)]">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Voyager */}
+            <div className="flex flex-col h-full p-8 rounded-2xl border border-white/[0.08] bg-white/[0.02] shadow-lg transition-transform duration-300 hover:-translate-y-2">
+              <div className="text-2xl font-bold mb-2 text-[rgb(224,224,224)]">Voyager</div>
+              <div className="text-sm font-semibold text-[rgb(176,197,198)] mb-6">FOR POWER USERS & CONSULTANTS</div>
+
+              <div className="mb-6">
+                <div className="text-4xl font-bold text-[rgb(167,218,219)]">
+                  {formatPrice(
+                    getPrice(currency === 'USD' ? pricing.individual.voyager.USD : pricing.individual.voyager.INR),
+                    currency
+                  )}
+                  <span className="text-lg text-[rgb(176,197,198)]">{getPriceLabel()}</span>
+                </div>
+                {billingPeriod === 'annual' && (
+                  <div className="text-xs text-[rgb(176,197,198)] mt-1">
+                    {formatPrice(
+                      getEffectiveMonthlyRate(currency === 'USD' ? pricing.individual.voyager.USD : pricing.individual.voyager.INR),
+                      currency
+                    )}/month billed annually
+                  </div>
+                )}
+              </div>
+
+              <div className="p-4 mb-6 rounded-lg border border-white/5 bg-white/[0.03]">
+                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.individual.voyager.starmaps} Starmaps/month</div>
+                <div className="text-xs text-[rgb(176,197,198)]">Unused roll over for 12 months with 50 saved</div>
+              </div>
+
+              <div className="text-sm mb-6 text-[rgb(167,218,219)]">10x more starmaps per month</div>
+
+              <Link href="https://polaris.smartslate.io" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full px-6 py-3 mb-8 rounded-md text-sm font-semibold bg-[rgb(79,70,229)] text-[rgb(224,224,224)] transition-all duration-300 hover:opacity-90">
+                Get Started
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </Link>
+
+              <ul className="mt-auto space-y-4">
+                {[
+                  'Everything in Navigator',
+                  'Priority support (12h response)'
+                ].map((feature, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <svg className="w-5 h-5 flex-shrink-0 mt-0.5 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-sm text-[rgb(224,224,224)]">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Team Plans Section */}
+      <section className="py-24 px-4">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="font-['Quicksand'] text-4xl font-bold mb-10 text-[rgb(167,218,219)]">Team Plans</h2>
+          <p className="text-lg mb-24 text-[rgb(176,197,198)] max-w-3xl">
+            Team plan limits are <strong>per user</strong> - each team member gets the full allocation, including rollover credits.
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-12">
+            {/* Crew */}
+            <div className="flex flex-col h-full p-8 rounded-2xl border border-white/[0.08] bg-white/[0.02] shadow-lg transition-transform duration-300 hover:-translate-y-2">
+              <div className="text-2xl font-bold mb-2 text-[rgb(224,224,224)]">Crew</div>
+              <div className="text-sm font-semibold text-[rgb(176,197,198)] mb-6">SMALL TEAMS, BIG IMPACT</div>
+
+              <div className="mb-6">
+                <div className="text-4xl font-bold text-[rgb(167,218,219)]">
+                  {formatPrice(
+                    getPrice(currency === 'USD' ? pricing.team.crew.USD : pricing.team.crew.INR),
+                    currency
+                  )}
+                  <span className="text-lg text-[rgb(176,197,198)]">{billingPeriod === 'annual' ? '/year /user' : '/month /user'}</span>
+                </div>
+                {billingPeriod === 'annual' && (
+                  <div className="text-xs text-[rgb(176,197,198)] mt-1">
+                    {formatPrice(
+                      getEffectiveMonthlyRate(currency === 'USD' ? pricing.team.crew.USD : pricing.team.crew.INR),
+                      currency
+                    )}/month billed annually
+                  </div>
+                )}
+              </div>
+
+              <div className="p-4 mb-6 rounded-lg border border-white/5 bg-white/[0.03]">
+                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.team.crew.blueprints} Blueprints per user/month</div>
+                <div className="text-xs text-[rgb(176,197,198)]">Unused roll over for 12 months with 10 saved per user</div>
+              </div>
+
+              <Link href="/contact" className="flex items-center justify-center gap-2 w-full px-6 py-3 mb-8 rounded-md text-sm font-semibold bg-transparent text-[rgb(79,70,229)] border border-[rgb(79,70,229)] transition-all duration-300 hover:bg-[rgba(79,70,229,0.1)]">
+                Contact Sales
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </Link>
+
+              <ul className="mt-auto space-y-4">
+                {[
+                  '15x Faster Time-to-Launch',
+                  '1-Hour Blueprint Delivery',
+                  'Zero Revision Cycles',
+                  '100% Requirements Captured',
+                  'Perfect Stakeholder Alignment',
+                  'Production-Ready Documentation',
+                  'Automated Gap Analysis',
+                  'Business-to-Learning Translation',
+                  'Multi-Format Export'
+                ].map((feature, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <svg className="w-5 h-5 flex-shrink-0 mt-0.5 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-sm text-[rgb(224,224,224)]">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Fleet - Popular */}
+            <div className="relative flex flex-col h-full p-8 rounded-2xl border border-[rgba(79,70,229,0.3)] bg-[rgba(79,70,229,0.15)] shadow-lg transition-transform duration-300 hover:-translate-y-2">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-[rgb(167,218,219)] text-xs font-extrabold uppercase text-[rgb(2,12,27)]">
+                POPULAR CHOICE
+              </div>
+
+              <div className="text-2xl font-bold mb-2 text-[rgb(224,224,224)]">Fleet</div>
+              <div className="text-sm font-semibold text-[rgb(176,197,198)] mb-6">SCALE YOUR OPERATIONS</div>
+
+              <div className="mb-6">
+                <div className="text-4xl font-bold text-[rgb(167,218,219)]">
+                  {formatPrice(
+                    getPrice(currency === 'USD' ? pricing.team.fleet.USD : pricing.team.fleet.INR),
+                    currency
+                  )}
+                  <span className="text-lg text-[rgb(176,197,198)]">{billingPeriod === 'annual' ? '/year /user' : '/month /user'}</span>
+                </div>
+                {billingPeriod === 'annual' && (
+                  <div className="text-xs text-[rgb(176,197,198)] mt-1">
+                    {formatPrice(
+                      getEffectiveMonthlyRate(currency === 'USD' ? pricing.team.fleet.USD : pricing.team.fleet.INR),
+                      currency
+                    )}/month billed annually
+                  </div>
+                )}
+              </div>
+
+              <div className="p-4 mb-6 rounded-lg border border-white/5 bg-white/[0.03]">
+                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.team.fleet.blueprints} Blueprints per user/month</div>
+                <div className="text-xs text-[rgb(176,197,198)]">Unused roll over for 12 months with 30 saved per user</div>
+              </div>
+
+              <Link href="/contact" className="flex items-center justify-center gap-2 w-full px-6 py-3 mb-8 rounded-md text-sm font-semibold bg-transparent text-[rgb(79,70,229)] border border-[rgb(79,70,229)] transition-all duration-300 hover:bg-[rgba(79,70,229,0.1)]">
+                Contact Sales
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </Link>
+
+              <ul className="mt-auto space-y-4">
+                {[
+                  'Everything in Crew',
+                  '3x more blueprints per user',
+                  'Priority support (24h response)'
+                ].map((feature, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <svg className="w-5 h-5 flex-shrink-0 mt-0.5 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-sm text-[rgb(224,224,224)]">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Armada */}
+            <div className="flex flex-col h-full p-8 rounded-2xl border border-white/[0.08] bg-white/[0.02] shadow-lg transition-transform duration-300 hover:-translate-y-2">
+              <div className="text-2xl font-bold mb-2 text-[rgb(224,224,224)]">Armada</div>
+              <div className="text-sm font-semibold text-[rgb(176,197,198)] mb-6">DEPARTMENT & ORGANIZATION SCALE</div>
+
+              <div className="mb-6">
+                <div className="text-4xl font-bold text-[rgb(167,218,219)]">
+                  {formatPrice(
+                    getPrice(currency === 'USD' ? pricing.team.armada.USD : pricing.team.armada.INR),
+                    currency
+                  )}
+                  <span className="text-lg text-[rgb(176,197,198)]">{billingPeriod === 'annual' ? '/year /user' : '/month /user'}</span>
+                </div>
+                {billingPeriod === 'annual' && (
+                  <div className="text-xs text-[rgb(176,197,198)] mt-1">
+                    {formatPrice(
+                      getEffectiveMonthlyRate(currency === 'USD' ? pricing.team.armada.USD : pricing.team.armada.INR),
+                      currency
+                    )}/month billed annually
+                  </div>
+                )}
+              </div>
+
+              <div className="p-4 mb-6 rounded-lg border border-white/5 bg-white/[0.03]">
+                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.team.armada.blueprints} Blueprints per user/month</div>
+                <div className="text-xs text-[rgb(176,197,198)]">Unused roll over for 12 months with 60 saved per user</div>
+              </div>
+
+              <Link href="/contact" className="flex items-center justify-center gap-2 w-full px-6 py-3 mb-8 rounded-md text-sm font-semibold bg-transparent text-[rgb(79,70,229)] border border-[rgb(79,70,229)] transition-all duration-300 hover:bg-[rgba(79,70,229,0.1)]">
+                Contact Sales
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </Link>
+
+              <ul className="mt-auto space-y-4">
+                {[
+                  'Everything in Fleet',
+                  '6x more blueprints per user',
+                  'Priority support (12h response)'
+                ].map((feature, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <svg className="w-5 h-5 flex-shrink-0 mt-0.5 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-sm text-[rgb(224,224,224)]">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 px-4">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="font-['Quicksand'] text-4xl font-bold mb-4 text-[rgb(167,218,219)]">Frequently Asked Questions</h2>
+          <p className="text-lg mb-12 text-[rgb(176,197,198)]">Everything you need to know about our plans and pricing</p>
+
+          {/* Category Filters */}
+          <div className="flex flex-wrap gap-2 mb-12">
+            {[
+              {
+                id: 'all',
+                label: 'All Questions',
+                icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
+              },
+              {
+                id: 'billing',
+                label: 'Billing',
+                icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+              },
+              {
+                id: 'features',
+                label: 'Features',
+                icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+              },
+              {
+                id: 'support',
+                label: 'Support',
+                icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+              }
+            ].map((filter) => (
+              <button
+                key={filter.id}
+                onClick={() => setActiveFilter(filter.id)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 ${
+                  activeFilter === filter.id
+                    ? 'bg-[rgba(79,70,229,0.1)] text-[rgb(79,70,229)] border border-[rgba(79,70,229,0.3)]'
+                    : 'bg-white/5 text-[rgb(176,197,198)] border border-white/5 hover:text-[rgb(224,224,224)] hover:border-[rgba(79,70,229,0.2)]'
+                }`}
+              >
+                {filter.icon}
+                {filter.label}
+              </button>
+            ))}
+          </div>
+
+          {/* FAQ Items */}
+          <div className="space-y-3">
+            {filteredFaqs.map((faq, index) => (
+              <div
+                key={index}
+                className={`rounded-xl border bg-white/[0.03] backdrop-blur-sm overflow-hidden transition-all duration-200 ${
+                  openFaqIndex === index
+                    ? 'border-[rgba(79,70,229,0.2)] shadow-lg'
+                    : 'border-white/5 hover:border-[rgba(79,70,229,0.1)]'
+                }`}
+              >
+                <button
+                  onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
+                  className="flex items-center justify-between w-full gap-4 p-6 text-left transition-colors duration-200 hover:bg-[rgba(224,224,224,0.05)]"
+                >
+                  <span className="font-medium text-[rgb(224,224,224)]">{faq.question}</span>
+                  <svg
+                    className={`w-5 h-5 flex-shrink-0 transition-all duration-200 ${
+                      openFaqIndex === index ? 'text-[rgb(79,70,229)] rotate-180' : 'text-[rgb(122,138,139)]'
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {openFaqIndex === index && (
+                  <div className="border-t border-white/5">
+                    <div className="p-6 text-sm leading-relaxed text-[rgb(176,197,198)]">
+                      {faq.answer}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Support CTA */}
+          <div className="mt-16">
+            <p className="text-sm mb-6 text-[rgb(176,197,198)]">Still have questions? We're here to help</p>
+            <Link href="/contact" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium bg-white/5 text-[rgb(224,224,224)] border border-white/10 transition-all duration-200 hover:bg-white/[0.08] hover:border-[rgba(79,70,229,0.3)]">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              Contact Support
+            </Link>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }
