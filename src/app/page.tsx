@@ -167,7 +167,7 @@ export default function Home() {
                       maxWidth: '700px'
                     }}
                   >
-                    You&apos;re spending millions on fragmented tools. Losing weeks to disconnected data.
+                    You&apos;re spending thousands or more on fragmented tools. Losing weeks to disconnected data.
                     Watching learner engagement collapse.
                     <br /><br />
                     <Box component="span" sx={{ color: '#a7dadb', fontWeight: 700 }}>
