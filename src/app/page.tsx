@@ -5,10 +5,6 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import JsonLd from '@/components/seo/JsonLd';
 import { getOrganizationJsonLd, getWebsiteJsonLd } from '@/components/seo/jsonld';
-import { useModalManager } from '@/hooks/useModalManager';
-import DemoModal from '@/components/landing/DemoModal';
-import SolaraInterestModal from '@/components/products/SolaraInterestModal';
-import SSAInterestModal from '@/components/products/SSAInterestModal';
 import { ProductIcons } from '@/components/icons/ProductIcons';
 import Link from 'next/link';
 import {
@@ -44,8 +40,6 @@ const MotionBox = motion.create(Box);
 const MotionCard = motion.create(Card);
 
 export default function Home() {
-  const { modalStates, actions: modalActions } = useModalManager();
-
   const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0 }
@@ -1987,7 +1981,8 @@ export default function Home() {
                       </Typography>
                       <Button
                         variant="contained"
-                        onClick={modalActions.openSSAInterestModal}
+                        component={Link}
+                        href="/contact"
                         startIcon={<CheckCircle />}
                         fullWidth
                         sx={{
@@ -2344,14 +2339,6 @@ export default function Home() {
           </MotionBox>
         </Container>
       </Box>
-
-      {/* Modals */}
-      <DemoModal
-        isOpen={modalStates.demo}
-        onClose={modalActions.closeDemoModal}
-      />
-      <SolaraInterestModal />
-      <SSAInterestModal />
 
       {/* JSON-LD */}
       <JsonLd data={getOrganizationJsonLd()} />

@@ -39,8 +39,7 @@ import {
   StatCard,
   StatNumber,
 } from '@/components/landing/styles/LandingStyles';
-import DemoModal from '@/components/landing/DemoModal';
-import { useModalManager } from '@/hooks/useModalManager';
+import Link from 'next/link';
 
 const FeaturesSection = styled(Box)(({ theme }) => ({
   padding: `${theme.spacing(10)} 0`,
@@ -188,7 +187,6 @@ const ComingSoonBadge = styled(Box)(({ theme }) => ({
 }));
 
 export default function FeaturesPage() {
-  const { modalStates, actions: modalActions } = useModalManager();
   const [isVisible, setIsVisible] = useState(false);
 
   const heroRef = useRef<HTMLDivElement>(null);
@@ -357,14 +355,15 @@ export default function FeaturesPage() {
           accentWords={['Intelligent', 'Universe', 'transformative', 'ecosystem', 'orchestrates']}
         >
           <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap', marginTop: '24px' }}>
-            <PrimaryButton
-              variant="contained"
-              size="large"
-              onClick={modalActions.openDemoModal}
-              endIcon={<Rocket className="icon-anim icon-float" />}
-            >
-              Experience Solara
-            </PrimaryButton>
+            <Link href="/contact" passHref style={{ textDecoration: 'none' }}>
+              <PrimaryButton
+                variant="contained"
+                size="large"
+                endIcon={<Rocket className="icon-anim icon-float" />}
+              >
+                Experience Solara
+              </PrimaryButton>
+            </Link>
           </div>
         </StandardHero>
       </Box>
@@ -675,22 +674,21 @@ export default function FeaturesPage() {
                 <Typography variant="body1" color="text.secondary" sx={{ mb: 4, fontSize: '1.125rem', maxWidth: '700px' }}>
                   See how Smartslate can help you build a future-ready workforce with intelligent, scalable learning solutions.
                 </Typography>
-                <PrimaryButton
-                  variant="contained"
-                  size="large"
-                  onClick={modalActions.openDemoModal}
-                  endIcon={<EmojiObjects className="icon-anim icon-pulse" />}
-                >
-                  Schedule a Demo
-                </PrimaryButton>
+                <Link href="/contact" passHref style={{ textDecoration: 'none' }}>
+                  <PrimaryButton
+                    variant="contained"
+                    size="large"
+                    endIcon={<EmojiObjects className="icon-anim icon-pulse" />}
+                  >
+                    Schedule a Demo
+                  </PrimaryButton>
+                </Link>
               </motion.div>
             </Box>
           </Container>
         </FeaturesSection>
       </SectionWrapper>
 
-      {/* Modals */}
-      <DemoModal isOpen={modalStates.demo} onClose={modalActions.closeDemoModal} />
     </PageWrapper>
   );
 }

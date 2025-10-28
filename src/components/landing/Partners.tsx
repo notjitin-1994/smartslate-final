@@ -369,11 +369,7 @@ const RatingStars = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(0.6),
 }));
 
-interface PartnersProps {
-  openDemoModal: () => void;
-  openCaseStudyModal?: () => void;
-  openPartnerModal: (type: 'institution' | 'business' | 'technology' | 'consulting' | 'research') => void;
-}
+interface PartnersProps {}
 
 type PartnerType = 'institutions' | 'businesses';
 
@@ -422,7 +418,7 @@ const partnerLogos = [
   { name: 'IIM Bangalore', type: 'institution' },
 ];
 
-export default function Partners({ openDemoModal, openCaseStudyModal, openPartnerModal }: PartnersProps) {
+export default function Partners({}: PartnersProps = {}) {
   const [revealed, setRevealed] = useState<Partial<Record<PartnerType, boolean>>>({
     institutions: true, // Default expanded
   });
@@ -551,14 +547,15 @@ export default function Partners({ openDemoModal, openCaseStudyModal, openPartne
                           {content.institutions.cta}
                         </PrimaryCTAButton>
                       </Link>
-                       <SecondaryCTAButton 
-                        endIcon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                        </svg>}
-                         onClick={openDemoModal}
-                      >
-                        Schedule Demo
-                      </SecondaryCTAButton>
+                       <Link href="/contact">
+                        <SecondaryCTAButton
+                          endIcon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>}
+                        >
+                          Schedule Demo
+                        </SecondaryCTAButton>
+                      </Link>
                     </CTAWrapper>
                     
                     {/* Partnership Opportunities */}
@@ -567,27 +564,30 @@ export default function Partners({ openDemoModal, openCaseStudyModal, openPartne
                         Partnership Opportunities
                       </Typography>
                       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(3, 1fr)' }, gap: 2 }}>
-                        <SecondaryCTAButton
-                          onClick={() => openPartnerModal('institution')}
-                          startIcon={<School />}
-                          sx={{ justifyContent: 'center' }}
-                        >
-                          Educational Partnership
-                        </SecondaryCTAButton>
-                        <SecondaryCTAButton
-                          onClick={() => openPartnerModal('technology')}
-                          startIcon={<AutoAwesome />}
-                          sx={{ justifyContent: 'center' }}
-                        >
-                          Technology Partnership
-                        </SecondaryCTAButton>
-                        <SecondaryCTAButton
-                          onClick={() => openPartnerModal('consulting')}
-                          startIcon={<TrendingUp />}
-                          sx={{ justifyContent: 'center' }}
-                        >
-                          Consulting Partnership
-                        </SecondaryCTAButton>
+                        <Link href="/contact">
+                          <SecondaryCTAButton
+                            startIcon={<School />}
+                            sx={{ justifyContent: 'center' }}
+                          >
+                            Educational Partnership
+                          </SecondaryCTAButton>
+                        </Link>
+                        <Link href="/contact">
+                          <SecondaryCTAButton
+                            startIcon={<AutoAwesome />}
+                            sx={{ justifyContent: 'center' }}
+                          >
+                            Technology Partnership
+                          </SecondaryCTAButton>
+                        </Link>
+                        <Link href="/contact">
+                          <SecondaryCTAButton
+                            startIcon={<TrendingUp />}
+                            sx={{ justifyContent: 'center' }}
+                          >
+                            Consulting Partnership
+                          </SecondaryCTAButton>
+                        </Link>
                       </Box>
                     </Box>
                   </motion.div>
@@ -724,18 +724,20 @@ export default function Partners({ openDemoModal, openCaseStudyModal, openPartne
                     transition={{ duration: 0.6, ease: "easeOut", delay: 0.7 }}
                   >
                     <CTAWrapper>
-                      <PrimaryCTAButton 
-                        endIcon={<EventAvailable aria-hidden="true" className="icon-anim icon-float" />}
-                        onClick={openDemoModal}
-                      >
-                        {content.businesses.cta}
-                      </PrimaryCTAButton>
-                      <SecondaryCTAButton 
-                        startIcon={<AutoGraph aria-hidden="true" className="icon-anim icon-float" />}
-                        onClick={openCaseStudyModal}
-                      >
-                        View Case Studies
-                      </SecondaryCTAButton>
+                      <Link href="/contact">
+                        <PrimaryCTAButton
+                          endIcon={<EventAvailable aria-hidden="true" className="icon-anim icon-float" />}
+                        >
+                          {content.businesses.cta}
+                        </PrimaryCTAButton>
+                      </Link>
+                      <Link href="/contact">
+                        <SecondaryCTAButton
+                          startIcon={<AutoGraph aria-hidden="true" className="icon-anim icon-float" />}
+                        >
+                          View Case Studies
+                        </SecondaryCTAButton>
+                      </Link>
                     </CTAWrapper>
                     
                     {/* Partnership Opportunities */}
@@ -744,27 +746,30 @@ export default function Partners({ openDemoModal, openCaseStudyModal, openPartne
                         Partnership Opportunities
                       </Typography>
                       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(3, 1fr)' }, gap: 2 }}>
-                        <SecondaryCTAButton
-                          onClick={() => openPartnerModal('business')}
-                          startIcon={<Business />}
-                          sx={{ justifyContent: 'center' }}
-                        >
-                          Business Partnership
-                        </SecondaryCTAButton>
-                        <SecondaryCTAButton
-                          onClick={() => openPartnerModal('technology')}
-                          startIcon={<AutoAwesome />}
-                          sx={{ justifyContent: 'center' }}
-                        >
-                          Technology Partnership
-                        </SecondaryCTAButton>
-                        <SecondaryCTAButton
-                          onClick={() => openPartnerModal('research')}
-                          startIcon={<Groups />}
-                          sx={{ justifyContent: 'center' }}
-                        >
-                          Research Partnership
-                        </SecondaryCTAButton>
+                        <Link href="/contact">
+                          <SecondaryCTAButton
+                            startIcon={<Business />}
+                            sx={{ justifyContent: 'center' }}
+                          >
+                            Business Partnership
+                          </SecondaryCTAButton>
+                        </Link>
+                        <Link href="/contact">
+                          <SecondaryCTAButton
+                            startIcon={<AutoAwesome />}
+                            sx={{ justifyContent: 'center' }}
+                          >
+                            Technology Partnership
+                          </SecondaryCTAButton>
+                        </Link>
+                        <Link href="/contact">
+                          <SecondaryCTAButton
+                            startIcon={<Groups />}
+                            sx={{ justifyContent: 'center' }}
+                          >
+                            Research Partnership
+                          </SecondaryCTAButton>
+                        </Link>
                       </Box>
                     </Box>
                   </motion.div>

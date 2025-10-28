@@ -8,11 +8,9 @@ import { FadeInContent, PrimaryButton } from './styles/LandingStyles';
 
 interface HeroProps {
   onRevealNext: () => void;
-  openCaseStudyModal: () => void;
-  openConsultationModal: () => void;
 }
 
-export default function Hero({ onRevealNext, openCaseStudyModal, openConsultationModal }: HeroProps) {
+export default function Hero({ onRevealNext }: HeroProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

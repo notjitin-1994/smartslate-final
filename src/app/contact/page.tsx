@@ -4,7 +4,6 @@ import { useState, useRef } from 'react';
 import { Box, Container, Typography, Grid, Chip, Snackbar, Alert, CircularProgress } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { motion, useInView } from 'framer-motion';
-import { submitModalForm } from '@/lib/api/modal-submission';
 import StandardHero from '@/components/ui/StandardHero';
 import {
   PageWrapper,
@@ -409,22 +408,26 @@ export default function ContactPage() {
     setIsSubmitting(true);
 
     try {
-      // Use unified modal submission system
-      const result = await submitModalForm({
-        modalType: 'contact',
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        company: formData.company,
-        role: '', // Contact form doesn't have role field
-        formData: {
+      // Submit contact form
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          company: formData.company,
           subject: formData.subject,
           message: formData.message,
           inquiryType: formData.inquiryType,
-        },
+        }),
       });
 
-      if (result.success) {
+      const result = await response.json();
+
+      if (response.ok && result.success) {
         setSnackbar({
           open: true,
           message: 'Message sent successfully! We\'ll get back to you within 24 hours.',

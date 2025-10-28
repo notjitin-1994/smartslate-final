@@ -43,8 +43,6 @@ import {
   StatCard,
   StatNumber,
 } from '@/components/landing/styles/LandingStyles';
-import DemoModal from '@/components/landing/DemoModal';
-import { useModalManager } from '@/hooks/useModalManager';
 import { CurrencyProvider, useCurrency } from '@/contexts/CurrencyContext';
 import CurrencyToggle from '@/components/pricing/CurrencyToggle';
 import { formatPriceWithPeriod, formatAnnualSavings } from '@/utils/formatPrice';
@@ -550,7 +548,6 @@ const teamPricing = [
 ];
 
 function PricingPageContent() {
-  const { modalStates, actions: modalActions } = useModalManager();
   const { currency, exchangeRate, formatPrice } = useCurrency();
   const [activeTab, setActiveTab] = useState(0);
   const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly');
@@ -581,14 +578,15 @@ function PricingPageContent() {
           accentWords={['Platform', 'Learning', 'Potential']}
         >
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap', mt: 3 }}>
-            <PrimaryButton
-              variant="contained"
-              size="large"
-              onClick={modalActions.openDemoModal}
-              endIcon={<Rocket className="icon-anim icon-float" />}
-            >
-              Explore Solara Solutions
-            </PrimaryButton>
+            <Link href="/contact" passHref style={{ textDecoration: 'none' }}>
+              <PrimaryButton
+                variant="contained"
+                size="large"
+                endIcon={<Rocket className="icon-anim icon-float" />}
+              >
+                Explore Solara Solutions
+              </PrimaryButton>
+            </Link>
             <Button
               component={Link}
               href="https://polaris.smartslate.io/auth/signup"
@@ -1120,14 +1118,15 @@ function PricingPageContent() {
                       </Box>
 
                       <Box sx={{ mt: 4 }}>
-                        <PrimaryButton
-                          variant="contained"
-                          size="large"
-                          onClick={modalActions.openDemoModal}
-                          endIcon={<Rocket />}
-                        >
-                          Join Waitlist
-                        </PrimaryButton>
+                        <Link href="/contact" passHref style={{ textDecoration: 'none' }}>
+                          <PrimaryButton
+                            variant="contained"
+                            size="large"
+                            endIcon={<Rocket />}
+                          >
+                            Join Waitlist
+                          </PrimaryButton>
+                        </Link>
                       </Box>
 
                       <Typography variant="body2" color="text.secondary" sx={{ mt: 3 }}>
@@ -1235,8 +1234,6 @@ function PricingPageContent() {
         </Box>
       </SectionWrapper>
 
-      {/* Modals */}
-      <DemoModal isOpen={modalStates.demo} onClose={modalActions.closeDemoModal} />
     </PageWrapper>
   );
 }

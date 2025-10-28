@@ -4,17 +4,10 @@ import React from 'react';
 import { Container } from '@mui/material';
 import StandardHero from '@/components/ui/StandardHero';
 import dynamic from 'next/dynamic';
-import DemoModal from '@/components/landing/DemoModal';
-import PartnerModal from '@/components/landing/PartnerModal';
-import { useDemoModal } from '@/hooks/useDemoModal';
-import { usePartnerModal } from '@/hooks/usePartnerModal';
 
 const Partners = dynamic(() => import('@/components/landing/Partners'), { ssr: false });
 
 export default function PartnerClient() {
-  const { isOpen: isDemoOpen, openModal: openDemoModal, closeModal: closeDemoModal } = useDemoModal();
-  const { isOpen: isPartnerOpen, partnerType, openModal: openPartnerModal, closeModal: closePartnerModal } = usePartnerModal();
-  
   return (
     <>
       <StandardHero
@@ -25,17 +18,8 @@ export default function PartnerClient() {
         showScrollIndicator={false}
       />
       <Container maxWidth="lg">
-        <Partners 
-          openDemoModal={openDemoModal} 
-          openPartnerModal={openPartnerModal}
-        />
+        <Partners />
       </Container>
-      <DemoModal isOpen={isDemoOpen} onClose={closeDemoModal} />
-      <PartnerModal 
-        isOpen={isPartnerOpen} 
-        onClose={closePartnerModal} 
-        partnerType={partnerType}
-      />
     </>
   );
 }

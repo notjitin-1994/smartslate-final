@@ -4,9 +4,8 @@ import { useState, useRef } from 'react';
 import { Box, Container, Typography, Button, Card, CardContent, Grid, Chip, List, ListItem, ListItemText, ListItemIcon } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { motion, useInView } from 'framer-motion';
+import Link from 'next/link';
 import StandardHero from '@/components/ui/StandardHero';
-import JobApplicationModal from '@/components/careers/JobApplicationModal';
-import CultureModal from '@/components/careers/CultureModal';
 import {
   PageWrapper,
   SectionWrapper,
@@ -17,8 +16,6 @@ import {
   StatCard,
   StatNumber,
 } from '@/components/landing/styles/LandingStyles';
-import { useJobApplicationModal } from '@/hooks/useJobApplicationModal';
-import { useCultureModal } from '@/hooks/useCultureModal';
 import {
   Psychology,
   Code,
@@ -282,8 +279,7 @@ const stats = [
 
 export default function CareersPage() {
   const [selectedRole, setSelectedRole] = useState<number | null>(null);
-  const [selectedJobData, setSelectedJobData] = useState<typeof roles[0] | null>(null);
-  
+
   const heroRef = useRef<HTMLDivElement>(null);
   const rolesRef = useRef<HTMLDivElement>(null);
   const valuesRef = useRef<HTMLDivElement>(null);
@@ -294,9 +290,6 @@ export default function CareersPage() {
   const valuesInView = useInView(valuesRef, { once: true, amount: 0.2 });
   const benefitsInView = useInView(benefitsRef, { once: true, amount: 0.2 });
   const statsInView = useInView(statsRef, { once: true, amount: 0.2 });
-
-  const { isOpen: isJobApplicationOpen, open: openJobApplicationModal, close: closeJobApplicationModal } = useJobApplicationModal();
-  const { isOpen: isCultureOpen, open: openCultureModal, close: closeCultureModal } = useCultureModal();
 
   return (
     <PageWrapper>
@@ -317,21 +310,22 @@ export default function CareersPage() {
             >
               Explore Open Positions
             </PrimaryButton>
-            <Button
-              variant="outlined"
-              size="large"
-              onClick={openCultureModal}
-              sx={{
-                borderColor: 'primary.main',
-                color: 'primary.main',
-                '&:hover': {
-                  borderColor: 'primary.light',
-                  backgroundColor: 'rgba(167, 218, 219, 0.08)',
-                }
-              }}
-            >
-              Learn About Our Culture
-            </Button>
+            <Link href="/contact" passHref style={{ textDecoration: 'none' }}>
+              <Button
+                variant="outlined"
+                size="large"
+                sx={{
+                  borderColor: 'primary.main',
+                  color: 'primary.main',
+                  '&:hover': {
+                    borderColor: 'primary.light',
+                    backgroundColor: 'rgba(167, 218, 219, 0.08)',
+                  }
+                }}
+              >
+                Learn About Our Culture
+              </Button>
+            </Link>
           </div>
         </StandardHero>
       </Box>
@@ -500,18 +494,16 @@ export default function CareersPage() {
                                 </List>
 
                                 <Box sx={{ mt: 3, textAlign: 'center' }}>
-                                  <PrimaryButton
-                                    variant="contained"
-                                    size="large"
-                                    fullWidth
-                                    endIcon={<RocketLaunch />}
-                                    onClick={() => {
-                                      setSelectedJobData(roles[index]);
-                                      openJobApplicationModal();
-                                    }}
-                                  >
-                                    Apply Now
-                                  </PrimaryButton>
+                                  <Link href="/contact" passHref style={{ textDecoration: 'none' }}>
+                                    <PrimaryButton
+                                      variant="contained"
+                                      size="large"
+                                      fullWidth
+                                      endIcon={<RocketLaunch />}
+                                    >
+                                      Apply Now
+                                    </PrimaryButton>
+                                  </Link>
                                 </Box>
                               </Box>
                             </motion.div>
@@ -663,46 +655,28 @@ export default function CareersPage() {
                   >
                     Apply Now
                   </PrimaryButton>
-                  <Button
-                    variant="outlined"
-                    size="large"
-                    onClick={openCultureModal}
-                    sx={{
-                      borderColor: 'primary.main',
-                      color: 'primary.main',
-                      '&:hover': {
-                        borderColor: 'primary.light',
-                        backgroundColor: 'rgba(167, 218, 219, 0.08)',
-                      }
-                    }}
-                  >
-                    Learn About Our Culture
-                  </Button>
+                  <Link href="/contact" passHref style={{ textDecoration: 'none' }}>
+                    <Button
+                      variant="outlined"
+                      size="large"
+                      sx={{
+                        borderColor: 'primary.main',
+                        color: 'primary.main',
+                        '&:hover': {
+                          borderColor: 'primary.light',
+                          backgroundColor: 'rgba(167, 218, 219, 0.08)',
+                        }
+                      }}
+                    >
+                      Learn About Our Culture
+                    </Button>
+                  </Link>
                 </Box>
               </motion.div>
             </Box>
           </Container>
         </CareersSection>
       </SectionWrapper>
-
-      {/* Job Application Modal */}
-      <JobApplicationModal
-        isOpen={isJobApplicationOpen}
-        onClose={closeJobApplicationModal}
-        jobTitle={selectedJobData?.title || ''}
-        jobDescription={selectedJobData?.description || ''}
-        responsibilities={selectedJobData?.responsibilities || []}
-        requirements={selectedJobData?.requirements || []}
-        jobType={selectedJobData?.type || ''}
-        location={selectedJobData?.location || ''}
-        equity={selectedJobData?.equity || ''}
-      />
-
-      {/* Culture Modal */}
-      <CultureModal
-        isOpen={isCultureOpen}
-        onClose={closeCultureModal}
-      />
     </PageWrapper>
   );
 }

@@ -4,10 +4,8 @@ import { motion } from 'framer-motion';
 import { Box, Container, Typography, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
-import { useModalManager } from '@/hooks/useModalManager';
+import Link from 'next/link';
 import { productRegistry } from '@/lib/data/products';
-import SSAInterestModal from '@/components/products/SSAInterestModal';
-import SolaraInterestModal from '@/components/products/SolaraInterestModal';
 
 const PageWrapper = styled(Box)(({ theme }) => ({
   position: 'relative',
@@ -377,7 +375,6 @@ const StepDescription = styled(Typography)(({ theme }) => ({
 
 export default function GetStartedPage() {
   const router = useRouter();
-  const { actions: modalActions } = useModalManager();
 
   // Get specific products by ID
   const products = {
@@ -394,10 +391,6 @@ export default function GetStartedPage() {
   const handleIgniteCtaClick = () => {
     // Navigate to courses page
     router.push('/courses');
-  };
-
-  const handleSSACtaClick = () => {
-    modalActions.openSSAInterestModal();
   };
 
   return (
@@ -788,10 +781,12 @@ export default function GetStartedPage() {
                   transition={{ duration: 0.6, delay: 0.4 }}
                   viewport={{ once: true }}
                 >
-                  <CTAButton onClick={handleSSACtaClick}>
-                    Set up your Strategic Skills Architecture
-                    {products.ssa?.cta.icon}
-                  </CTAButton>
+                  <Link href="/contact" passHref style={{ textDecoration: 'none' }}>
+                    <CTAButton>
+                      Set up your Strategic Skills Architecture
+                      {products.ssa?.cta.icon}
+                    </CTAButton>
+                  </Link>
                 </motion.div>
               </motion.div>
             </ContentColumn>
@@ -895,9 +890,6 @@ export default function GetStartedPage() {
         </Container>
       </SectionWrapper>
 
-      {/* Modals */}
-      <SSAInterestModal />
-      <SolaraInterestModal />
     </PageWrapper>
   );
 }

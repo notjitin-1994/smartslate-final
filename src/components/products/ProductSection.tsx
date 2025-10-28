@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import Link from 'next/link';
 import { ReactNode } from 'react';
-import { useModalManager } from '@/hooks/useModalManager';
 import { Product } from '@/lib/types/products';
 
 interface ProductSectionProps {
@@ -18,16 +17,6 @@ export default function ProductSection({ product, reverse = false, children }: P
     threshold: 0.1,
     triggerOnce: true,
   });
-
-  const { actions: { openSSAInterestModal: openSSAModal, openSolaraInterestModal: openSolaraModal } } = useModalManager();
-
-  const handleCtaClick = () => {
-    if (product.cta.action === 'openSSAModal') {
-      openSSAModal();
-    } else if (product.cta.action === 'openSolaraModal') {
-      openSolaraModal();
-    }
-  };
 
   return (
     <>
@@ -99,17 +88,10 @@ export default function ProductSection({ product, reverse = false, children }: P
               transition={{ duration: 0.6, delay: 0.6 }}
               className="flex flex-col gap-3 pt-4"
             >
-              {product.cta.link ? (
-                <Link href={product.cta.link} className="btn btn-primary">
-                  {product.cta.text}
-                  {product.cta.icon}
-                </Link>
-              ) : (
-                <button onClick={handleCtaClick} className="btn btn-primary">
-                  {product.cta.text}
-                  {product.cta.icon}
-                </button>
-              )}
+              <Link href={product.cta.link || '/contact'} className="btn btn-primary">
+                {product.cta.text}
+                {product.cta.icon}
+              </Link>
             </motion.div>
           </div>
         </div>
@@ -174,17 +156,10 @@ export default function ProductSection({ product, reverse = false, children }: P
             transition={{ duration: 0.6, delay: 0.6 }}
             className="flex flex-col sm:flex-row gap-4 pt-4"
           >
-            {product.cta.link ? (
-              <Link href={product.cta.link} className="btn btn-primary">
-                {product.cta.text}
-                {product.cta.icon}
-              </Link>
-            ) : (
-              <button onClick={handleCtaClick} className="btn btn-primary">
-                {product.cta.text}
-                {product.cta.icon}
-              </button>
-            )}
+            <Link href={product.cta.link || '/contact'} className="btn btn-primary">
+              {product.cta.text}
+              {product.cta.icon}
+            </Link>
           </motion.div>
         </div>
 

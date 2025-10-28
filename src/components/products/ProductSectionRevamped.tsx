@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { ReactNode } from 'react';
 import { Box, Container, Typography, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useModalManager } from '@/hooks/useModalManager';
 import { Product } from '@/lib/types/products';
 
 interface ProductSectionRevampedProps {
@@ -250,18 +249,6 @@ export default function ProductSectionRevamped({
     triggerOnce: true,
   });
 
-  const {
-    actions: { openSSAInterestModal: openSSAModal, openSolaraInterestModal: openSolaraModal },
-  } = useModalManager();
-
-  const handleCtaClick = () => {
-    if (product.cta.action === 'openSSAModal') {
-      openSSAModal();
-    } else if (product.cta.action === 'openSolaraModal') {
-      openSolaraModal();
-    }
-  };
-
   return (
     <SectionWrapper ref={ref}>
       <BackgroundDecoration reverse={reverse} />
@@ -312,19 +299,12 @@ export default function ProductSectionRevamped({
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
-                {product.cta.link ? (
-                  <Link href={product.cta.link} style={{ textDecoration: 'none' }}>
-                    <CTAButton>
-                      {product.cta.text}
-                      {product.cta.icon}
-                    </CTAButton>
-                  </Link>
-                ) : (
-                  <CTAButton onClick={handleCtaClick}>
+                <Link href={product.cta.link || '/contact'} style={{ textDecoration: 'none' }}>
+                  <CTAButton>
                     {product.cta.text}
                     {product.cta.icon}
                   </CTAButton>
-                )}
+                </Link>
               </motion.div>
             </motion.div>
           </ContentColumn>

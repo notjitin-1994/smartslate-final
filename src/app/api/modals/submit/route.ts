@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseService } from '@/lib/supabase';
+import { sendEmail } from '@/lib/email';
 
 // Supported modal types
 const VALID_MODAL_TYPES = [
@@ -147,9 +148,59 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Optionally send email notifications based on modal type
-    // This can be implemented later with a separate email service
-    // await sendNotificationEmail(modalType, submissionData);
+    // Send email notification for contact forms
+    if (modalType === 'contact') {
+      try {
+        // Create email content from form data
+        const emailSubject = `New Contact Form Submission: ${formData.subject}`;
+        const emailHtml = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #4F46E5; border-bottom: 2px solid #a7dadb; padding-bottom: 10px;">
+              New Contact Form Submission
+            </h2>
+            
+            <div style="background-color: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 style="color: #333; margin-top: 0;">Contact Information</h3>
+              <p><strong>Name:</strong> ${name || 'Not provided'}</p>
+              <p><strong>Email:</strong> ${email || 'Not provided'}</p>
+              <p><strong>Company:</strong> ${company || 'Not provided'}</p>
+              <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
+              <p><strong>Inquiry Type:</strong> ${formData.inquiryType || 'general'}</p>
+            </div>
+            
+            <div style="background-color: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #4F46E5;">
+              <h3 style="color: #333; margin-top: 0;">Subject</h3>
+              <p style="font-size: 1.1em; color: #4F46E5;">${formData.subject || 'No subject'}</p>
+            </div>
+            
+            <div style="background-color: #ffffff; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #e5e7eb;">
+              <h3 style="color: #333; margin-top: 0;">Message</h3>
+              <p style="line-height: 1.6; white-space: pre-wrap;">${formData.message || 'No message provided'}</p>
+            </div>
+            
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; font-size: 0.9em; color: #666;">
+              <p><strong>Submission Details:</strong></p>
+              <p>Date: ${new Date().toLocaleString()}</p>
+              <p>IP Address: ${ipAddress}</p>
+              <p>User Agent: ${userAgent}</p>
+              ${referrer ? `<p>Referrer: ${referrer}</p>` : ''}
+            </div>
+          </div>
+        `;
+        
+        // Send email to the configured address
+        await sendEmail({
+          to: process.env.LEADS_EMAIL_TO || 'jitin@smartslate.io',
+          subject: emailSubject,
+          html: emailHtml,
+        });
+        
+        console.log('Contact form email sent successfully');
+      } catch (emailError) {
+        console.error('Failed to send contact email:', emailError);
+        // Don't fail the submission, just log the error
+      }
+    }
 
     // Return success response
     return NextResponse.json({

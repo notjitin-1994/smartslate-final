@@ -8,10 +8,7 @@ import SolaraProductCards from "@/components/products/SolaraProductCards";
 import ProductSectionRevamped from "@/components/products/ProductSectionRevamped";
 import IgniteInfographic from "@/components/products/IgniteInfographic";
 import StrategicSkillsInfographic from "@/components/products/StrategicSkillsInfographic";
-import SSAInterestModal from "@/components/products/SSAInterestModal";
-import SolaraInterestModal from "@/components/products/SolaraInterestModal";
 import { productRegistry } from '@/lib/data/products';
-import { useModalManager } from '@/hooks/useModalManager';
 
 const PageWrapper = styled(Box)(({ theme }) => ({
   position: 'relative',
@@ -31,9 +28,6 @@ const SectionDivider = styled(Divider)(({ theme }) => ({
 }));
 
 export default function ProductsPage() {
-  // Get modal manager for global state
-  const { modalStates } = useModalManager();
-
   // Get specific products by ID
   const products = useMemo(() => ({
     ignite: productRegistry.getProductById('ignite-series'),
@@ -65,10 +59,6 @@ export default function ProductsPage() {
           <StrategicSkillsInfographic />
         </ProductSectionRevamped>
       )}
-
-      {/* Modals */}
-      <SSAInterestModal />
-      <SolaraInterestModal />
     </PageWrapper>
   );
 }

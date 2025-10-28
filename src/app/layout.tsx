@@ -1,12 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
-import { ModalProvider } from "@/components/providers/ModalProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 import TrackClient from "@/components/providers/TrackClient";
 import PWAClient from "@/components/providers/PWAClient";
-import WaitlistModal from "@/components/ui/WaitlistModal";
 import "./globals.css";
 import { Suspense } from "react";
 
@@ -89,18 +87,15 @@ export default function RootLayout({
       </head>
       <body>
         <ThemeProvider>
-          <ModalProvider>
-            <Header />
-            <main className="main-content">
-              {children}
-            </main>
-            <Footer />
-            <Suspense fallback={null}>
-              <TrackClient />
-              <PWAClient />
-            </Suspense>
-            <WaitlistModal />
-          </ModalProvider>
+          <Header />
+          <main className="main-content">
+            {children}
+          </main>
+          <Footer />
+          <Suspense fallback={null}>
+            <TrackClient />
+            <PWAClient />
+          </Suspense>
         </ThemeProvider>
       </body>
     </html>
