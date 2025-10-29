@@ -389,15 +389,74 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
     }
 
     .info-box a {
-      color: #a7dadb;
-      text-decoration: none;
+      color: #a7dadb !important;
+      text-decoration: none !important;
       font-weight: 600;
       transition: color 0.2s ease;
     }
 
     .info-box a:hover {
-      color: #d0edf0;
-      text-decoration: underline;
+      color: #d0edf0 !important;
+      text-decoration: underline !important;
+    }
+
+    /* === GLOBAL LINK STYLING === */
+    a {
+      color: #a7dadb !important;
+      text-decoration: none !important;
+      font-weight: 600;
+    }
+
+    a:hover {
+      color: #d0edf0 !important;
+      text-decoration: underline !important;
+    }
+
+    /* === FOOTER LINKS === */
+    .footer-link {
+      color: #a7dadb !important;
+      text-decoration: none !important;
+      font-weight: 600;
+      font-size: 12px;
+      transition: color 0.2s ease;
+      padding: 0 8px;
+    }
+
+    .footer-link:hover {
+      color: #d0edf0 !important;
+      text-decoration: underline !important;
+    }
+
+    .footer-link:first-child {
+      padding-left: 0;
+    }
+
+    .footer-link:last-child {
+      padding-right: 0;
+    }
+
+    .footer-separator {
+      color: #b0c5c6;
+      font-size: 12px;
+      font-weight: 400;
+      opacity: 0.6;
+    }
+
+    /* === BULB ICON === */
+    .bulb-icon {
+      display: inline-flex;
+      align-items: center;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    @keyframes glow {
+      from {
+        filter: drop-shadow(0 0 8px rgba(167, 218, 219, 0.6));
+      }
+      to {
+        filter: drop-shadow(0 0 12px rgba(167, 218, 219, 0.9));
+      }
     }
 
     /* === PRODUCT SUGGESTIONS === */
@@ -430,8 +489,8 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
     }
 
     .suggestion-link {
-      color: #a7dadb;
-      text-decoration: none;
+      color: #a7dadb !important;
+      text-decoration: none !important;
       font-size: 13px;
       font-weight: 600;
       padding: 8px 16px;
@@ -439,12 +498,16 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
       border-radius: 20px;
       background: rgba(167, 218, 219, 0.05);
       transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .suggestion-link:hover {
       background: rgba(167, 218, 219, 0.1);
       border-color: rgba(167, 218, 219, 0.4);
-      color: #d0edf0;
+      color: #d0edf0 !important;
+      text-decoration: none !important;
     }
 
     /* === SIGNATURE === */
@@ -548,14 +611,15 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
 
     .footer-links {
       display: flex;
-      justify-content: flex-start;
-      gap: 24px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
       margin-bottom: 20px;
+      gap: 0;
     }
 
     @media (min-width: 768px) {
       .footer-links {
-        gap: 20px;
         margin-bottom: 12px;
       }
     }
@@ -564,6 +628,10 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
       .footer-links {
         flex-direction: column;
         gap: 12px;
+      }
+
+      .footer-separator {
+        display: none;
       }
     }
 
@@ -635,7 +703,7 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
         </p>
 
         <div class="info-box">
-          <p><strong>While you wait:</strong> Feel free to explore <a href="https://www.smartslate.io">our website</a> to learn more about our mission to transform learning and career development in India.</p>
+          <p><strong>While you wait:</strong> Feel free to explore <a href="https://www.smartslate.io" style="color: #a7dadb !important; text-decoration: none !important; font-weight: 600;">our website</a> to learn more about our mission to transform learning and career development in India.</p>
         </div>
       </div>
 
@@ -649,15 +717,21 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
       </div>
     </div>
 
-    <!-- DESKTOP PRODUCT SUGGESTIONS -->
+    <!-- PRODUCT SUGGESTIONS -->
     <div class="suggestions-section">
-      <div class="suggestions-title">If you're exploring learning options</div>
+      <div class="suggestions-title">We're excited to share these with you, check these out!</div>
       <div class="suggestion-links">
-        <a href="https://www.smartslate.io/ignite" class="suggestion-link">
-          🚀 Ignite Career Programs
+        <a href="https://solara.smartslate.io" class="suggestion-link" style="color: #a7dadb !important; text-decoration: none !important;">
+          <span class="bulb-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; fill: #a7dadb; filter: drop-shadow(0 0 8px rgba(167, 218, 219, 0.6)); animation: glow 2s ease-in-out infinite alternate;">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zm2 11.5V16h-4v-2.5c-1.58-.55-2.5-2.18-2.15-3.82.35-1.64 1.82-2.82 3.5-2.82s3.15 1.18 3.5 2.82c.35 1.64-.57 3.27-2.15 3.82z"/>
+              <path d="M9 21h6v1c0 .55-.45 1-1 1h-4c-.55 0-1-.45-1-1v-1z"/>
+            </svg>
+          </span>
+          Solara Learning Engine
         </a>
-        <a href="https://polaris.smartslate.io" class="suggestion-link">
-          🌟 Try Polaris AI Learning
+        <a href="https://www.smartslate.io/products" class="suggestion-link" style="color: #a7dadb !important; text-decoration: none !important;">
+          Ignite & Skills Architecture
         </a>
       </div>
     </div>
@@ -666,9 +740,11 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
     <div class="footer">
       <div class="footer-tagline">Smartslate · Transform Learning</div>
       <div class="footer-links">
-        <a href="https://www.smartslate.io" class="footer-link">Visit Website</a>
-        <a href="https://www.smartslate.io/contact" class="footer-link">Contact Us</a>
-        <a href="https://www.smartslate.io/vision" class="footer-link">Our Vision</a>
+        <a href="https://www.smartslate.io" class="footer-link" style="color: #a7dadb !important; text-decoration: none !important;">Visit Website</a>
+        <span class="footer-separator"> | </span>
+        <a href="https://www.smartslate.io/contact" class="footer-link" style="color: #a7dadb !important; text-decoration: none !important;">Contact Us</a>
+        <span class="footer-separator"> | </span>
+        <a href="https://www.smartslate.io/vision" class="footer-link" style="color: #a7dadb !important; text-decoration: none !important;">Our Vision</a>
       </div>
       <div class="footer-note">
         This is an automated acknowledgement email. We'll respond to your specific message personally within 24 hours.
