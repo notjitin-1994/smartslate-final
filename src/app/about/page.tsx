@@ -95,7 +95,7 @@ const teamMembers = [
   {
     name: 'Jennifer Park',
     role: 'VP of Product',
-    bio: 'Product leader with successful track record of scaling EdTech platforms to millions of users.',
+    bio: 'Product leader with successful track record of scaling EdTech platforms to thousands or more of users.',
     avatar: '/images/userheadshot.png',
   },
 ];

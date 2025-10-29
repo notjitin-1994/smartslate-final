@@ -86,7 +86,7 @@ const sections = [
     label: 'The Employability Crisis',
     icon: Shield,
     title: 'The Employability Crisis: The Gap Between Campus and Career',
-    description: 'The root of the economic risk lies in a fundamental disconnect between education and industry. We have millions of graduates, but are they truly ready for the modern workplace?',
+    description: 'The root of the economic risk lies in a fundamental disconnect between education and industry. We have thousands or more of graduates, but are they truly ready for the modern workplace?',
   },
   {
     id: 'skills' as SectionId,

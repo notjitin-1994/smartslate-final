@@ -175,7 +175,7 @@ const roles = [
   {
     title: 'Full Stack Developer',
     icon: Code,
-    description: 'Build robust, scalable platforms that deliver world-class learning experiences to millions of users.',
+    description: 'Build robust, scalable platforms that deliver world-class learning experiences to thousands or more of users.',
     responsibilities: [
       'Develop and maintain full-stack applications using modern frameworks',
       'Collaborate with cross-functional teams to deliver features',
