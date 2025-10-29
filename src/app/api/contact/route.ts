@@ -59,7 +59,7 @@ function createContactEmailTemplate(data: ContactFormData): string {
     .header {
       background: linear-gradient(135deg, rgba(167, 218, 219, 0.08) 0%, rgba(167, 218, 219, 0.02) 100%);
       padding: 48px 32px 40px;
-      text-align: center;
+      text-align: left;
       position: relative;
       border-bottom: 1px solid rgba(167, 218, 219, 0.15);
     }
@@ -76,14 +76,14 @@ function createContactEmailTemplate(data: ContactFormData): string {
 
     .brand-logo {
       margin-bottom: 20px;
-      text-align: center;
+      text-align: left;
     }
 
     .brand-logo img {
       height: 28px;
       width: auto;
       display: block;
-      margin: 0 auto;
+      margin: 0;
     }
 
     .brand-logo-text {
@@ -218,7 +218,7 @@ function createContactEmailTemplate(data: ContactFormData): string {
     .footer {
       background: rgba(2, 12, 27, 0.95);
       padding: 32px;
-      text-align: center;
+      text-align: left;
       border-top: 1px solid rgba(167, 218, 219, 0.1);
     }
 
@@ -239,7 +239,7 @@ function createContactEmailTemplate(data: ContactFormData): string {
       margin-top: 20px;
       display: flex;
       gap: 12px;
-      justify-content: center;
+      justify-content: flex-start;
       flex-wrap: wrap;
     }
 
@@ -294,13 +294,12 @@ function createContactEmailTemplate(data: ContactFormData): string {
 
       .footer-actions {
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
       }
 
       .action-button {
-        width: 100%;
-        max-width: 200px;
-        justify-content: center;
+        width: auto;
+        justify-content: flex-start;
       }
     }
 
@@ -378,10 +377,7 @@ function createContactEmailTemplate(data: ContactFormData): string {
       <p>Reply directly to respond to <span class="footer-highlight">${data.name}</span></p>
       <div class="footer-actions">
         <a href="mailto:${data.email}" class="action-button">
-          📧 Reply Now
-        </a>
-        <a href="https://www.smartslate.io/admin" class="action-button">
-          🔐 Admin Panel
+          Reply Now
         </a>
       </div>
     </div>
