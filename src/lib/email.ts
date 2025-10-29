@@ -73,7 +73,7 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
       padding: 24px 16px;
     }
 
-    /* === DESKTOP LANDSCAPE 16:9 LAYOUT === */
+    /* === DESKTOP LAYOUT === */
     @media (min-width: 1024px) {
       body {
         padding: 40px 20px;
@@ -82,8 +82,7 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
 
       .email-container {
         width: 100%;
-        max-width: 1200px;
-        height: 675px; /* 16:9 aspect ratio (1200x675) */
+        max-width: 600px;
         background: linear-gradient(135deg, rgba(13, 27, 42, 0.95) 0%, rgba(20, 35, 51, 0.95) 100%);
         backdrop-filter: blur(25px);
         -webkit-backdrop-filter: blur(25px);
@@ -93,10 +92,6 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
           0 30px 60px rgba(0, 0, 0, 0.6),
           0 0 0 1px rgba(167, 218, 219, 0.2),
           inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        display: grid;
-        grid-template-columns: 2fr 1fr 1fr;
-        grid-template-rows: auto 1fr auto;
-        gap: 0;
         margin: 0 auto;
         position: relative;
       }
@@ -118,98 +113,35 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
       }
 
       .header {
-        grid-column: 1 / -1;
-        grid-row: 1;
         background: rgba(167, 218, 219, 0.08);
-        padding: 32px 48px;
+        padding: 40px 48px;
         border-bottom: 1px solid rgba(167, 218, 219, 0.15);
-        display: flex;
-        align-items: center;
-        gap: 32px;
-      }
-
-      .header-content {
-        flex: 1;
+        text-align: center;
       }
 
       .header-brand {
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: 24px;
+        margin-bottom: 16px;
       }
 
-      .main-content {
-        grid-column: 1;
-        grid-row: 2;
+      .content {
         background: rgba(13, 27, 42, 0.3);
         padding: 40px 48px;
-        border-right: 1px solid rgba(167, 218, 219, 0.1);
-        overflow-y: auto;
-        position: relative;
-      }
-
-      .main-content::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        width: 1px;
-        background: linear-gradient(to bottom,
-          transparent 0%,
-          rgba(167, 218, 219, 0.2) 20%,
-          rgba(167, 218, 219, 0.2) 80%,
-          transparent 100%);
-      }
-
-      .suggestions-panel {
-        grid-column: 2;
-        grid-row: 2;
-        background: rgba(255, 255, 255, 0.03);
-        padding: 40px 32px;
-        border-right: 1px solid rgba(167, 218, 219, 0.1);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-
-      .visual-panel {
-        grid-column: 3;
-        grid-row: 2;
-        background: linear-gradient(135deg, rgba(167, 218, 219, 0.05) 0%, rgba(167, 218, 219, 0.02) 100%);
-        padding: 40px 32px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-      }
-
-      .visual-panel::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 120px;
-        height: 120px;
-        background: radial-gradient(circle, rgba(167, 218, 219, 0.1) 0%, transparent 70%);
-        border-radius: 50%;
+        border-bottom: 1px solid rgba(167, 218, 219, 0.1);
       }
 
       .footer {
-        grid-column: 1 / -1;
-        grid-row: 3;
         background: rgba(2, 12, 27, 0.9);
-        padding: 24px 48px;
+        padding: 32px 48px;
         border-top: 1px solid rgba(167, 218, 219, 0.15);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        text-align: center;
       }
     }
 
-    /* === TABLET AND MOBILE PORTRAIT LAYOUT === */
+    /* === TABLET AND MOBILE LAYOUT === */
     @media (max-width: 1023px) {
       body {
         padding: 20px 16px;
@@ -227,7 +159,7 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
           0 20px 40px rgba(0, 0, 0, 0.5),
           0 0 0 1px rgba(167, 218, 219, 0.15);
         margin: 0 auto;
-        aspect-ratio: auto;
+        position: relative;
       }
 
       .email-container::before {
@@ -243,9 +175,17 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
       .header {
         background: linear-gradient(135deg, rgba(167, 218, 219, 0.12) 0%, rgba(167, 218, 219, 0.04) 100%);
         padding: 40px 32px;
-        text-align: left;
+        text-align: center;
         border-bottom: 1px solid rgba(167, 218, 219, 0.15);
         position: relative;
+      }
+
+      .header-brand {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        margin-bottom: 16px;
       }
 
       .content {
@@ -253,24 +193,11 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
         background: rgba(13, 27, 42, 0.5);
       }
 
-      .suggestions-section {
-        background: rgba(255, 255, 255, 0.02);
-        border-radius: 0 0 20px 20px;
-        padding: 32px;
-        margin: 0;
-        border-top: 1px solid rgba(167, 218, 219, 0.1);
-      }
-
       .footer {
-        display: none; /* Footer integrated into suggestions on mobile */
-      }
-
-      .mobile-suggestions {
-        display: block !important;
-      }
-
-      .suggestions-section {
-        display: none !important;
+        background: rgba(2, 12, 27, 0.95);
+        padding: 32px;
+        text-align: center;
+        border-top: 1px solid rgba(167, 218, 219, 0.1);
       }
     }
 
@@ -278,7 +205,7 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
     .header {
       background: linear-gradient(135deg, rgba(167, 218, 219, 0.08) 0%, rgba(167, 218, 219, 0.02) 100%);
       padding: 40px 32px;
-      text-align: left;
+      text-align: center;
       position: relative;
       border-bottom: 1px solid rgba(167, 218, 219, 0.15);
     }
@@ -293,33 +220,23 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
       background: linear-gradient(90deg, transparent, #a7dadb, transparent);
     }
 
-    /* Header responsive styles for mobile */
-    @media (max-width: 1023px) {
-      .header {
-        padding: 40px 32px;
-        text-align: left;
-      }
-
-      .header-brand {
-        display: block;
-        text-align: center;
-        margin-bottom: 20px;
-      }
-
-      .header-content {
-        text-align: center;
-      }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 16px;
     }
 
     .brand-logo {
       margin-bottom: 16px;
-      text-align: left;
+      text-align: center;
     }
 
     .brand-logo img {
       height: 28px;
       width: auto;
-      display: block;
+      display: inline-block;
     }
 
     .brand-logo-text {
@@ -338,7 +255,6 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
 
       .brand-logo-text {
         font-size: 20px;
-        margin-bottom: 12px;
       }
     }
 
@@ -484,22 +400,7 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
       text-decoration: underline;
     }
 
-    /* === MOBILE SUGGESTIONS === */
-    .mobile-suggestions {
-      background: rgba(255, 255, 255, 0.02);
-      border-radius: 14px;
-      padding: 24px;
-      margin: 24px 0;
-      border: 1px solid rgba(167, 218, 219, 0.1);
-    }
-
-    @media (min-width: 768px) {
-      .mobile-suggestions {
-        display: none;
-      }
-    }
-
-    /* === DESKTOP SUGGESTIONS === */
+    /* === PRODUCT SUGGESTIONS === */
     .suggestions-section {
       background: rgba(255, 255, 255, 0.02);
       border-radius: 14px;
@@ -508,12 +409,7 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
       border: 1px solid rgba(167, 218, 219, 0.1);
     }
 
-    @media (max-width: 767px) {
-      .suggestions-section {
-        display: none;
-      }
-    }
-
+    
     .suggestions-title {
       font-family: 'Quicksand', sans-serif;
       color: #b0c5c6;
@@ -743,19 +639,7 @@ export function createAcknowledgementEmailTemplate(userName?: string, userMessag
         </div>
       </div>
 
-      <!-- MOBILE PRODUCT SUGGESTIONS -->
-      <div class="mobile-suggestions">
-        <div class="suggestions-title">If you're exploring learning options</div>
-        <div class="suggestion-links">
-          <a href="https://www.smartslate.io/ignite" class="suggestion-link">
-            🚀 Ignite Career Programs
-          </a>
-          <a href="https://polaris.smartslate.io" class="suggestion-link">
-            🌟 Try Polaris AI Learning
-          </a>
-        </div>
-      </div>
-
+      
       <!-- SIGNATURE -->
       <div class="signature">
         <div class="signature-closing">Looking forward to connecting,</div>
