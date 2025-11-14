@@ -1,8 +1,8 @@
-# SmartSlate Project Structure
+# Smartslate Project Structure
 
 ## 📁 Overview
 
-This document provides a comprehensive overview of the SmartSlate project structure, architecture, and organization. The project is a Next.js 14 application with Supabase integration, focusing on lead capture and product showcase functionality.
+This document provides a comprehensive overview of the Smartslate project structure, architecture, and organization. The project is a Next.js 14 application with Supabase integration, focusing on lead capture and product showcase functionality.
 
 ## 🏗️ Architecture Overview
 

@@ -30,19 +30,32 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [
+      // Static assets - cache forever (immutable)
       {
         source: "/:all*\.(png|jpg|jpeg|gif|svg|webp|ico)",
         headers: [
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],
       },
+      // HTML pages - always check for updates
       {
-        source: "/manifest.webmanifest",
-        headers: [{ key: "Cache-Control", value: "public, max-age=86400" }],
+        source: "/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=0, must-revalidate"
+          },
+        ],
       },
+      // JavaScript and CSS - cache with revalidation
       {
-        source: "/sw.js",
-        headers: [{ key: "Cache-Control", value: "no-cache" }],
+        source: "/_next/static/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable"
+          },
+        ],
       },
     ];
   },

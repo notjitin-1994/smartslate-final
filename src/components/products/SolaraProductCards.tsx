@@ -227,7 +227,7 @@ const solaraProducts: SolaraProduct[] = [
     id: 'constellation',
     name: 'Solara Constellation',
     shortName: 'Constellation',
-    description: 'Transform raw content into structured learning blueprints automatically, saving countless hours of manual instructional design work.',
+    description: 'Picks up your Polaris design and intelligently curates existing content, performs instructional design and storyboarding, and identifies content gaps—showing exactly what you have and what needs to be created.',
     icon: ProductIcons.brain,
     status: 'coming-soon',
   },
@@ -321,7 +321,7 @@ export default function SolaraProductCards() {
                 maxWidth: '900px',
               }}
             >
-              For too long, learning has been fragmented, inefficient, and impossible to measure effectively. That era is over. Enter Solara, the singular, intelligent platform engineered to unify every facet of learning design and delivery. We're not just improving the old model; we are building its replacement—an engine for continuous growth and unparalleled insight. The future of learning isn't coming. It's being built, and Solara is the blueprint.
+              For too long, learning has been fragmented, inefficient, and impossible to measure effectively. That era is over. Enter Solara, the singular, intelligent platform engineered to unify every facet of learning design and delivery. We're not just improving the old model; we are building its replacement—an engine for continuous growth and unparalleled insight. The future of learning isn't coming. It's being built, and Solara is the learning experience design.
             </Typography>
           </motion.div>
         </SectionHeader>

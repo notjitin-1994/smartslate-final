@@ -504,7 +504,7 @@ export default function GetStartedPage() {
                         </svg>
                       </FeatureIcon>
                       <FeatureText>
-                        <strong>Polaris - Blueprint Generation:</strong> Transform ideas into launch-ready learning blueprints in hours, not weeks. AI-driven needs analysis captures 100% of requirements with zero revision cycles.
+                        <strong>Polaris - Learning Experience Design Generation:</strong> Transform ideas into launch-ready learning experience designs in hours, not weeks. AI-driven needs analysis captures 100% of requirements with zero revision cycles.
                       </FeatureText>
                     </FeatureItem>
                   </motion.div>
@@ -522,7 +522,7 @@ export default function GetStartedPage() {
                         </svg>
                       </FeatureIcon>
                       <FeatureText>
-                        <strong>Constellation - Content Architecture:</strong> Intelligently structures complex content into coherent learning pathways. Creates logical sequences that maximize comprehension and retention.
+                        <strong>Constellation - Content Curation & Instructional Design:</strong> Picks up your Polaris design, curates existing content, performs instructional design and storyboarding, and identifies content gaps.
                       </FeatureText>
                     </FeatureItem>
                   </motion.div>

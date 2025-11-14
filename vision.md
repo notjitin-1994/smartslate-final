@@ -172,17 +172,17 @@ Solara transforms learning from a cost center into a competitive advantage.
 Solara is modular by design. Organizations can adopt one product to solve an immediate pain point, or build a complete end-to-end learning infrastructure. Each product solves a specific, critical challenge. Together, they create a seamless learning experience that spans the entire lifecycle.
 
 #### 1. SOLARA POLARIS ⭐ [LIVE NOW]
-**AI-Powered Learning Blueprint Generator**
+**AI-Powered Learning Experience Design Generator**
 
 **The Problem:**
 Every great learning experience starts with a great plan. But translating vague stakeholder needs into actionable learning requirements traditionally takes 4-6 weeks of meetings, interviews, revisions, and still involves significant guesswork and misalignment.
 
 **The Solution:**
-Polaris uses AI to translate business goals into comprehensive learning blueprints in 2-3 minutes. Complete with executive summaries, learning objectives, KPIs, success metrics, and implementation roadmaps.
+Polaris uses AI to translate business goals into comprehensive learning experience designs in 2-3 minutes. Complete with executive summaries, learning objectives, KPIs, success metrics, and implementation roadmaps.
 
 **Key Capabilities:**
 - Automated stakeholder requirement translation
-- Comprehensive learning blueprints generated in minutes
+- Comprehensive learning experience designs generated in minutes
 - Executive summaries, objectives, and measurable KPIs
 - Enterprise-grade security with end-to-end encryption
 - Auto-save functionality to prevent data loss
@@ -200,32 +200,33 @@ Polaris uses AI to translate business goals into comprehensive learning blueprin
 **Who It's For:**
 - Instructional designers who need to work faster and smarter
 - L&D teams struggling with stakeholder alignment
-- Consultants who need to scale blueprint creation
+- Consultants who need to scale learning experience design creation
 - HR professionals launching learning initiatives
 
 ---
 
 #### 2. SOLARA CONSTELLATION [Coming Q2 2026]
-**Content-to-Blueprint Automation**
+**Intelligent Content Curation & Instructional Design**
 
 **The Problem:**
-Organizations possess terabytes of valuable content locked away in documents, videos, presentations, and PDFs. This institutional knowledge goes unused because transforming raw content into structured learning experiences requires extensive manual effort.
+Organizations have vast amounts of existing content, but manually reviewing, curating, and aligning it to a learning design is time-consuming. Creating storyboards and identifying content gaps requires extensive instructional design expertise and effort.
 
 **The Solution:**
-Constellation automatically transforms existing organizational content into structured learning blueprints. Upload your materials—documents, videos, presentations, internal wikis—and Constellation analyzes them, identifies learning opportunities, and creates complete instructional design frameworks ready for development.
+Constellation picks up the course outline and content structure from Polaris, then intelligently collates and curates your existing content. Upload your materials—documents, videos, presentations, internal wikis—and Constellation maps them to the learning design, performs instructional designing and storyboarding, and identifies exactly what content is available and what needs to be created.
 
 **Key Capabilities:**
-- Automatic blueprint generation from raw content
+- Seamless integration with Polaris learning experience designs
+- Intelligent content mapping and curation from existing materials
+- Automated instructional design and storyboarding
+- Content gap analysis showing what exists vs. what's needed
 - Support for multiple formats (PDF, DOCX, PPTX, video, audio)
-- Intelligent content analysis and learning objective extraction
 - Consistency enforcement across learning initiatives
-- Version control and content update detection
 
 **Impact Metrics:**
-- Unlock organizational knowledge at unprecedented scale
 - Reduce instructional design time by 80%
-- Repurpose existing content instead of creating from scratch
-- Ensure consistency across all learning programs
+- Maximize reuse of existing organizational content
+- Eliminate guesswork about content gaps
+- Ensure perfect alignment between design and content
 
 ---
 

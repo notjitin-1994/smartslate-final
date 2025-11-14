@@ -208,7 +208,7 @@ export default function FeaturesPage() {
     {
       icon: AutoAwesome,
       title: 'Solara Polaris',
-      description: 'AI-powered needs analysis that translates stakeholder requirements into comprehensive learning blueprints.',
+      description: 'AI-powered needs analysis that translates stakeholder requirements into comprehensive learning experience designs.',
       features: [
         'Intelligent stakeholder requirement gathering',
         'Automated learning objective generation',
@@ -221,12 +221,12 @@ export default function FeaturesPage() {
     {
       icon: Layers,
       title: 'Solara Constellation',
-      description: 'Transform raw content into structured, pedagogically-sound learning blueprints with intelligent content organization.',
+      description: 'Picks up your Polaris design and intelligently maps existing content, performs instructional design and storyboarding, and identifies content gaps.',
       features: [
-        'Automated content structuring and chunking',
-        'Learning pathway design and optimization',
-        'Bloom\'s taxonomy alignment',
-        'Multi-format content support',
+        'Seamless Polaris integration',
+        'Intelligent content mapping and curation',
+        'Automated instructional design and storyboarding',
+        'Content gap analysis (available vs. needed)',
       ],
       comingSoon: true,
     },

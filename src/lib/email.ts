@@ -6,12 +6,25 @@ interface EmailData {
   html: string;
 }
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazy initialize Resend only when needed and API key is available
+let resend: Resend | null = null;
+
+function getResendClient(): Resend | null {
+  if (!process.env.RESEND_API_KEY) {
+    return null;
+  }
+  if (!resend) {
+    resend = new Resend(process.env.RESEND_API_KEY);
+  }
+  return resend;
+}
 
 export async function sendEmail({ to, subject, html }: EmailData) {
   try {
+    const client = getResendClient();
+
     // Check if Resend API key is available
-    if (!process.env.RESEND_API_KEY) {
+    if (!client) {
       console.warn('RESEND_API_KEY not found, falling back to console logging');
       console.log('Email would be sent:', {
         to,
@@ -21,7 +34,7 @@ export async function sendEmail({ to, subject, html }: EmailData) {
       return { success: true, message: 'Email logged (no API key)' };
     }
 
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await client.emails.send({
       from: 'noreply@smartslate.io',
       to: [to],
       subject,

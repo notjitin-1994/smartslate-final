@@ -1,6 +1,6 @@
-# SmartSlate Documentation
+# Smartslate Documentation
 
-Welcome to the SmartSlate project documentation. This comprehensive guide covers all aspects of the project, from setup and development to deployment and maintenance.
+Welcome to the Smartslate project documentation. This comprehensive guide covers all aspects of the project, from setup and development to deployment and maintenance.
 
 ## 📚 Documentation Index
 
@@ -72,7 +72,7 @@ LEADS_EMAIL_TO="hello@smartslate.io"
 
 ## 🏗️ Project Overview
 
-SmartSlate is a modern Next.js 14 application designed for learning platform lead capture and product showcase. The project features:
+Smartslate is a modern Next.js 14 application designed for learning platform lead capture and product showcase. The project features:
 
 - **Next.js 14** with App Router and TypeScript
 - **Supabase** integration for database and authentication

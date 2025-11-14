@@ -1,6 +1,6 @@
-# SmartSlate
+# Smartslate
 
-Modern Next.js application for SmartSlate's learning platform with lead capture, product showcase, and marketing pages.
+Modern Next.js application for Smartslate's learning platform with lead capture, product showcase, and marketing pages.
 
 ## Features
 
@@ -192,7 +192,7 @@ The application uses the following main tables:
 
 ## License
 
-This project is proprietary to SmartSlate. All rights reserved.
+This project is proprietary to Smartslate. All rights reserved.
 
 ## Support
 

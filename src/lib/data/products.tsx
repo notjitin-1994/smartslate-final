@@ -111,7 +111,7 @@ export const PRODUCTS_DATA: Product[] = [
     slug: 'solara',
     heading: 'Solara',
     tagline: 'The Future of Learning: An All-in-One AI-Powered Platform',
-    description: "For too long, learning has been fragmented, inefficient, and impossible to measure effectively. That era is over. Enter Solara, the singular, intelligent platform engineered to unify every facet of learning design and delivery. We're not just improving the old model; we are building its replacement—an engine for continuous growth and unparalleled insight. The future of learning isn't coming. It's being built, and Solara is the blueprint.",
+    description: "For too long, learning has been fragmented, inefficient, and impossible to measure effectively. That era is over. Enter Solara, the singular, intelligent platform engineered to unify every facet of learning design and delivery. We're not just improving the old model; we are building its replacement—an engine for continuous growth and unparalleled insight. The future of learning isn't coming. It's being built, and Solara is the learning experience design.",
     features: [
       {
         icon: ProductIcons.star,
@@ -119,7 +119,7 @@ export const PRODUCTS_DATA: Product[] = [
       },
       {
         icon: ProductIcons.brain,
-        text: '<strong>Solara Constellation:</strong> Transform raw content into structured learning blueprints automatically, saving countless hours of manual instructional design work.'
+        text: '<strong>Solara Constellation:</strong> Picks up your Polaris design and intelligently curates existing content, performs instructional design and storyboarding, and identifies content gaps.'
       },
       {
         icon: ProductIcons.sparkles,
@@ -145,7 +145,7 @@ export const PRODUCTS_DATA: Product[] = [
       },
       {
         icon: ProductIcons.brain,
-        text: 'Transform raw content into structured learning blueprints.'
+        text: 'Transform raw content into structured learning experience designs.'
       },
       {
         icon: ProductIcons.sparkles,

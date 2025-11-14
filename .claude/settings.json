@@ -1,0 +1,7 @@
+{
+  "defaultMode": "bypassPermissions",
+  "statusLine": {
+    "type": "command",
+    "command": "jq -r '\"MODE: \" + (.output_style.name // \"NORMAL\" | ascii_upcase)'"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev:*)",
+      "Bash(npm install)",
+      "Bash(if exist \".next\" rmdir /s /q .next)",
+      "Bash(dir:*)",
+      "Bash(move jsonld.ts schemas.ts)",
+      "Bash(npm run build:*)",
+      "Bash(git add:*)",
+      "Bash(del nul)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

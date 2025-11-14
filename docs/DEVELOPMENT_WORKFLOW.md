@@ -378,8 +378,8 @@ describe('Component', () => {
 // src/app/manifest.ts
 export default function manifest() {
   return {
-    name: 'SmartSlate',
-    short_name: 'SmartSlate',
+    name: 'Smartslate',
+    short_name: 'Smartslate',
     description: 'Build Your Future-Ready Workforce',
     start_url: '/',
     display: 'standalone',

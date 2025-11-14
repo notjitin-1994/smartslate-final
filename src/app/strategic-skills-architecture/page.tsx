@@ -283,7 +283,7 @@ const processPhases = [
     duration: '4-6 Weeks',
     description: 'Custom curriculum architecture, learning experience design, and technology integration planning',
     deliverables: [
-      'Complete curriculum blueprint',
+      'Complete curriculum learning experience design',
       'Learning journey maps',
       'Assessment framework',
     ],
@@ -1358,7 +1358,7 @@ export default function StrategicSkillsArchitecturePage() {
                     />
                     <Box>
                       <Typography variant="body1" sx={{ fontWeight: 600, color: 'text.primary', mb: 0.5 }}>
-                        Custom Blueprint
+                        Custom Learning Experience Design
                       </Typography>
                       <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                         Detailed program design and implementation roadmap

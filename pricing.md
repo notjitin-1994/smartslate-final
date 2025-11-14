@@ -378,7 +378,7 @@ Container with border and glassmorphism effect:
 
 1. **01 - Requirements In** - "Upload stakeholder needs"
 2. **02 - AI Analysis** - "Automated gap detection"
-3. **03 - Blueprint Out** - "Production-ready in 1 hour"
+3. **03 - Learning Experience Design Out** - "Production-ready in 1 hour"
 
 ```css
 .process-step {
@@ -557,7 +557,7 @@ Decorative blur elements:
 
 **Features**:
 - 15x Faster Time-to-Launch
-- 1-Hour Blueprint Delivery
+- 1-Hour Learning Experience Design Delivery
 - Zero Revision Cycles
 - 100% Requirements Captured
 - Perfect Stakeholder Alignment
@@ -605,12 +605,12 @@ Decorative blur elements:
 **Name**: Crew
 **Label**: "SMALL TEAMS, BIG IMPACT"
 **Price**: $24/month per user (USD) or ₹1,999/month per user (INR)
-**Blueprints**: 10 Blueprints per user/month
+**Learning Experience Designs**: 10 Learning Experience Designs per user/month
 **Rollover**: Unused roll over for 12 months with 10 saved per user
 
 **Features**:
 - 15x Faster Time-to-Launch
-- 1-Hour Blueprint Delivery
+- 1-Hour Learning Experience Design Delivery
 - Zero Revision Cycles
 - 100% Requirements Captured
 - Perfect Stakeholder Alignment
@@ -625,12 +625,12 @@ Decorative blur elements:
 **Label**: "SCALE YOUR OPERATIONS"
 **Badge**: "POPULAR CHOICE"
 **Price**: $64/month per user (USD) or ₹5,399/month per user (INR)
-**Blueprints**: 30 Blueprints per user/month
+**Learning Experience Designs**: 30 Learning Experience Designs per user/month
 **Rollover**: Unused roll over for 12 months with 30 saved per user
 
 **Features**:
 - Everything in Crew
-- 3x more blueprints per user
+- 3x more learning experience designs per user
 - Priority support (24h response)
 
 #### 3. Armada
@@ -638,12 +638,12 @@ Decorative blur elements:
 **Name**: Armada
 **Label**: "DEPARTMENT & ORGANIZATION SCALE"
 **Price**: $129/month per user (USD) or ₹10,899/month per user (INR)
-**Blueprints**: 60 Blueprints per user/month
+**Learning Experience Designs**: 60 Learning Experience Designs per user/month
 **Rollover**: Unused roll over for 12 months with 60 saved per user
 
 **Features**:
 - Everything in Fleet
-- 6x more blueprints per user
+- 6x more learning experience designs per user
 - Priority support (12h response)
 
 ### Card Styling
@@ -849,7 +849,7 @@ Decorative blur elements:
 ## ✨ Features Section
 
 **Section Title**: "Every Plan Includes"
-**Subtitle**: "Core features that power your learning blueprint generation"
+**Subtitle**: "Core features that power your learning experience design generation"
 
 **Layout**:
 ```css
@@ -881,14 +881,14 @@ Decorative blur elements:
 **9 Feature Items**:
 
 1. **15x Faster Time-to-Launch** - "Cut weeks of planning down to hours. Launch learning programs at unprecedented speed"
-2. **1-Hour Blueprint Delivery** - "Complete, production-ready learning blueprints generated in under 60 minutes"
+2. **1-Hour Learning Experience Design Delivery** - "Complete, production-ready learning experience designs generated in under 60 minutes"
 3. **Zero Revision Cycles** - "First draft is final. AI-powered accuracy eliminates endless back-and-forth revisions"
 4. **100% Requirements Captured** - "Nothing falls through the cracks. Every stakeholder need documented and addressed"
-5. **Perfect Stakeholder Alignment** - "Get buy-in faster with blueprints that speak to every stakeholder perspective"
-6. **Production-Ready Documentation** - "Polished, professional blueprints ready to present to leadership on day one"
+5. **Perfect Stakeholder Alignment** - "Get buy-in faster with learning experience designs that speak to every stakeholder perspective"
+6. **Production-Ready Documentation** - "Polished, professional learning experience designs ready to present to leadership on day one"
 7. **Automated Gap Analysis** - "AI identifies missing requirements and potential issues before they become problems"
 8. **Business-to-Learning Translation** - "Transforms business objectives into actionable learning outcomes automatically"
-9. **Multi-Format Export** - "Download blueprints in PDF, Word, or JSON. Share instantly with any stakeholder"
+9. **Multi-Format Export** - "Download learning experience designs in PDF, Word, or JSON. Share instantly with any stakeholder"
 
 ```css
 .feature-card {
@@ -1008,7 +1008,7 @@ Decorative blur elements:
    - *Answer*: Never, as long as you maintain an active subscription. Your saved Starmaps accumulate month over month, building a permanent library. Think of it like a gym membership where you actually get to keep the muscle you've built. Your monthly generations refresh on the 1st of each month, and any Starmaps you save remain in your library indefinitely.
 
 2. **What's the difference between "generations" and "saved Starmaps"?**
-   - *Answer*: Generations are your monthly creation limit — how many new AI-powered learning blueprints you can create each month. Saved Starmaps is your storage library — how many you can keep and access anytime. For example, Navigator gives you 25 new generations each month, and you can save up to 25 Starmaps in your library that roll over and accumulate.
+   - *Answer*: Generations are your monthly creation limit — how many new AI-powered learning experience designs you can create each month. Saved Starmaps is your storage library — how many you can keep and access anytime. For example, Navigator gives you 25 new generations each month, and you can save up to 25 Starmaps in your library that roll over and accumulate.
 
 3. **What happens if I upgrade or downgrade my plan?**
    - *Answer*: When you upgrade, your saved Starmaps remain, and you start receiving your new, higher monthly allocation immediately. When you downgrade, you keep all saved Starmaps — you just receive fewer new generations each month going forward. Your library is always yours.

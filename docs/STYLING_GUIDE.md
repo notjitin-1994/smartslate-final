@@ -1,8 +1,8 @@
-# SmartSlate Styling Guide
+# Smartslate Styling Guide
 
 ## 🎨 Design System Overview
 
-This guide documents the SmartSlate design system and provides guidelines for maintaining visual consistency across the application using Tailwind CSS and Material-UI.
+This guide documents the Smartslate design system and provides guidelines for maintaining visual consistency across the application using Tailwind CSS and Material-UI.
 
 ## 📐 Design Principles
 

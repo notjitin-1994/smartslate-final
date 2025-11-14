@@ -20,5 +20,3 @@ export function getWebsiteJsonLd() {
     url: "https://smartslate.io",
   } as const;
 }
-
-

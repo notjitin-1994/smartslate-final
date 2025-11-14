@@ -13,7 +13,7 @@ const applications: Application[] = [
   {
     id: 'polaris',
     name: 'Polaris',
-    description: 'AI-powered needs analysis & learning blueprints',
+    description: 'AI-powered needs analysis & learning experience designs',
     isLive: true,
   },
   {

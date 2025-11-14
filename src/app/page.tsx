@@ -4,7 +4,7 @@ import { Box, Container, Typography, Button, Card, CardContent, Chip, Stack, Gri
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import JsonLd from '@/components/seo/JsonLd';
-import { getOrganizationJsonLd, getWebsiteJsonLd } from '@/components/seo/jsonld';
+import { getOrganizationJsonLd, getWebsiteJsonLd } from '@/components/seo/schemas';
 import { ProductIcons } from '@/components/icons/ProductIcons';
 import Link from 'next/link';
 import {
@@ -433,14 +433,14 @@ export default function Home() {
                       {
                         icon: <Speed />,
                         title: 'Polaris',
-                        desc: 'AI blueprint generation',
+                        desc: 'AI-assisted Learning Experience Design',
                         status: 'LIVE',
                         color: '#10b981'
                       },
                       {
                         icon: <CloudUpload />,
                         title: 'Constellation',
-                        desc: 'Content transformation',
+                        desc: 'Intelligent Content Curation & Instructional Design',
                         status: 'Q2 2026'
                       },
                       {
@@ -643,7 +643,7 @@ export default function Home() {
                     SOLARA POLARIS
                   </Typography>
                   <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600, fontSize: '0.95rem' }}>
-                    The AI Learning Blueprint Engine
+                    The AI Learning Experience Design Engine
                   </Typography>
                 </Box>
               </Stack>
@@ -728,7 +728,7 @@ export default function Home() {
                     {[
                       { step: '1', label: 'Input Business Goals', time: '6 days' },
                       { step: '2', label: 'AI Analysis', time: '3-5 mins' },
-                      { step: '3', label: 'Generate Blueprint', time: '2 mins' }
+                      { step: '3', label: 'Generate Learning Experience Design', time: '2 mins' }
                     ].map((item, idx) => (
                       <Box key={idx} sx={{ zIndex: 1, textAlign: 'center' }}>
                         <Box
@@ -870,7 +870,7 @@ export default function Home() {
                         {[
                           {
                             icon: <Speed />,
-                            title: '1-Week Blueprint Generation',
+                            title: '1-Week Learning Experience Design Generation',
                             description: 'From business goals to comprehensive learning design in days, not months'
                           },
                           {
@@ -1247,7 +1247,7 @@ export default function Home() {
                   title: '6 Weeks → 1 Week',
                   subtitle: 'Requirements in Days, Not Months',
                   problem: 'Stop losing momentum to endless stakeholder meetings and revision cycles',
-                  solution: 'Polaris generates comprehensive blueprints in a single week, capturing every requirement while stakeholders\' insights are fresh',
+                  solution: 'Polaris generates comprehensive learning experience designs in a single week, capturing every requirement while stakeholders\' insights are fresh',
                   color: '#a7dadb'
                 },
                 {
@@ -1287,7 +1287,7 @@ export default function Home() {
                   title: 'Expert-Level Quality',
                   subtitle: 'Best Practices Automated',
                   problem: 'Junior designers need 6 months to master instructional design frameworks',
-                  solution: 'Polaris embeds ADDIE, SAM, Bloom\'s Taxonomy, and Kirkpatrick automatically—every blueprint is expert-grade',
+                  solution: 'Polaris embeds ADDIE, SAM, Bloom\'s Taxonomy, and Kirkpatrick automatically—every learning experience design is expert-grade',
                   color: '#ec4899'
                 }
               ].map((feature, index) => (
@@ -1498,7 +1498,7 @@ export default function Home() {
                     lineHeight: 1.6
                   }}
                 >
-                  While you&apos;re coordinating calendars, you could have your blueprints done.
+                  While you&apos;re coordinating calendars, you could have your learning experience designs done.
                   <br />
                   <Box component="span" sx={{ color: '#a7dadb', fontWeight: 700 }}>
                     Start building today.

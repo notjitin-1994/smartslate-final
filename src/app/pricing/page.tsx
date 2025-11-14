@@ -18,9 +18,9 @@ export default function PricingPage() {
       voyager: { USD: 79, INR: 6699, starmaps: 50 }
     },
     team: {
-      crew: { USD: 24, INR: 1999, blueprints: 10 },
-      fleet: { USD: 64, INR: 5399, blueprints: 30 },
-      armada: { USD: 129, INR: 10899, blueprints: 60 }
+      crew: { USD: 24, INR: 1999, learningExperienceDesigns: 10 },
+      fleet: { USD: 64, INR: 5399, learningExperienceDesigns: 30 },
+      armada: { USD: 129, INR: 10899, learningExperienceDesigns: 60 }
     }
   };
 
@@ -33,7 +33,7 @@ export default function PricingPage() {
     {
       category: 'features',
       question: 'What\'s the difference between "generations" and "saved Starmaps"?',
-      answer: 'Generations are your monthly creation limit — how many new AI-powered learning blueprints you can create each month. Saved Starmaps is your storage library — how many you can keep and access anytime. For example, Navigator gives you 25 new generations each month, and you can save up to 25 Starmaps in your library that roll over and accumulate.'
+      answer: 'Generations are your monthly creation limit — how many new AI-powered learning experience designs you can create each month. Saved Starmaps is your storage library — how many you can keep and access anytime. For example, Navigator gives you 25 new generations each month, and you can save up to 25 Starmaps in your library that roll over and accumulate.'
     },
     {
       category: 'billing',
@@ -194,7 +194,7 @@ export default function PricingPage() {
                   {
                     number: '01',
                     title: 'Ideate & Architect',
-                    description: 'Strategic planning and blueprint design',
+                    description: 'Strategic planning and learning experience design design',
                     icon: <svg className="w-5 h-5 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
                   },
                   {
@@ -263,7 +263,7 @@ export default function PricingPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               <span className="text-sm font-bold text-[rgb(167,218,219)] tracking-wide">
-                Learning Blueprint: Powered by <span className="text-[rgb(255,215,0)]" style={{ textShadow: '0 0 10px rgba(255,215,0,0.5), 0 0 20px rgba(255,215,0,0.3)' }}>Solara</span>
+                Learning Experience Design: Powered by <span className="text-[rgb(255,215,0)]" style={{ textShadow: '0 0 10px rgba(255,215,0,0.5), 0 0 20px rgba(255,215,0,0.3)' }}>Solara</span>
               </span>
             </div>
 
@@ -271,11 +271,11 @@ export default function PricingPage() {
             <div className="mb-12">
               <h2 className="font-['Quicksand'] text-5xl lg:text-6xl font-bold mb-6 text-[rgb(224,224,224)] leading-tight">
                 Transform Ideas into{' '}
-                <span className="text-[rgb(167,218,219)]">Launch-Ready Blueprints</span>{' '}
+                <span className="text-[rgb(167,218,219)]">Launch-Ready Learning Experience Designs</span>{' '}
                 in Hours
               </h2>
               <p className="text-lg leading-relaxed text-[rgb(176,197,198)] mb-8 max-w-4xl">
-                Polaris eliminates weeks of planning with AI-driven blueprint generation. From stakeholder interviews to production-ready documentation, we automate the entire learning design process.
+                Polaris eliminates weeks of planning with AI-driven learning experience design generation. From stakeholder interviews to production-ready documentation, we automate the entire learning design process.
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[rgba(167,218,219,0.08)] border border-[rgba(167,218,219,0.2)]">
@@ -310,8 +310,8 @@ export default function PricingPage() {
                     icon: <svg className="w-6 h-6 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                   },
                   {
-                    title: '1-Hour Blueprint Delivery',
-                    description: 'Complete, production-ready learning blueprints generated in under 60 minutes',
+                    title: '1-Hour Learning Experience Design Delivery',
+                    description: 'Complete, production-ready learning experience designs generated in under 60 minutes',
                     icon: <svg className="w-6 h-6 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                   },
                   {
@@ -326,12 +326,12 @@ export default function PricingPage() {
                   },
                   {
                     title: 'Perfect Stakeholder Alignment',
-                    description: 'Get buy-in faster with blueprints that speak to every stakeholder perspective',
+                    description: 'Get buy-in faster with learning experience designs that speak to every stakeholder perspective',
                     icon: <svg className="w-6 h-6 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
                   },
                   {
                     title: 'Production-Ready Documentation',
-                    description: 'Polished, professional blueprints ready to present to leadership on day one',
+                    description: 'Polished, professional learning experience designs ready to present to leadership on day one',
                     icon: <svg className="w-6 h-6 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                   },
                   {
@@ -346,7 +346,7 @@ export default function PricingPage() {
                   },
                   {
                     title: 'Multi-Format Export',
-                    description: 'Download blueprints in PDF, Word, or JSON. Share instantly with any stakeholder',
+                    description: 'Download learning experience designs in PDF, Word, or JSON. Share instantly with any stakeholder',
                     icon: <svg className="w-6 h-6 text-[rgb(167,218,219)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" /></svg>
                   }
                 ].map((feature, index) => (
@@ -443,7 +443,7 @@ export default function PricingPage() {
               <ul className="mt-auto space-y-4">
                 {[
                   '15x Faster Time-to-Launch',
-                  '1-Hour Blueprint Delivery',
+                  '1-Hour Learning Experience Design Delivery',
                   'Zero Revision Cycles',
                   '100% Requirements Captured',
                   'Perfect Stakeholder Alignment',
@@ -606,7 +606,7 @@ export default function PricingPage() {
               </div>
 
               <div className="p-4 mb-6 rounded-lg border border-white/5 bg-white/[0.03]">
-                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.team.crew.blueprints} Blueprints per user/month</div>
+                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.team.crew.learningExperienceDesigns} Learning Experience Designs per user/month</div>
                 <div className="text-xs text-[rgb(176,197,198)]">Unused roll over for 12 months with 10 saved per user</div>
               </div>
 
@@ -620,7 +620,7 @@ export default function PricingPage() {
               <ul className="mt-auto space-y-4">
                 {[
                   '15x Faster Time-to-Launch',
-                  '1-Hour Blueprint Delivery',
+                  '1-Hour Learning Experience Design Delivery',
                   'Zero Revision Cycles',
                   '100% Requirements Captured',
                   'Perfect Stakeholder Alignment',
@@ -667,7 +667,7 @@ export default function PricingPage() {
               </div>
 
               <div className="p-4 mb-6 rounded-lg border border-white/5 bg-white/[0.03]">
-                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.team.fleet.blueprints} Blueprints per user/month</div>
+                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.team.fleet.learningExperienceDesigns} Learning Experience Designs per user/month</div>
                 <div className="text-xs text-[rgb(176,197,198)]">Unused roll over for 12 months with 30 saved per user</div>
               </div>
 
@@ -681,7 +681,7 @@ export default function PricingPage() {
               <ul className="mt-auto space-y-4">
                 {[
                   'Everything in Crew',
-                  '3x more blueprints per user',
+                  '3x more learning experience designs per user',
                   'Priority support (24h response)'
                 ].map((feature, index) => (
                   <li key={index} className="flex items-start gap-3">
@@ -718,7 +718,7 @@ export default function PricingPage() {
               </div>
 
               <div className="p-4 mb-6 rounded-lg border border-white/5 bg-white/[0.03]">
-                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.team.armada.blueprints} Blueprints per user/month</div>
+                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.team.armada.learningExperienceDesigns} Learning Experience Designs per user/month</div>
                 <div className="text-xs text-[rgb(176,197,198)]">Unused roll over for 12 months with 60 saved per user</div>
               </div>
 
@@ -732,7 +732,7 @@ export default function PricingPage() {
               <ul className="mt-auto space-y-4">
                 {[
                   'Everything in Fleet',
-                  '6x more blueprints per user',
+                  '6x more learning experience designs per user',
                   'Priority support (12h response)'
                 ].map((feature, index) => (
                   <li key={index} className="flex items-start gap-3">

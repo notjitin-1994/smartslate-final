@@ -3,7 +3,7 @@
 import { Box } from '@mui/material';
 import Hero from '@/components/landing/Hero';
 import JsonLd from '@/components/seo/JsonLd';
-import { getOrganizationJsonLd, getWebsiteJsonLd } from '@/components/seo/jsonld';
+import { getOrganizationJsonLd, getWebsiteJsonLd } from '@/components/seo/schemas';
 import TalentParadox from '@/components/landing/TalentParadox';
 import Framework from '@/components/landing/Framework';
 import ROICalculator from '@/components/landing/ROICalculator';

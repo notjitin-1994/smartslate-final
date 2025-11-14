@@ -238,7 +238,7 @@ const frameworkSteps = [
     description: 'Enter Solara, the singular, intelligent platform engineered to unify every facet of learning design and delivery. We\'re not just improving the old model; we are building its replacement—an engine for continuous growth.',
     features: [
       { icon: Psychology, title: 'Solara Polaris', description: 'Translate stakeholder needs into learning requirements' },
-      { icon: Extension, title: 'Solara Constellation', description: 'Transform raw content into structured blueprints' },
+      { icon: Extension, title: 'Solara Constellation', description: 'Curate existing content and create instructional designs from Polaris' },
       { icon: AutoAwesome, title: 'Solara Nova', description: 'AI-assisted authoring for interactive experiences' },
       { icon: Speed, title: 'Solara Orbit', description: 'Deliver personalized learning journeys' },
     ],

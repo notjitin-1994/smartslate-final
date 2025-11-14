@@ -1,10 +1,10 @@
 # API Documentation
 
-This document provides comprehensive information about the SmartSlate API endpoints, their usage, and data structures.
+This document provides comprehensive information about the Smartslate API endpoints, their usage, and data structures.
 
 ## Overview
 
-The SmartSlate API provides endpoints for lead capture, database management, and system operations. All endpoints are RESTful and return JSON responses.
+The Smartslate API provides endpoints for lead capture, database management, and system operations. All endpoints are RESTful and return JSON responses.
 
 ## Base URL
 

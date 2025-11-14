@@ -1,8 +1,8 @@
-# SmartSlate Component Library
+# Smartslate Component Library
 
 ## 📚 Overview
 
-This document catalogs all reusable components in the SmartSlate design system, providing usage examples and implementation guidelines.
+This document catalogs all reusable components in the Smartslate design system, providing usage examples and implementation guidelines.
 
 ## 🧩 Layout Components
 

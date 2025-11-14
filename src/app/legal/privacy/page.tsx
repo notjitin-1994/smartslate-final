@@ -226,7 +226,7 @@ export default function PrivacyPolicyPage() {
                       </Box>
                     </SectionHeader>
                     <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8, mb: 2 }}>
-                      <strong>Smartslate Learning</strong> (&quot;Smartslate,&quot; &quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) operates an AI-powered learning platform that generates personalized learning blueprints and provides educational services.
+                      <strong>Smartslate Learning</strong> (&quot;Smartslate,&quot; &quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) operates an AI-powered learning platform that generates personalized learning experience designs and provides educational services.
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8, mb: 2 }}>
                       By using our Services, you acknowledge that you have read, understood, and agree to this Privacy Policy. If you do not agree with this policy, you must not use our Services.
@@ -371,7 +371,7 @@ export default function PrivacyPolicyPage() {
                     <FeatureItem>
                       <CheckCircle sx={{ fontSize: '1rem !important' }} />
                       <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
-                        Generating personalized learning blueprints
+                        Generating personalized learning experience designs
                       </Typography>
                     </FeatureItem>
                     <FeatureItem>
