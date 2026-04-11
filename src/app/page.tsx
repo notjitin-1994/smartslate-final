@@ -87,46 +87,7 @@ export default function Home() {
                 variants={staggerContainer}
               >
                 {/* Status Badge */}
-                <motion.div variants={fadeInUp}>
-                  <Box
-                    sx={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: 1,
-                      mb: 3,
-                      px: 2.5,
-                      py: 1,
-                      background: 'rgba(16, 185, 129, 0.12)',
-                      border: '1.5px solid rgba(16, 185, 129, 0.3)',
-                      borderRadius: '50px',
-                      backdropFilter: 'blur(8px)'
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        width: '8px',
-                        height: '8px',
-                        borderRadius: '50%',
-                        background: '#10b981',
-                        animation: 'pulse-dot 2s ease-in-out infinite',
-                        '@keyframes pulse-dot': {
-                          '0%, 100%': { opacity: 1, transform: 'scale(1)' },
-                          '50%': { opacity: 0.5, transform: 'scale(1.2)' }
-                        }
-                      }}
-                    />
-                    <Typography
-                      sx={{
-                        fontSize: '0.875rem',
-                        fontWeight: 700,
-                        color: '#10b981',
-                        letterSpacing: '0.05em'
-                      }}
-                    >
-                      POLARIS NOW LIVE
-                    </Typography>
-                  </Box>
-                </motion.div>
+
 
                 {/* Problem-Focused Headline */}
                 <motion.div variants={fadeInUp}>
