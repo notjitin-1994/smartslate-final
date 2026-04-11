@@ -14,33 +14,33 @@ const HeaderWrapper = styled('header', {
   shouldForwardProp: (prop) => prop !== 'hide'
 })<{ hide?: boolean }>(({ theme, hide }) => ({
   position: 'fixed',
-  top: theme.spacing(2),
+  top: 'var(--nav-top-offset)',
   left: '50%',
   transform: hide 
     ? 'translateX(-50%) translateY(-20px) scale(0.95)' 
     : 'translateX(-50%) translateY(0) scale(1)',
-  zIndex: 1000,
+  zIndex: 'var(--z-header)',
   width: 'calc(100vw - 32px)',
   maxWidth: theme.breakpoints.values.lg,
+  height: 'var(--nav-height-desktop)',
   opacity: hide ? 0 : 1,
   visibility: hide ? 'hidden' : 'visible',
   transition: 'opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
   [theme.breakpoints.down('sm')]: {
     width: 'calc(100vw - 16px)',
-    top: theme.spacing(1),
+    height: 'var(--nav-height-mobile)',
   },
 }));
 
 const HeaderBackground = styled(Box)(({ theme }) => ({
   position: 'absolute',
   inset: 0,
-  backgroundColor: 'rgba(9, 21, 33, 0.4)', // Slightly more opaque fallback
+  backgroundColor: 'rgba(9, 21, 33, 0.4)',
   backdropFilter: 'blur(16px) saturate(180%)',
   WebkitBackdropFilter: 'blur(16px) saturate(180%)',
-  border: '1px solid #A7DADB', // Brand accent teal color
-  borderRadius: theme.spacing(2),
+  border: '1px solid var(--primary-accent)',
+  borderRadius: 'var(--radius-lg)',
   boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-  // Support for browsers that don't support backdrop-filter
   '@supports not (backdrop-filter: blur(1px))': {
     backgroundColor: 'rgba(9, 21, 33, 0.85)',
   },
@@ -51,10 +51,12 @@ const HeaderContent = styled(Container)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: `${theme.spacing(1)} ${theme.spacing(3)}`,
+  height: '100%',
+  padding: '0 var(--space-lg)',
   width: '100%',
+  maxWidth: 'none !important',
   [theme.breakpoints.down('sm')]: {
-    padding: `${theme.spacing(0.75)} ${theme.spacing(2)}`,
+    padding: '0 var(--space-md)',
   },
 }));
 
@@ -68,27 +70,27 @@ const LogoLink = styled(Link)(({ theme }) => ({
     transform: 'scale(1.05)',
   },
   [theme.breakpoints.down('sm')]: {
-    height: 44,
+    height: 40,
   },
 }));
 
 const NavContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  gap: theme.spacing(4),
+  gap: 'var(--space-xl)',
 }));
 
 const DesktopNav = styled('nav')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  gap: theme.spacing(4),
+  gap: 'var(--space-xl)',
   [theme.breakpoints.down('md')]: {
     display: 'none',
   },
 }));
 
 const NavLink = styled(Link)(({ theme }) => ({
-  color: theme.palette.text.primary,
+  color: 'var(--text-primary)',
   textDecoration: 'none',
   fontSize: '0.9rem',
   fontWeight: 500,
@@ -101,33 +103,33 @@ const NavLink = styled(Link)(({ theme }) => ({
     left: 0,
     width: 0,
     height: '2px',
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: 'var(--primary-accent)',
     transition: 'width 0.3s ease',
   },
   '&:hover::after': {
     width: '100%',
   },
   '&:hover': {
-    color: theme.palette.primary.main,
+    color: 'var(--primary-accent)',
   },
 }));
 
 const CTAButton = styled(Button)(({ theme }) => ({
-  backgroundColor: theme.palette.secondary.main,
-  color: theme.palette.text.primary,
+  backgroundColor: 'var(--secondary-accent)',
+  color: '#fff',
   fontWeight: 600,
-  padding: `${theme.spacing(1)} ${theme.spacing(3)}`,
-  borderRadius: 4, // Thin rounded square
+  padding: 'var(--space-sm) var(--space-lg)',
+  borderRadius: 'var(--radius-sm)',
   textTransform: 'none',
   fontSize: '0.9rem',
   transition: 'all 0.2s ease',
   '&:hover': {
-    backgroundColor: theme.palette.secondary.dark,
+    backgroundColor: 'var(--secondary-accent-dark)',
     transform: 'translateY(-2px)',
-    boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)',
+    boxShadow: 'var(--shadow-md)',
   },
   [theme.breakpoints.down('md')]: {
-    display: 'none', // Hide on mobile since it's in the hamburger menu
+    display: 'none',
   },
 }));
 
@@ -144,8 +146,6 @@ export default function Header() {
         requestAnimationFrame(() => {
           const currentScrollY = window.scrollY;
           
-          // Only hide when scrolling down and past threshold
-          // Show when scrolling up or at the top
           if (currentScrollY < lastScrollY || currentScrollY <= 50) {
             setHide(false);
           } else if (currentScrollY > lastScrollY && currentScrollY > 100) {

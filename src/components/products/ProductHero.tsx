@@ -9,14 +9,11 @@ const HeroSection = styled(Box)(({ theme }) => ({
   minHeight: 'auto',
   display: 'flex',
   alignItems: 'center',
-  padding: `${theme.spacing(30)} 0 ${theme.spacing(12)} 0`,
+  padding: 'var(--hero-padding-top) 0 var(--section-padding-y) 0',
   overflow: 'hidden',
   backgroundColor: theme.palette.background.default,
   [theme.breakpoints.down('md')]: {
-    padding: `${theme.spacing(20)} 0 ${theme.spacing(8)} 0`,
-  },
-  [theme.breakpoints.down('sm')]: {
-    padding: `${theme.spacing(18)} 0 ${theme.spacing(6)} 0`,
+    padding: 'var(--hero-padding-top) 0 var(--section-padding-y) 0',
   },
 }));
 
@@ -73,13 +70,6 @@ const ContentWrapper = styled(Box)(({ theme }) => ({
   textAlign: 'left',
   zIndex: 1,
   position: 'relative',
-}));
-
-const GradientText = styled('span')(({ theme }) => ({
-  background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
-  backgroundClip: 'text',
 }));
 
 const SubtitleText = styled(Typography)(({ theme }) => ({

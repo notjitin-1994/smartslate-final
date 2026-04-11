@@ -73,7 +73,6 @@ export default function Home() {
           minHeight: '100vh',
           display: 'flex',
           alignItems: 'center',
-          pt: { xs: 12, md: 10 },
           pb: { xs: 8, md: 10 },
           position: 'relative',
           zIndex: 1
@@ -599,7 +598,7 @@ export default function Home() {
         component="section"
         aria-label="Polaris introduction"
         sx={{
-          py: { xs: 6, md: 9.6 },
+          py: 'var(--section-padding-y)',
           position: 'relative',
           zIndex: 1
         }}
@@ -1177,7 +1176,7 @@ export default function Home() {
         component="section"
         aria-label="Why Polaris"
         sx={{
-          py: { xs: 8, md: 12 },
+          py: 'var(--section-padding-y)',
           position: 'relative',
           zIndex: 1
         }}
@@ -1599,7 +1598,7 @@ export default function Home() {
         component="section"
         aria-label="Product showcase"
         sx={{
-          py: { xs: 8, md: 12 },
+          py: 'var(--section-padding-y)',
           position: 'relative',
           zIndex: 1
         }}
@@ -2188,7 +2187,7 @@ export default function Home() {
 
       {/* CTA Section */}
       <Box sx={{
-        py: { xs: 6, md: 9.6 },
+        py: 'var(--section-padding-y)',
         position: 'relative',
         zIndex: 1
       }}>
