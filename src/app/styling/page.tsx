@@ -179,7 +179,12 @@ const SpecimenTag = ({ label, font, usage }: { label: string, font: string, usag
   </div>
 );
 
-const AssetCard = ({ title, description, children, spec }: any) => {
+const ASSET_URLS = {
+  LOGO_PNG: "https://hxxvxsmengeoazuywpjm.supabase.co/storage/v1/object/public/brand-assets/logo.png",
+  SWIRL_PNG: "https://hxxvxsmengeoazuywpjm.supabase.co/storage/v1/object/public/brand-assets/logo-swirl.png",
+};
+
+const AssetCard = ({ title, description, children, spec, downloadUrl }: any) => {
   const [isHovered, setIsHovered] = useState(false);
   return (
     <motion.div 
@@ -203,9 +208,14 @@ const AssetCard = ({ title, description, children, spec }: any) => {
         </div>
       </div>
       <div className="mt-4 flex gap-2">
-        <button className="flex-1 py-2 rounded-lg bg-slate-800 text-slate-300 font-bold text-[10px] hover:bg-slate-700 transition-colors flex items-center justify-center gap-2">
+        <a 
+          href={downloadUrl} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex-1 py-2 rounded-lg bg-slate-800 text-slate-300 font-bold text-[10px] hover:bg-slate-700 transition-colors flex items-center justify-center gap-2"
+        >
           <Download size={12} /> PNG
-        </button>
+        </a>
         <button className="flex-1 py-2 rounded-lg bg-slate-800 text-slate-300 font-bold text-[10px] hover:bg-slate-700 transition-colors flex items-center justify-center gap-2">
           <Download size={12} /> SVG
         </button>
@@ -369,7 +379,12 @@ export default function StylingWikiPage() {
             </button>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <AssetCard title="Logotype" description="The primary brand signature. Usage on dark backgrounds." spec={{ minScale: "32px Height" }}>
+            <AssetCard 
+              title="Logotype" 
+              description="The primary brand signature. Usage on dark backgrounds." 
+              spec={{ minScale: "32px Height" }}
+              downloadUrl={ASSET_URLS.LOGO_PNG}
+            >
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center">
                   <div className="w-6 h-6 bg-white rounded rotate-45" />
@@ -377,7 +392,12 @@ export default function StylingWikiPage() {
                 <span className="font-quicksand text-3xl font-bold text-white tracking-tight">Smartslate</span>
               </div>
             </AssetCard>
-            <AssetCard title="The Swirl" description="Our core icon mark for social and small UI elements." spec={{ minScale: "16px Width" }}>
+            <AssetCard 
+              title="The Swirl" 
+              description="Our core icon mark for social and small UI elements." 
+              spec={{ minScale: "16px Width" }}
+              downloadUrl={ASSET_URLS.SWIRL_PNG}
+            >
               <div className="relative">
                 <svg width="80" height="80" viewBox="0 0 100 100" fill="none">
                   <path d="M50 10C27.9 10 10 27.9 10 50C10 72.1 27.9 90 50 90C72.1 90 90 72.1 90 50" stroke={BRAND_INDIGO} strokeWidth="8" strokeLinecap="round" />
