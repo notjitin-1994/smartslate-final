@@ -279,7 +279,7 @@ export default function StylingWikiPage() {
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {BRAND_COLORS.map(c => <ColorCard key={color.hex} color={c} />)}
+            {BRAND_COLORS.map(c => <ColorCard key={c.hex} color={c} />)}
           </div>
           <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-8">
             {BRAND_GRADIENTS.map(g => (
