@@ -622,9 +622,9 @@ export default function Home() {
                   letterSpacing: '-0.02em'
                 }}
               >
-                Stop Wasting Weeks on
+                From Need to Alignment
                 <br />
-                Stakeholder Alignment
+                in <Box component="span" sx={{ color: '#fff' }}>1 Hour</Box>
               </Typography>
             </motion.div>
 
@@ -686,9 +686,9 @@ export default function Home() {
                     
                     {/* Process Steps */}
                     {[
-                      { step: '1', label: 'Input Business Goals', time: '6 days' },
-                      { step: '2', label: 'AI Analysis', time: '3-5 mins' },
-                      { step: '3', label: 'Generate Learning Experience Design', time: '2 mins' }
+                      { step: '1', label: 'Input Business Goals', time: '10 mins' },
+                      { step: '2', label: 'AI Adaptive Questions', time: '20 mins' },
+                      { step: '3', label: 'Generate Learning Blueprint', time: '30 mins' }
                     ].map((item, idx) => (
                       <Box key={idx} sx={{ zIndex: 1, textAlign: 'center' }}>
                         <Box
@@ -830,28 +830,28 @@ export default function Home() {
                         {[
                           {
                             icon: <Speed />,
-                            title: '1-Week Learning Experience Design Generation',
-                            description: 'From business goals to comprehensive learning design in days, not months'
+                            title: '1-Hour Learning Blueprint Generation',
+                            description: 'From business goals to comprehensive learning blueprint in 60 minutes'
                           },
                           {
                             icon: <AutoAwesome />,
-                            title: 'AI-Perfect First Draft',
-                            description: 'Structured, complete, and aligned from the start'
+                            title: 'Zero Revision Guarantee',
+                            description: 'Two-phase AI engine ensures your first draft is your final draft'
                           },
                           {
                             icon: <Verified />,
                             title: '100% Requirements Captured',
-                            description: 'AI identifies gaps you didn\'t even know existed'
+                            description: 'AI-adaptive questions identify every critical business constraint'
                           },
                           {
                             icon: <Description />,
-                            title: 'Auto-Generated Documentation',
-                            description: 'Executive summaries, objectives, KPIs—all formatted and ready'
+                            title: 'Claude Sonnet 4.5 Powered',
+                            description: 'Industry-leading intelligence mapping goals to architectures'
                           },
                           {
                             icon: <TrendingUp />,
-                            title: 'Perfect Stakeholder Alignment',
-                            description: 'Business objectives mapped to learning outcomes from day one'
+                            title: 'Instant Stakeholder Buy-In',
+                            description: 'Comprehensive documentation generated in 10-30 seconds'
                           }
                         ].map((item, idx) => (
                           <Box key={idx} sx={{ display: 'flex', gap: 2 }}>
@@ -880,7 +880,7 @@ export default function Home() {
               <Grid container spacing={1.8} sx={{ mb: 6 }}>
                 {[
                   {
-                    value: '6 weeks → 1 week',
+                    value: '6 weeks → 1 hour',
                     label: 'Requirements Gathering Time',
                     icon: <Speed />,
                     color: '#a7dadb'
@@ -1204,7 +1204,7 @@ export default function Home() {
               {[
                 {
                   icon: <Speed />,
-                  title: '6 Weeks → 1 Week',
+                  title: '6 Weeks → 1 Hour',
                   subtitle: 'Requirements in Days, Not Months',
                   problem: 'Stop losing momentum to endless stakeholder meetings and revision cycles',
                   solution: 'Polaris generates comprehensive learning experience designs in a single week, capturing every requirement while stakeholders\' insights are fresh',

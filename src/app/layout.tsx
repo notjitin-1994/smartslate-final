@@ -15,12 +15,12 @@ export const metadata: Metadata = {
     default: "Smartslate: Introducing Solara Learning Engine",
     template: "%s | Smartslate",
   },
-  description: "6 weeks of stakeholder meetings → 1 week with Polaris. Stop wasting 70% of your time aligning requirements. AI-powered needs analysis generates comprehensive learning experience designs while you focus on design.",
+  description: "6 weeks of stakeholder meetings → 1 hour with Polaris. Stop wasting 70% of your time aligning requirements. AI-powered needs analysis generates comprehensive learning experience designs while you focus on design.",
   keywords: "learning, workforce development, skills training, AI education, LMS, corporate training, instructional design, learning experience design, needs analysis, AI-powered learning, learning experience designs",
   authors: [{ name: "Smartslate Team" }],
   openGraph: {
     title: "Smartslate: Introducing Solara Learning Engine",
-    description: "6 weeks of stakeholder meetings → 1 week with Polaris. AI-powered needs analysis that transforms how you build learning experiences.",
+    description: "6 weeks of stakeholder meetings → 1 hour with Polaris. AI-powered needs analysis that transforms how you build learning experiences.",
     type: "website",
     locale: "en_US",
     url: "https://smartslate.io",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Smartslate: Introducing Solara Learning Engine",
-    description: "6 weeks of stakeholder meetings → 1 week with Polaris. AI-powered needs analysis that transforms how you build learning experiences.",
+    description: "6 weeks of stakeholder meetings → 1 hour with Polaris. AI-powered needs analysis that transforms how you build learning experiences.",
     images: ["/og-image.png"]
   },
   manifest: "/manifest.webmanifest",

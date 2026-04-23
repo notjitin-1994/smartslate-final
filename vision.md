@@ -189,7 +189,7 @@ Polaris uses AI to translate business goals into comprehensive learning experien
 - Data privacy guarantee (your data is never used for AI training)
 
 **Impact Metrics:**
-- Reduce needs analysis time from 6 weeks to 1 week
+- Reduce needs analysis time from 6 weeks to 1 hour
 - Eliminate bias in requirement gathering
 - Ensure stakeholder alignment before development begins
 - 95% completion rates in early pilots vs. 3-6% industry average

@@ -13,57 +13,57 @@ export default function PricingPage() {
 
   const pricing = {
     individual: {
-      explorer: { USD: 19, INR: 1599, starmaps: 5 },
-      navigator: { USD: 39, INR: 3299, starmaps: 25 },
-      voyager: { USD: 79, INR: 6699, starmaps: 50 }
+      explorer: { USD: 19, INR: 1599, learningBlueprints: 5 },
+      navigator: { USD: 39, INR: 3299, learningBlueprints: 25 },
+      voyager: { USD: 79, INR: 6699, learningBlueprints: 50 }
     },
     team: {
-      crew: { USD: 24, INR: 1999, learningExperienceDesigns: 10 },
-      fleet: { USD: 64, INR: 5399, learningExperienceDesigns: 30 },
-      armada: { USD: 129, INR: 10899, learningExperienceDesigns: 60 }
+      crew: { USD: 24, INR: 1999, learningBlueprints: 10 },
+      fleet: { USD: 64, INR: 5399, learningBlueprints: 30 },
+      armada: { USD: 129, INR: 10899, learningBlueprints: 60 }
     }
   };
 
   const faqs = [
     {
       category: 'billing',
-      question: 'Do my unused Starmaps expire?',
-      answer: 'Never, as long as you maintain an active subscription. Your saved Starmaps accumulate month over month, building a permanent library. Think of it like a gym membership where you actually get to keep the muscle you\'ve built. Your monthly generations refresh on the 1st of each month, and any Starmaps you save remain in your library indefinitely.'
+      question: 'Do my unused Learning Blueprints expire?',
+      answer: 'Never, as long as you maintain an active subscription. Your saved Learning Blueprints accumulate month over month, building a permanent library. Think of it like a gym membership where you actually get to keep the muscle you\'ve built. Your monthly generations refresh on the 1st of each month, and any Learning Blueprints you save remain in your library indefinitely.'
     },
     {
       category: 'features',
-      question: 'What\'s the difference between "generations" and "saved Starmaps"?',
-      answer: 'Generations are your monthly creation limit — how many new AI-powered learning experience designs you can create each month. Saved Starmaps is your storage library — how many you can keep and access anytime. For example, Navigator gives you 25 new generations each month, and you can save up to 25 Starmaps in your library that roll over and accumulate.'
+      question: 'What\'s the difference between "generations" and "saved Learning Blueprints"?',
+      answer: 'Generations are your monthly creation limit — how many new AI-powered learning blueprints you can create each month. Saved Learning Blueprints is your storage library — how many you can keep and access anytime. For example, Navigator gives you 25 new generations each month, and you can save up to 25 Learning Blueprints in your library that roll over and accumulate.'
     },
     {
       category: 'billing',
       question: 'What happens if I upgrade or downgrade my plan?',
-      answer: 'When you upgrade, your saved Starmaps remain, and you start receiving your new, higher monthly allocation immediately. When you downgrade, you keep all saved Starmaps — you just receive fewer new generations each month going forward. Your library is always yours.'
+      answer: 'When you upgrade, your saved Learning Blueprints remain, and you start receiving your new, higher monthly allocation immediately. When you downgrade, you keep all saved Learning Blueprints — you just receive fewer new generations each month going forward. Your library is always yours.'
     },
     {
       category: 'features',
-      question: 'Is there a maximum number of Starmaps I can save?',
-      answer: 'Yes, to ensure system performance: Explorer can save up to 5 Starmaps (60 with rollover over 12 months), Navigator up to 25 Starmaps (300 with 12-month accumulation), and Voyager up to 50 saved Starmaps (600 with 12-month accumulation). Team plans have shared pools: Crew (10/user), Fleet (30/user), Armada (60/user).'
+      question: 'Is there a maximum number of Learning Blueprints I can save?',
+      answer: 'Yes, to ensure system performance: Explorer can save up to 5 Learning Blueprints (60 with rollover over 12 months), Navigator up to 25 Learning Blueprints (300 with 12-month accumulation), and Voyager up to 50 saved Learning Blueprints (600 with 12-month accumulation). Team plans have shared pools: Crew (10/user), Fleet (30/user), Armada (60/user).'
     },
     {
       category: 'billing',
       question: 'What happens if I cancel my subscription?',
-      answer: 'If you cancel, you\'ll have 30 days to download or use your saved Starmaps. We\'ll send you reminders before your access expires. Simply reactivate before the 30-day window closes to retain your full library. We want you to keep what you\'ve built.'
+      answer: 'If you cancel, you\'ll have 30 days to download or use your saved Learning Blueprints. We\'ll send you reminders before your access expires. Simply reactivate before the 30-day window closes to retain your full library. We want you to keep what you\'ve built.'
     },
     {
       category: 'billing',
       question: 'Is there a free trial available?',
-      answer: 'Yes! All plans come with a 14-day free trial with 3 Starmap generations included. No credit card required to start. If you subscribe after your trial, those 3 Starmaps roll over into your library — they don\'t disappear!'
+      answer: 'Yes! All plans come with a 14-day free trial with 3 Learning Blueprint generations included. No credit card required to start. If you subscribe after your trial, those 3 Learning Blueprints roll over into your library — they don\'t disappear!'
     },
     {
       category: 'support',
-      question: 'How does team collaboration work?',
-      answer: 'Team plans include shared workspaces where members can collaborate in real-time. You can set role-based permissions, share templates, and work together on Starmaps. The team shares a collective pool of monthly generations and saved Starmaps that grows each month.'
+      question: 'How do I get support?',
+      answer: 'All plans include email support. Navigator and Voyager tiers include priority support with guaranteed 24h and 12h response times respectively. We also have a comprehensive knowledge base to help you get the most out of your Learning Blueprints.'
     },
     {
       category: 'features',
-      question: 'Can I export my Starmaps?',
-      answer: 'All plans include export to PDF. Navigator and above can export to Word and PDF formats with advanced formatting. We\'re also working on API access for Voyager users to integrate with other tools in your workflow.'
+      question: 'Can I export my Learning Blueprints?',
+      answer: 'All plans include export to PDF and Markdown. Navigator and above can export to Word with advanced formatting. Every blueprint generated is production-ready documentation.'
     }
   ];
 
