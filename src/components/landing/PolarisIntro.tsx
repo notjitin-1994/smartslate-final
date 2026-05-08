@@ -113,7 +113,7 @@ export default function PolarisIntro() {
 
         {/* Problem-Focused Subheading */}
         <BlurFade delay={0.3} direction="up" className="w-full">
-          <p className="mb-14 max-w-[900px] font-body text-xl leading-relaxed text-[#e0e0e0]">
+          <p className="mb-14 w-full font-body text-xl leading-relaxed text-[#e0e0e0]">
             You&apos;re an expert instructional designer. But you spend{" "}
             <span className="font-bold text-[#ef4444]">70% of your time</span> in meetings—
             wrestling with vague requirements, conflicting priorities, and the constant dread of misalignment.

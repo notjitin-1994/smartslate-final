@@ -151,7 +151,7 @@ export default function Home() {
                     color: 'text.secondary',
                     fontSize: { xs: '1.125rem', md: '1.375rem' },
                     lineHeight: 1.6,
-                    maxWidth: '800px',
+                    width: '100%',
                     textAlign: 'left'
                   }}
                 >
