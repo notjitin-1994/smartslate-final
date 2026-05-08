@@ -17,7 +17,7 @@ export default function RevampedHero() {
   return (
     <section 
       ref={containerRef}
-      className="relative flex w-full flex-col items-center overflow-hidden bg-[#020C1B] px-6 pt-[calc(var(--header-total-height-mobile)+0.02rem)] pb-[0.025rem] md:pt-[calc(var(--header-total-height-desktop)+0.04rem)] md:pb-[0.05rem]"
+      className="relative flex w-full flex-col items-center overflow-hidden bg-[#020C1B] px-6 pt-[0.002rem] pb-[0.002rem] md:pt-[0.004rem] md:pb-[0.005rem]"
     >
       {/* Background Pattern */}
       <AnimatedGridPattern
