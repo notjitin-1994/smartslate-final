@@ -48,35 +48,35 @@ export default function PolarisIntro() {
   const polarisWayItems = [
     {
       icon: <Speed />,
-      title: "1-Hour Learning Blueprint Generation",
-      description: "From business goals to comprehensive learning blueprint in 60 minutes"
+      title: "Intelligent Blueprinting",
+      description: "Convert ambiguous business goals into rigorous instructional architectures in under 45 minutes."
     },
     {
       icon: <AutoAwesome />,
-      title: "Zero Revision Guarantee",
-      description: "Two-phase AI engine ensures your first draft is your final draft"
+      title: "Adaptive Discovery Engine",
+      description: "Our two-phase discovery system asks the right questions to uncover hidden learning gaps automatically."
     },
     {
       icon: <Verified />,
-      title: "100% Requirements Captured",
-      description: "AI-adaptive questions identify every critical business constraint"
+      title: "Stakeholder-Ready Deliverables",
+      description: "Generate professional PDFs, slide decks, and Word docs that speak the language of leadership."
     },
     {
       icon: <Description />,
-      title: "Claude Sonnet 4.5 Powered",
-      description: "Industry-leading intelligence mapping goals to architectures"
+      title: "27+ Component Architecture",
+      description: "Complete coverage from terminal learning objectives to detailed budget and resource planning."
     },
     {
       icon: <TrendingUp />,
-      title: "Instant Stakeholder Buy-In",
-      description: "Comprehensive documentation generated in 10-30 seconds"
+      title: "Data-Driven Strategy",
+      description: "Map every learning module directly to business KPIs for verifiable impact and ROI."
     }
   ]
 
   const transformationSteps = [
-    { step: "1", label: "Input Business Goals", time: "10 mins" },
-    { step: "2", label: "AI Adaptive Questions", time: "20 mins" },
-    { step: "3", label: "Generate Learning Blueprint", time: "30 mins" }
+    { step: "1", label: "Business Goal Discovery", time: "10 mins" },
+    { step: "2", label: "AI-Powered Needs Analysis", time: "20 mins" },
+    { step: "3", label: "Architecture Generation", time: "15 mins" }
   ]
 
   return (
@@ -222,18 +222,18 @@ export default function PolarisIntro() {
 
         {/* Compelling CTA Section */}
         <BlurFade delay={0.7} direction="up" className="w-full">
-          <div className="rounded-3xl border-2 border-[#a7dadb]/30 bg-[#a7dadb]/10 p-8 text-center md:p-12">
-            <h3 className="mb-4 text-3xl font-extrabold text-[#a7dadb] md:text-4xl">
+          <div className="rounded-3xl border-2 border-[#a7dadb]/30 bg-[#a7dadb]/10 p-8 text-left md:p-12">
+            <h3 className="mb-4 text-3xl font-extrabold text-[#a7dadb] md:text-4xl text-left">
               Ready to 10x Your Design Speed?
             </h3>
-            <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-[#b0c5c6]">
+            <p className="mb-8 max-w-2xl text-lg leading-relaxed text-[#b0c5c6] text-left">
               Experience the future of learning design—where AI handles the complexity and you focus on creativity.{" "}
               <br className="hidden md:block" />
               <span className="font-bold text-[#10b981]">Start free, stay free.</span>{" "}
               Unlock powerful features the moment you sign up—no credit card, no trials, just instant access.
             </p>
             
-            <div className="mb-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <div className="mb-6 flex flex-col items-start justify-start gap-4 sm:flex-row">
               <Link href="https://polaris.smartslate.io">
                 <ShimmerButton
                   background="#4F46E5"
@@ -244,15 +244,9 @@ export default function PolarisIntro() {
                   Get Started Free
                 </ShimmerButton>
               </Link>
-              <Link href="/demo" className="group">
-                <button className="inline-flex h-14 min-w-[240px] items-center justify-center rounded-xl border-2 border-[#a7dadb] bg-transparent px-8 text-lg font-bold text-[#a7dadb] transition-all hover:bg-[#a7dadb]/10 active:scale-[0.98]">
-                  <PlayCircle className="mr-2 h-5 w-5 transition-transform group-hover:scale-110" />
-                  Watch Demo
-                </button>
-              </Link>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-6 text-sm font-medium text-[#b0c5c6]">
+            <div className="flex flex-wrap items-center justify-start gap-6 text-sm font-medium text-[#b0c5c6]">
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-5 w-5 text-[#10b981]" />
                 <span>Free tier forever</span>

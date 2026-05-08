@@ -28,6 +28,7 @@ export function AnimatedListItem({ children, className }: { children: React.Reac
 export interface AnimatedListProps extends ComponentPropsWithoutRef<"div"> {
   children: React.ReactNode
   delay?: number
+  initialValue?: number
 }
 
 export const AnimatedList = React.memo(
@@ -55,7 +56,7 @@ export const AnimatedList = React.memo(
     }, [index, delay, childrenArray.length])
 
     const itemsToShow = useMemo(() => {
-      const result = childrenArray.slice(0, index + 1).reverse()
+      const result = childrenArray.slice(0, index + 1)
       return result
     }, [index, childrenArray])
 

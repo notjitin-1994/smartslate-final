@@ -17,7 +17,7 @@ export default function RevampedHero() {
   return (
     <section 
       ref={containerRef}
-      className="relative flex w-full flex-col items-center overflow-hidden bg-[#020C1B] px-6 pt-[calc(var(--header-total-height-mobile)+0.2rem)] pb-1 md:pt-[calc(var(--header-total-height-desktop)+0.4rem)] md:pb-2"
+      className="relative flex w-full flex-col items-center overflow-hidden bg-[#020C1B] px-6 pt-[calc(var(--header-total-height-mobile)+0.02rem)] pb-[0.025rem] md:pt-[calc(var(--header-total-height-desktop)+0.04rem)] md:pb-[0.05rem]"
     >
       {/* Background Pattern */}
       <AnimatedGridPattern
@@ -67,22 +67,15 @@ export default function RevampedHero() {
 
           <BlurFade delay={0.4} direction="up" className="w-full">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <Link href="https://polaris.smartslate.io">
+              <Link href="https://solara.smartslate.io">
                 <ShimmerButton
                   background="#4F46E5"
                   shimmerColor="#ffffff"
                   className="h-14 min-w-[220px] px-8 text-lg font-bold shadow-2xl transition-transform hover:scale-[1.02] active:scale-[0.98]"
                 >
                   <Rocket className="mr-2 h-5 w-5" />
-                  Start Free Forever
+                  Learn More
                 </ShimmerButton>
-              </Link>
-              
-              <Link href="/demo" className="group">
-                <button className="inline-flex h-14 min-w-[200px] items-center justify-center rounded-xl border-2 border-[#a7dadb]/30 bg-transparent px-8 text-lg font-bold text-[#a7dadb] transition-all hover:border-[#a7dadb] hover:bg-[#a7dadb]/10 active:scale-[0.98]">
-                  <PlayCircle className="mr-2 h-5 w-5 transition-transform group-hover:scale-110" />
-                  Watch Demo
-                </button>
               </Link>
             </div>
           </BlurFade>
