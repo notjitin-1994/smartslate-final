@@ -71,82 +71,10 @@ export default function Home() {
 
       <PolarisIntro />
 
-      {/* Enhanced Target Audience Badges */}
+      {/* Why Solara Section - Completely Revamped */}
       <Box
         component="section"
-        aria-label="Target Audience"
-        sx={{
-          pb: 'var(--section-padding-y)',
-          position: 'relative',
-          zIndex: 1
-        }}
-      >
-        <Container maxWidth="lg">
-          <MotionBox
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            variants={staggerContainer}
-          >
-            <motion.div variants={fadeInUp}>
-              <Box sx={{ textAlign: 'center' }}>
-                <Typography
-                  variant="overline"
-                  sx={{
-                    color: 'text.secondary',
-                    mb: 3,
-                    fontWeight: 700,
-                    fontSize: '0.875rem',
-                    letterSpacing: '0.15em',
-                    display: 'block'
-                  }}
-                >
-                  TRUSTED BY LEARNING PROFESSIONALS AT
-                </Typography>
-                <Stack direction="row" spacing={2} justifyContent="center" flexWrap="wrap" useFlexGap>
-                  {[
-                    { label: 'Instructional Designers', icon: <Psychology /> },
-                    { label: 'LXDs', icon: <AutoAwesome /> },
-                    { label: 'L&D Leaders', icon: <TrendingUp /> },
-                    { label: 'HR Directors', icon: <Groups /> },
-                    { label: 'Training Consultants', icon: <Rocket /> }
-                  ].map((role, idx) => (
-                    <Chip
-                      key={idx}
-                      icon={role.icon}
-                      label={role.label}
-                      sx={{
-                        background: 'rgba(167, 218, 219, 0.1)',
-                        border: '1.5px solid rgba(167, 218, 219, 0.3)',
-                        color: 'text.primary',
-                        fontWeight: 700,
-                        fontSize: '0.9375rem',
-                        padding: '24px 16px',
-                        '& .MuiChip-icon': {
-                          color: '#a7dadb',
-                          fontSize: '1.25rem'
-                        },
-                        '&:hover': {
-                          background: 'rgba(167, 218, 219, 0.15)',
-                          borderColor: '#a7dadb',
-                          transform: 'translateY(-2px)',
-                          boxShadow: '0 8px 24px rgba(167, 218, 219, 0.2)'
-                        },
-                        transition: 'all 0.3s ease'
-                      }}
-                    />
-                  ))}
-                </Stack>
-              </Box>
-            </motion.div>
-          </MotionBox>
-        </Container>
-      </Box>
-
-      {/* Why Polaris Section - Completely Revamped */}
-      <Box
-        component="section"
-        aria-label="Why Polaris"
+        aria-label="Why Solara"
         sx={{
           py: 'var(--section-padding-y)',
           position: 'relative',
@@ -163,6 +91,29 @@ export default function Home() {
             {/* Compelling Header */}
             <motion.div variants={fadeInUp}>
               <Box sx={{ mb: 6, textAlign: 'left' }}>
+                <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mb: 2 }}>
+                  <Chip 
+                    label="Polaris: LIVE" 
+                    size="small" 
+                    sx={{ bgcolor: '#10b981', color: '#fff', fontWeight: 800, borderRadius: '4px' }} 
+                  />
+                  <Chip 
+                    label="Constellation: BETA" 
+                    size="small" 
+                    sx={{ bgcolor: '#4F46E5', color: '#fff', fontWeight: 800, borderRadius: '4px' }} 
+                  />
+                  <Chip 
+                    label="Nova: BUILDING" 
+                    size="small" 
+                    sx={{ bgcolor: '#f59e0b', color: '#fff', fontWeight: 800, borderRadius: '4px' }} 
+                  />
+                  <Chip 
+                    label="SLATED FOR 2027: Nebula, Orbit, Spectrum" 
+                    size="small" 
+                    variant="outlined"
+                    sx={{ color: '#a7dadb', borderColor: '#a7dadb', fontWeight: 800, borderRadius: '4px' }} 
+                  />
+                </Stack>
                 <Typography
                   variant="overline"
                   sx={{
@@ -174,7 +125,7 @@ export default function Home() {
                     mb: 2
                   }}
                 >
-                  THE POLARIS ADVANTAGE
+                  THE SOLARA ENGINE ADVANTAGE
                 </Typography>
                 <Typography
                   variant="h2"
@@ -189,9 +140,9 @@ export default function Home() {
                 >
                   Why Your Competitors
                   <br />
-                  Are Switching to{' '}
+                  Are Switching to the{' '}
                   <Box component="span" sx={{ color: '#a7dadb' }}>
-                    Polaris
+                    Solara Engine
                   </Box>
                 </Typography>
                 <Typography
@@ -205,7 +156,7 @@ export default function Home() {
                   }}
                 >
                   Traditional requirements gathering is killing your velocity. Stop wasting time in meetings—
-                  start building with AI-powered intelligence.
+                  start building with the full power of the Solara ecosystem.
                 </Typography>
               </Box>
             </motion.div>
@@ -218,7 +169,7 @@ export default function Home() {
                   title: '6 Weeks → 1 Hour',
                   subtitle: 'Requirements in Days, Not Months',
                   problem: 'Stop losing momentum to endless stakeholder meetings and revision cycles',
-                  solution: 'Polaris generates comprehensive learning experience designs in a single week, capturing every requirement while stakeholders\' insights are fresh',
+                  solution: 'Solara Engine generates comprehensive learning experience designs in a single session, capturing every requirement while stakeholders\' insights are fresh',
                   color: '#a7dadb'
                 },
                 {
@@ -226,7 +177,7 @@ export default function Home() {
                   title: '100% Business Alignment',
                   subtitle: 'Zero Misalignment Risk',
                   problem: 'Tired of building the wrong thing because requirements were misunderstood?',
-                  solution: 'AI maps every learning objective directly to business KPIs, ensuring perfect alignment from day one with stakeholder buy-in',
+                  solution: 'Our intelligent ecosystem maps every learning objective directly to business KPIs, ensuring perfect alignment from day one',
                   color: '#10b981'
                 },
                 {
@@ -234,7 +185,7 @@ export default function Home() {
                   title: 'Catches 100% of Gaps',
                   subtitle: 'AI-Powered Gap Detection',
                   problem: 'Critical requirements discovered in user testing? Never again.',
-                  solution: 'Advanced AI analyzes requirements against 50+ instructional design frameworks, catching gaps you didn\'t know existed',
+                  solution: 'The Solara Engine analyzes requirements against dozens of professional frameworks, catching gaps before they become expensive problems',
                   color: '#4F46E5'
                 },
                 {
@@ -242,23 +193,23 @@ export default function Home() {
                   title: '10x ROI Documentation',
                   subtitle: 'Executive-Ready Reports',
                   problem: 'Spending hours formatting Word docs that executives skim in 30 seconds?',
-                  solution: 'Auto-generate executive summaries, ROI projections, and stakeholder presentations that leadership actually reads',
+                  solution: 'Auto-generate executive summaries, ROI projections, and stakeholder presentations that leadership actually reads and approves',
                   color: '#f59e0b'
                 },
                 {
                   icon: <Groups />,
-                  title: 'Instant Stakeholder Buy-In',
-                  subtitle: 'Collaboration Without Chaos',
-                  problem: 'Endless email chains and conflicting feedback destroying your timeline?',
-                  solution: 'Real-time collaboration with version control and automated conflict resolution keeps everyone aligned',
+                  title: 'Unified Learning Ecosystem',
+                  subtitle: 'One Platform, Total Control',
+                  problem: 'Fragmented tools and disconnected data destroying your visibility?',
+                  solution: 'Design, deliver, and measure in one place. Solara integrates every phase of the learning lifecycle into a single, cohesive engine',
                   color: '#8b5cf6'
                 },
                 {
                   icon: <WorkspacePremium />,
                   title: 'Expert-Level Quality',
                   subtitle: 'Best Practices Automated',
-                  problem: 'Junior designers need 6 months to master instructional design frameworks',
-                  solution: 'Polaris embeds ADDIE, SAM, Bloom\'s Taxonomy, and Kirkpatrick automatically—every learning experience design is expert-grade',
+                  problem: 'Maintaining high standards across distributed teams is nearly impossible',
+                  solution: 'Solara embeds professional instructional design methodologies automatically—ensuring every output is expert-grade and research-backed',
                   color: '#ec4899'
                 }
               ].map((feature, index) => (
@@ -422,145 +373,6 @@ export default function Home() {
                 </Grid>
               ))}
             </Grid>
-
-            {/* Compelling CTA Banner */}
-            <motion.div variants={fadeInUp}>
-              <Box
-                sx={{
-                  mt: 8,
-                  p: { xs: 4, md: 6 },
-                  background: 'rgba(167, 218, 219, 0.12)',
-                  backdropFilter: 'blur(24px)',
-                  border: '2px solid rgba(167, 218, 219, 0.3)',
-                  borderRadius: 4,
-                  textAlign: 'center',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  '&::before': {
-                    content: '""',
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: '4px',
-                    background: '#a7dadb'
-                  }
-                }}
-              >
-                <Typography
-                  variant="h3"
-                  sx={{
-                    color: 'text.primary',
-                    fontWeight: 800,
-                    mb: 2,
-                    fontSize: { xs: '1.75rem', md: '2.5rem' }
-                  }}
-                >
-                  Still Scheduling Stakeholder Meetings?
-                </Typography>
-                <Typography
-                  variant="h6"
-                  sx={{
-                    color: 'text.secondary',
-                    mb: 4,
-                    fontSize: { xs: '1.125rem', md: '1.375rem' },
-                    maxWidth: '700px',
-                    mx: 'auto',
-                    lineHeight: 1.6
-                  }}
-                >
-                  While you&apos;re coordinating calendars, you could have your learning experience designs done.
-                  <br />
-                  <Box component="span" sx={{ color: '#a7dadb', fontWeight: 700 }}>
-                    Start building today.
-                  </Box>
-                </Typography>
-
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  spacing={2}
-                  justifyContent="center"
-                >
-                  <Button
-                    variant="contained"
-                    size="large"
-                    component={Link}
-                    href="https://polaris.smartslate.io"
-                    startIcon={<Rocket />}
-                    sx={{
-                      px: 5,
-                      py: 2.5,
-                      fontSize: '1.25rem',
-                      fontWeight: 700,
-                      background: '#4F46E5',
-                      color: '#fff',
-                      minWidth: '260px',
-                      boxShadow: '0 12px 32px rgba(79, 70, 229, 0.4)',
-                      '&:hover': {
-                        background: '#4338CA',
-                        transform: 'translateY(-4px)',
-                        boxShadow: '0 16px 48px rgba(79, 70, 229, 0.5)'
-                      },
-                      '&:focus-visible': {
-                        outline: '3px solid',
-                        outlineColor: '#a7dadb',
-                        outlineOffset: '3px'
-                      }
-                    }}
-                  >
-                    Start Free—Build Now
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    size="large"
-                    component={Link}
-                    href="/demo"
-                    startIcon={<PlayCircle />}
-                    sx={{
-                      px: 5,
-                      py: 2.5,
-                      fontSize: '1.25rem',
-                      fontWeight: 700,
-                      borderColor: '#a7dadb',
-                      color: '#a7dadb',
-                      borderWidth: 2,
-                      minWidth: '260px',
-                      '&:hover': {
-                        borderWidth: 2,
-                        backgroundColor: 'rgba(167, 218, 219, 0.12)',
-                        transform: 'translateY(-2px)',
-                        borderColor: '#a7dadb'
-                      }
-                    }}
-                  >
-                    See It In Action
-                  </Button>
-                </Stack>
-
-                <Box sx={{ mt: 4 }}>
-                  <Stack direction="row" spacing={4} justifyContent="center" flexWrap="wrap" useFlexGap>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <CheckCircle sx={{ color: '#10b981', fontSize: '1.5rem' }} />
-                      <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600 }}>
-                        Free tier forever
-                      </Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <CheckCircle sx={{ color: '#10b981', fontSize: '1.5rem' }} />
-                      <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600 }}>
-                        No credit card required
-                      </Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <CheckCircle sx={{ color: '#10b981', fontSize: '1.5rem' }} />
-                      <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600 }}>
-                        Instant access—start in minutes
-                      </Typography>
-                    </Box>
-                  </Stack>
-                </Box>
-              </Box>
-            </motion.div>
           </MotionBox>
         </Container>
       </Box>
