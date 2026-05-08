@@ -78,29 +78,38 @@ export const productConfigs: Record<string, Partial<ProductConfig>> = {
       showComingSoonProducts: true,
       enableProductPreviews: true,
       enableBetaFeatures: true,
-    },
+      maxProductsPerPage: 10,
+    } as ProductConfig['environment'],
     features: {
+      enableProductSearch: true,
+      enableProductCategories: true,
+      enableProductAnalytics: true,
       enableProductComparison: true,
       enableProductReviews: true,
-    },
+    } as ProductConfig['features'],
   },
   staging: {
     environment: {
       showComingSoonProducts: true,
       enableProductPreviews: true,
       enableBetaFeatures: false,
-    },
+      maxProductsPerPage: 10,
+    } as ProductConfig['environment'],
   },
   production: {
     environment: {
       showComingSoonProducts: true, // Changed from false to true to show Solara
       enableProductPreviews: false,
       enableBetaFeatures: false,
-    },
+      maxProductsPerPage: 10,
+    } as ProductConfig['environment'],
     features: {
+      enableProductSearch: true,
+      enableProductCategories: true,
+      enableProductAnalytics: true,
       enableProductComparison: false,
       enableProductReviews: false,
-    },
+    } as ProductConfig['features'],
   },
 };
 

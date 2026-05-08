@@ -1,5 +1,15 @@
-import { Product, ProductCategory } from '@/lib/types/products';
+import { Product, ProductCategory, ProductStatus } from '@/lib/types/products';
 import { ProductIcons } from '@/components/icons/ProductIcons';
+
+export interface ProductRegistry {
+  categories: ProductCategory[];
+  products: Product[];
+  getProductById(id: string): Product | undefined;
+  getProductBySlug(slug: string): Product | undefined;
+  getProductsByCategory(categoryId: string): Product[];
+  getActiveProducts(): Product[];
+  getProductsByStatus(status: ProductStatus): Product[];
+}
 
 // Product data configuration
 export const PRODUCTS_DATA: Product[] = [

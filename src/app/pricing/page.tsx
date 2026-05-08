@@ -427,7 +427,7 @@ export default function PricingPage() {
               </div>
 
               <div className="p-4 mb-6 rounded-lg border border-white/5 bg-white/[0.03]">
-                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.individual.explorer.starmaps} Starmaps/month</div>
+                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.individual.explorer.learningBlueprints} Learning Experience Designs/month</div>
                 <div className="text-xs text-[rgb(176,197,198)]">Unused roll over for 12 months with 5 saved</div>
               </div>
 
@@ -490,7 +490,7 @@ export default function PricingPage() {
               </div>
 
               <div className="p-4 mb-6 rounded-lg border border-white/5 bg-white/[0.03]">
-                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.individual.navigator.starmaps} Starmaps/month</div>
+                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.individual.navigator.learningBlueprints} Learning Experience Designs/month</div>
                 <div className="text-xs text-[rgb(176,197,198)]">Unused roll over for 12 months with 25 saved</div>
               </div>
 
@@ -542,7 +542,7 @@ export default function PricingPage() {
               </div>
 
               <div className="p-4 mb-6 rounded-lg border border-white/5 bg-white/[0.03]">
-                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.individual.voyager.starmaps} Starmaps/month</div>
+                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.individual.voyager.learningBlueprints} Learning Experience Designs/month</div>
                 <div className="text-xs text-[rgb(176,197,198)]">Unused roll over for 12 months with 50 saved</div>
               </div>
 
@@ -606,7 +606,7 @@ export default function PricingPage() {
               </div>
 
               <div className="p-4 mb-6 rounded-lg border border-white/5 bg-white/[0.03]">
-                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.team.crew.learningExperienceDesigns} Learning Experience Designs per user/month</div>
+                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.team.crew.learningBlueprints} Learning Experience Designs per user/month</div>
                 <div className="text-xs text-[rgb(176,197,198)]">Unused roll over for 12 months with 10 saved per user</div>
               </div>
 
@@ -667,7 +667,7 @@ export default function PricingPage() {
               </div>
 
               <div className="p-4 mb-6 rounded-lg border border-white/5 bg-white/[0.03]">
-                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.team.fleet.learningExperienceDesigns} Learning Experience Designs per user/month</div>
+                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.team.fleet.learningBlueprints} Learning Experience Designs per user/month</div>
                 <div className="text-xs text-[rgb(176,197,198)]">Unused roll over for 12 months with 30 saved per user</div>
               </div>
 
@@ -718,7 +718,7 @@ export default function PricingPage() {
               </div>
 
               <div className="p-4 mb-6 rounded-lg border border-white/5 bg-white/[0.03]">
-                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.team.armada.learningExperienceDesigns} Learning Experience Designs per user/month</div>
+                <div className="text-sm font-semibold mb-1 text-[rgb(224,224,224)]">{pricing.team.armada.learningBlueprints} Learning Experience Designs per user/month</div>
                 <div className="text-xs text-[rgb(176,197,198)]">Unused roll over for 12 months with 60 saved per user</div>
               </div>
 
