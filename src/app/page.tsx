@@ -12,6 +12,7 @@ import PolarisIntro from '@/components/landing/PolarisIntro';
 import BeyondSolara from '@/components/landing/BeyondSolara';
 import BetaRequestModal from '@/components/landing/BetaRequestModal';
 import { MagicCard } from '@/components/ui/magic-card';
+import { ShimmerButton } from '@/components/ui/shimmer-button';
 import { Meteors } from '@/components/ui/meteors';
 import { ShineBorder } from '@/components/ui/shine-border';
 import {
