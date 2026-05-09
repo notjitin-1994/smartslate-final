@@ -216,7 +216,7 @@ export default function PolarisIntro() {
 
               {/* The Polaris Way */}
               <div className={cn(
-                "relative h-full rounded-2xl border-2 border-[#10b981]/40 bg-[#10b981]/5 shadow-[0_16px_48px_rgba(16,185,129,0.15)] transition-all duration-500",
+                "relative h-full overflow-hidden rounded-2xl border-2 border-[#10b981]/40 bg-[#10b981]/5 shadow-[0_16px_48px_rgba(16,185,129,0.15)] transition-all duration-500",
                 comparisonMode === "polaris" ? "block opacity-100 translate-x-0" : "hidden md:block opacity-40 grayscale-[0.5]"
               )}>
                 <ShineBorder

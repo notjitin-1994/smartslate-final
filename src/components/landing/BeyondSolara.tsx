@@ -92,35 +92,30 @@ export default function BeyondSolara() {
           <div className="flex flex-col gap-12">
             {products.map((product, idx) => (
               <BlurFade key={product.id} delay={0.2 + idx * 0.1} direction="left">
-                <div className="group relative overflow-hidden rounded-3xl lg:rounded-none lg:bg-transparent lg:border-none lg:p-0 pl-8 before:absolute lg:before:block before:hidden before:left-0 before:top-0 before:h-full before:w-1 before:bg-[#a7dadb]/20 before:transition-all hover:before:bg-[#a7dadb]">
-                  {/* Mobile Background Image */}
-                  <div className="absolute inset-0 -z-10 block lg:hidden">
-                    <img 
-                      src="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2000&auto=format&fit=crop" 
-                      alt=""
-                      className="h-full w-full object-cover opacity-20 grayscale"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#020C1B] via-[#020C1B]/90 to-transparent" />
-                  </div>
-
-                  <div className="relative z-10 p-8 lg:p-0">
-                    <div className="mb-4 flex items-center gap-3 text-[#a7dadb]">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#a7dadb]/10 border border-[#a7dadb]/20 group-hover:scale-110 transition-transform">
+                <div className="group relative overflow-hidden rounded-3xl border border-white/5 bg-white/[0.02] p-8 transition-all hover:bg-white/[0.04] hover:border-[#a7dadb]/20">
+                  <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-[#a7dadb]/40 via-[#a7dadb]/10 to-transparent" />
+                  
+                  <div className="relative z-10 flex flex-col items-start">
+                    <div className="mb-6 flex items-center gap-3 text-[#a7dadb]">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#a7dadb]/10 border border-[#a7dadb]/20 shadow-[0_0_20px_-5px_rgba(167,218,219,0.3)] group-hover:scale-110 transition-transform duration-300">
                         {product.icon}
                       </div>
-                      <span className="text-sm font-bold uppercase tracking-widest">{product.name}</span>
+                      <span className="text-sm font-black uppercase tracking-[0.2em]">{product.name}</span>
                     </div>
-                    <h3 className="mb-4 font-heading text-2xl font-bold text-[#e0e0e0] md:text-3xl">
+                    
+                    <h3 className="mb-4 font-heading text-3xl font-extrabold text-[#e0e0e0] md:text-4xl leading-tight">
                       {product.subtitle}
                     </h3>
-                    <p className="hidden lg:block mb-6 font-body text-lg leading-relaxed text-[#b0c5c6]">
+                    
+                    <p className="mb-8 font-body text-lg leading-relaxed text-[#b0c5c6] max-w-2xl">
                       {product.description}
                     </p>
+                    
                     <Link href={product.href}>
                       <ShimmerButton
                         background="#4F46E5"
                         shimmerColor="#ffffff"
-                        className="h-11 px-6 text-sm font-bold shadow-lg transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                        className="h-12 px-8 text-base font-bold shadow-[0_12px_32px_rgba(79,70,229,0.3)] transition-transform hover:scale-[1.03] active:scale-[0.97]"
                       >
                         {product.cta}
                       </ShimmerButton>
