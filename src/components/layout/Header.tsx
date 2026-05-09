@@ -119,7 +119,7 @@ const CTAButton = styled(Button)(({ theme }) => ({
   color: '#fff',
   fontWeight: 600,
   padding: 'var(--space-sm) var(--space-lg)',
-  borderRadius: 'var(--radius-sm)',
+  borderRadius: '8px',
   textTransform: 'none',
   fontSize: '0.9rem',
   transition: 'all 0.2s ease',

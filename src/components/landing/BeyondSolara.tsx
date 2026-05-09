@@ -53,11 +53,7 @@ export default function BeyondSolara() {
   return (
     <section 
       ref={ref}
-      className="relative z-10 w-full bg-[#020C1B] px-6 pt-[xs: 8, md: 12] pb-[xs: 12, md: 16]"
-      style={{
-        paddingTop: 'calc(var(--space-xxl) * 1.5)',
-        paddingBottom: 'calc(var(--space-xxl) * 2)'
-      }}
+      className="relative z-10 w-full bg-[#020C1B] px-6 pt-8 pb-12 md:pt-12 md:pb-16"
     >
       <div className="mx-auto max-w-[1200px] w-full">
         
@@ -81,54 +77,16 @@ export default function BeyondSolara() {
 
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-24 items-center">
           
-          {/* Interactive Visual (The Product Galaxy) */}
-          <div className="relative flex h-[500px] w-full items-center justify-center overflow-hidden rounded-3xl bg-[#a7dadb]/5 border border-[#a7dadb]/10 md:h-[600px]">
-            <div className="absolute inset-0 bg-radial-[circle_at_center] from-[#a7dadb]/10 via-transparent to-transparent" />
-            
-            {/* Core */}
-            <div className="z-20 flex h-32 w-32 items-center justify-center rounded-full border-4 border-[#a7dadb]/20 bg-[#0d1b2a] shadow-[0_0_50px_-10px_#a7dadb]">
-              <Rocket className="h-14 w-14 text-[#a7dadb] animate-pulse" />
-            </div>
-
-            {/* Inner Orbit (The Engine) */}
-            <OrbitingCircles
-              className="h-[30px] w-[30px] border-none bg-transparent"
-              duration={20}
-              delay={20}
-              radius={100}
-            >
-              <Speed className="h-6 w-6 text-[#a7dadb]/40" />
-              <AutoAwesome className="h-6 w-6 text-[#a7dadb]/40" />
-              <Verified className="h-6 w-6 text-[#a7dadb]/40" />
-            </OrbitingCircles>
-
-            {/* Middle Orbit (The Primary Products) */}
-            <OrbitingCircles
-              className="h-[60px] w-[60px] border-2 border-[#a7dadb]/30 bg-[#0d1b2a] shadow-xl"
-              duration={30}
-              radius={190}
-            >
-              <div className="flex items-center justify-center">
-                <School className="h-8 w-8 text-[#a7dadb]" />
-              </div>
-              <div className="flex items-center justify-center">
-                <Architecture className="h-8 w-8 text-[#a7dadb]" />
-              </div>
-            </OrbitingCircles>
-
-            {/* Outer Orbit (Future Modules) */}
-            <OrbitingCircles
-              className="h-[40px] w-[40px] border border-white/10 bg-white/5 opacity-50"
-              duration={40}
-              radius={260}
-              reverse
-            >
-              <Insights className="h-5 w-5 text-[#b0c5c6]" />
-              <Psychology className="h-5 w-5 text-[#b0c5c6]" />
-              <Analytics className="h-5 w-5 text-[#b0c5c6]" />
-              <Lightbulb className="h-5 w-5 text-[#b0c5c6]" />
-            </OrbitingCircles>
-          </div>
+          {/* Brand Style Compliant Image */}
+          <BlurFade delay={0.2} direction="right" className="relative h-[500px] w-full overflow-hidden rounded-3xl border border-[#a7dadb]/20 md:h-[600px]">
+            <img 
+              src="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2000&auto=format&fit=crop" 
+              alt="Smartslate Ecosystem" 
+              className="h-full w-full object-cover opacity-60 grayscale-[0.3] brightness-[0.7]"
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-[#020C1B] via-transparent to-transparent opacity-60" />
+            <div className="absolute inset-0 bg-[#4F46E5]/10 mix-blend-overlay" />
+          </BlurFade>
 
           {/* Product Narrative List */}
           <div className="flex flex-col gap-12">

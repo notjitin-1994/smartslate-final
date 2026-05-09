@@ -80,7 +80,7 @@ export default function Home() {
         component="section"
         aria-label="Why Solara"
         sx={{
-          pt: { xs: 8, md: 12 }, pb: { xs: 12, md: 16 },
+          pt: 4, pb: 6, md: { pt: 6, pb: 8 },
           position: 'relative',
           zIndex: 1
         }}
@@ -237,7 +237,7 @@ export default function Home() {
                         {module.icon}
                       </div>
                       <div 
-                        className="rounded-full px-3 py-1 text-[10px] font-bold tracking-widest bg-[#a7dadb] text-[#091521] border border-[#a7dadb]/20"
+                        className="rounded-lg px-3 py-1 text-[10px] font-bold tracking-widest bg-[#a7dadb] text-[#091521] border border-[#a7dadb]/20"
                       >
                         {module.status}
                       </div>
@@ -299,8 +299,8 @@ export default function Home() {
                       )}
                     </div>
                   </MagicCard>
-                </motion.div>))}
-            </div>
+                </motion.div>
+              ))}
           </MotionBox>
         </Container>
       </Box>
@@ -309,7 +309,7 @@ export default function Home() {
 
       {/* CTA Section */}
       <Box sx={{
-        pt: { xs: 8, md: 12 }, pb: { xs: 12, md: 16 },
+        pt: 4, pb: 6, md: { pt: 6, pb: 8 },
         position: 'relative',
         zIndex: 1
       }}>

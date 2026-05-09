@@ -82,7 +82,7 @@ export default function PolarisIntro() {
   return (
     <section 
       ref={ref}
-      className="relative z-10 w-full bg-[#020C1B] px-6 py-12 md:py-16"
+      className="relative z-10 w-full bg-[#020C1B] px-6 pt-8 pb-12 md:pt-12 md:pb-16"
     >
       <div className="mx-auto max-w-[1200px] w-full">
         
