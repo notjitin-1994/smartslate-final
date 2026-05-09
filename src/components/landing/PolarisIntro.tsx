@@ -132,7 +132,7 @@ export default function PolarisIntro() {
               <AnimatedList className="flex-col md:flex-row md:items-start md:justify-between w-full" delay={800}>
                 {transformationSteps.map((item, idx) => (
                   <div key={idx} className="relative flex flex-col items-center z-10 w-full max-w-[250px] mx-auto">
-                    <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full border-4 border-white/10 bg-[#a7dadb] shadow-[0_8px_24px_rgba(167,218,219,0.3)]">
+                    <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-2xl border-4 border-white/10 bg-[#a7dadb] shadow-[0_8px_24px_rgba(167,218,219,0.3)]">
                       <span className="text-3xl font-extrabold text-[#000]">{item.step}</span>
                     </div>
                     <span className="mb-1 text-center font-semibold text-[#e0e0e0]">{item.label}</span>

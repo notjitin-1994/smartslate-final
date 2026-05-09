@@ -12,6 +12,8 @@ import PolarisIntro from '@/components/landing/PolarisIntro';
 import BeyondSolara from '@/components/landing/BeyondSolara';
 import BetaRequestModal from '@/components/landing/BetaRequestModal';
 import { MagicCard } from '@/components/ui/magic-card';
+import { Meteors } from '@/components/ui/meteors';
+import { ShineBorder } from '@/components/ui/shine-border';
 import {
   AutoAwesome,
   Speed,
@@ -309,7 +311,7 @@ export default function Home() {
 
       {/* CTA Section */}
       <Box sx={{
-        pt: 4, pb: 6, md: { pt: 6, pb: 8 },
+        pt: 8, pb: 12, md: { pt: 12, pb: 16 },
         position: 'relative',
         zIndex: 1
       }}>
@@ -320,143 +322,85 @@ export default function Home() {
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <Box
-              sx={{
-                background: 'rgba(167, 218, 219, 0.08)',
-                backdropFilter: 'blur(24px) saturate(180%)',
-                WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-                border: '2px solid rgba(167, 218, 219, 0.3)',
-                borderRadius: 3,
-                p: { xs: 4, md: 8 },
-                boxShadow: '0 8px 32px rgba(167, 218, 219, 0.15), inset 0 1px 0 rgba(167, 218, 219, 0.15)',
-                position: 'relative',
-                overflow: 'hidden',
-                '&::before': {
-                  content: '""',
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: '4px',
-                  background: 'linear-gradient(90deg, #a7dadb 0%, rgba(167, 218, 219, 0.3) 100%)'
-                }
-              }}
-            >
-              <Grid container spacing={3.6} alignItems="center">
-                <Grid size={{ xs: 12, md: 7 }}>
-                  <Stack direction="row" spacing={1.2} alignItems="center" sx={{ mb: 3 }}>
-                    <Rocket sx={{ fontSize: '2.5rem', color: '#a7dadb' }} />
-                    <Typography
-                      variant="h3"
-                      sx={{
-                        fontSize: { xs: '1.75rem', md: '2.5rem' },
-                        fontWeight: 700,
-                        textAlign: 'left'
-                      }}
-                    >
-                      Ready to Transform Learning?
-                    </Typography>
-                  </Stack>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      mb: 2.4,
-                      color: 'text.secondary',
-                      fontSize: { xs: '1rem', md: '1.25rem' },
-                      lineHeight: 1.8,
-                      textAlign: 'left'
-                    }}
-                  >
-                    <Box component="span" sx={{ color: '#10b981', fontWeight: 700 }}>
-                      Free tier. Full power. Forever.
-                    </Box>{' '}
-                    Transform your learning workflow with the most advanced AI-powered design platform.
-                    No credit card. No trials. Just sign up and start building.
-                  </Typography>
-                  <Stack
-                    direction={{ xs: 'column', sm: 'row' }}
-                    spacing={1.2}
-                  >
-                    <Button
-                      variant="contained"
-                      size="large"
-                      component={Link}
-                      href="https://solara.smartslate.io"
-                      startIcon={<Rocket />}
-                      sx={{
-                        px: 2.4,
-                        py: 1.05,
-                        fontSize: '1.125rem',
-                        fontWeight: 600,
-                        background: '#4F46E5',
-                        color: '#fff',
-                        boxShadow: '0 4px 12px rgba(79, 70, 229, 0.4)',
-                        '&:hover': {
-                          background: '#4338CA',
-                          transform: 'translateY(-2px)',
-                          boxShadow: '0 6px 20px rgba(79, 70, 229, 0.5)'
+            <div className="relative group w-full overflow-hidden rounded-[2.5rem] bg-[#0d1b2a] border border-white/5 shadow-2xl">
+              <ShineBorder
+                className="pointer-events-none"
+                shineColor={["#a7dadb", "#4F46E5", "#ffffff"]}
+                borderWidth={1}
+                duration={10}
+              />
+              <Meteors number={30} />
+              
+              <div className="relative z-10 p-8 md:p-16">
+                <Grid container spacing={8} alignItems="center">
+                  <Grid size={{ xs: 12, md: 7 }}>
+                    <div className="text-left">
+                      <div className="mb-6 inline-flex items-center rounded-lg bg-[#a7dadb]/10 border border-[#a7dadb]/20 px-4 py-1.5 text-xs font-bold tracking-[0.2em] text-[#a7dadb] uppercase">
+                        THE SMARTSLATE ECOSYSTEM
+                      </div>
+                      
+                      <h2 className="mb-6 font-heading text-4xl font-extrabold leading-[1.1] text-white md:text-5xl lg:text-6xl text-left">
+                        Ready to Transform <br />
+                        <span className="text-[#a7dadb]">Learning?</span>
+                      </h2>
+                      
+                      <p className="mb-10 max-w-2xl text-lg leading-relaxed text-[#b0c5c6] md:text-xl text-left">
+                        <Box component="span" sx={{ color: '#a7dadb', fontWeight: 700 }}>Free tier. Full power. Forever.</Box>
+                        <br /><br />
+                        Transform your learning workflow with the most advanced AI-powered design platform. 
+                        No credit card. No trials. Just sign up and start building.
+                      </p>
+                      
+                      <div className="flex flex-col gap-4 sm:flex-row sm:items-center justify-start">
+                        <Link href="https://www.smartslate.io/contact" style={{ textDecoration: 'none' }}>
+                          <ShimmerButton
+                            background="#4F46E5"
+                            shimmerColor="#ffffff"
+                            className="h-14 min-w-[240px] px-10 text-lg font-bold shadow-[0_12px_40px_rgba(79,70,229,0.3)] transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                          >
+                            <Rocket className="mr-2 h-5 w-5" />
+                            Reach Out
+                          </ShimmerButton>
+                        </Link>
+                      </div>
+                    </div>
+                  </Grid>
+
+                  <Grid size={{ xs: 12, md: 5 }}>
+                    <div className="flex flex-col gap-6">
+                      {[
+                        {
+                          icon: <CheckCircle className="h-6 w-6 text-[#10b981]" />,
+                          title: "Free Tier Forever",
+                          desc: "Full access—no trials, no limits"
                         },
-                        '&:focus-visible': {
-                          outline: '3px solid',
-                          outlineColor: '#a7dadb',
-                          outlineOffset: '2px'
+                        {
+                          icon: <Speed className="h-6 w-6 text-[#a7dadb]" />,
+                          title: "Instant Activation",
+                          desc: "Sign up and start creating immediately"
+                        },
+                        {
+                          icon: <WorkspacePremium className="h-6 w-6 text-[#a7dadb]" />,
+                          title: "Premium Features Included",
+                          desc: "Access powerful tools from day one"
                         }
-                      }}
-                    >
-                      Explore Solara Learning Engine
-                    </Button>
-                  </Stack>
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-start gap-4 p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors">
+                          <div className="mt-1">{item.icon}</div>
+                          <div className="text-left">
+                            <h4 className="font-bold text-white text-lg">{item.title}</h4>
+                            <p className="text-sm text-[#b0c5c6] leading-relaxed">{item.desc}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </Grid>
                 </Grid>
-                <Grid size={{ xs: 12, md: 5 }}>
-                  <Box
-                    sx={{
-                      p: 2.4,
-                      background: 'rgba(255, 255, 255, 0.03)',
-                      backdropFilter: 'blur(8px)',
-                      border: '1px solid rgba(167, 218, 219, 0.2)',
-                      borderRadius: 3,
-                      boxShadow: '0 8px 32px rgba(167, 218, 219, 0.1)'
-                    }}
-                  >
-                    <Stack spacing={1.8}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <CheckCircle sx={{ color: '#a7dadb', fontSize: '2rem' }} />
-                        <Box>
-                          <Typography variant="body1" sx={{ fontWeight: 600, color: 'text.primary' }}>
-                            Free Tier Forever
-                          </Typography>
-                          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                            Full access—no trials, no limits
-                          </Typography>
-                        </Box>
-                      </Box>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <Speed sx={{ color: '#a7dadb', fontSize: '2rem' }} />
-                        <Box>
-                          <Typography variant="body1" sx={{ fontWeight: 600, color: 'text.primary' }}>
-                            Instant Activation
-                          </Typography>
-                          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                            Sign up and start creating immediately
-                          </Typography>
-                        </Box>
-                      </Box>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <Analytics sx={{ color: '#a7dadb', fontSize: '2rem' }} />
-                        <Box>
-                          <Typography variant="body1" sx={{ fontWeight: 600, color: 'text.primary' }}>
-                            Premium Features Included
-                          </Typography>
-                          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                            Access powerful tools from day one
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </Stack>
-                  </Box>
-                </Grid>
-              </Grid>
-            </Box>
+              </div>
+              
+              {/* Radial Glow */}
+              <div className="absolute -bottom-24 -right-24 h-96 w-96 rounded-[2.5rem] bg-[#4F46E5]/20 blur-[120px] pointer-events-none" />
+            </div>
           </MotionBox>
         </Container>
       </Box>

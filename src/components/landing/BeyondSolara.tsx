@@ -107,9 +107,9 @@ export default function BeyondSolara() {
                   </p>
                   <Link href={product.href}>
                     <ShimmerButton
-                      background="transparent"
-                      shimmerColor="#a7dadb"
-                      className="h-10 border-[#a7dadb]/30 text-sm font-bold text-[#a7dadb] hover:bg-[#a7dadb]/10"
+                      background="#4F46E5"
+                      shimmerColor="#ffffff"
+                      className="h-11 px-6 text-sm font-bold shadow-lg transition-transform hover:scale-[1.02] active:scale-[0.98]"
                     >
                       {product.cta}
                     </ShimmerButton>
@@ -122,7 +122,7 @@ export default function BeyondSolara() {
             <BlurFade delay={0.5} direction="up">
               <div className="mt-8 rounded-2xl bg-white/5 border border-white/10 p-6">
                 <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#10b981]/20">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#10b981]/20">
                     <CheckCircle className="h-6 w-6 text-[#10b981]" />
                   </div>
                   <div>

@@ -66,8 +66,17 @@ const config: Config = {
         "shimmer-slide": "shimmer-slide var(--speed) ease-in-out infinite alternate",
         shine: "shine var(--duration) infinite linear",
         orbit: "orbit calc(var(--duration)*1s) linear infinite",
+        meteor: "meteor 5s linear infinite",
       },
       keyframes: {
+        meteor: {
+          "0%": { transform: "rotate(var(--angle)) translateX(0)", opacity: "1" },
+          "70%": { opacity: "1" },
+          "100%": {
+            transform: "rotate(var(--angle)) translateX(-500px)",
+            opacity: "0",
+          },
+        },
         orbit: {
           "0%": {
             transform: "rotate(0deg) translateY(calc(var(--radius) * 1px)) rotate(0deg)",
