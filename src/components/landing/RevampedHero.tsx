@@ -33,13 +33,6 @@ export default function RevampedHero() {
 
       <div className="relative z-10 mx-auto max-w-[1200px] w-full">
         <div className="flex flex-col items-start text-left w-full">
-          <BlurFade delay={0.1} direction="up" className="w-full">
-            <div className="mb-6 inline-flex items-center rounded-full border border-[#a7dadb]/20 bg-[#a7dadb]/5 px-3 py-1 text-sm font-medium text-[#a7dadb] backdrop-blur-md">
-              <span className="mr-2 flex h-2 w-2 rounded-full bg-[#a7dadb] animate-pulse" />
-              Next-Gen Learning Engine
-            </div>
-          </BlurFade>
-
           <BlurFade delay={0.2} direction="up" className="w-full">
             <h1 className="mb-6 font-heading text-5xl font-extrabold leading-[1.1] tracking-tight text-[#e0e0e0] md:text-7xl lg:text-8xl w-full">
               Stop Juggling <span className="text-[#ef4444]">15 Tools</span>. Start Building with <span className="text-[#a7dadb]">
