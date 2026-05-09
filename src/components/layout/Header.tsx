@@ -182,8 +182,7 @@ export default function Header() {
               height={40}
               quality={100}
               priority
-              className="h-full w-auto object-contain"
-              style={{ width: 'auto', height: 'auto' }}
+              style={{ height: '100%', width: 'auto', objectFit: 'contain' }}
             />
           </LogoLink>
 
@@ -215,6 +214,12 @@ export default function Header() {
         open={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
         navItems={navItems}
+      />
+    </>
+  );
+}
+
+s}
       />
     </>
   );
