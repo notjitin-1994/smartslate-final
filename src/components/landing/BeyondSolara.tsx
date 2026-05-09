@@ -68,7 +68,7 @@ export default function BeyondSolara() {
           {products.map((product, idx) => (
             <BlurFade key={product.id} delay={0.2 + idx * 0.1} direction="up" className="h-full">
               <div className="group relative h-full overflow-hidden rounded-3xl border border-white/5 bg-white/[0.02] p-8 transition-all hover:bg-white/[0.04] hover:border-[#a7dadb]/20 flex flex-col items-start justify-between">
-                <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-[#a7dadb]/40 via-[#a7dadb]/10 to-transparent" />
+                <div className="absolute left-0 top-0 h-full w-1 bg-[#a7dadb]" />
                 
                 <div className="relative z-10 flex flex-col items-start w-full">
                   <div className="mb-6 flex items-center gap-3 text-[#a7dadb]">
