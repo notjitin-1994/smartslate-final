@@ -64,13 +64,13 @@ const LogoLink = styled(Link)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   textDecoration: 'none',
-  height: 20,
+  height: 26,
   transition: 'transform 0.2s ease',
   '&:hover': {
     transform: 'scale(1.05)',
   },
   [theme.breakpoints.down('sm')]: {
-    height: 18,
+    height: 22,
   },
 }));
 
@@ -178,8 +178,8 @@ export default function Header() {
             <Image
               src="/logo.png"
               alt="Smartslate"
-              width={120}
-              height={30}
+              width={96}
+              height={24}
               priority
               className="h-full w-auto object-contain"
               style={{ width: 'auto' }}
@@ -218,3 +218,4 @@ export default function Header() {
     </>
   );
 }
+
