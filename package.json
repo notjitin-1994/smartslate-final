@@ -13,7 +13,7 @@
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "setup:database": "tsx src/lib/database-setup.ts",
-    "postbuild": "next-sitemap",
+    "postbuild": "next-sitemap --config next-sitemap.config.cjs",
     "seo:report": "mkdir -p reports && npx --yes lighthouse http://localhost:3000 --output html --output-path ./reports/lh.html --chrome-flags='--headless'",
     "seo:ci": "npm run seo:report"
   },
