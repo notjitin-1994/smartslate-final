@@ -64,13 +64,13 @@ const LogoLink = styled(Link)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   textDecoration: 'none',
-  height: 48,
+  height: 40,
   transition: 'transform 0.2s ease',
   '&:hover': {
     transform: 'scale(1.05)',
   },
   [theme.breakpoints.down('sm')]: {
-    height: 40,
+    height: 36,
   },
 }));
 
@@ -118,10 +118,10 @@ const CTAButton = styled(Button)(({ theme }) => ({
   backgroundColor: 'var(--secondary-accent)',
   color: '#fff',
   fontWeight: 600,
-  padding: 'var(--space-sm) var(--space-lg)',
+  padding: '6px 18px',
   borderRadius: '8px',
   textTransform: 'none',
-  fontSize: '0.9rem',
+  fontSize: '0.85rem',
   transition: 'all 0.2s ease',
   '&:hover': {
     backgroundColor: 'var(--secondary-accent-dark)',

@@ -26,8 +26,8 @@
   --border-subtle: 1px solid #2a3a4a;
   
   /* Layout Tokens */
-  --nav-height-desktop: 80px;
-  --nav-height-mobile: 64px;
+  --nav-height-desktop: 64px;
+  --nav-height-mobile: 56px;
   --nav-top-offset: 16px;
   --section-padding-y: 80px;
   --hero-padding-top: 32px; /* Space between header and hero content */
