@@ -64,13 +64,13 @@ const LogoLink = styled(Link)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   textDecoration: 'none',
-  height: 40,
+  height: 20,
   transition: 'transform 0.2s ease',
   '&:hover': {
     transform: 'scale(1.05)',
   },
   [theme.breakpoints.down('sm')]: {
-    height: 36,
+    height: 18,
   },
 }));
 
