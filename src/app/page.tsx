@@ -312,7 +312,8 @@ export default function Home() {
 
       {/* CTA Section */}
       <Box sx={{
-        pt: 8, pb: 12, md: { pt: 12, pb: 16 },
+        pt: { xs: 6, md: 10 },
+        pb: { xs: 8, md: 12 },
         position: 'relative',
         zIndex: 1
       }}>
@@ -328,35 +329,39 @@ export default function Home() {
                 className="pointer-events-none"
                 shineColor={["#a7dadb", "#4F46E5", "#ffffff"]}
                 borderWidth={1}
-                duration={10}
+                duration={14}
               />
-              <Meteors number={30} />
+              <Meteors number={35} />
               
               <div className="relative z-10 p-8 md:p-16">
-                <Grid container spacing={8} alignItems="center">
+                <Grid container spacing={{ xs: 6, md: 8 }} alignItems="center">
                   <Grid size={{ xs: 12, md: 7 }}>
-                    <div className="text-left">
-                      <div className="mb-6 inline-flex items-center rounded-lg bg-[#a7dadb]/10 border border-[#a7dadb]/20 px-4 py-1.5 text-xs font-bold tracking-[0.2em] text-[#a7dadb] uppercase">
+                    <div className="text-left flex flex-col items-start">
+                      <div className="mb-6 inline-flex items-center rounded-lg bg-[#a7dadb]/10 border border-[#a7dadb]/20 px-4 py-1.5 text-[10px] font-bold tracking-[0.2em] text-[#a7dadb] uppercase">
                         THE SMARTSLATE ECOSYSTEM
                       </div>
                       
-                      <h2 className="mb-6 font-heading text-4xl font-extrabold leading-[1.1] text-white md:text-5xl lg:text-6xl text-left">
-                        Ready to Orchestrate <br />
-                        <span className="text-[#a7dadb]">Your Learning Future?</span>
+                      <h2 className="mb-6 font-heading text-4xl font-extrabold leading-[1.1] text-white md:text-5xl lg:text-7xl text-left">
+                        Ready to Transform <br />
+                        <span className="text-[#a7dadb]">Learning?</span>
                       </h2>
                       
-                      <p className="mb-10 max-w-2xl text-lg leading-relaxed text-[#b0c5c6] md:text-xl text-left">
-                        Transform every phase of your talent lifecycle—from intelligent design to industry-validated training and bespoke architecture. 
-                        <br /><br />
-                        <Box component="span" sx={{ color: '#a7dadb', fontWeight: 700 }}>Smartslate is the only unified ecosystem built for the AI era.</Box>
-                      </p>
+                      <div className="mb-8 space-y-4 text-left">
+                        <p className="text-xl font-bold text-[#a7dadb]">
+                          Free tier. Full power. Forever.
+                        </p>
+                        <p className="max-w-2xl text-lg leading-relaxed text-[#b0c5c6] md:text-xl">
+                          Transform your learning workflow with the most advanced AI-powered design platform. 
+                          No credit card. No trials. Just sign up and start building.
+                        </p>
+                      </div>
                       
-                      <div className="flex flex-col gap-4 sm:flex-row sm:items-center justify-start">
+                      <div className="w-full sm:w-auto">
                         <Link href="https://www.smartslate.io/contact" style={{ textDecoration: 'none' }}>
                           <ShimmerButton
                             background="#4F46E5"
                             shimmerColor="#ffffff"
-                            className="h-14 min-w-[240px] px-10 text-lg font-bold shadow-[0_12px_40px_rgba(79,70,229,0.3)] transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                            className="h-14 w-full sm:min-w-[240px] px-10 text-lg font-bold shadow-[0_12px_40px_rgba(79,70,229,0.3)] transition-transform hover:scale-[1.02] active:scale-[0.98]"
                           >
                             <Rocket className="mr-2 h-5 w-5" />
                             Reach Out
@@ -372,26 +377,38 @@ export default function Home() {
                         {
                           name: "Solara Engine",
                           outcome: "Design AI-native learning with 10x velocity so that you can skip the chaos and focus on impact.",
-                          color: "#a7dadb"
+                          color: "#a7dadb",
+                          icon: <Speed className="h-5 w-5" />
                         },
                         {
                           name: "Ignite Series",
                           outcome: "Deploy industry-validated courses that produce job-ready talent so that you can bridge the gap on Day 1.",
-                          color: "#4F46E5"
+                          color: "#4F46E5",
+                          icon: <School className="h-5 w-5" />
                         },
                         {
                           name: "Strategic Architecture",
                           outcome: "Construct bespoke frameworks mapped to unique goals so that you can build uncopyable advantage.",
-                          color: "#a7dadb"
+                          color: "#a7dadb",
+                          icon: <Architecture className="h-5 w-5" />
                         }
                       ].map((item, i) => (
                         <MagicCard
                           key={i}
-                          className="flex flex-col items-start gap-2 p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm"
-                          gradientColor="rgba(167, 218, 219, 0.03)"
+                          className="flex flex-col items-start gap-3 p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm"
+                          gradientColor="rgba(167, 218, 219, 0.05)"
                         >
-                          <h4 className="font-bold text-lg uppercase tracking-wider" style={{ color: item.color }}>{item.name}</h4>
-                          <p className="text-sm text-[#b0c5c6] leading-relaxed">{item.outcome}</p>
+                          <div className="flex items-center gap-3">
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5" style={{ color: item.color }}>
+                              {item.icon}
+                            </div>
+                            <h4 className="font-bold text-base uppercase tracking-wider" style={{ color: item.color }}>
+                              {item.name}
+                            </h4>
+                          </div>
+                          <p className="text-sm leading-relaxed text-[#b0c5c6] text-left">
+                            {item.outcome}
+                          </p>
                         </MagicCard>
                       ))}
                     </div>

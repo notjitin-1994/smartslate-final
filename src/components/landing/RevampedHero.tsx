@@ -99,8 +99,9 @@ export default function RevampedHero() {
       <div className="relative z-10 mx-auto max-w-[1200px] w-full">
         <div className="flex flex-col items-start text-left w-full">
           <BlurFade delay={0.2} direction="up" className="w-full">
-            <h1 className="mb-6 font-heading text-5xl font-extrabold leading-[1.1] tracking-tight text-[#e0e0e0] md:text-7xl lg:text-8xl w-full">
-              Stop Juggling <span className="text-[#ef4444]">15 Tools</span>. Start Building with <span className="text-[#a7dadb]">
+            <h1 className="mb-4 font-heading text-4xl font-extrabold leading-tight tracking-tight text-[#e0e0e0] sm:text-5xl md:text-7xl lg:text-8xl w-full">
+              Stop Juggling <span className="text-[#ef4444]">15 Tools</span>. <br className="hidden sm:block" />
+              Start Building with <span className="text-[#a7dadb]">
                 <HyperText 
                   className="inline text-[#a7dadb]"
                   duration={1200}
@@ -113,13 +114,13 @@ export default function RevampedHero() {
           </BlurFade>
 
           <BlurFade delay={0.3} direction="up" className="w-full">
-            <p className="mb-10 w-full font-body text-lg leading-relaxed text-[#b0c5c6] md:text-xl">
-              You&apos;re spending thousands on fragmented tools. Losing weeks to disconnected data. 
-              Watching learner engagement collapse.{" "}
+            <p className="mb-8 w-full font-body text-base leading-relaxed text-[#b0c5c6] sm:text-lg md:text-xl">
+              You&apos;re spending thousands on fragmented tools. Losing weeks to disconnected data.{" "}
+              <br className="hidden md:block" />
               <span className="font-bold text-[#a7dadb]">
                 Solara replaces your entire learning tech stack with one intelligent platform.
               </span>{" "}
-              Design. Deliver. Measure. All unified. All AI-powered. All transformative.
+              Design. Deliver. Measure. All unified.
             </p>
           </BlurFade>
 

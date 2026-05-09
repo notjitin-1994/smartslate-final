@@ -16,6 +16,7 @@ import { Box, Typography, Stack, Grid, Button } from "@mui/material"
 export default function PolarisIntro() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const [comparisonMode, setComparisonMode] = useState<"polaris" | "old">("polaris")
 
   const oldWayItems = [
     {
@@ -124,96 +125,126 @@ export default function PolarisIntro() {
         {/* Interactive Process Infographic */}
         <BlurFade delay={0.4} direction="up" className="w-full">
           <div className="relative mb-12 overflow-hidden rounded-3xl border border-[#a7dadb]/25 bg-[#a7dadb]/5 p-6 backdrop-blur-xl md:p-10 shadow-[0_12px_40px_rgba(167,218,219,0.12),inset_0_1px_0_rgba(167,218,219,0.1)]">
-            <h3 className="mb-10 text-center text-xl font-bold uppercase tracking-wider text-[#a7dadb]">
+            <h3 className="mb-10 text-center text-sm font-bold uppercase tracking-[0.2em] text-[#a7dadb]">
               THE POLARIS TRANSFORMATION
             </h3>
             
             {isInView && (
-              <AnimatedList className="flex-col md:flex-row md:items-start md:justify-between w-full" delay={800}>
-                {transformationSteps.map((item, idx) => (
-                  <div key={idx} className="relative flex flex-col items-center z-10 w-full max-w-[250px] mx-auto">
-                    <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-2xl border-4 border-white/10 bg-[#a7dadb] shadow-[0_8px_24px_rgba(167,218,219,0.3)]">
-                      <span className="text-3xl font-extrabold text-[#000]">{item.step}</span>
+              <div className="flex overflow-x-auto pb-4 hide-scrollbar md:overflow-visible md:pb-0">
+                <AnimatedList className="flex-row items-start justify-between w-full min-w-[600px] md:min-w-0" delay={800}>
+                  {transformationSteps.map((item, idx) => (
+                    <div key={idx} className="relative flex flex-col items-center z-10 w-full px-4">
+                      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-white/10 bg-[#a7dadb] shadow-[0_8px_24px_rgba(167,218,219,0.3)] md:h-20 md:w-20">
+                        <span className="text-2xl font-extrabold text-[#000] md:text-3xl">{item.step}</span>
+                      </div>
+                      <span className="mb-1 text-center text-sm font-semibold text-[#e0e0e0] md:text-base">{item.label}</span>
+                      <span className="text-center text-xs font-bold text-[#a7dadb] uppercase tracking-tighter md:text-sm">{item.time}</span>
                     </div>
-                    <span className="mb-1 text-center font-semibold text-[#e0e0e0]">{item.label}</span>
-                    <span className="text-center text-sm font-bold text-[#a7dadb]">{item.time}</span>
-                  </div>
-                ))}
-              </AnimatedList>
+                  ))}
+                </AnimatedList>
+              </div>
             )}
           </div>
         </BlurFade>
 
-        {/* Enhanced Value Proposition Grid */}
+        {/* Enhanced Value Proposition Grid - Interactive on Mobile */}
         <BlurFade delay={0.5} direction="up" className="w-full">
-          <div className="mb-16 grid grid-cols-1 gap-8 md:grid-cols-2">
-            
-            {/* The Old Way */}
-            <div className="relative h-full overflow-hidden rounded-2xl border-2 border-[#ef4444]/20 bg-[#ef4444]/5 p-8">
-              <div className="absolute left-0 top-0 h-1 w-full bg-[#ef4444]" />
-              <div className="mb-8 flex items-center gap-3">
-                <Close className="h-8 w-8 text-[#ef4444]" />
-                <h3 className="text-2xl font-extrabold text-[#ef4444]">THE OLD WAY</h3>
-              </div>
-              <div className="flex flex-col gap-6">
-                {oldWayItems.map((item, idx) => (
-                  <div key={idx} className="flex items-start gap-4">
-                    <div className="mt-1 text-[#ef4444]">{item.icon}</div>
-                    <div>
-                      <h4 className="mb-1 font-bold text-[#e0e0e0]">{item.title}</h4>
-                      <p className="text-sm leading-relaxed text-[#b0c5c6]">{item.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+          <div className="mb-16">
+            {/* Mobile Mode Switcher */}
+            <div className="mb-8 flex rounded-xl bg-white/5 p-1 md:hidden">
+              <button
+                onClick={() => setComparisonMode("old")}
+                className={cn(
+                  "flex-1 py-2 text-xs font-bold uppercase tracking-wider transition-all rounded-lg",
+                  comparisonMode === "old" ? "bg-[#ef4444] text-white" : "text-[#7a8a8b]"
+                )}
+              >
+                The Old Way
+              </button>
+              <button
+                onClick={() => setComparisonMode("polaris")}
+                className={cn(
+                  "flex-1 py-2 text-xs font-bold uppercase tracking-wider transition-all rounded-lg",
+                  comparisonMode === "polaris" ? "bg-[#10b981] text-white" : "text-[#7a8a8b]"
+                )}
+              >
+                The Polaris Way
+              </button>
             </div>
 
-            {/* The Polaris Way */}
-            <div className="relative h-full rounded-2xl bg-[#10b981]/5 shadow-[0_16px_48px_rgba(16,185,129,0.15)]">
-              <ShineBorder
-                className="pointer-events-none"
-                shineColor={["#10b981", "#a7dadb", "#4F46E5"]}
-                borderWidth={2}
-              />
-              <div className="relative z-10 h-full p-8">
-                <div className="absolute left-0 top-0 h-1 w-full rounded-t-xl bg-[#10b981]" />
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+              {/* The Old Way */}
+              <div className={cn(
+                "relative h-full overflow-hidden rounded-2xl border-2 border-[#ef4444]/20 bg-[#ef4444]/5 p-6 md:p-8 transition-all duration-500",
+                comparisonMode === "old" ? "block opacity-100 translate-x-0" : "hidden md:block opacity-40 grayscale-[0.5]"
+              )}>
+                <div className="absolute left-0 top-0 h-1 w-full bg-[#ef4444]" />
                 <div className="mb-8 flex items-center gap-3">
-                  <CheckCircle className="h-8 w-8 text-[#10b981]" />
-                  <h3 className="text-2xl font-extrabold text-[#10b981]">THE POLARIS WAY</h3>
+                  <Close className="h-6 w-6 text-[#ef4444] md:h-8 md:w-8" />
+                  <h3 className="text-xl font-extrabold text-[#ef4444] md:text-2xl uppercase tracking-tighter">THE OLD WAY</h3>
                 </div>
                 <div className="flex flex-col gap-6">
-                  {polarisWayItems.map((item, idx) => (
+                  {oldWayItems.map((item, idx) => (
                     <div key={idx} className="flex items-start gap-4">
-                      <div className="mt-1 text-[#10b981]">{item.icon}</div>
+                      <div className="mt-1 text-[#ef4444]">{item.icon}</div>
                       <div>
-                        <h4 className="mb-1 font-bold text-[#e0e0e0]">{item.title}</h4>
-                        <p className="text-sm leading-relaxed text-[#b0c5c6]">{item.description}</p>
+                        <h4 className="mb-1 text-sm font-bold text-[#e0e0e0] md:text-base">{item.title}</h4>
+                        <p className="text-xs leading-relaxed text-[#b0c5c6] md:text-sm">{item.description}</p>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
-            </div>
 
+              {/* The Polaris Way */}
+              <div className={cn(
+                "relative h-full rounded-2xl bg-[#10b981]/5 shadow-[0_16px_48px_rgba(16,185,129,0.15)] transition-all duration-500",
+                comparisonMode === "polaris" ? "block opacity-100 translate-x-0" : "hidden md:block opacity-40 grayscale-[0.5]"
+              )}>
+                <ShineBorder
+                  className="pointer-events-none"
+                  shineColor={["#10b981", "#a7dadb", "#4F46E5"]}
+                  borderWidth={2}
+                />
+                <div className="relative z-10 h-full p-6 md:p-8">
+                  <div className="absolute left-0 top-0 h-1 w-full rounded-t-xl bg-[#10b981]" />
+                  <div className="mb-8 flex items-center gap-3">
+                    <CheckCircle className="h-6 w-6 text-[#10b981] md:h-8 md:w-8" />
+                    <h3 className="text-xl font-extrabold text-[#10b981] md:text-2xl uppercase tracking-tighter">THE POLARIS WAY</h3>
+                  </div>
+                  <div className="flex flex-col gap-6">
+                    {polarisWayItems.map((item, idx) => (
+                      <div key={idx} className="flex items-start gap-4">
+                        <div className="mt-1 text-[#10b981]">{item.icon}</div>
+                        <div>
+                          <h4 className="mb-1 text-sm font-bold text-[#e0e0e0] md:text-base">{item.title}</h4>
+                          <p className="text-xs leading-relaxed text-[#b0c5c6] md:text-sm">{item.description}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </BlurFade>
 
         {/* Impact Metrics */}
         <BlurFade delay={0.6} direction="up" className="w-full">
-          <div className="mb-16 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+          <div className="mb-16 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-6">
             {[
-              { value: "6 wks → 1 hr", label: "Requirements Time", icon: <Speed className="h-10 w-10" />, color: "#a7dadb" },
-              { value: "100%", label: "Goal Alignment", icon: <TrendingUp className="h-10 w-10" />, color: "#4F46E5" },
-              { value: "0", label: "Missed Requirements", icon: <Verified className="h-10 w-10" />, color: "#10b981" },
-              { value: "15x", label: "Faster Launch", icon: <Rocket className="h-10 w-10" />, color: "#f59e0b" }
+              { value: "6 wks → 1 hr", label: "Requirements", icon: <Speed className="h-6 w-6 md:h-10 md:w-10" />, color: "#a7dadb" },
+              { value: "100%", label: "Alignment", icon: <TrendingUp className="h-6 w-6 md:h-10 md:w-10" />, color: "#4F46E5" },
+              { value: "0", label: "Gaps", icon: <Verified className="h-6 w-6 md:h-10 md:w-10" />, color: "#10b981" },
+              { value: "15x", label: "Speed", icon: <Rocket className="h-6 w-6 md:h-10 md:w-10" />, color: "#f59e0b" }
             ].map((metric, idx) => (
               <div
                 key={idx}
-                className="group flex flex-col items-center justify-center rounded-2xl border border-[#a7dadb]/20 bg-white/5 p-6 text-center backdrop-blur-md transition-all hover:-translate-y-2 hover:bg-[#a7dadb]/10 hover:shadow-[0_16px_40px_rgba(167,218,219,0.2)]"
+                className="group flex flex-col items-center justify-center rounded-xl border border-[#a7dadb]/20 bg-white/5 p-4 text-center backdrop-blur-md transition-all hover:-translate-y-1 md:rounded-2xl md:p-6"
               >
-                <div className="mb-3" style={{ color: metric.color }}>{metric.icon}</div>
-                <div className="mb-2 text-2xl font-extrabold md:text-3xl" style={{ color: metric.color }}>{metric.value}</div>
-                <div className="text-sm font-semibold text-[#b0c5c6]">{metric.label}</div>
+                <div className="mb-2" style={{ color: metric.color }}>{metric.icon}</div>
+                <div className="mb-1 text-lg font-extrabold md:text-3xl" style={{ color: metric.color }}>{metric.value}</div>
+                <div className="text-[10px] font-bold uppercase tracking-widest text-[#b0c5c6] md:text-sm">{metric.label}</div>
               </div>
             ))}
           </div>
