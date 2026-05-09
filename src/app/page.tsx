@@ -341,15 +341,14 @@ export default function Home() {
                       </div>
                       
                       <h2 className="mb-6 font-heading text-4xl font-extrabold leading-[1.1] text-white md:text-5xl lg:text-6xl text-left">
-                        Ready to Transform <br />
-                        <span className="text-[#a7dadb]">Learning?</span>
+                        Ready to Orchestrate <br />
+                        <span className="text-[#a7dadb]">Your Learning Future?</span>
                       </h2>
                       
                       <p className="mb-10 max-w-2xl text-lg leading-relaxed text-[#b0c5c6] md:text-xl text-left">
-                        <Box component="span" sx={{ color: '#a7dadb', fontWeight: 700 }}>Free tier. Full power. Forever.</Box>
+                        Transform every phase of your talent lifecycle—from intelligent design to industry-validated training and bespoke architecture. 
                         <br /><br />
-                        Transform your learning workflow with the most advanced AI-powered design platform. 
-                        No credit card. No trials. Just sign up and start building.
+                        <Box component="span" sx={{ color: '#a7dadb', fontWeight: 700 }}>Smartslate is the only unified ecosystem built for the AI era.</Box>
                       </p>
                       
                       <div className="flex flex-col gap-4 sm:flex-row sm:items-center justify-start">
@@ -368,31 +367,32 @@ export default function Home() {
                   </Grid>
 
                   <Grid size={{ xs: 12, md: 5 }}>
-                    <div className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-4">
                       {[
                         {
-                          icon: <CheckCircle className="h-6 w-6 text-[#10b981]" />,
-                          title: "Free Tier Forever",
-                          desc: "Full access—no trials, no limits"
+                          name: "Solara Engine",
+                          outcome: "Design AI-native learning with 10x velocity so that you can skip the chaos and focus on impact.",
+                          color: "#a7dadb"
                         },
                         {
-                          icon: <Speed className="h-6 w-6 text-[#a7dadb]" />,
-                          title: "Instant Activation",
-                          desc: "Sign up and start creating immediately"
+                          name: "Ignite Series",
+                          outcome: "Deploy industry-validated courses that produce job-ready talent so that you can bridge the gap on Day 1.",
+                          color: "#4F46E5"
                         },
                         {
-                          icon: <WorkspacePremium className="h-6 w-6 text-[#a7dadb]" />,
-                          title: "Premium Features Included",
-                          desc: "Access powerful tools from day one"
+                          name: "Strategic Architecture",
+                          outcome: "Construct bespoke frameworks mapped to unique goals so that you can build uncopyable advantage.",
+                          color: "#a7dadb"
                         }
                       ].map((item, i) => (
-                        <div key={i} className="flex items-start gap-4 p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors">
-                          <div className="mt-1">{item.icon}</div>
-                          <div className="text-left">
-                            <h4 className="font-bold text-white text-lg">{item.title}</h4>
-                            <p className="text-sm text-[#b0c5c6] leading-relaxed">{item.desc}</p>
-                          </div>
-                        </div>
+                        <MagicCard
+                          key={i}
+                          className="flex flex-col items-start gap-2 p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm"
+                          gradientColor="rgba(167, 218, 219, 0.03)"
+                        >
+                          <h4 className="font-bold text-lg uppercase tracking-wider" style={{ color: item.color }}>{item.name}</h4>
+                          <p className="text-sm text-[#b0c5c6] leading-relaxed">{item.outcome}</p>
+                        </MagicCard>
                       ))}
                     </div>
                   </Grid>

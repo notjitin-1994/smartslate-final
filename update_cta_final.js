@@ -4,7 +4,6 @@ const path = require('path');
 const filePath = path.join(process.cwd(), 'src/app/page.tsx');
 let content = fs.readFileSync(filePath, 'utf8');
 
-// Revamp CTA Section with exact user copy and "Reach Out" button
 const ctaStart = '{/* CTA Section */}';
 const ctaEnd = '/* JSON-LD */';
 const startIndex = content.indexOf(ctaStart);
@@ -42,15 +41,14 @@ if (startIndex !== -1 && endIndex !== -1) {
 "                      </div>\n" +
 "                      \n" +
 "                      <h2 className=\"mb-6 font-heading text-4xl font-extrabold leading-[1.1] text-white md:text-5xl lg:text-6xl text-left\">\n" +
-"                        Ready to Transform <br />\n" +
-"                        <span className=\"text-[#a7dadb]\">Learning?</span>\n" +
+"                        Ready to Orchestrate <br />\n" +
+"                        <span className=\"text-[#a7dadb]\">Your Learning Future?</span>\n" +
 "                      </h2>\n" +
 "                      \n" +
 "                      <p className=\"mb-10 max-w-2xl text-lg leading-relaxed text-[#b0c5c6] md:text-xl text-left\">\n" +
-"                        <Box component=\"span\" sx={{ color: '#a7dadb', fontWeight: 700 }}>Free tier. Full power. Forever.</Box>\n" +
+"                        Transform every phase of your talent lifecycle—from intelligent design to industry-validated training and bespoke architecture. \n" +
 "                        <br /><br />\n" +
-"                        Transform your learning workflow with the most advanced AI-powered design platform. \n" +
-"                        No credit card. No trials. Just sign up and start building.\n" +
+"                        <Box component=\"span\" sx={{ color: '#a7dadb', fontWeight: 700 }}>Smartslate is the only unified ecosystem built for the AI era.</Box>\n" +
 "                      </p>\n" +
 "                      \n" +
 "                      <div className=\"flex flex-col gap-4 sm:flex-row sm:items-center justify-start\">\n" +
@@ -69,31 +67,32 @@ if (startIndex !== -1 && endIndex !== -1) {
 "                  </Grid>\n" +
 "\n" +
 "                  <Grid size={{ xs: 12, md: 5 }}>\n" +
-"                    <div className=\"flex flex-col gap-6\">\n" +
+"                    <div className=\"flex flex-col gap-4\">\n" +
 "                      {[\n" +
 "                        {\n" +
-"                          icon: <CheckCircle className=\"h-6 w-6 text-[#10b981]\" />,\n" +
-"                          title: \"Free Tier Forever\",\n" +
-"                          desc: \"Full access—no trials, no limits\"\n" +
+"                          name: \"Solara Engine\",\n" +
+"                          outcome: \"Design AI-native learning with 10x velocity so that you can skip the chaos and focus on impact.\",\n" +
+"                          color: \"#a7dadb\"\n" +
 "                        },\n" +
 "                        {\n" +
-"                          icon: <Speed className=\"h-6 w-6 text-[#a7dadb]\" />,\n" +
-"                          title: \"Instant Activation\",\n" +
-"                          desc: \"Sign up and start creating immediately\"\n" +
+"                          name: \"Ignite Series\",\n" +
+"                          outcome: \"Deploy industry-validated courses that produce job-ready talent so that you can bridge the gap on Day 1.\",\n" +
+"                          color: \"#4F46E5\"\n" +
 "                        },\n" +
 "                        {\n" +
-"                          icon: <WorkspacePremium className=\"h-6 w-6 text-[#a7dadb]\" />,\n" +
-"                          title: \"Premium Features Included\",\n" +
-"                          desc: \"Access powerful tools from day one\"\n" +
+"                          name: \"Strategic Architecture\",\n" +
+"                          outcome: \"Construct bespoke frameworks mapped to unique goals so that you can build uncopyable advantage.\",\n" +
+"                          color: \"#a7dadb\"\n" +
 "                        }\n" +
 "                      ].map((item, i) => (\n" +
-"                        <div key={i} className=\"flex items-start gap-4 p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors\">\n" +
-"                          <div className=\"mt-1\">{item.icon}</div>\n" +
-"                          <div className=\"text-left\">\n" +
-"                            <h4 className=\"font-bold text-white text-lg\">{item.title}</h4>\n" +
-"                            <p className=\"text-sm text-[#b0c5c6] leading-relaxed\">{item.desc}</p>\n" +
-"                          </div>\n" +
-"                        </div>\n" +
+"                        <MagicCard\n" +
+"                          key={i}\n" +
+"                          className=\"flex flex-col items-start gap-2 p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm\"\n" +
+"                          gradientColor=\"rgba(167, 218, 219, 0.03)\"\n" +
+"                        >\n" +
+"                          <h4 className=\"font-bold text-lg uppercase tracking-wider\" style={{ color: item.color }}>{item.name}</h4>\n" +
+"                          <p className=\"text-sm text-[#b0c5c6] leading-relaxed\">{item.outcome}</p>\n" +
+"                        </MagicCard>\n" +
 "                      ))}\n" +
 "                    </div>\n" +
 "                  </Grid>\n" +
@@ -110,7 +109,7 @@ if (startIndex !== -1 && endIndex !== -1) {
 "      {";
   content = content.substring(0, startIndex) + newCTA + content.substring(endIndex);
   fs.writeFileSync(filePath, content);
-  console.log('Successfully revamped final Smartslate CTA section');
+  console.log('Successfully revamped ecosystem CTA section');
 } else {
   console.log('Markers not found', startIndex, endIndex);
 }
