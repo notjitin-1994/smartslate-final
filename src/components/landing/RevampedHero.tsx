@@ -17,17 +17,37 @@ export default function RevampedHero() {
   return (
     <section 
       ref={containerRef}
-      className="relative flex w-full flex-col items-center overflow-hidden bg-[#020C1B] px-6 pt-[0.002rem] pb-[0.002rem] md:pt-[0.004rem] md:pb-[0.005rem]"
+      className="relative flex w-full flex-col items-center overflow-hidden bg-[#020C1B] px-6 pt-[calc(var(--header-total-height-mobile)+2rem)] pb-12 md:pt-[calc(var(--header-total-height-desktop)+3rem)] md:pb-16"
     >
+      {/* Background Video Layer */}
+      <div className="absolute inset-0 z-0">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="h-full w-full object-cover opacity-30 grayscale-[0.5] brightness-[0.6]"
+          poster="https://hxxvxsmengeoazuywpjm.supabase.co/storage/v1/object/public/brand-assets/6153453-uhd_4096_2160_25fps.mp4?width=10&quality=1" // Low-res placeholder strategy
+        >
+          <source 
+            src="https://hxxvxsmengeoazuywpjm.supabase.co/storage/v1/object/public/brand-assets/6153453-uhd_4096_2160_25fps.mp4" 
+            type="video/mp4" 
+          />
+        </video>
+        {/* Cinematic Gradient Overlay */}
+        <div className="absolute inset-0 bg-linear-to-b from-[#020C1B]/80 via-transparent to-[#020C1B]" />
+        <div className="absolute inset-0 bg-radial-[circle_at_center] from-transparent via-transparent to-[#020C1B]/90" />
+      </div>
+
       {/* Background Pattern */}
       <AnimatedGridPattern
         numSquares={30}
-        maxOpacity={0.1}
+        maxOpacity={0.07}
         duration={3}
         repeatDelay={1}
         className={cn(
           "[mask-image:radial-gradient(1000px_circle_at_center,white,transparent)]",
-          "inset-y-[-30%] h-[200%] skew-y-12 fill-[#a7dadb]/20 stroke-[#a7dadb]/20",
+          "inset-y-[-30%] h-[200%] skew-y-12 fill-[#a7dadb]/10 stroke-[#a7dadb]/10 z-1",
         )}
       />
 
