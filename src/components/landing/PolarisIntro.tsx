@@ -227,8 +227,8 @@ export default function PolarisIntro() {
                   shineColor={["#10b981", "#a7dadb", "#4F46E5"]}
                   borderWidth={2}
                 />
+                <div className="absolute left-0 top-0 h-1 w-full bg-[#10b981] z-20" />
                 <div className="relative z-10 h-full p-6 md:p-8">
-                  <div className="absolute left-0 top-0 h-1 w-full rounded-t-xl bg-[#10b981]" />
                   <div className="mb-8 flex items-center gap-3">
                     <CheckCircle className="h-6 w-6 text-[#10b981] md:h-8 md:w-8" />
                     <h3 className="text-xl font-extrabold text-[#10b981] md:text-2xl uppercase tracking-tighter">THE POLARIS WAY</h3>

@@ -104,7 +104,7 @@ function ModuleCard({ module, onBetaClick }: { module: any, onBetaClick: () => v
   return (
     <motion.div variants={fadeInUp} className="h-full">
       <MagicCard
-        className="h-full w-full flex-col items-start justify-between p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] border-white/10"
+        className="h-full w-full flex-col items-start justify-between p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] border-white/10 rounded-3xl"
         gradientColor="rgba(167, 218, 219, 0.05)"
       >
         <div className="flex w-full items-start justify-between mb-8">
