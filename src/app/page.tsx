@@ -298,8 +298,8 @@ export default function Home() {
                       )}
                     </div>
                   </MagicCard>
-                </motion.div>
-              ))}
+                </motion.div>))}
+            </div>
           </MotionBox>
         </Container>
       </Box>
