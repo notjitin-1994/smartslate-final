@@ -1,8 +1,8 @@
 "use client"
 
-import React, { useRef } from "react"
+import React, { useRef, useEffect } from "react"
 import { motion } from "framer-motion"
-import { Rocket, PlayCircle } from "lucide-react"
+import { Rocket } from "lucide-react"
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"
@@ -13,6 +13,50 @@ import { ShimmerButton } from "@/components/ui/shimmer-button"
 
 export default function RevampedHero() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    let isReversing = false
+    let frameId: number
+    let lastTime = performance.now()
+
+    const update = (now: number) => {
+      const deltaTime = (now - lastTime) / 1000
+      lastTime = now
+
+      if (!video.duration) {
+        frameId = requestAnimationFrame(update)
+        return
+      }
+
+      if (isReversing) {
+        // Play backwards
+        const nextTime = video.currentTime - deltaTime
+        if (nextTime <= 0) {
+          video.currentTime = 0
+          isReversing = false
+          video.play().catch(() => {}) // Resume forward playback
+        } else {
+          video.currentTime = nextTime
+        }
+      } else {
+        // Playing forward (handled by browser)
+        // Check if we hit the end
+        if (video.currentTime >= video.duration - 0.1) {
+          video.pause()
+          isReversing = true
+        }
+      }
+
+      frameId = requestAnimationFrame(update)
+    }
+
+    frameId = requestAnimationFrame(update)
+    return () => cancelAnimationFrame(frameId)
+  }, [])
 
   return (
     <section 
@@ -22,12 +66,12 @@ export default function RevampedHero() {
       {/* Background Video Layer */}
       <div className="absolute inset-0 z-0">
         <video
+          ref={videoRef}
           autoPlay
-          loop
           muted
           playsInline
           className="h-full w-full object-cover opacity-30 grayscale-[0.5] brightness-[0.6]"
-          poster="https://hxxvxsmengeoazuywpjm.supabase.co/storage/v1/object/public/brand-assets/6153453-uhd_4096_2160_25fps.mp4?width=10&quality=1" // Low-res placeholder strategy
+          poster="https://hxxvxsmengeoazuywpjm.supabase.co/storage/v1/object/public/brand-assets/6153453-uhd_4096_2160_25fps.mp4?width=10&quality=1"
         >
           <source 
             src="https://hxxvxsmengeoazuywpjm.supabase.co/storage/v1/object/public/brand-assets/6153453-uhd_4096_2160_25fps.mp4" 
