@@ -3,7 +3,7 @@
 import React, { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Close, Send, CheckCircle } from "@mui/icons-material"
-import { Box, Typography, Button, TextField, IconButton } from "@mui/material"
+import { Box, Typography, Button, TextField, IconButton, Alert } from "@mui/material"
 
 interface BetaRequestModalProps {
   isOpen: boolean
@@ -14,21 +14,53 @@ interface BetaRequestModalProps {
 export default function BetaRequestModal({ isOpen, onClose, productName }: BetaRequestModalProps) {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    company: "",
+    useCase: ""
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    setLoading(false)
-    setSubmitted(true)
+    setError(null)
+    
+    try {
+      const response = await fetch('/api/leads/beta', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          productName
+        })
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to submit request')
+      }
+
+      setSubmitted(true)
+    } catch (err: any) {
+      setError(err.message || 'Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 sm:p-6">
-          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -37,7 +69,6 @@ export default function BetaRequestModal({ isOpen, onClose, productName }: BetaR
             className="absolute inset-0 bg-[#020C1B]/80 backdrop-blur-md"
           />
 
-          {/* Modal */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -61,12 +92,7 @@ export default function BetaRequestModal({ isOpen, onClose, productName }: BetaR
                 </p>
                 <Button
                   onClick={onClose}
-                  sx={{
-                    mt: 6,
-                    color: "#a7dadb",
-                    fontWeight: 700,
-                    textTransform: "none",
-                  }}
+                  sx={{ mt: 6, color: "#a7dadb", fontWeight: 700, textTransform: "none" }}
                 >
                   Close Window
                 </Button>
@@ -80,10 +106,19 @@ export default function BetaRequestModal({ isOpen, onClose, productName }: BetaR
                   </p>
                 </div>
 
+                {error && (
+                  <Alert severity="error" sx={{ mb: 3, bgcolor: 'rgba(239, 68, 68, 0.1)', color: '#ff8a80', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+                    {error}
+                  </Alert>
+                )}
+
                 <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                   <TextField
                     fullWidth
                     label="Full Name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
                     variant="outlined"
                     required
                     sx={inputStyles}
@@ -91,14 +126,20 @@ export default function BetaRequestModal({ isOpen, onClose, productName }: BetaR
                   <TextField
                     fullWidth
                     label="Work Email"
-                    variant="outlined"
+                    name="email"
                     type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    variant="outlined"
                     required
                     sx={inputStyles}
                   />
                   <TextField
                     fullWidth
                     label="Organization"
+                    name="company"
+                    value={formData.company}
+                    onChange={handleChange}
                     variant="outlined"
                     required
                     sx={inputStyles}
@@ -106,6 +147,9 @@ export default function BetaRequestModal({ isOpen, onClose, productName }: BetaR
                   <TextField
                     fullWidth
                     label="Tell us about your use case"
+                    name="useCase"
+                    value={formData.useCase}
+                    onChange={handleChange}
                     variant="outlined"
                     multiline
                     rows={3}
