@@ -1,6 +1,7 @@
 {
   "name": "smartslate-final",
   "version": "1.0.0",
+  "type": "module",
   "private": true,
   "engines": {
     "node": ">=20.19.0"

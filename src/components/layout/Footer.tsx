@@ -90,9 +90,9 @@ export default function Footer() {
                   alt="Smartslate Logo"
                   width={160}
                   height={40}
-                  quality={100}
                   loading="lazy"
-                  style={{ height: 'auto' }}
+                  className="h-full w-auto object-contain"
+                  style={{ width: 'auto' }}
                 />
               </Link>
             </LogoWrapper>

@@ -252,8 +252,8 @@ export default function Home() {
                 onClick={() => setIsPaused(!isPaused)}
               >
                 <motion.div 
-                  className="flex gap-4 w-max"
-                  animate={isPaused ? {} : { x: ["0%", "-50%"] }}
+                  className="flex gap-4 w-max will-change-transform"
+                  animate={isPaused ? {} : { transform: ["translateX(0%)", "translateX(-50%)"] }}
                   transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
                 >
                   {[...solaraModules, ...solaraModules].map((module, index) => (

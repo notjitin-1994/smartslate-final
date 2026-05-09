@@ -182,6 +182,7 @@ export default function Header() {
               height={40}
               priority
               className="h-full w-auto object-contain"
+              style={{ width: 'auto' }}
             />
           </LogoLink>
 

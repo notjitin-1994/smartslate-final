@@ -238,7 +238,8 @@ export default function MobileMenu({ open, onClose, navItems }: MobileMenuProps)
                 width={100}
                 height={26}
                 priority
-                style={{ height: 'auto' }}
+                className="h-full w-auto object-contain"
+                style={{ width: 'auto' }}
               />
             </LogoContainer>
 
