@@ -82,7 +82,7 @@ export default function PolarisIntro() {
   return (
     <section 
       ref={ref}
-      className="relative z-10 w-full bg-[#020C1B] px-6 py-24 md:py-32"
+      className="relative z-10 w-full bg-[#020C1B] px-6 py-12 md:py-16"
     >
       <div className="mx-auto max-w-[1200px] w-full">
         
@@ -107,7 +107,7 @@ export default function PolarisIntro() {
         <BlurFade delay={0.2} direction="up" className="w-full">
           <h2 className="mb-6 font-heading text-4xl font-extrabold leading-[1.05] tracking-tight text-[#a7dadb] md:text-6xl lg:text-7xl">
             From Need to Alignment <br />
-            in <span className="text-white">1 Hour</span>
+            in <span className="text-[#a7dadb]">1 Hour</span>
           </h2>
         </BlurFade>
 

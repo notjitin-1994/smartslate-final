@@ -9,6 +9,7 @@ import { ProductIcons } from '@/components/icons/ProductIcons';
 import Link from 'next/link';
 import RevampedHero from '@/components/landing/RevampedHero';
 import PolarisIntro from '@/components/landing/PolarisIntro';
+import BetaRequestModal from '@/components/landing/BetaRequestModal';
 import { MagicCard } from '@/components/ui/magic-card';
 import {
   AutoAwesome,
@@ -43,6 +44,7 @@ const MotionBox = motion.create(Box);
 const MotionCard = motion.create(Card);
 
 export default function Home() {
+  const [betaModalOpen, setBetaModalOpen] = useState(false);
   const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0 }
@@ -77,7 +79,7 @@ export default function Home() {
         component="section"
         aria-label="Why Solara"
         sx={{
-          py: 'var(--section-padding-y)',
+          pt: { xs: 8, md: 12 }, pb: { xs: 12, md: 16 },
           position: 'relative',
           zIndex: 1
         }}
@@ -96,17 +98,17 @@ export default function Home() {
                   <Chip 
                     label="Polaris: LIVE" 
                     size="small" 
-                    sx={{ bgcolor: '#10b981', color: '#fff', fontWeight: 800, borderRadius: '4px' }} 
+                    sx={{ bgcolor: '#a7dadb', color: '#091521', fontWeight: 800, borderRadius: '4px' }} 
                   />
                   <Chip 
                     label="Constellation: BETA" 
                     size="small" 
-                    sx={{ bgcolor: '#4F46E5', color: '#fff', fontWeight: 800, borderRadius: '4px' }} 
+                    sx={{ bgcolor: '#a7dadb', color: '#091521', fontWeight: 800, borderRadius: '4px' }} 
                   />
                   <Chip 
                     label="Nova: BUILDING" 
                     size="small" 
-                    sx={{ bgcolor: '#f59e0b', color: '#fff', fontWeight: 800, borderRadius: '4px' }} 
+                    sx={{ bgcolor: '#a7dadb', color: '#091521', fontWeight: 800, borderRadius: '4px' }} 
                   />
                   <Chip 
                     label="SLATED FOR 2027: Nebula, Orbit, Spectrum" 
@@ -172,7 +174,8 @@ export default function Home() {
                   status: 'LIVE',
                   subtitle: 'Design rigorously in 1 hour',
                   outcome: 'Generate comprehensive learning blueprints instantly so that you can align stakeholders before writing a single module.',
-                  color: '#10b981'
+                  cta: 'Get Started',
+                  link: 'https://polaris.smartslate.io'
                 },
                 {
                   icon: <AutoAwesome />,
@@ -180,7 +183,8 @@ export default function Home() {
                   status: 'BETA',
                   subtitle: 'Automate content structuring',
                   outcome: 'Transform raw source material into structured instructional logic automatically, so that you can focus on strategy rather than formatting.',
-                  color: '#4F46E5'
+                  cta: 'Request Access to Beta',
+                  isBeta: true
                 },
                 {
                   icon: <Lightbulb />,
@@ -188,7 +192,8 @@ export default function Home() {
                   status: 'BUILDING',
                   subtitle: 'Co-author at scale',
                   outcome: 'Leverage intelligent authoring assistance to produce pedagogically sound content 10x faster without compromising quality.',
-                  color: '#f59e0b'
+                  cta: 'Learn More',
+                  link: 'https://solara.smartslate.io/nova'
                 },
                 {
                   icon: <Insights />,
@@ -196,7 +201,8 @@ export default function Home() {
                   status: '2027',
                   subtitle: 'Deliver adaptive trajectories',
                   outcome: 'Provide real-time, personalized learning paths for every individual so that you can ensure maximum engagement and mastery.',
-                  color: '#06b6d4'
+                  cta: 'Learn More',
+                  link: 'https://solara.smartslate.io/orbit'
                 },
                 {
                   icon: <Psychology />,
@@ -204,7 +210,8 @@ export default function Home() {
                   status: '2027',
                   subtitle: 'Scale 24/7 support',
                   outcome: 'Deploy an always-on AI tutor to guide learners exactly when they need it most, without overloading your instruction team.',
-                  color: '#8b5cf6'
+                  cta: 'Learn More',
+                  link: 'https://solara.smartslate.io/orbit'
                 },
                 {
                   icon: <Analytics />,
@@ -212,52 +219,87 @@ export default function Home() {
                   status: '2027',
                   subtitle: 'Prove financial impact',
                   outcome: 'Connect learning outcomes directly to business KPIs so that you can confidently demonstrate ROI to your executive leadership.',
-                  color: '#ec4899'
+                  cta: 'Learn More',
+                  link: 'https://solara.smartslate.io/nova'
                 }
               ].map((module, index) => (
                 <motion.div key={index} variants={fadeInUp} className="h-full">
                   <MagicCard
                     className="h-full w-full flex-col items-start justify-between p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] border-white/10"
-                    gradientColor="rgba(255,255,255,0.05)"
+                    gradientColor="rgba(167, 218, 219, 0.05)"
                   >
                     <div className="flex w-full items-start justify-between mb-8">
                       <div
                         className="flex h-12 w-12 items-center justify-center rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.2)]"
-                        style={{ backgroundColor: `${module.color}15`, color: module.color }}
+                        style={{ backgroundColor: 'rgba(167, 218, 219, 0.1)', color: '#a7dadb' }}
                       >
                         {module.icon}
                       </div>
                       <div 
-                        className="rounded-full px-3 py-1 text-xs font-bold tracking-widest"
-                        style={{ 
-                          backgroundColor: `${module.color}20`, 
-                          color: module.color,
-                          border: `1px solid ${module.color}40`
-                        }}
+                        className="rounded-full px-3 py-1 text-[10px] font-bold tracking-widest bg-[#a7dadb] text-[#091521] border border-[#a7dadb]/20"
                       >
                         {module.status}
                       </div>
                     </div>
                     
-                    <div className="flex flex-col gap-2">
-                      <h3 className="font-heading text-2xl font-bold text-[#e0e0e0]">
+                    <div className="flex flex-col gap-2 flex-grow text-left">
+                      <h3 className="font-heading text-2xl font-bold text-[#e0e0e0] text-left">
                         {module.name}
                       </h3>
-                      <h4 
-                        className="text-sm font-semibold tracking-wide uppercase"
-                        style={{ color: module.color }}
-                      >
+                      <h4 className="text-sm font-semibold tracking-wide uppercase text-[#a7dadb] text-left">
                         {module.subtitle}
                       </h4>
-                      <div className="mt-4 h-px w-12 bg-white/10" />
-                      <p className="mt-4 text-base leading-relaxed text-[#b0c5c6]">
+                      <div className="mt-4 h-px w-12 bg-[#a7dadb]/20" />
+                      <p className="mt-4 text-base leading-relaxed text-[#b0c5c6] mb-8 text-left">
                         {module.outcome}
                       </p>
+                    </div>
+
+                    <div className="mt-auto pt-6 w-full border-t border-white/5">
+                      {module.isBeta ? (
+                        <Button
+                          fullWidth
+                          onClick={() => setBetaModalOpen(true)}
+                          sx={{
+                            py: 1.5,
+                            bgcolor: 'rgba(167, 218, 219, 0.1)',
+                            color: '#a7dadb',
+                            fontWeight: 700,
+                            borderRadius: '12px',
+                            border: '1px solid rgba(167, 218, 219, 0.3)',
+                            textTransform: 'none',
+                            '&:hover': {
+                              bgcolor: 'rgba(167, 218, 219, 0.2)',
+                            }
+                          }}
+                        >
+                          {module.cta}
+                        </Button>
+                      ) : (
+                        <Link href={module.link} style={{ textDecoration: 'none' }}>
+                          <Button
+                            fullWidth
+                            sx={{
+                              py: 1.5,
+                              bgcolor: module.name === 'Polaris' ? '#4F46E5' : 'transparent',
+                              color: module.name === 'Polaris' ? '#fff' : '#a7dadb',
+                              fontWeight: 700,
+                              borderRadius: '12px',
+                              border: module.name === 'Polaris' ? 'none' : '1px solid rgba(167, 218, 219, 0.3)',
+                              textTransform: 'none',
+                              '&:hover': {
+                                bgcolor: module.name === 'Polaris' ? '#4338CA' : 'rgba(167, 218, 219, 0.1)',
+                              }
+                            }}
+                          >
+                            {module.cta}
+                          </Button>
+                        </Link>
+                      )}
                     </div>
                   </MagicCard>
                 </motion.div>
               ))}
-            </div>
           </MotionBox>
         </Container>
       </Box>
@@ -267,7 +309,7 @@ export default function Home() {
         component="section"
         aria-label="Product showcase"
         sx={{
-          py: 'var(--section-padding-y)',
+          pt: { xs: 8, md: 12 }, pb: { xs: 12, md: 16 },
           position: 'relative',
           zIndex: 1
         }}
@@ -856,7 +898,7 @@ export default function Home() {
 
       {/* CTA Section */}
       <Box sx={{
-        py: 'var(--section-padding-y)',
+        pt: { xs: 8, md: 12 }, pb: { xs: 12, md: 16 },
         position: 'relative',
         zIndex: 1
       }}>
