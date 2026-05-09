@@ -178,8 +178,8 @@ export default function Header() {
             <Image
               src="/logo.png"
               alt="Smartslate"
-              width={160}
-              height={40}
+              width={120}
+              height={30}
               priority
               className="h-full w-auto object-contain"
               style={{ width: 'auto' }}
