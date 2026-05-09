@@ -9,6 +9,7 @@ import { ProductIcons } from '@/components/icons/ProductIcons';
 import Link from 'next/link';
 import RevampedHero from '@/components/landing/RevampedHero';
 import PolarisIntro from '@/components/landing/PolarisIntro';
+import { MagicCard } from '@/components/ui/magic-card';
 import {
   AutoAwesome,
   Speed,
@@ -161,218 +162,102 @@ export default function Home() {
               </Box>
             </motion.div>
 
-            {/* Feature Grid - Enhanced with Problem/Solution Format */}
-            <Grid container spacing={4}>
+            
+            {/* Solara Ecosystem Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
               {[
                 {
                   icon: <Speed />,
-                  title: '6 Weeks → 1 Hour',
-                  subtitle: 'Requirements in Days, Not Months',
-                  problem: 'Stop losing momentum to endless stakeholder meetings and revision cycles',
-                  solution: 'Solara Engine generates comprehensive learning experience designs in a single session, capturing every requirement while stakeholders\' insights are fresh',
-                  color: '#a7dadb'
-                },
-                {
-                  icon: <Verified />,
-                  title: '100% Business Alignment',
-                  subtitle: 'Zero Misalignment Risk',
-                  problem: 'Tired of building the wrong thing because requirements were misunderstood?',
-                  solution: 'Our intelligent ecosystem maps every learning objective directly to business KPIs, ensuring perfect alignment from day one',
+                  name: 'Polaris',
+                  status: 'LIVE',
+                  subtitle: 'Design rigorously in 1 hour',
+                  outcome: 'Generate comprehensive learning blueprints instantly so that you can align stakeholders before writing a single module.',
                   color: '#10b981'
                 },
                 {
-                  icon: <ErrorOutline />,
-                  title: 'Catches 100% of Gaps',
-                  subtitle: 'AI-Powered Gap Detection',
-                  problem: 'Critical requirements discovered in user testing? Never again.',
-                  solution: 'The Solara Engine analyzes requirements against dozens of professional frameworks, catching gaps before they become expensive problems',
+                  icon: <AutoAwesome />,
+                  name: 'Constellation',
+                  status: 'BETA',
+                  subtitle: 'Automate content structuring',
+                  outcome: 'Transform raw source material into structured instructional logic automatically, so that you can focus on strategy rather than formatting.',
                   color: '#4F46E5'
                 },
                 {
-                  icon: <TrendingUp />,
-                  title: '10x ROI Documentation',
-                  subtitle: 'Executive-Ready Reports',
-                  problem: 'Spending hours formatting Word docs that executives skim in 30 seconds?',
-                  solution: 'Auto-generate executive summaries, ROI projections, and stakeholder presentations that leadership actually reads and approves',
+                  icon: <Lightbulb />,
+                  name: 'Nova',
+                  status: 'BUILDING',
+                  subtitle: 'Co-author at scale',
+                  outcome: 'Leverage intelligent authoring assistance to produce pedagogically sound content 10x faster without compromising quality.',
                   color: '#f59e0b'
                 },
                 {
-                  icon: <Groups />,
-                  title: 'Unified Learning Ecosystem',
-                  subtitle: 'One Platform, Total Control',
-                  problem: 'Fragmented tools and disconnected data destroying your visibility?',
-                  solution: 'Design, deliver, and measure in one place. Solara integrates every phase of the learning lifecycle into a single, cohesive engine',
+                  icon: <Insights />,
+                  name: 'Orbit',
+                  status: '2027',
+                  subtitle: 'Deliver adaptive trajectories',
+                  outcome: 'Provide real-time, personalized learning paths for every individual so that you can ensure maximum engagement and mastery.',
+                  color: '#06b6d4'
+                },
+                {
+                  icon: <Psychology />,
+                  name: 'Nebula',
+                  status: '2027',
+                  subtitle: 'Scale 24/7 support',
+                  outcome: 'Deploy an always-on AI tutor to guide learners exactly when they need it most, without overloading your instruction team.',
                   color: '#8b5cf6'
                 },
                 {
-                  icon: <WorkspacePremium />,
-                  title: 'Expert-Level Quality',
-                  subtitle: 'Best Practices Automated',
-                  problem: 'Maintaining high standards across distributed teams is nearly impossible',
-                  solution: 'Solara embeds professional instructional design methodologies automatically—ensuring every output is expert-grade and research-backed',
+                  icon: <Analytics />,
+                  name: 'Spectrum',
+                  status: '2027',
+                  subtitle: 'Prove financial impact',
+                  outcome: 'Connect learning outcomes directly to business KPIs so that you can confidently demonstrate ROI to your executive leadership.',
                   color: '#ec4899'
                 }
-              ].map((feature, index) => (
-                <Grid size={{ xs: 12, md: 6 }} key={index}>
-                  <motion.div variants={fadeInUp}>
-                    <Box
-                      sx={{
-                        height: '100%',
-                        p: 4,
-                        background: 'rgba(167, 218, 219, 0.05)',
-                        backdropFilter: 'blur(24px) saturate(180%)',
-                        WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-                        border: '2px solid rgba(167, 218, 219, 0.2)',
-                        borderRadius: 4,
-                        boxShadow: '0 12px 40px rgba(167, 218, 219, 0.1), inset 0 2px 0 rgba(167, 218, 219, 0.1)',
-                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                        position: 'relative',
-                        overflow: 'hidden',
-                        '&::before': {
-                          content: '""',
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
-                          width: '4px',
-                          height: '100%',
-                          background: feature.color,
-                          opacity: 0.7
-                        },
-                        '&:hover': {
-                          borderColor: 'rgba(167, 218, 219, 0.4)',
-                          background: 'rgba(167, 218, 219, 0.08)',
-                          transform: 'translateY(-12px)',
-                          boxShadow: '0 24px 64px rgba(167, 218, 219, 0.25)',
-                          '&::before': {
-                            opacity: 1,
-                            width: '6px'
-                          }
-                        }
-                      }}
-                    >
-                      {/* Icon Background */}
-                      <Box
-                        sx={{
-                          width: '72px',
-                          height: '72px',
-                          borderRadius: '16px',
-                          background: feature.color,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          mb: 3,
-                          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
-                          color: '#fff',
-                          fontSize: '2rem'
+              ].map((module, index) => (
+                <motion.div key={index} variants={fadeInUp} className="h-full">
+                  <MagicCard
+                    className="h-full w-full flex-col items-start justify-between p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] border-white/10"
+                    gradientColor="rgba(255,255,255,0.05)"
+                  >
+                    <div className="flex w-full items-start justify-between mb-8">
+                      <div
+                        className="flex h-12 w-12 items-center justify-center rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.2)]"
+                        style={{ backgroundColor: `${module.color}15`, color: module.color }}
+                      >
+                        {module.icon}
+                      </div>
+                      <div 
+                        className="rounded-full px-3 py-1 text-xs font-bold tracking-widest"
+                        style={{ 
+                          backgroundColor: `${module.color}20`, 
+                          color: module.color,
+                          border: `1px solid ${module.color}40`
                         }}
                       >
-                        {feature.icon}
-                      </Box>
-
-                      {/* Title */}
-                      <Typography
-                        variant="h4"
-                        component="h3"
-                        sx={{
-                          mb: 0.5,
-                          color: 'text.primary',
-                          fontWeight: 800,
-                          fontSize: { xs: '1.5rem', md: '1.75rem' }
-                        }}
+                        {module.status}
+                      </div>
+                    </div>
+                    
+                    <div className="flex flex-col gap-2">
+                      <h3 className="font-heading text-2xl font-bold text-[#e0e0e0]">
+                        {module.name}
+                      </h3>
+                      <h4 
+                        className="text-sm font-semibold tracking-wide uppercase"
+                        style={{ color: module.color }}
                       >
-                        {feature.title}
-                      </Typography>
-
-                      {/* Subtitle */}
-                      <Typography
-                        variant="subtitle1"
-                        sx={{
-                          mb: 3,
-                          color: '#a7dadb',
-                          fontWeight: 700,
-                          fontSize: '1rem'
-                        }}
-                      >
-                        {feature.subtitle}
-                      </Typography>
-
-                      {/* Problem Statement */}
-                      <Box
-                        sx={{
-                          mb: 2,
-                          p: 2,
-                          background: 'rgba(239, 68, 68, 0.05)',
-                          borderLeft: '3px solid #ef4444',
-                          borderRadius: '0 8px 8px 0'
-                        }}
-                      >
-                        <Typography
-                          variant="caption"
-                          sx={{
-                            color: '#ef4444',
-                            fontWeight: 700,
-                            fontSize: '0.75rem',
-                            letterSpacing: '0.05em',
-                            textTransform: 'uppercase',
-                            display: 'block',
-                            mb: 0.5
-                          }}
-                        >
-                          THE PROBLEM
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          sx={{
-                            color: 'text.secondary',
-                            lineHeight: 1.6,
-                            fontSize: '0.9375rem',
-                            fontStyle: 'italic'
-                          }}
-                        >
-                          {feature.problem}
-                        </Typography>
-                      </Box>
-
-                      {/* Solution Statement */}
-                      <Box
-                        sx={{
-                          p: 2,
-                          background: 'rgba(16, 185, 129, 0.05)',
-                          borderLeft: '3px solid #10b981',
-                          borderRadius: '0 8px 8px 0'
-                        }}
-                      >
-                        <Typography
-                          variant="caption"
-                          sx={{
-                            color: '#10b981',
-                            fontWeight: 700,
-                            fontSize: '0.75rem',
-                            letterSpacing: '0.05em',
-                            textTransform: 'uppercase',
-                            display: 'block',
-                            mb: 0.5
-                          }}
-                        >
-                          THE SOLUTION
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          sx={{
-                            color: 'text.primary',
-                            lineHeight: 1.7,
-                            fontSize: '0.9375rem',
-                            fontWeight: 500
-                          }}
-                        >
-                          {feature.solution}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </motion.div>
-                </Grid>
+                        {module.subtitle}
+                      </h4>
+                      <div className="mt-4 h-px w-12 bg-white/10" />
+                      <p className="mt-4 text-base leading-relaxed text-[#b0c5c6]">
+                        {module.outcome}
+                      </p>
+                    </div>
+                  </MagicCard>
+                </motion.div>
               ))}
-            </Grid>
+            </div>
           </MotionBox>
         </Container>
       </Box>
