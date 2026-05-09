@@ -1053,6 +1053,11 @@ export default function Home() {
       {/* JSON-LD */}
       <JsonLd data={getOrganizationJsonLd()} />
       <JsonLd data={getWebsiteJsonLd()} />
+      <BetaRequestModal 
+        isOpen={betaModalOpen} 
+        onClose={() => setBetaModalOpen(false)} 
+        productName="Constellation" 
+      />
     </Box>
   );
 }

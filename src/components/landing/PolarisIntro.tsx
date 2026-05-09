@@ -106,8 +106,7 @@ export default function PolarisIntro() {
         {/* Emotionally Compelling Headline */}
         <BlurFade delay={0.2} direction="up" className="w-full">
           <h2 className="mb-6 font-heading text-4xl font-extrabold leading-[1.05] tracking-tight text-[#a7dadb] md:text-6xl lg:text-7xl">
-            From Need to Alignment <br />
-            in <span className="text-[#a7dadb]">1 Hour</span>
+            From Need to Alignment in <span className="text-[#a7dadb]">1 Hour</span>
           </h2>
         </BlurFade>
 
