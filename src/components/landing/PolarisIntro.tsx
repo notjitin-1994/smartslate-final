@@ -215,10 +215,13 @@ export default function PolarisIntro() {
               </div>
 
               {/* The Polaris Way */}
-              <div className={cn(
-                "relative h-full overflow-hidden rounded-2xl border-2 border-[#10b981]/40 bg-[#10b981]/5 shadow-[0_16px_48px_rgba(16,185,129,0.15)] transition-all duration-500",
-                comparisonMode === "polaris" ? "block opacity-100 translate-x-0" : "hidden md:block opacity-40 grayscale-[0.5]"
-              )}>
+              <div 
+                className={cn(
+                  "relative h-full rounded-2xl border-2 border-[#10b981]/40 bg-[#10b981]/5 shadow-[0_16px_48px_rgba(16,185,129,0.15)] transition-all duration-500 overflow-hidden",
+                  comparisonMode === "polaris" ? "opacity-100 translate-x-0" : "opacity-40 grayscale-[0.5]"
+                )}
+                style={{ display: comparisonMode === "old" ? 'none' : 'block' }}
+              >
                 <ShineBorder
                   className="pointer-events-none"
                   shineColor={["#10b981", "#a7dadb", "#4F46E5"]}

@@ -5,24 +5,12 @@ import { motion, useInView } from "framer-motion"
 import { 
   School, 
   Architecture, 
-  Rocket, 
-  CheckCircle,
-  Groups,
-  Description,
-  Psychology,
-  Speed,
-  AutoAwesome,
-  TrendingUp,
-  Verified,
-  Analytics,
-  Insights,
-  Lightbulb
+  CheckCircle
 } from "@mui/icons-material"
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 import { BlurFade } from "@/components/ui/blur-fade"
-import { OrbitingCircles } from "@/components/ui/orbiting-circles"
 import { ShimmerButton } from "@/components/ui/shimmer-button"
 
 export default function BeyondSolara() {
@@ -53,7 +41,7 @@ export default function BeyondSolara() {
   return (
     <section 
       ref={ref}
-      className="relative z-10 w-full bg-[#020C1B] px-6 pt-8 pb-12 md:pt-12 md:pb-16"
+      className="relative z-10 w-full bg-[#020C1B] px-6 pt-12 pb-16 md:pt-16 md:pb-24"
     >
       <div className="mx-auto max-w-[1200px] w-full">
         
@@ -75,76 +63,61 @@ export default function BeyondSolara() {
           </BlurFade>
         </div>
 
-        <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-24 items-center">
-          
-          {/* Brand Style Compliant Image - Mobile Background / Desktop Asset */}
-          <BlurFade delay={0.2} direction="right" className="hidden lg:block relative h-[500px] w-full overflow-hidden rounded-3xl border border-[#a7dadb]/20 md:h-[600px]">
-            <img 
-              src="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2000&auto=format&fit=crop" 
-              alt="Smartslate Ecosystem" 
-              className="h-full w-full object-cover opacity-60 grayscale-[0.3] brightness-[0.7]"
-            />
-            <div className="absolute inset-0 bg-linear-to-t from-[#020C1B] via-transparent to-transparent opacity-60" />
-            <div className="absolute inset-0 bg-[#4F46E5]/10 mix-blend-overlay" />
-          </BlurFade>
-
-          {/* Product Narrative List */}
-          <div className="flex flex-col gap-12">
-            {products.map((product, idx) => (
-              <BlurFade key={product.id} delay={0.2 + idx * 0.1} direction="left">
-                <div className="group relative overflow-hidden rounded-3xl border border-white/5 bg-white/[0.02] p-8 transition-all hover:bg-white/[0.04] hover:border-[#a7dadb]/20">
-                  <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-[#a7dadb]/40 via-[#a7dadb]/10 to-transparent" />
-                  
-                  <div className="relative z-10 flex flex-col items-start">
-                    <div className="mb-6 flex items-center gap-3 text-[#a7dadb]">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#a7dadb]/10 border border-[#a7dadb]/20 shadow-[0_0_20px_-5px_rgba(167,218,219,0.3)] group-hover:scale-110 transition-transform duration-300">
-                        {product.icon}
-                      </div>
-                      <span className="text-sm font-black uppercase tracking-[0.2em]">{product.name}</span>
+        {/* 2-Column Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+          {products.map((product, idx) => (
+            <BlurFade key={product.id} delay={0.2 + idx * 0.1} direction="up" className="h-full">
+              <div className="group relative h-full overflow-hidden rounded-3xl border border-white/5 bg-white/[0.02] p-8 transition-all hover:bg-white/[0.04] hover:border-[#a7dadb]/20 flex flex-col items-start justify-between">
+                <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-[#a7dadb]/40 via-[#a7dadb]/10 to-transparent" />
+                
+                <div className="relative z-10 flex flex-col items-start w-full">
+                  <div className="mb-6 flex items-center gap-3 text-[#a7dadb]">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#a7dadb]/10 border border-[#a7dadb]/20 shadow-[0_0_20px_-5px_rgba(167,218,219,0.3)] group-hover:scale-110 transition-transform duration-300">
+                      {product.icon}
                     </div>
-                    
-                    <h3 className="mb-4 font-heading text-3xl font-extrabold text-[#e0e0e0] md:text-4xl leading-tight">
-                      {product.subtitle}
-                    </h3>
-                    
-                    <p className="mb-8 font-body text-lg leading-relaxed text-[#b0c5c6] max-w-2xl">
-                      {product.description}
-                    </p>
-                    
-                    <Link href={product.href}>
-                      <ShimmerButton
-                        background="#4F46E5"
-                        shimmerColor="#ffffff"
-                        className="h-12 px-8 text-base font-bold shadow-[0_12px_32px_rgba(79,70,229,0.3)] transition-transform hover:scale-[1.03] active:scale-[0.97]"
-                      >
-                        {product.cta}
-                      </ShimmerButton>
-                    </Link>
+                    <span className="text-sm font-black uppercase tracking-[0.2em]">{product.name}</span>
                   </div>
+                  
+                  <h3 className="mb-4 font-heading text-3xl font-extrabold text-[#e0e0e0] md:text-4xl leading-tight">
+                    {product.subtitle}
+                  </h3>
+                  
+                  <p className="mb-8 font-body text-lg leading-relaxed text-[#b0c5c6]">
+                    {product.description}
+                  </p>
                 </div>
-              </BlurFade>
-            ))}
 
-            {/* Ecosystem Summary */}
-            <BlurFade delay={0.5} direction="up">
-              <div className="mt-8 rounded-2xl bg-white/5 border border-white/10 p-6">
-                <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#10b981]/20">
-                    <CheckCircle className="h-6 w-6 text-[#10b981]" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-[#e0e0e0]">Unified Outcomes</h4>
-                    <p className="text-sm leading-relaxed text-[#b0c5c6]">
-                      Whether you need pre-built excellence or bespoke architectures, the entire Smartslate ecosystem is 
-                      synced to your business KPIs so that you can prove ROI at every step.
-                    </p>
-                  </div>
+                <div className="relative z-10 mt-auto pt-4">
+                  <Link href={product.href}>
+                    <ShimmerButton
+                      background="#4F46E5"
+                      shimmerColor="#ffffff"
+                      className="h-12 px-8 text-base font-bold shadow-[0_12px_32px_rgba(79,70,229,0.3)] transition-transform hover:scale-[1.03] active:scale-[0.97]"
+                    >
+                      {product.cta}
+                    </ShimmerButton>
+                  </Link>
                 </div>
               </div>
             </BlurFade>
-          </div>
-
+          ))}
         </div>
+
+        {/* Ecosystem Summary - Spanning full width below columns */}
+        <BlurFade delay={0.5} direction="up" className="mt-12">
+          <div className="rounded-2xl bg-white/5 border border-white/10 p-8 flex flex-col md:flex-row items-center gap-6">
+            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[#10b981]/20">
+              <CheckCircle className="h-10 w-10 text-[#10b981]" />
+            </div>
+            <div>
+              <h4 className="text-xl font-bold text-[#e0e0e0] mb-2">Unified Outcomes</h4>
+              <p className="text-lg leading-relaxed text-[#b0c5c6]">
+                Whether you need pre-built excellence or bespoke architectures, the entire Smartslate ecosystem is 
+                synced to your business KPIs so that you can prove ROI at every step.
+              </p>
+            </div>
+          </div>
+        </BlurFade>
 
       </div>
     </section>
