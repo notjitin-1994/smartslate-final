@@ -21,40 +21,41 @@ export default function RevampedHero() {
 
     let isReversing = false
     let frameId: number
-    let lastTime = performance.now()
 
-    const update = (now: number) => {
-      const deltaTime = (now - lastTime) / 1000
-      lastTime = now
-
+    const handleStep = () => {
       if (!video.duration) {
-        frameId = requestAnimationFrame(update)
+        frameId = requestAnimationFrame(handleStep)
         return
       }
 
       if (isReversing) {
-        // Play backwards
-        const nextTime = video.currentTime - deltaTime
-        if (nextTime <= 0) {
+        // High-frequency manual reverse seeking
+        // We decrement by a value that mimics 1x speed (1/60s roughly)
+        const nextTime = video.currentTime - 0.033 // Targeting ~30fps for reverse
+        
+        if (nextTime <= 0.1) {
           video.currentTime = 0
           isReversing = false
-          video.play().catch(() => {}) // Resume forward playback
+          video.play().catch(() => {})
         } else {
           video.currentTime = nextTime
         }
       } else {
-        // Playing forward (handled by browser)
-        // Check if we hit the end
-        if (video.currentTime >= video.duration - 0.1) {
+        // Check for end of video to trigger reverse
+        // Use a slightly larger buffer (0.3s) to catch it before native loop/end
+        if (video.currentTime >= video.duration - 0.3) {
           video.pause()
           isReversing = true
         }
       }
 
-      frameId = requestAnimationFrame(update)
+      frameId = requestAnimationFrame(handleStep)
     }
 
-    frameId = requestAnimationFrame(update)
+    // Ensure video doesn't natively loop and interfere
+    video.loop = false
+    
+    frameId = requestAnimationFrame(handleStep)
     return () => cancelAnimationFrame(frameId)
   }, [])
 
