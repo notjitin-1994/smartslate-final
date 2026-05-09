@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     
     if (missingFields.length > 0) {
       return NextResponse.json(
-        { error: `Missing required fields: \${missingFields.join(', ')}` },
+        { error: `Missing required fields: ${missingFields.join(', ')}` },
         { status: 400 }
       );
     }
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
           email: body.email,
           company: body.company,
           additional_info: body.useCase || null,
-          source: \`\${body.productName} Beta Request\`,
+          source: `${body.productName} Beta Request`,
           course_name: body.productName,
           ip_address: request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || null,
           user_agent: request.headers.get('user-agent') || null,
@@ -57,20 +57,20 @@ export async function POST(request: NextRequest) {
 
       // Send notification email to team
       const to = process.env.LEADS_EMAIL_TO || 'hello@smartslate.io';
-      const subject = \`Beta Request: \${body.productName} - \${body.name}\`;
-      const html = \`
+      const subject = `Beta Request: ${body.productName} - ${body.name}`;
+      const html = `
         <h2>New Beta Access Request</h2>
-        <p><strong>Product:</strong> \${body.productName}</p>
-        <p><strong>Name:</strong> \${body.name}</p>
-        <p><strong>Email:</strong> \${body.email}</p>
-        <p><strong>Organization:</strong> \${body.company}</p>
+        <p><strong>Product:</strong> ${body.productName}</p>
+        <p><strong>Name:</strong> ${body.name}</p>
+        <p><strong>Email:</strong> ${body.email}</p>
+        <p><strong>Organization:</strong> ${body.company}</p>
         <hr>
         <h3>Use Case Details</h3>
-        <p>\${body.useCase || 'Not specified'}</p>
+        <p>${body.useCase || 'Not specified'}</p>
         <hr>
-        <p><strong>Submitted:</strong> \${createdAt}</p>
-        <p><strong>Lead ID:</strong> \${leadId}</p>
-      \`;
+        <p><strong>Submitted:</strong> ${createdAt}</p>
+        <p><strong>Lead ID:</strong> ${leadId}</p>
+      `;
 
       sendEmail({ to, subject, html }).catch((err) => console.error('Failed to send beta email', err));
 
