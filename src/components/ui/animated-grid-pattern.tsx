@@ -142,13 +142,13 @@ export function AnimatedGridPattern({
           y={y}
         >
           <path
-            d={`M.5 \${height}V.5H\${width}`}
+            d={`M.5 ${height}V.5H${width}`}
             fill="none"
             strokeDasharray={strokeDasharray}
           />
         </pattern>
       </defs>
-      <rect width="100%" height="100%" fill={`url(#\${id})`} />
+      <rect width="100%" height="100%" fill={`url(#${id})`} />
       <svg x={x} y={y} className="overflow-visible">
         {squares.map(({ pos: [squareX, squareY], id, iteration }, index) => (
           <motion.rect
@@ -162,7 +162,7 @@ export function AnimatedGridPattern({
               repeatDelay,
             }}
             onAnimationComplete={() => updateSquarePosition(id)}
-            key={`\${id}-\${iteration}-\${index}`}
+            key={`${id}-${iteration}-${index}-${squareX}-${squareY}`}
             width={width - 1}
             height={height - 1}
             x={squareX * width + 1}

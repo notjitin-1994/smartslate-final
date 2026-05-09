@@ -62,7 +62,7 @@ export default function RevampedHero() {
   return (
     <section 
       ref={containerRef}
-      className="relative flex w-full flex-col items-center overflow-hidden bg-[#020C1B] px-6 pt-[calc(var(--header-total-height-mobile)+2rem)] pb-12 md:pt-[calc(var(--header-total-height-desktop)+3rem)] md:pb-16"
+      className="relative flex w-full flex-col items-center overflow-hidden bg-[#020C1B] px-6 pt-[calc(var(--header-total-height-mobile)+0.5rem)] pb-12 md:pt-[calc(var(--header-total-height-desktop)+3rem)] md:pb-16"
     >
       {/* Background Video Layer */}
       <div className="absolute inset-0 z-0">

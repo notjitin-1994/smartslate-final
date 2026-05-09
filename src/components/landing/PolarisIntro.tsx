@@ -151,25 +151,43 @@ export default function PolarisIntro() {
         <BlurFade delay={0.5} direction="up" className="w-full">
           <div className="mb-16">
             {/* Mobile Mode Switcher */}
-            <div className="mb-8 flex rounded-xl bg-white/5 p-1 md:hidden">
-              <button
-                onClick={() => setComparisonMode("old")}
-                className={cn(
-                  "flex-1 py-2 text-xs font-bold uppercase tracking-wider transition-all rounded-lg",
-                  comparisonMode === "old" ? "bg-[#ef4444] text-white" : "text-[#7a8a8b]"
-                )}
-              >
-                The Old Way
-              </button>
-              <button
-                onClick={() => setComparisonMode("polaris")}
-                className={cn(
-                  "flex-1 py-2 text-xs font-bold uppercase tracking-wider transition-all rounded-lg",
-                  comparisonMode === "polaris" ? "bg-[#10b981] text-white" : "text-[#7a8a8b]"
-                )}
-              >
-                The Polaris Way
-              </button>
+            <div className="mb-8 flex flex-col gap-4 md:hidden">
+              <div className="flex rounded-xl bg-white/5 p-1">
+                <button
+                  onClick={() => setComparisonMode("old")}
+                  className={cn(
+                    "flex-1 py-3 text-xs font-bold uppercase tracking-wider transition-all rounded-lg",
+                    comparisonMode === "old" ? "bg-[#ef4444] text-white shadow-lg shadow-[#ef4444]/20" : "text-[#7a8a8b]"
+                  )}
+                >
+                  The Old Way
+                </button>
+                <button
+                  onClick={() => setComparisonMode("polaris")}
+                  className={cn(
+                    "relative flex-1 py-3 text-xs font-bold uppercase tracking-wider transition-all rounded-lg",
+                    comparisonMode === "polaris" ? "bg-[#10b981] text-white shadow-lg shadow-[#10b981]/20" : "text-[#7a8a8b]"
+                  )}
+                >
+                  The Polaris Way
+                  <motion.div 
+                    animate={{ scale: [1, 1.05, 1], opacity: [0.8, 1, 0.8] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="absolute -top-2 -right-2 rounded-full bg-[#a7dadb] px-1.5 py-0.5 text-[8px] font-black text-[#091521] shadow-xl"
+                  >
+                    AI-POWERED
+                  </motion.div>
+                </button>
+              </div>
+              {comparisonMode === "polaris" && (
+                <motion.div 
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="rounded-lg border border-[#a7dadb]/20 bg-[#a7dadb]/5 p-2 text-center text-[10px] font-bold uppercase tracking-widest text-[#a7dadb]"
+                >
+                  ✨ Experience the modern, automated standard
+                </motion.div>
+              )}
             </div>
 
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
@@ -198,7 +216,7 @@ export default function PolarisIntro() {
 
               {/* The Polaris Way */}
               <div className={cn(
-                "relative h-full rounded-2xl bg-[#10b981]/5 shadow-[0_16px_48px_rgba(16,185,129,0.15)] transition-all duration-500",
+                "relative h-full rounded-2xl border-2 border-[#10b981]/40 bg-[#10b981]/5 shadow-[0_16px_48px_rgba(16,185,129,0.15)] transition-all duration-500",
                 comparisonMode === "polaris" ? "block opacity-100 translate-x-0" : "hidden md:block opacity-40 grayscale-[0.5]"
               )}>
                 <ShineBorder

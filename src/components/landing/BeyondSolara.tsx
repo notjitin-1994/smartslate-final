@@ -77,8 +77,8 @@ export default function BeyondSolara() {
 
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-24 items-center">
           
-          {/* Brand Style Compliant Image */}
-          <BlurFade delay={0.2} direction="right" className="relative h-[500px] w-full overflow-hidden rounded-3xl border border-[#a7dadb]/20 md:h-[600px]">
+          {/* Brand Style Compliant Image - Mobile Background / Desktop Asset */}
+          <BlurFade delay={0.2} direction="right" className="hidden lg:block relative h-[500px] w-full overflow-hidden rounded-3xl border border-[#a7dadb]/20 md:h-[600px]">
             <img 
               src="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2000&auto=format&fit=crop" 
               alt="Smartslate Ecosystem" 
@@ -92,28 +92,40 @@ export default function BeyondSolara() {
           <div className="flex flex-col gap-12">
             {products.map((product, idx) => (
               <BlurFade key={product.id} delay={0.2 + idx * 0.1} direction="left">
-                <div className="group relative pl-8 before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-[#a7dadb]/20 before:transition-all hover:before:bg-[#a7dadb]">
-                  <div className="mb-4 flex items-center gap-3 text-[#a7dadb]">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#a7dadb]/10 border border-[#a7dadb]/20 group-hover:scale-110 transition-transform">
-                      {product.icon}
-                    </div>
-                    <span className="text-sm font-bold uppercase tracking-widest">{product.name}</span>
+                <div className="group relative overflow-hidden rounded-3xl lg:rounded-none lg:bg-transparent lg:border-none lg:p-0 pl-8 before:absolute lg:before:block before:hidden before:left-0 before:top-0 before:h-full before:w-1 before:bg-[#a7dadb]/20 before:transition-all hover:before:bg-[#a7dadb]">
+                  {/* Mobile Background Image */}
+                  <div className="absolute inset-0 -z-10 block lg:hidden">
+                    <img 
+                      src="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2000&auto=format&fit=crop" 
+                      alt=""
+                      className="h-full w-full object-cover opacity-20 grayscale"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#020C1B] via-[#020C1B]/90 to-transparent" />
                   </div>
-                  <h3 className="mb-4 font-heading text-2xl font-bold text-[#e0e0e0] md:text-3xl">
-                    {product.subtitle}
-                  </h3>
-                  <p className="mb-6 font-body text-lg leading-relaxed text-[#b0c5c6]">
-                    {product.description}
-                  </p>
-                  <Link href={product.href}>
-                    <ShimmerButton
-                      background="#4F46E5"
-                      shimmerColor="#ffffff"
-                      className="h-11 px-6 text-sm font-bold shadow-lg transition-transform hover:scale-[1.02] active:scale-[0.98]"
-                    >
-                      {product.cta}
-                    </ShimmerButton>
-                  </Link>
+
+                  <div className="relative z-10 p-8 lg:p-0">
+                    <div className="mb-4 flex items-center gap-3 text-[#a7dadb]">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#a7dadb]/10 border border-[#a7dadb]/20 group-hover:scale-110 transition-transform">
+                        {product.icon}
+                      </div>
+                      <span className="text-sm font-bold uppercase tracking-widest">{product.name}</span>
+                    </div>
+                    <h3 className="mb-4 font-heading text-2xl font-bold text-[#e0e0e0] md:text-3xl">
+                      {product.subtitle}
+                    </h3>
+                    <p className="hidden lg:block mb-6 font-body text-lg leading-relaxed text-[#b0c5c6]">
+                      {product.description}
+                    </p>
+                    <Link href={product.href}>
+                      <ShimmerButton
+                        background="#4F46E5"
+                        shimmerColor="#ffffff"
+                        className="h-11 px-6 text-sm font-bold shadow-lg transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                      >
+                        {product.cta}
+                      </ShimmerButton>
+                    </Link>
+                  </div>
                 </div>
               </BlurFade>
             ))}

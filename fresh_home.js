@@ -1,4 +1,9 @@
-'use client';
+const fs = require('fs');
+const path = require('path');
+
+const filePath = path.join(process.cwd(), 'src/app/page.tsx');
+
+const freshHome = `'use client';
 
 import { Box, Container, Typography, Button, Chip, Stack, Grid } from '@mui/material';
 import { useState, useEffect } from 'react';
@@ -6,7 +11,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import JsonLd from '@/components/seo/JsonLd';
 import { getOrganizationJsonLd, getWebsiteJsonLd } from '@/components/seo/schemas';
 import Link from 'next/link';
-import { cn } from "@/lib/utils";
 import RevampedHero from '@/components/landing/RevampedHero';
 import PolarisIntro from '@/components/landing/PolarisIntro';
 import BeyondSolara from '@/components/landing/BeyondSolara';
@@ -206,26 +210,12 @@ export default function Home() {
           <MotionBox initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={staggerContainer}>
             <motion.div variants={fadeInUp}>
               <Box sx={{ mb: 6, textAlign: 'left' }}>
-                <div className="mb-6 flex flex-wrap gap-2 md:gap-3">
-                  {[
-                    { label: 'Polaris: LIVE', type: 'live' },
-                    { label: 'Constellation: BETA', type: 'beta' },
-                    { label: 'Nova: BUILDING', type: 'building' }
-                  ].map((chip, i) => (
-                    <div 
-                      key={i} 
-                      className={cn(
-                        "rounded-lg px-3 py-1 text-[10px] md:text-xs font-black tracking-widest uppercase border",
-                        "bg-[#a7dadb] text-[#091521] border-[#a7dadb]/20 shadow-[0_4px_12px_rgba(167,218,219,0.1)]"
-                      )}
-                    >
-                      {chip.label}
-                    </div>
+                <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mb: 3 }}>
+                  {['Polaris: LIVE', 'Constellation: BETA', 'Nova: BUILDING'].map((label, i) => (
+                    <Chip key={i} label={label} size="small" sx={{ bgcolor: '#a7dadb', color: '#091521', fontWeight: 800, borderRadius: '4px', mb: 1 }} />
                   ))}
-                  <div className="rounded-lg px-3 py-1 text-[10px] md:text-xs font-bold tracking-widest uppercase border border-[#a7dadb]/30 text-[#a7dadb] bg-white/5">
-                    ROADMAP 2027: Nebula, Orbit, Spectrum
-                  </div>
-                </div>
+                  <Chip label="SLATED FOR 2027: Nebula, Orbit, Spectrum" size="small" variant="outlined" sx={{ color: '#a7dadb', borderColor: '#a7dadb', fontWeight: 800, borderRadius: '4px', mb: 1 }} />
+                </Stack>
                 <Typography variant="overline" sx={{ color: '#a7dadb', fontWeight: 800, fontSize: '0.875rem', letterSpacing: '0.15em', display: 'block', mb: 2 }}>
                   THE SOLARA ENGINE ADVANTAGE
                 </Typography>
@@ -338,4 +328,7 @@ export default function Home() {
       <BetaRequestModal isOpen={betaModalOpen} onClose={() => setBetaModalOpen(false)} productName="Constellation" />
     </Box>
   );
-}
+}`;
+
+fs.writeFileSync(filePath, freshHome);
+console.log('Successfully wrote fresh Home page');

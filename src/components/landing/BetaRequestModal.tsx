@@ -66,7 +66,7 @@ export default function BetaRequestModal({ isOpen, onClose, productName }: BetaR
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-[#020C1B]/80 backdrop-blur-md"
+            className="absolute inset-0 bg-[#020C1B]/60 backdrop-blur-xl"
           />
 
           <motion.div
