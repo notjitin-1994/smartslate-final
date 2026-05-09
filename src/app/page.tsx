@@ -276,7 +276,7 @@ export default function Home() {
                           {module.cta}
                         </Button>
                       ) : (
-                        <Link href={module.link} style={{ textDecoration: 'none' }}>
+                        <Link href={module.link || '#'} style={{ textDecoration: 'none' }}>
                           <Button
                             fullWidth
                             sx={{
