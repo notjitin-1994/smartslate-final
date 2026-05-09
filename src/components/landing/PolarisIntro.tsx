@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef } from "react"
+import React, { useRef, useState } from "react"
 import { motion, useInView } from "framer-motion"
 import { Speed, AutoAwesome, Verified, TrendingUp, Rocket, CalendarMonth, Loop, ErrorOutline, Description, Straighten, Close, CheckCircle } from "@mui/icons-material"
 import { PlayCircle } from "lucide-react"

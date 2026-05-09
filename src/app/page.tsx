@@ -22,6 +22,7 @@ import {
   Verified,
   Analytics,
   School,
+  Architecture,
   Business,
   Psychology,
   CloudUpload,
