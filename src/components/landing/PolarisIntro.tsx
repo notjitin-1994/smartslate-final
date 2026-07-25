@@ -83,7 +83,7 @@ export default function PolarisIntro() {
   return (
     <section 
       ref={ref}
-      className="relative z-10 w-full bg-[#020C1B] px-6 pt-8 pb-12 md:pt-12 md:pb-16"
+      className="relative z-10 w-full bg-[#020C1B] px-6 pt-8 pb-4 md:pt-4 md:pb-5"
     >
       <div className="mx-auto max-w-[1200px] w-full">
         
@@ -124,8 +124,8 @@ export default function PolarisIntro() {
 
         {/* Interactive Process Infographic */}
         <BlurFade delay={0.4} direction="up" className="w-full">
-          <div className="relative mb-12 overflow-hidden rounded-3xl border border-[#a7dadb]/25 bg-[#a7dadb]/5 p-6 backdrop-blur-xl md:p-10 shadow-[0_12px_40px_rgba(167,218,219,0.12),inset_0_1px_0_rgba(167,218,219,0.1)]">
-            <h3 className="mb-10 text-center text-sm font-bold uppercase tracking-[0.2em] text-[#a7dadb]">
+          <div className="relative mb-4 overflow-hidden rounded-3xl border border-[#a7dadb]/25 bg-[#a7dadb]/5 p-6 backdrop-blur-xl md:p-10 shadow-[0_12px_40px_rgba(167,218,219,0.12),inset_0_1px_0_rgba(167,218,219,0.1)]">
+            <h3 className="mb-3 text-center text-sm font-bold uppercase tracking-[0.2em] text-[#a7dadb]">
               THE POLARIS TRANSFORMATION
             </h3>
             
@@ -149,7 +149,7 @@ export default function PolarisIntro() {
 
         {/* Enhanced Value Proposition Grid - Interactive on Mobile */}
         <BlurFade delay={0.5} direction="up" className="w-full">
-          <div className="mb-16">
+          <div className="mb-5">
             {/* Mobile Mode Switcher */}
             <div className="mb-8 flex flex-col gap-4 md:hidden">
               <div className="flex rounded-xl bg-white/5 p-1">
@@ -252,7 +252,7 @@ export default function PolarisIntro() {
 
         {/* Impact Metrics */}
         <BlurFade delay={0.6} direction="up" className="w-full">
-          <div className="mb-16 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-6">
+          <div className="mb-5 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-6">
             {[
               { value: "6 wks → 1 hr", label: "Requirements", icon: <Speed className="h-6 w-6 md:h-10 md:w-10" />, color: "#a7dadb" },
               { value: "100%", label: "Alignment", icon: <TrendingUp className="h-6 w-6 md:h-10 md:w-10" />, color: "#4F46E5" },

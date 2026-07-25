@@ -1,0 +1,35 @@
+{
+  "schema_version": 2,
+  "active_work_id": "aifoundations-course-page-77784700",
+  "works": {
+    "aifoundations-course-page-77784700": {
+      "work_id": "aifoundations-course-page-77784700",
+      "active_plan": "/home/jitin/smartslate-final/.omo/plans/aifoundations-course-page.md",
+      "plan_name": "aifoundations-course-page",
+      "status": "active",
+      "started_at": "2026-07-25T16:26:53.069Z",
+      "updated_at": "2026-07-25T16:26:53.069Z",
+      "session_ids": [
+        "opencode:ses_065f50bc3ffeRRzg6ARquyT2cg"
+      ],
+      "session_origins": {
+        "opencode:ses_065f50bc3ffeRRzg6ARquyT2cg": "direct"
+      },
+      "agent": "atlas",
+      "task_sessions": {}
+    }
+  },
+  "active_plan": "/home/jitin/smartslate-final/.omo/plans/aifoundations-course-page.md",
+  "started_at": "2026-07-25T16:26:53.069Z",
+  "status": "active",
+  "updated_at": "2026-07-25T16:26:53.069Z",
+  "session_ids": [
+    "opencode:ses_065f50bc3ffeRRzg6ARquyT2cg"
+  ],
+  "session_origins": {
+    "opencode:ses_065f50bc3ffeRRzg6ARquyT2cg": "direct"
+  },
+  "plan_name": "aifoundations-course-page",
+  "task_sessions": {},
+  "agent": "atlas"
+}

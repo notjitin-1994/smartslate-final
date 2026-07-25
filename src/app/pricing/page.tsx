@@ -110,7 +110,7 @@ export default function PricingPage() {
   return (
     <div className="min-h-screen bg-[rgb(2,12,27)] text-[rgb(224,224,224)]">
       {/* Hero Section */}
-      <section className="pt-24 pb-20 px-4">
+      <section className="pt-8 pb-6 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Column */}
@@ -136,7 +136,7 @@ export default function PricingPage() {
               </p>
 
               {/* CTA Buttons */}
-              <div className="flex items-center gap-4 mb-12 flex-wrap">
+              <div className="flex items-center gap-4 mb-4 flex-wrap">
                 <Link href="https://solara.smartslate.io" className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-lg text-base font-semibold bg-[rgb(79,70,229)] text-[rgb(224,224,224)] transition-all duration-300 hover:bg-[rgb(99,90,249)] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(79,70,229,0.4)]">
                   Explore Solara Solutions
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -249,7 +249,7 @@ export default function PricingPage() {
       </section>
 
       {/* Polaris Description Section */}
-      <section className="pt-12 pb-20 px-4 relative overflow-hidden">
+      <section className="pt-4 pb-6 px-4 relative overflow-hidden">
         <div className="max-w-6xl mx-auto relative">
           {/* Background decorative elements */}
           <div className="absolute -top-20 -right-20 w-64 h-64 bg-[rgba(79,70,229,0.08)] rounded-full blur-[120px] pointer-events-none"></div>
@@ -268,7 +268,7 @@ export default function PricingPage() {
             </div>
 
             {/* Heading and Description */}
-            <div className="mb-12">
+            <div className="mb-4">
               <h2 className="font-['Quicksand'] text-5xl lg:text-6xl font-bold mb-6 text-[rgb(224,224,224)] leading-tight">
                 Transform Ideas into{' '}
                 <span className="text-[rgb(167,218,219)]">Launch-Ready Learning Experience Designs</span>{' '}
@@ -365,7 +365,7 @@ export default function PricingPage() {
       </section>
 
       {/* Individual Plans Section */}
-      <section className="py-16 px-4">
+      <section className="py-5 px-4">
         <div className="max-w-6xl mx-auto">
           {/* Toggles Container */}
           <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
@@ -574,10 +574,10 @@ export default function PricingPage() {
       </section>
 
       {/* Team Plans Section */}
-      <section className="py-24 px-4">
+      <section className="py-8 px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="font-['Quicksand'] text-4xl font-bold mb-10 text-[rgb(167,218,219)]">Team Plans</h2>
-          <p className="text-lg mb-24 text-[rgb(176,197,198)] max-w-3xl">
+          <h2 className="font-['Quicksand'] text-4xl font-bold mb-3 text-[rgb(167,218,219)]">Team Plans</h2>
+          <p className="text-lg mb-8 text-[rgb(176,197,198)] max-w-3xl">
             Team plan limits are <strong>per user</strong> - each team member gets the full allocation, including rollover credits.
           </p>
 
@@ -749,13 +749,13 @@ export default function PricingPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 px-4">
+      <section className="py-5 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="font-['Quicksand'] text-4xl font-bold mb-4 text-[rgb(167,218,219)]">Frequently Asked Questions</h2>
-          <p className="text-lg mb-12 text-[rgb(176,197,198)]">Everything you need to know about our plans and pricing</p>
+          <p className="text-lg mb-4 text-[rgb(176,197,198)]">Everything you need to know about our plans and pricing</p>
 
           {/* Category Filters */}
-          <div className="flex flex-wrap gap-2 mb-12">
+          <div className="flex flex-wrap gap-2 mb-4">
             {[
               {
                 id: 'all',
@@ -832,7 +832,7 @@ export default function PricingPage() {
           </div>
 
           {/* Support CTA */}
-          <div className="mt-16">
+          <div className="mt-5">
             <p className="text-sm mb-6 text-[rgb(176,197,198)]">Still have questions? We're here to help</p>
             <Link href="/contact" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium bg-white/5 text-[rgb(224,224,224)] border border-white/10 transition-all duration-200 hover:bg-white/[0.08] hover:border-[rgba(79,70,229,0.3)]">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -82,7 +82,7 @@ export default function BetaRequestModal({ isOpen, onClose, productName }: BetaR
             </div>
 
             {submitted ? (
-              <div className="flex flex-col items-center py-10 text-center">
+              <div className="flex flex-col items-center py-3 text-center">
                 <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-[#10b981]/10">
                   <CheckCircle sx={{ fontSize: "3rem", color: "#10b981" }} />
                 </div>

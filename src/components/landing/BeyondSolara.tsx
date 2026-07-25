@@ -41,12 +41,12 @@ export default function BeyondSolara() {
   return (
     <section 
       ref={ref}
-      className="relative z-10 w-full bg-[#020C1B] px-6 pt-12 pb-16 md:pt-16 md:pb-24"
+      className="relative z-10 w-full bg-[#020C1B] px-6 pt-4 pb-5 md:pt-5 md:pb-8"
     >
       <div className="mx-auto max-w-[1200px] w-full">
         
         {/* Full-Width Header */}
-        <div className="mb-20 w-full text-left">
+        <div className="mb-6 w-full text-left">
           <BlurFade delay={0.1} direction="up" className="w-full">
             <span className="block text-sm font-extrabold tracking-[0.2em] text-[#a7dadb] uppercase mb-4">
               BEYOND SOLARA
@@ -104,7 +104,7 @@ export default function BeyondSolara() {
         </div>
 
         {/* Ecosystem Summary - Spanning full width below columns */}
-        <BlurFade delay={0.5} direction="up" className="mt-12">
+        <BlurFade delay={0.5} direction="up" className="mt-4">
           <div className="rounded-2xl bg-white/5 border border-white/10 p-8 flex flex-col md:flex-row items-center gap-6">
             <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[#10b981]/20">
               <CheckCircle className="h-10 w-10 text-[#10b981]" />

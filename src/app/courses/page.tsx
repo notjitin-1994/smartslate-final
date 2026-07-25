@@ -1,9 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Box, Container, Typography, Chip } from '@mui/material';
+import Link from 'next/link';
+import { Box, Container, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useInView } from 'react-intersection-observer';
+import { ArrowForward } from '@mui/icons-material';
 
 const PageWrapper = styled(Box)(({ theme }) => ({
   position: 'relative',
@@ -132,7 +134,10 @@ const SectionHeader = styled(Box)(({ theme }) => ({
   },
 }));
 
-const CourseCard = styled(motion.div)(({ theme }) => ({
+const CourseCard = styled(motion(Link))(({ theme }) => ({
+  textDecoration: 'none',
+  color: 'inherit',
+  display: 'flex',
   background: 'rgba(255, 255, 255, 0.02)',
   backdropFilter: 'blur(16px)',
   WebkitBackdropFilter: 'blur(16px)',
@@ -140,7 +145,6 @@ const CourseCard = styled(motion.div)(({ theme }) => ({
   padding: theme.spacing(5),
   border: '1px solid rgba(255, 255, 255, 0.08)',
   height: '100%',
-  display: 'flex',
   flexDirection: 'column',
   transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
@@ -181,21 +185,14 @@ const CourseCard = styled(motion.div)(({ theme }) => ({
       opacity: 1,
     },
   },
+  '&:focus-visible': {
+    outline: '3px solid',
+    outlineColor: theme.palette.primary.main,
+    outlineOffset: '2px',
+  },
   [theme.breakpoints.down('md')]: {
     padding: theme.spacing(4),
   },
-}));
-
-const ComingSoonBadge = styled(Chip)(({ theme }) => ({
-  position: 'absolute',
-  top: theme.spacing(3),
-  right: theme.spacing(3),
-  backgroundColor: 'rgba(79, 70, 229, 0.15)',
-  color: theme.palette.secondary.light,
-  border: '1px solid rgba(79, 70, 229, 0.3)',
-  fontWeight: 600,
-  fontSize: '0.75rem',
-  height: '28px',
 }));
 
 const CourseHeader = styled(Box)(({ theme }) => ({
@@ -203,7 +200,6 @@ const CourseHeader = styled(Box)(({ theme }) => ({
   alignItems: 'flex-start',
   justifyContent: 'space-between',
   marginBottom: theme.spacing(4),
-  paddingRight: theme.spacing(8),
 }));
 
 const CourseIcon = styled(Box)(({ theme }) => ({
@@ -313,6 +309,29 @@ const CourseMetaInfo = styled(Box)(({ theme }) => ({
   borderTop: '1px solid rgba(255, 255, 255, 0.05)',
 }));
 
+const ViewCourseRow = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  marginTop: theme.spacing(3),
+  paddingTop: theme.spacing(2.5),
+  borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+  color: theme.palette.primary.main,
+  fontWeight: 600,
+  fontSize: '0.9375rem',
+  transition: 'color 0.3s ease',
+  '& svg': {
+    fontSize: '1.125rem',
+    transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  },
+  '.course-card:hover &': {
+    color: theme.palette.primary.light,
+    '& svg': {
+      transform: 'translateX(6px)',
+    },
+  },
+}));
+
 const MetaItem = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -394,21 +413,21 @@ export default function CoursesPage() {
 
   const course = {
     id: 'ai-foundations',
-    title: 'AI Foundations: Concept2Application',
-    subtitle: 'Build Production-Ready AI Skills from the Ground Up',
-    description: 'Master the fundamentals of artificial intelligence and machine learning through hands-on projects. This comprehensive course takes you from core concepts to real-world applications, ensuring you can confidently build and deploy AI solutions.',
-    status: 'coming-soon',
+    title: 'AI Foundations: Concept to Application',
+    subtitle: 'From AI awareness to confident application — no coding required.',
+    description:
+      'A 15–16 hour, no-code course that takes non-technical professionals from "what is AI?" to building multi-step AI workflows. You pick one of 12 real-world project templates and evolve it across 8 metaphor-driven modules — so every new concept lands on something you already care about.',
     features: [
-      'Deep dive into machine learning algorithms and neural networks',
-      'Practical projects using Python, TensorFlow, and PyTorch',
-      'Real-world case studies from industry leaders',
-      'Build and deploy production-ready AI models',
-      'Comprehensive coverage of NLP, computer vision, and generative AI',
+      '8-module journey: from what AI actually is, to designing multi-step AI workflows',
+      'Metaphor-driven curriculum that makes technical ideas intuitive — no jargon, no math',
+      'A running project you choose and evolve across every module (12 templates across 4 pillars)',
+      'Built for non-technical professionals — marketing, ops, consulting, design, finance, HR, PM',
+      'Practical lab checkpoints and a capstone project that proves you can apply it',
     ],
     meta: {
-      duration: '12 weeks',
-      level: 'Beginner to Intermediate',
-      projects: '5+ hands-on projects',
+      duration: '15–16 hours',
+      level: 'Beginner-friendly · No coding required',
+      projects: '12 project templates',
     },
   };
 
@@ -493,14 +512,11 @@ export default function CoursesPage() {
             <Box sx={{ maxWidth: '900px' }}>
               <CourseCard
                 className="course-card"
+                href="/courses/aifoundations-concept2application"
                 variants={itemVariants}
                 whileHover={{ scale: 1.01 }}
-                role="article"
-                aria-label={`${course.title}: ${course.description}`}
+                aria-label={`Explore ${course.title}`}
               >
-                {/* Coming Soon Badge */}
-                <ComingSoonBadge label="Coming Soon" size="small" />
-
                 {/* Course Icon */}
                 <CourseIcon>
                   <AIIcon />
@@ -542,6 +558,12 @@ export default function CoursesPage() {
                     <span>{course.meta.projects}</span>
                   </MetaItem>
                 </CourseMetaInfo>
+
+                {/* View course affordance */}
+                <ViewCourseRow>
+                  <span>View course</span>
+                  <ArrowForward />
+                </ViewCourseRow>
               </CourseCard>
             </Box>
           </motion.div>

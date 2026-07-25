@@ -10,22 +10,17 @@ import dynamic from 'next/dynamic';
 
 const MobileMenu = dynamic(() => import('./MobileMenu'), { ssr: false });
 
-const HeaderWrapper = styled('header', {
-  shouldForwardProp: (prop) => prop !== 'hide'
-})<{ hide?: boolean }>(({ theme, hide }) => ({
+const HeaderWrapper = styled('header')(({ theme }) => ({
   position: 'fixed',
   top: 'var(--nav-top-offset)',
   left: '50%',
-  transform: hide 
-    ? 'translateX(-50%) translateY(-20px) scale(0.95)' 
-    : 'translateX(-50%) translateY(0) scale(1)',
+  transform: 'translateX(-50%) translateY(0) scale(1)',
   zIndex: 'var(--z-header)',
   width: 'calc(100vw - 32px)',
   maxWidth: theme.breakpoints.values.lg,
   height: 'var(--nav-height-desktop)',
-  opacity: hide ? 0 : 1,
-  visibility: hide ? 'hidden' : 'visible',
-  transition: 'opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  opacity: 1,
+  visibility: 'visible',
   [theme.breakpoints.down('sm')]: {
     width: 'calc(100vw - 16px)',
     height: 'var(--nav-height-mobile)',
@@ -134,34 +129,7 @@ const CTAButton = styled(Button)(({ theme }) => ({
 }));
 
 export default function Header() {
-  const [hide, setHide] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    let lastScrollY = window.scrollY;
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const currentScrollY = window.scrollY;
-          
-          if (currentScrollY < lastScrollY || currentScrollY <= 50) {
-            setHide(false);
-          } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
-            setHide(true);
-          }
-          
-          lastScrollY = currentScrollY;
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const navItems = [
     { label: 'Products', href: '/products' },
@@ -171,7 +139,7 @@ export default function Header() {
 
   return (
     <>
-      <HeaderWrapper hide={hide}>
+      <HeaderWrapper>
         <HeaderBackground />
         <HeaderContent>
           <LogoLink href="/">

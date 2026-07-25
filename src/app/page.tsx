@@ -238,7 +238,7 @@ export default function Home() {
               </Box>
             </motion.div>
 
-            <div className="mt-12 relative">
+            <div className="mt-4 relative">
               {/* Desktop Grid */}
               <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {solaraModules.map((module, index) => (

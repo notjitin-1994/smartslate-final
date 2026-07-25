@@ -62,7 +62,7 @@ export default function RevampedHero() {
   return (
     <section 
       ref={containerRef}
-      className="relative flex w-full flex-col items-center overflow-hidden bg-[#020C1B] px-6 pt-[calc(var(--header-total-height-mobile)+0.5rem)] pb-12 md:pt-[calc(var(--header-total-height-desktop)+3rem)] md:pb-16"
+      className="relative flex w-full flex-col items-center overflow-hidden bg-[#020C1B] px-6 pt-[calc(var(--header-total-height-mobile)+0rem)] pb-4 md:pt-[calc(var(--header-total-height-desktop)+0rem)] md:pb-5"
     >
       {/* Background Video Layer */}
       <div className="absolute inset-0 z-0">
@@ -140,7 +140,7 @@ export default function RevampedHero() {
           </BlurFade>
 
           <BlurFade delay={0.5} direction="up" className="w-full">
-            <div className="mt-10 flex items-center gap-6 border-t border-[#a7dadb]/10 pt-8 w-full">
+            <div className="mt-3 flex items-center gap-6 border-t border-[#a7dadb]/10 pt-8 w-full">
               <div className="flex flex-col text-left">
                 <span className="text-2xl font-bold text-[#a7dadb]">10x</span>
                 <span className="text-xs uppercase tracking-wider text-[#7a8a8b]">Design Speed</span>

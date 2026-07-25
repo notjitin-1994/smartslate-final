@@ -192,7 +192,7 @@ export default function StylingWikiPage() {
   return (
     <div className="bg-[#020C1B] text-slate-200 min-h-screen font-lato selection:bg-teal-500/30">
       {/* --- Hero Section --- */}
-      <section className="relative pt-48 pb-32 px-8 overflow-hidden border-b border-slate-800">
+      <section className="relative pt-16 pb-10 px-8 overflow-hidden border-b border-slate-800">
         <TechnicalBackground />
         <motion.div style={{ y: heroY, opacity: heroOpacity }} className="max-w-6xl mx-auto text-left">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
@@ -202,7 +202,7 @@ export default function StylingWikiPage() {
             <h1 className="font-quicksand text-6xl md:text-8xl font-bold tracking-tight text-white mb-8 text-left">
               Visual <span className="text-teal-400">Identity</span>.
             </h1>
-            <p className="max-w-2xl text-xl text-slate-400 leading-relaxed mb-12 text-left">
+            <p className="max-w-2xl text-xl text-slate-400 leading-relaxed mb-4 text-left">
               A comprehensive system for the Smartslate brand ecosystem. 
               Engineering innovation through minimalist clarity and professional motion.
             </p>
@@ -219,9 +219,9 @@ export default function StylingWikiPage() {
       </section>
 
       {/* --- Colors Section --- */}
-      <section id="colors" className="py-32 px-8 border-t border-slate-800 bg-slate-950/20">
+      <section id="colors" className="py-10 px-8 border-t border-slate-800 bg-slate-950/20">
         <div className="max-w-6xl mx-auto">
-          <div className="flex items-center gap-3 mb-16 text-left">
+          <div className="flex items-center gap-3 mb-5 text-left">
             <Palette className="text-teal-400" size={32} />
             <div className="text-left">
               <h2 className="font-quicksand text-4xl font-bold text-white text-left">Color System</h2>
@@ -234,7 +234,7 @@ export default function StylingWikiPage() {
         </div>
       </section>
       {/* --- Typography Section --- */}
-      <section id="typography" className="py-32 px-8 border-t border-slate-800">
+      <section id="typography" className="py-10 px-8 border-t border-slate-800">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col lg:flex-row gap-20">
             <div className="lg:w-1/3">
@@ -289,9 +289,9 @@ export default function StylingWikiPage() {
       </section>
 
       {/* --- Assets Section --- */}
-      <section id="assets" className="py-32 px-8 border-t border-slate-800 bg-slate-950/20">
+      <section id="assets" className="py-10 px-8 border-t border-slate-800 bg-slate-950/20">
         <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 text-left">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-5 text-left">
             <div className="text-left">
               <div className="flex items-center gap-3 mb-6 text-left">
                 <Layers className="text-teal-400" size={32} />
@@ -325,7 +325,7 @@ export default function StylingWikiPage() {
       </section>
 
       {/* --- Footer --- */}
-      <footer className="py-24 px-8 border-t border-slate-800 text-left">
+      <footer className="py-8 px-8 border-t border-slate-800 text-left">
         <div className="max-w-6xl mx-auto flex flex-col items-start space-y-6">
           <div className="flex justify-start gap-3">
              <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />

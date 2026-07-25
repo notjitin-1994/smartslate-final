@@ -29,8 +29,8 @@
   --nav-height-desktop: 64px;
   --nav-height-mobile: 56px;
   --nav-top-offset: 16px;
-  --section-padding-y: 80px;
-  --hero-padding-top: 32px; /* Space between header and hero content */
+  --section-padding-y: 24px;
+  --hero-padding-top: 10px; /* Space between header and hero content */
   
   /* Combined offsets for content */
   --header-total-height-desktop: calc(var(--nav-height-desktop) + var(--nav-top-offset));
