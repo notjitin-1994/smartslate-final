@@ -416,9 +416,9 @@ export default function CoursesPage() {
     title: 'AI Foundations: Concept to Application',
     subtitle: 'From AI awareness to confident application — no coding required.',
     description:
-      'A 15–16 hour, no-code course that takes non-technical professionals from "what is AI?" to building multi-step AI workflows. You pick one of 12 real-world project templates and evolve it across 8 metaphor-driven modules — so every new concept lands on something you already care about.',
+      'A 15–16 hour, no-code course that takes non-technical professionals from "what is AI?" to building multi-step AI workflows. You pick one of 12 real-world project templates and evolve it across 7 metaphor-driven modules — so every new concept lands on something you already care about.',
     features: [
-      '8-module journey: from what AI actually is, to designing multi-step AI workflows',
+      '7-module journey: from what AI actually is, to designing multi-step AI workflows',
       'Metaphor-driven curriculum that makes technical ideas intuitive — no jargon, no math',
       'A running project you choose and evolve across every module (12 templates across 4 pillars)',
       'Built for non-technical professionals — marketing, ops, consulting, design, finance, HR, PM',

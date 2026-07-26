@@ -22,7 +22,6 @@ import {
   Handyman,
   PrecisionManufacturing,
   AccountTree,
-  PhoneAndroid,
   Dashboard,
   Apps,
   VideoLibrary,
@@ -159,7 +158,7 @@ const ProjectCard = styled(Box)({
 // ---------------------------------------------------------------------------
 
 const courseStats = [
-  { icon: <ViewModule sx={{ fontSize: 28 }} />, value: '08', label: 'Modules', desc: 'Structured, metaphor-driven phases to map your journey.', visual: 'progress', bgImage: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80' },
+  { icon: <ViewModule sx={{ fontSize: 28 }} />, value: '07', label: 'Modules', desc: 'Structured, metaphor-driven phases to map your journey.', visual: 'progress', bgImage: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80' },
   { icon: <Schedule sx={{ fontSize: 28 }} />, value: '15+', label: 'Hours', desc: 'Intensive pacing designed for busy working professionals.', visual: 'timeline', bgImage: 'https://images.unsplash.com/photo-1508144753681-9986d4df99b3?auto=format&fit=crop&w=600&q=80' },
   { icon: <Description sx={{ fontSize: 28 }} />, value: '12', label: 'Templates', desc: 'Production-ready workflow blueprints to use immediately.', visual: 'blocks', bgImage: 'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=600&q=80' },
   { icon: <CodeOff sx={{ fontSize: 28 }} />, value: 'Zero', label: 'Coding', desc: '100% logic and workflow orchestration, no syntax required.', visual: 'slash', bgImage: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=600&q=80' },
@@ -216,14 +215,6 @@ const modules = [
   },
   { 
     number: '07', 
-    icon: <PhoneAndroid sx={{ fontSize: 24 }} />, 
-    title: 'The Local Sandbox', 
-    description: 'Not every payload should go to the cloud. Evaluate the hardware tradeoffs of running open-weight models natively on-device. Master Ollama and local deployment strategies to build fully private, offline-capable AI features.', 
-    skills: ['Ollama Deployment', 'Local Inference', 'Hardware Constraints'],
-    mediaType: 'image', mediaUrl: 'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=800&q=80' 
-  },
-  { 
-    number: '08', 
     icon: <AutoAwesome sx={{ fontSize: 24 }} />, 
     title: 'The Horizon', 
     description: 'Present your completed capstone project. We finalize your personal AI resource library and outline a framework for staying current in an ecosystem that deprecates its own standards every six months.', 
@@ -237,28 +228,28 @@ const pillars = [
     icon: <Dashboard sx={{ fontSize: 32 }} />, 
     title: 'Intelligent Web Interfaces', 
     description: 'Build frontends that mutate based on context. Move past static CRUD apps and architect interfaces that act as human-in-the-loop control planes for underlying agentic swarms.', 
-    projects: ['Dynamic BI Dashboard', 'Conversational Onboarding', 'Agentic Control Room'],
+    projects: ['Dynamic BI Dashboard', 'Conversational Onboarding', 'Human-in-the-Loop Control Center'],
     bgImage: 'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=600&q=80'
   },
   { 
     icon: <Apps sx={{ fontSize: 32 }} />, 
-    title: 'AI-Native Applications', 
+    title: 'AI-Integrated Apps', 
     description: 'Software where LLMs are the core computational engine, not a bolted-on chat widget. Design systems that reason, plan, and execute tasks autonomously on the user’s behalf.', 
-    projects: ['OS-Level Workflow Assistant', 'Autonomous Researcher', 'Local Data Navigator'],
+    projects: ['OS-Level Workflow Assistant', 'Edge-AI Health Coach', 'Enterprise Knowledge Navigator'],
     bgImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80'
   },
   { 
     icon: <VideoLibrary sx={{ fontSize: 32 }} />, 
-    title: 'Content Pipelines', 
+    title: 'Content Pipeline', 
     description: 'Construct deterministic content factories. Chain together multiple specialized agents to research, synthesize, format, and localize high-volume production outputs reliably.', 
-    projects: ['Multi-Agent Newsroom', 'Semantic Video Indexer', 'Localization Engine'],
+    projects: ['Digital Twin ABM Orchestrator', 'Longform-to-Viral Clip Engine', 'Zero-Touch Localization Engine'],
     bgImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80'
   },
   { 
     icon: <Create sx={{ fontSize: 32 }} />, 
-    title: 'The Synthesizer Stack', 
+    title: 'Writing Engine', 
     description: 'A personal knowledge architecture that compounds your voice and research. Build RAG pipelines that instantly surface your past thinking to generate novel, contrarian insights.', 
-    projects: ['Vectorized Second Brain', 'Cross-Discipline Synthesizer', 'Voice-Matched Ghostwriter'],
+    projects: ['Omnichannel Content Repurposer', 'Academic Research Synthesizer', 'Creative World-Building Co-Pilot'],
     bgImage: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=600&q=80'
   },
 ];
@@ -635,7 +626,7 @@ export default function AIFoundationsCoursePage() {
               From Awareness <br/> to <span style={{ color: COLORS.teal }}>Application</span>
             </Typography>
             <Typography sx={{ fontSize: '1.25rem', color: COLORS.textSecondary, maxWidth: '600px' }}>
-              Eight metaphor-driven modules. Each one reframes a real piece of how AI works, handing it back to you as a usable capability.
+              Seven metaphor-driven modules. Each one reframes a real piece of how AI works, handing it back to you as a usable capability.
             </Typography>
           </Box>
 
@@ -913,7 +904,7 @@ export default function AIFoundationsCoursePage() {
             {[
               { icon: <AccountTree sx={{ fontSize: 32 }} />, title: 'Scaffolded Mental Models', desc: 'We bypass deep technical jargon in favor of strong structural metaphors. Anchoring complex AI architectures to concepts you already intuitively understand drastically reduces cognitive load.' },
               { icon: <Timeline sx={{ fontSize: 32 }} />, title: 'Situated Application Spine', desc: 'Passive learning evaporates. Every theoretical concept is immediately tested against your continuous "running capstone" project, constructing knowledge directly within your own business context.' },
-              { icon: <TouchApp sx={{ fontSize: 32 }} />, title: 'Frictionless Execution', desc: 'We remove the barrier of environment setup and syntax errors. By focusing strictly on orchestration logic using visual nodes, you master the core mechanics of AI without writing a single line of code.' }
+              { icon: <TouchApp sx={{ fontSize: 32 }} />, title: 'Frictionless Execution', desc: 'We remove the barrier of environment setup and syntax errors. Concepts land through interactive simulations and guided exercises, so you master the core mechanics of AI without writing a single line of code.' }
             ].map((method, index) => (
               <Grid size={{ xs: 12, md: 4 }} key={index}>
                 <ElegantCard className="gsap-fade-up" sx={{ 
